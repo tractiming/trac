@@ -1,0 +1,150 @@
+<html>
+    <head> 
+        <title>TRAC Demo site</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<script src="js/jquery-1.4.2.min.js"></script>
+	<script src="js/script.js"></script>
+    </head>
+
+<body class="theme1">
+	<!-- Main Container tarts -->
+	<div class="main-container">
+		<!-- Header Wrapper starts -->
+		<div class="header no-border">
+			<div class="user-details">
+				<span class="bold">Welcome:</span> <span>user123</span>
+			</div>
+			<div class="product-name"></div>
+			<div class="product-info">
+				<h2> Lap Time Information</h2>
+			</div>
+		</div>
+		<!-- Header Wrapper ends -->
+		
+		<!-- Navigation Tabs starts -->
+		<ul class="nav-tabs">
+			<li id="userInfo">USER INFO</li>
+			<li id="weeklyView">RACES</li>
+			<li id="energySummary">TRAINING</li>
+			<li class="selected" id="activityLevel">LIVE LAP TIME</li>
+		</ul>
+		<input type="button" name="" value="Sign Out" id="signout" class="signout" />
+		<!-- Navigation Tabs starts -->
+		
+		<!-- Content Wrapper starts -->
+		<div class="content">
+		<div class="active-area">
+			<div class="box">
+			<div class="upper-area">
+				<div class="inner">
+					
+			
+    
+  
+  <body>
+    <div id="graph" style="width: 900px; height: 300px;">
+        <h3>
+            <center>
+                Test Database
+        <!--Call php and javascript code here-->
+<?php 
+
+$db_host = 'localhost'; 
+$db_user = 'root'; 
+$db_pwd = 'root'; 
+$database = 'testrfid'; 
+$table = 'demotable'; 
+
+mysql_connect($db_host, $db_user, $db_pwd) or die(mysql_error()); 
+mysql_select_db($database) or die(mysql_error()); 
+
+// Filter the records 
+
+
+$result = mysql_query("SELECT * FROM {$table} WHERE ID=1") ; 
+if (!$result) { 
+die("Query to show fields from table failed data access ITEMS"); 
+} 
+
+
+$numrows=mysql_num_rows($result); 
+echo "<table>"; 
+
+while($row = mysql_fetch_row($result)) 
+{ 
+echo "<tr>"; 
+
+foreach($row as $cell){ 
+echo "<td>$cell</td>"; 
+} 
+echo "</tr>"; 
+
+} 
+echo "</table>"; 
+
+mysql_free_result($result); 
+?>
+
+            </center>
+        
+        </h3>
+    </div>
+  </body>
+  
+  </div>
+  </div>
+<div class="lower-area">
+	<div class="inner">
+		<head>
+    
+  </head>
+  <body>
+    <div id="graph-down" style="width: 600px; height: 400px;">
+        <!--Call php and javascript code here-->
+        
+        
+    </div>
+  </body>
+		
+	</div>
+	
+	
+</div>
+		</div>
+		</div>
+		</div>
+		<!-- Content Wrapper ends -->
+	    
+		<!-- Footer Wrapper starts -->
+		<div class="pageFooter">
+			<div class="compbase parbase globalfooter">
+				<div class="centerContainer">
+					<div class="contactModule gridRight">
+						<label>Share</label>
+
+						<a href="" target="_new" class="linkedin"></a>
+						
+					</div>
+					<div class="signUp gridRight">
+						<div class="newslettersignup newsletter"></div>
+					</div>
+					<a href="/en/home.html">
+						<img alt="Logo" title="traclogo" class="cq-dd-image" src="images/traclogo_small.png">
+					</a>
+					<div class="contactModule bottom">
+						<span class="copyright">&copy; 2014 Timing and Racing Around the Clock LLC. All rights reserved.</span>
+						<span class="links">
+							<a href="" target="_new">Locations</a>
+							<a href="l" target="_new">Legal &amp; Privacy Notices</a>
+							<a href="" target="_new">Contact Us</a>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Footer Wrapper ends -->
+		
+	</div>
+	<!-- Main Container ends -->
+</body>
+</html>
