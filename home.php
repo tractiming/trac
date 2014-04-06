@@ -50,9 +50,9 @@
 <?php 
 
 $db_host = 'localhost'; 
-$db_user = 'root'; 
-$db_pwd = 'root'; 
-$database = 'testrfid'; 
+$db_user = 'elliot'; 
+$db_pwd = 'mymysqlpassword'; 
+$database = 'trac'; 
 $table = 'demotable'; 
 
 mysql_connect($db_host, $db_user, $db_pwd) or die(mysql_error()); 
