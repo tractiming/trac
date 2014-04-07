@@ -21,3 +21,23 @@
 *.i*86
 *.x86_64
 *.hex
+
+# MPLABX
+*.d
+*.pre
+*.p1
+*.lst
+*.sym
+*.obj
+*.sdb
+*.obj.dump
+*.map
+build/
+dist/
+nbproject/private/
+nbproject/Package-*.bash
+nbbuild/
+nbdist/
+nbactions.xml
+nbproject/Makefile-*
+disassembly/
