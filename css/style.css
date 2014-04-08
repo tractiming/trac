@@ -3,6 +3,7 @@ body{overflow-x:hidden; overflow-y:scroll;}
 body.theme1{background:#3577A8;}
 h2{font-size:24px; font-weight:bold; color:white; padding:0; margin:0;}
 h3{font-size:24px; color:black;}
+h4{font-size:15px; font-weight:bold; color:#5D6770; padding:0; margin:0;}
 a:focus, input, input:focus{outline:none;}
 input[type="text"], input[type="button"], input[type="submit"], input[type="reset"], input[type="password"], select {border:solid 1px; border-radius:3px;}
 .bold{font-weight:bold;}
@@ -30,7 +31,7 @@ input[type="button"].signout{float:right; width:100px; height:29px; padding:5px;
 .title-bar .pagination a.selected{background:#bec0c2; font-weight:bold;}
 .title-bar .title{float:right; font-size:38px; font-weight:bold; color:#a21984; opacity:0.4; filter: alpha(opacity = 40);}
 
-.pageFooter {clear:both;}
+.pageFooter {clear:both; width:1000px; float: center;}
 .pageFooter, .pageFooter a {color:#FFF; padding:0 15px;}
 .pageFooter .contactModule label{float:left; margin:0 10px 0 0;}
 .pageFooter .contactModule.gridRight {float:right; margin-top:0;}
@@ -58,5 +59,53 @@ input[type="button"].signout{float:right; width:100px; height:29px; padding:5px;
 .graph-area .right .lower-boarder{float:left; background:#8DC63f; width:400px; height:190px; border:solid 1px #8DC63f; border-radius:3px; border-width:1px 1px 1px 11px; position:absolute; bottom:0;}
 .graph-area .right .lower-boarder .outer{background:#8DC63f; width:400px; height:190px; position:absolute; bottom:0;}
 .graph-area .right .lower-boarder .outer .graph{width:400px; height:190px; position:absolute; background:#8DC63f;}
+
+/*Styles for Login Page*/
+
+.login-box .right-panel{float:left; width:300px; height:360px; margin:0 auto;}
+.login-box .right-panelh2{height:30px; padding:0 0 10px 0;}
+.login-box .right-panel .inner{height:290px; border-left:solid 11px #f3bb2a; border-radius:3px; margin:10px 0 0 0;}
+.login-box .right-panel .inner form{border:solid 2px #f3bb2a; height:226px; padding:30px; margin:0 0 0 -2px; border-radius:3px;}
+.login-box .right-panel .inner form .form-row {margin:0 0 20px 0; overflow:hidden;}
+.login-box .right-panel .inner form .form-row label{float:left; width:250px; height:27px; padding:5px 0; font-size:18px; color:#5D6770;}
+.login-box .right-panel .inner form .form-row input{float:left; width:180px; height:30px; padding:5px; font-size:18px; color:#5D6770; border:solid 1px #f3bb2a;}
+.login-box .right-panel .inner form .long-row{width:250px; height:40px;}
+.login-box .right-panel .inner form .long-row .middle .button-container{float:left;width:100; height:40px}
+.login-box .right-panel .inner form .long-row .middle .button-container input{width:100px; height:40px; background:#f3bb2a; color:#FFF; text-shadow:0px 1px 1px #000; filter:dropshadow(color=#000, offx=0, offy=1); cursor:pointer;}
+.login-box .right-panel .inner form .long-row .middle .check input{padding-left:2px; width:15px; height:15px font-weight: normal; color: #666;line-height: 0;}
+  .login-box .right-panel .inner form .long-row .middle .check{padding-left:5px; padding-top:10px; float:right; width:145px; height:20px;}
+.login-box .left-panel{float:right ; width:500px; height:360px; margin:0 auto; }
+.login-box .left-panel .picture{padding-top:260px; background:#3577A8; border-radius:3px; }
+
+
+/*Styles for User Info Page*/
+.user-info .left-panel{float:left; width:300px; padding-top:15px;}
+.user-info .left-panel .form-row{font-size:17px; color:#5D6770; overflow:hidden; margin:10px 0 12px 0;}
+.user-info .left-panel .form-row label{float:left; font-weight:bold; margin:0 10px 0 0;}
+.user-info .left-panel .form-row span{float:left;}
+.user-info .left-panel .form-row.button-container{padding:8px 0 0;}
+.user-info .left-panel .form-row.button-container input{float:none; width:80px; background:#f3bb2a; font-size:15px; font-weight:bold; color:#f3bb2a; padding:7px; border:none; margin:0 auto; cursor:pointer;}
+.user-info .left-panel .box.right{width:235px;}
+.user-info .left-panel .box.right input{width:200px; height:20px; }
+.user-info .left-panel .box.right .button-container input{float:none; height:35px; width:80px; background:#f3bb2a; font-size:15px; font-weight:bold; color:#5D6770; padding:7px; border:none; margin:0 auto; cursor:pointer;}
+.user-info .left-panel .box{float:left; width:290px; height:685px; text-align:center; padding-left:1em; border:solid 1px #f3bb2a; border-width:1px 1px 1px 11px; border-radius:3px;}
+.user-info .right-panel{float:right;  width:550px; height:675px; background:#3577A8; border-radius:3px;}
+.user-info .right-panel .body{padding-top:150px; padding-left:25px;}
+.user-info .right-panel h4{font-size:17px; font-weight:bold; color:#5D6770; left 3px no-repeat; display:inline-block; padding:0 0 0 20px; margin:18px 0;}
+.user-info .right-panel form{display:inline-block;}
+
+
+.race-box .right-panel{float:left; width:400px; height:auto; margin:0 auto;}
+.race-box .right-panelh2{height:30px; padding:0 0 10px 0;}
+.race-box .right-panel .inner{ border-left:solid 11px #f3bb2a; border-radius:3px; margin:10px 0 10px 0; height:auto;}
+.race-box .right-panel .inner form{border:solid 2px #f3bb2a; height:auto; padding:30px; margin:0 0 0 -2px; border-radius:3px;}
+.race-box .right-panel .inner form .form-row {margin:0 0 20px 0; overflow:hidden;}
+.race-box .right-panel .inner form .form-row label{float:left;  padding:5px 0; font-size:18px; color:#5D6770;}
+
+
+.race-box .left-panel{float:right ; width:500px; height:auto; margin:0 auto;}
+.race-box .left-panel .picture{background:#3577A8; border-radius:3px; }
+
+
 
 
