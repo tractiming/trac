@@ -6,6 +6,8 @@ PORT = 36740
 
 class ReaderComm(Protocol):
 
+    reader_id = None
+
     def dataReceived(self, data):
         print data
 

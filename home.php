@@ -61,7 +61,7 @@ mysql_select_db($database) or die(mysql_error());
 // Filter the records 
 
 
-$result = mysql_query("SELECT * FROM {$table} WHERE ID=1") ; 
+$result = mysql_query("SELECT * FROM {$table} WHERE ID=2") ; 
 if (!$result) { 
 die("Query to show fields from table failed data access ITEMS"); 
 } 
