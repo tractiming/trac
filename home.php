@@ -24,9 +24,9 @@
 		<!-- Navigation Tabs starts -->
 		<ul class="nav-tabs">
 			<li id="userInfo">USER INFO</li>
-			<li id="weeklyView">RACES</li>
-			<li id="energySummary">TRAINING</li>
-			<li class="selected" id="activityLevel">LIVE LAP TIME</li>
+			<li id="race">RACES</li>
+			<li id="training">TRAINING LOG</li>
+			<li class="selected" id="home">LIVE LAP TIME</li>
 		</ul>
 		<input type="button" name="" value="Sign Out" id="signout" class="signout" />
 		<!-- Navigation Tabs starts -->
@@ -60,8 +60,7 @@ mysql_select_db($database) or die(mysql_error());
 
 // Filter the records 
 
-
-$result = mysql_query("SELECT * FROM {$table} WHERE ID=1") ; 
+$result = mysql_query("select a.Date, timediff( (select b.Date from {$table} b where b.ID = a.ID + 1),a.Date ) as Pace from {$table} a") ; 
 if (!$result) { 
 die("Query to show fields from table failed data access ITEMS"); 
 } 
