@@ -41,3 +41,6 @@ nbdist/
 nbactions.xml
 nbproject/Makefile-*
 disassembly/
+
+# Python
+*.pyc

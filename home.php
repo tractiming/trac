@@ -60,7 +60,12 @@ mysql_select_db($database) or die(mysql_error());
 
 // Filter the records 
 
-$result = mysql_query("select a.Date, timediff( (select b.Date from {$table} b where b.ID = a.ID + 1),a.Date ) as Pace from {$table} a") ; 
+$query="SELECT * FROM demotable"; $result=mysql_query($query);
+
+
+// I'm holding off on the pace calculation until I figure out how to add info 
+// into the database.
+//$result = mysql_query("select a.Date, timediff( (select b.Date from {$table} b where b.ID = a.ID + 1),a.Date ) as Pace from {$table} a") ; 
 if (!$result) { 
 die("Query to show fields from table failed data access ITEMS"); 
 } 
