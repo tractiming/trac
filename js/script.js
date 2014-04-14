@@ -8,12 +8,11 @@ $(document).ready(function() {
 	var setContentNewHeight = (windowHeight) - (contentLocation + footerOuterHeight + 70);
 	$(".content").css({"min-height" : setContentNewHeight});
 	
-	$("#signin").click(function(){
-		window.location = 'userInfo.php';
+
+	$("#register").click(function(){
+		window.location = 'userInfo.php';	
 	});
-	$("#save").click(function(){
-		window.location = 'training.php';
-	});
+	
 	$(".nav-tabs li").click(function(){
 		//$(".nav-tabs li").removeClass("selected");
 		//$(this).addClass("selected");

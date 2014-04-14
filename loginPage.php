@@ -15,34 +15,84 @@
 <h2>Timing and Racing Around the Clock</h2>
 </div>
 </div>
-<!-- Header Wrapper ends --><!-- Content Wrapper starts ...Having trouble with element.style and not getting the drop of white space in the content-->
+<!-- Header Wrapper ends --><!-- Content Wrapper starts -->
 <div class="content" > 
 <div class="login-box">
 <div class="left-panel">
+	<div class="sub">
+	<div class="textarea">
+		<br>
+		<center><h2>Sign up and race your friends!</h2></center>
+		<div class="button-container">
+			
+		<input name="" value="Register Now!" id="register" type="button" />
+		</div>
+	</div>
+	
 	<div class="picture">
-	<img src="images/chicago.png" /></div></div>
+		
+	<img src="images/chicago.png" /></div></div></div>
 <div class="right-panel">
 <h2><font color="#5D6770">Sign In</h2></font>
 <div class="inner">
-<form>
+	
+	<!--Query SQL Database for username-->
+	<?php
+include("config.php");
+//change roots more easily in config.php
+session_start();
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+// username and password sent from Form 
+$myusername=addslashes($_POST['username']); 
+$mypassword=addslashes($_POST['password']); 
+
+$sql="SELECT id FROM admin WHERE username='$myusername' and passcode='$mypassword'";
+//sql table is of form: CREATE TABLE admin
+//id INT PRIMARY KEY AUTO_INCREMENT,
+//username VARCHAR(30) UNIQUE,
+//passcode VARCHAR(30)
+
+
+$result=mysql_query($sql);
+$row=mysql_fetch_array($result);
+$active=$row['active'];
+$count=mysql_num_rows($result);
+
+
+// If result matched $myusername and $mypassword, table row must be 1 row
+if($count==1)
+{
+session_register("myusername");
+$_SESSION['login_user']=$myusername;
+header("home.php");
+//this is where I'm having trouble hyperlinking
+}
+else 
+{
+$error="Your Login Name or Password is invalid";
+echo"$error";    
+}
+}
+?>
+
+	
+<form action="" method="post">
 <div class="form-row"> <label>User ID</label>
-<input name="" value="" id="" type="text" /></div>
+<input name="username" value="" id="" type="text" /></div>
 <div class="form-row"> <label>Password</label>
-<input name="" value="" id="" type="password" /></div>
+<input name="password" value="" id="" type="password" /></div>
 <div class="long-row">
 	<div class="middle">
 <div class="button-container"> 
 
-<input name="" value="Sign In" id="signin" type="button" /></div>
+<input name="" value="Sign In" id="signin" type="submit" /></div>
 <div class="check"> 
 <input type="checkbox" name="PersistentCookie" id="PersistentCookie" value="yes"checked="checked"> Stay signed in
  </div>
 </div>
 </div>
 </div>
-
-  
-
 
 </form>
 </div>
@@ -54,6 +104,7 @@
 </div>
 </div>
 <!-- Content Wrapper ends -->
+
 		<!-- Footer Wrapper starts -->
 		<div class="pageFooter">
 			<div class="compbase parbase globalfooter">
