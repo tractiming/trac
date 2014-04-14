@@ -62,15 +62,15 @@
 					</div>
 					<div class="form-row">
 						<label>Male or Female:</label></div><div class="form-row">
-						<span><select>
-									<option>Male</option><option>Female</option>
+						<span><select name="sex">
+									<option value="male">Male</option><option value="female">Female</option>
 							</select></span>
 					</div>
                                         <div class="form-row">
 						<label>User Type:</label></div><div class="form-row">
 						<span>
-							<select>
-									<option>Athlete</option><option>Coach</option>
+							<select name="usertype">
+									<option value="athlete">Athlete</option><option  value="coach">Coach</option>
 							</select>
 						</span>
 					</div>
@@ -84,23 +84,43 @@
 						<span><input name="password2" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row button-container">
-								<input type="button" name="save" id="save" value="Save" />
+								<input type="submit" name="save" id="save" value="Save" />
 							</div>
 					</div>
 					
 				</div>
 				<?php
+				include("config.php");
+				
 				session_start();
+				
 				if(isset($_POST['save']))
 				{
-				    $name=$_POST['name'];
-				    $username=$_POST['username'];
-				    $dob=$_POST['dob'];
-				    $height=$_POST['height'];
-				    $weight=$_POST['weight'];
+				   
 				    
+				    if($_POST['password']==$_POST['password2'])
+				    {
+					$password=$_POST['password'];
+					$name=$_POST['name'];
+					$username=$_POST['username'];
+					$dob=$_POST['dob'];
+					$height=$_POST['height'];
+					$weight=$_POST['weight'];
+					$usertype=$_POST['usertype'];
+				    }
+				    else
+				    {
+					echo"Your Password is invalid";
+				    }
+				    
+				    $number=mysql_query("SELECT COUNT('id') FROM admin");
+				    $newid=$number+1;
+				    $query="INSERT INTO admin VALUES($newid,$username,$password)";
+				    $result=mysql_query($query);
+				   header("location: loginPage.php");
+		    
 				}
-				echo"$name";
+				
 				?>
 				
 				
