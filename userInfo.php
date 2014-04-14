@@ -34,30 +34,31 @@
 		<!-- Content Wrapper starts -->
 		<div class="content">
 			<div class="user-info">
+			    <form action="" method="post">
 				<h2><font color="#5D6770">Create a new account:</font> </h2>
 				<div class="left-panel">
 					<div class="box right">
 					<div class="form-row">
 						<label>Name:</label></div>
 						<div class="form-row">
-						<span><input name="" value="" id="" type="text" /></span>
+						<span><input name="name" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>User Name:</label></div>
 						<div class="form-row">
-						<span><input name="" value="" id="" type="text" /></span>
+						<span><input name="username" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Date of Birth:</label></div><div class="form-row">
-						<span><input name="" value="" id="" type="text" /></span>
+						<span><input name="dob" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Height:</label></div><div class="form-row">
-						<span><input name="" value="" id="" type="text" /></span>
+						<span><input name="height" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Weight:</label></div><div class="form-row">
-						<span><input name="" value="" id="" type="text" /></span>
+						<span><input name="weight" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Male or Female:</label></div><div class="form-row">
@@ -66,28 +67,44 @@
 							</select></span>
 					</div>
                                         <div class="form-row">
-						<label>Home City:</label></div><div class="form-row">
+						<label>User Type:</label></div><div class="form-row">
 						<span>
 							<select>
-									<option>Chicago</option><option>New York</option>
+									<option>Athlete</option><option>Coach</option>
 							</select>
 						</span>
 					</div>
 					
 					<div class="form-row">
 						<label>Password:</label></div><div class="form-row">
-						<span><input name="" value="" id="" type="text" /></span>
+						<span><input name="password" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Verify Password:</label></div><div class="form-row">
-						<span><input name="" value="" id="" type="text" /></span>
+						<span><input name="password2" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row button-container">
-								<input type="button" name="" id="save" value="Save" />
+								<input type="button" name="save" id="save" value="Save" />
 							</div>
 					</div>
 					
 				</div>
+				<?php
+				session_start();
+				if(isset($_POST['save']))
+				{
+				    $name=$_POST['name'];
+				    $username=$_POST['username'];
+				    $dob=$_POST['dob'];
+				    $height=$_POST['height'];
+				    $weight=$_POST['weight'];
+				    
+				}
+				echo"$name";
+				?>
+				
+				
+				
 				<div class="right-panel">
 					<div class="body">
 					
@@ -98,6 +115,7 @@
 				</div>
 				
 			</div>
+			</form>
 		
 		<!-- Content Wrapper ends -->
 	    
