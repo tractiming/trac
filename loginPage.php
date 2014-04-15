@@ -12,7 +12,8 @@ $sql="SELECT id FROM admin WHERE username='$myusername' and passcode='$mypasswor
 //sql table is of form: CREATE TABLE admin
 //id INT PRIMARY KEY AUTO_INCREMENT,
 //username VARCHAR(30) UNIQUE,
-//passcode VARCHAR(30)
+//passcode VARCHAR(30),
+//usertype VARCHAR(30)
 
 
 $result=mysql_query($sql);
@@ -28,8 +29,7 @@ header('Location: home.php');
 }
 else 
 {
-$error="Your Login Name or Password is invalid";
-echo"$error";    
+$printdown=1;   
 }
 }
 ?>
@@ -80,6 +80,12 @@ echo"$error";
 <input name="username" value="" id="" type="text" /></div>
 <div class="form-row"> <label>Password</label>
 <input name="password" value="" id="" type="password" /></div>
+<?php
+if($printdown==1)
+{
+echo"<font color='red'>Your Password/Username is invalid</font>";
+}
+?>
 <div class="long-row">
 	<div class="middle">
 <div class="button-container"> 

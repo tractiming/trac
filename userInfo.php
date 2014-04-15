@@ -2,7 +2,7 @@
 include("config.php");			
 if(isset($_POST['save']))
 {
-if($_POST['password']==$_POST['password2'])
+if($_POST['password']==$_POST['password2']  && !empty($_POST['password']) && !empty($_POST['username']))
 //need to prevent blank submissions
 {
 $password=$_POST['password'];
@@ -11,19 +11,18 @@ $username=$_POST['username'];
 //$dob=$_POST['dob'];
 //$height=$_POST['height'];
 //$weight=$_POST['weight'];
-//$usertype=$_POST['usertype'];
+$usertype=$_POST['usertype'];
 $rt=mysql_query("SELECT * FROM admin");
 $count=mysql_num_rows($rt);
 $newid=$count+1;
-//echo"$password"; RETURNS CORRECT PASSWORD
-//echo"$username"; RETURNS CORRECT USERNAME
-$query="INSERT INTO admin VALUES($newid,'$username','$password')";
+$query="INSERT INTO admin VALUES($newid,'$username','$password','$usertype')";
 $result=mysql_query($query);
 header('location: loginPage.php');
 }
 else
 {
-echo"Your Password is invalid";
+$printbelow=1;
+//echo"Your Password is invalid";
 }
 }
 ?>
@@ -44,7 +43,7 @@ echo"Your Password is invalid";
 		<!-- Header Wrapper starts -->
 		<div class="header no-border">
 			<div class="user-details">
-				<span class="bold">Welcome:</span> <span>user123</span>
+				<span class="bold"></span> <span></span>
 			</div>
 			<div class="product-name"></div>
 			<div class="product-info">
@@ -113,10 +112,17 @@ echo"Your Password is invalid";
 						<label>Verify Password:</label></div><div class="form-row">
 						<span><input name="password2" value="" id="" type="text" /></span>
 					</div>
+					<?php
+					if($printbelow==1)
+					{
+					    echo"<font color='red'>Your Password/Username is invalid</font>";
+					}
+					?> 
 					<div class="form-row button-container">
 								<input type="submit" name="save" id="save" value="Save" />
 							</div>
 					</div>
+					
 					
 				</div>
 				
