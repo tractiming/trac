@@ -1,3 +1,35 @@
+<?php
+include("config.php");			
+if(isset($_POST['save']))
+{
+if($_POST['password']==$_POST['password2'])
+//need to prevent blank submissions
+{
+$password=$_POST['password'];
+//$name=$_POST['name'];
+$username=$_POST['username'];
+//$dob=$_POST['dob'];
+//$height=$_POST['height'];
+//$weight=$_POST['weight'];
+//$usertype=$_POST['usertype'];
+$rt=mysql_query("SELECT * FROM admin");
+$count=mysql_num_rows($rt);
+$newid=$count+1;
+//echo"$password"; RETURNS CORRECT PASSWORD
+//echo"$username"; RETURNS CORRECT USERNAME
+$query="INSERT INTO admin VALUES($newid,'$username','$password')";
+$result=mysql_query($query);
+header('location: loginPage.php');
+}
+else
+{
+echo"Your Password is invalid";
+}
+}
+?>
+
+
+
 <html>
     <head> 
         <title>TRAC Demo site--User Info</title>
@@ -24,11 +56,9 @@
 		<!-- Navigation Tabs starts -->
 		<ul class="nav-tabs">
 			<li class="selected" id="userInfo">USER INFO</li>
-			<li id="race">RACES</li>
-			<li id="training">TRAINING LOG</li>
-			<li id="home">LIVE LAP TIME</li>
+			
 		</ul>
-		<input type="button" name="" value="Sign Out" id="signout" class="signout" />
+		
 		<!-- Navigation Tabs starts -->
 		
 		<!-- Content Wrapper starts -->
@@ -89,41 +119,8 @@
 					</div>
 					
 				</div>
-				<?php
-				include("config.php");
 				
-				session_start();
-				
-				if(isset($_POST['save']))
-				{
-				   
-				    
-				    if($_POST['password']==$_POST['password2'])
-				    {
-					$password=$_POST['password'];
-					$name=$_POST['name'];
-					$username=$_POST['username'];
-					$dob=$_POST['dob'];
-					$height=$_POST['height'];
-					$weight=$_POST['weight'];
-					$usertype=$_POST['usertype'];
-				    }
-				    else
-				    {
-					echo"Your Password is invalid";
-				    }
-				    
-				    $number=mysql_query("SELECT COUNT('id') FROM admin");
-				    $newid=$number+1;
-				    $query="INSERT INTO admin VALUES($newid,$username,$password)";
-				    $result=mysql_query($query);
-				   header("location: loginPage.php");
-		    
-				}
-				
-				?>
-				
-				
+
 				
 				<div class="right-panel">
 					<div class="body">
