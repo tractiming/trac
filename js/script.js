@@ -10,7 +10,7 @@ $(document).ready(function() {
 	
 
 	$("#register").click(function(){
-		window.location = 'userInfo.php';	
+		window.location = 'userInfo.php';
 	});
 	
 	$(".nav-tabs li").click(function(){
@@ -23,6 +23,7 @@ $(document).ready(function() {
 	
 	$("#signout").click(function(){
 		window.location = 'loginPage.php';
+		//delete cookies somehow
 	});
 	
 	$(".pagination a").click(function(){

@@ -25,6 +25,17 @@ $count=mysql_num_rows($result);
 // If result matched $myusername and $mypassword, table row must be 1 row
 if($count==1)
 {
+if (isset($_POST['PersistentCookie'])) {
+/* Set cookie to last 1 year */
+setcookie('username', $myusername, time()+3600);
+setcookie('password', $mypassword, time()+3600);
+}
+else {
+/* Cookie expires when browser closes */
+setcookie('username', $myusername, false, '/', 'www.trac.com');
+setcookie('password', $mypassword, false, '/', 'www.trac.com');
+//late need to do md5($_POST['password']); to encrypt
+}
 header('Location: home.php');
 }
 else 
@@ -92,7 +103,7 @@ echo"<font color='red'>Your Password/Username is invalid</font>";
 
 <input name="" value="Sign In" id="signin" type="submit" /></div>
 <div class="check"> 
-<input type="checkbox" name="PersistentCookie" id="PersistentCookie" value="yes"checked="checked"> Stay signed in
+<input type="checkbox" name="PersistentCookie" id="PersistentCookie" value="1" checked="checked"> Stay signed in
  </div>
 </div>
 </div>

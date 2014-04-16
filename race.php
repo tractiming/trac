@@ -1,3 +1,14 @@
+<?php
+if (isset($_COOKIE["username"]))
+{
+$printrace=1; 
+}
+else
+{
+header('Location: loginPage.php');
+}
+?>
+
 <html>
     <head> 
         <title>TRAC Demo site--RACE</title>
@@ -12,7 +23,15 @@
 		<!-- Header Wrapper starts -->
 		<div class="header no-border">
 			<div class="user-details">
-				<span class="bold">Welcome:</span> <span>user123</span>
+				<span class="bold">Welcome:</span> <span><?php
+				if($printrace==1)
+				{
+				echo $_COOKIE['username'];
+				}
+				else
+				{}
+				?>
+				</span>
 			</div>
 			<div class="product-name"></div>
 			<div class="product-info">
