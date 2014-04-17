@@ -8,9 +8,6 @@ else
 header('Location: loginPage.php');
 }
 ?>
-
-
-
 <html>
     <head> 
         <title>TRAC Demo site</title>
@@ -36,7 +33,7 @@ header('Location: loginPage.php');
 			</div>
 			<div class="product-name"></div>
 			<div class="product-info">
-				<h2> Lap Time Information</h2>
+				<h2> Live Lap Time Information</h2>
 			</div>
 		</div>
 		<!-- Header Wrapper ends -->
@@ -48,7 +45,9 @@ header('Location: loginPage.php');
 			<li id="training">TRAINING LOG</li>
 			<li class="selected" id="home">LIVE LAP TIME</li>
 		</ul>
-		<input type="button" name="" value="Sign Out" id="signout" class="signout" />
+		<form action="signout.php" method="post">
+		<input type="submit" name="" value="Sign Out" id="signout" class="signout" />
+		</form>
 		<!-- Navigation Tabs starts -->
 		
 		<!-- Content Wrapper starts -->
@@ -69,18 +68,15 @@ header('Location: loginPage.php');
         <!--Call php and javascript code here-->
 <?php 
 
-$db_host = 'localhost'; 
-$db_user = 'elliot'; 
-$db_pwd = 'mymysqlpassword'; 
-$database = 'trac'; 
-$table = 'demotable'; 
+include("config.php");
+$table = 'admin'; 
 
 mysql_connect($db_host, $db_user, $db_pwd) or die(mysql_error()); 
 mysql_select_db($database) or die(mysql_error()); 
 
 // Filter the records 
 
-$query="SELECT * FROM demotable"; $result=mysql_query($query);
+$query="SELECT * FROM admin"; $result=mysql_query($query);
 
 
 // I'm holding off on the pace calculation until I figure out how to add info 

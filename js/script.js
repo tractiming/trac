@@ -1,3 +1,7 @@
+function delete_cookie( name ) {
+  document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+};
+
 $(document).ready(function() {
 	var windowHeight = $(window).height();
 	var contentLocation = $(".content").position().top;
@@ -21,10 +25,9 @@ $(document).ready(function() {
 		window.location = pageName;
 	});
 	
-	$("#signout").click(function(){
-		window.location = 'loginPage.php';
-		//delete cookies somehow
-	});
+	//$("#signout").click(function(){
+	//	window.location = 'loginPage.php';
+	//});
 	
 	$(".pagination a").click(function(){
 			$(".pagination a").removeClass("selected");

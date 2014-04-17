@@ -47,7 +47,9 @@ header('Location: loginPage.php');
 			<li id="training">TRAINING LOG</li>
 			<li  id="home">LIVE LAP TIME</li>
 		</ul>
-		<input type="button" name="" value="Sign Out" id="signout" class="signout" />
+		<form action="signout.php" method="post">
+		<input type="submit" name="" value="Sign Out" id="signout" class="signout" />
+		</form>
 		<!-- Navigation Tabs starts -->
 		
 		<!-- Content Wrapper starts -->

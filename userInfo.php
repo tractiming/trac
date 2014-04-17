@@ -8,14 +8,14 @@ if($_POST['password']==$_POST['password2']  && !empty($_POST['password']) && !em
 $password=$_POST['password'];
 //$name=$_POST['name'];
 $username=$_POST['username'];
-//$dob=$_POST['dob'];
+$rfidnum=$_POST['rfidnum'];
 //$height=$_POST['height'];
 //$weight=$_POST['weight'];
 $usertype=$_POST['usertype'];
 $rt=mysql_query("SELECT * FROM admin");
 $count=mysql_num_rows($rt);
 $newid=$count+1;
-$query="INSERT INTO admin VALUES($newid,'$username','$password','$usertype')";
+$query="INSERT INTO admin VALUES($newid,'$username','$password','$usertype','$rfidnum')";
 $result=mysql_query($query);
 header('location: loginPage.php');
 }
@@ -26,9 +26,6 @@ $printbelow=1;
 }
 }
 ?>
-
-
-
 <html>
     <head> 
         <title>TRAC Demo site--User Info</title>
@@ -78,8 +75,8 @@ $printbelow=1;
 						<span><input name="username" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
-						<label>Date of Birth:</label></div><div class="form-row">
-						<span><input name="dob" value="" id="" type="text" /></span>
+						<label>Tag Number</label></div><div class="form-row">
+						<span><input name="rfidnum" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Height:</label></div><div class="form-row">

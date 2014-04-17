@@ -8,12 +8,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 $myusername=addslashes($_POST['username']); 
 $mypassword=addslashes($_POST['password']); 
 
-$sql="SELECT id FROM admin WHERE username='$myusername' and passcode='$mypassword'";
+$sql="SELECT id FROM admin WHERE username='$myusername' and password='$mypassword'";
 //sql table is of form: CREATE TABLE admin
 //id INT PRIMARY KEY AUTO_INCREMENT,
 //username VARCHAR(30) UNIQUE,
-//passcode VARCHAR(30),
-//usertype VARCHAR(30)
+//password VARCHAR(30),
+//usertype VARCHAR(30),
+//rfidnum VARCHAR(30)
 
 
 $result=mysql_query($sql);
