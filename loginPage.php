@@ -23,6 +23,12 @@ $active=$row['active'];
 $count=mysql_num_rows($result);
 
 
+$result2=mysql_query("SELECT usertype FROM admin WHERE username='$myusername'");
+$myusertype=mysql_fetch_row($result2);
+
+$result3=mysql_query("SELECT rfidnum FROM admin WHERE username='$myusername'");
+$myrfidnum=mysql_fetch_row($result3);
+
 // If result matched $myusername and $mypassword, table row must be 1 row
 if($count==1)
 {
@@ -30,11 +36,15 @@ if (isset($_POST['PersistentCookie'])) {
 /* Set cookie to last 1 year */
 setcookie('username', $myusername, time()+3600);
 setcookie('password', $mypassword, time()+3600);
+setcookie('usertype', $myusertype[0], time()+3600);
+setcookie('rfidnum', $myrfidnum[0], time()+3600);
 }
 else {
 /* Cookie expires when browser closes */
-setcookie('username', $myusername, false, '/', 'www.trac.com');
-setcookie('password', $mypassword, false, '/', 'www.trac.com');
+setcookie('username', $myusername, false);
+setcookie('password', $mypassword, false);
+setcookie('usertype', $myusertype[0], false);
+setcookie('rfidnum', $myrfidnum[0], false);
 //late need to do md5($_POST['password']); to encrypt
 }
 header('Location: home.php');
