@@ -69,14 +69,16 @@ header('Location: loginPage.php');
 <?php 
 
 include("config.php");
-$table = 'admin'; 
+$table = 'practice'; 
 
 mysql_connect($db_host, $db_user, $db_pwd) or die(mysql_error()); 
 mysql_select_db($database) or die(mysql_error()); 
 
 // Filter the records 
-
-$query="SELECT * FROM admin"; $result=mysql_query($query);
+if($_COOKIE["usertype"]=="athlete")
+{
+$liverfid=$_COOKIE['rfidnum'];
+$query="SELECT * FROM $table WHERE Tag='$liverfid'"; $result=mysql_query($query);
 
 
 // I'm holding off on the pace calculation until I figure out how to add info 
@@ -102,7 +104,70 @@ echo "</tr>";
 } 
 echo "</table>"; 
 
-mysql_free_result($result); 
+mysql_free_result($result);
+}
+else
+{
+//create add userbar to top of screen
+//echo "<form action='' method='post'><div> <label>Add Username:</label>
+//<input name='adduser' value='' id='' type='text' /><input type='submit' name='save' id='save' value='Save' /></div></form>";
+//if posted add the user to coaches personal database "coachestable"
+//dynamically allows addition of users
+//if(isset($_POST['save']))
+//{
+//    $sqlloopquery="SELECT * FROM $coachstable";
+//    $loopquery=mysql_query($sqlloopquery);
+//    $rownum=mysql_num_rows($loopquery);
+//    $newrow=$rownum+1;
+//    $adduser=$_POST['adduser'];
+//    $buttonpost="INSERT INTO $coachstable VALUES($newrow,'$adduser')";
+//    $posted=mysql_query($buttonpost);
+//}
+$coachstable='coachstable';
+$sqlloopquery2="SELECT * FROM $coachstable";
+$loopquery2=mysql_query($sqlloopquery2);
+$rownumloop=mysql_num_rows($loopquery2);
+//echo"<h1>$rownumloop</h1>";
+//for number of cells in coaches database, query each person invididually into their own table within the page
+for($i=1;$i<=$rownumloop;$i++)
+{
+    //select each person individiually
+    $query1=mysql_query("SELECT username FROM coachstable WHERE ID=$i");
+    $query12=mysql_fetch_row($query1);
+   // echo"$query12[0]";
+    $query2=mysql_query("SELECT rfidnum FROM admin WHERE username='$query12[0]'");
+    $query22=mysql_fetch_row($query2);
+   // echo"$query22[0]";
+    $queryb="SELECT Date FROM $table WHERE Tag='$query22[0]'"; $resultb=mysql_query($queryb);
+
+// I'm holding off on the pace calculation until I figure out how to add info 
+// into the database.
+//$result = mysql_query("select a.Date, timediff( (select b.Date from {$table} b where b.ID = a.ID + 1),a.Date ) as Pace from {$table} a") ; 
+echo" <br>$query12[0]";
+if (!$resultb) { 
+die("Query to show fields from table failed data access ITEMS"); 
+} 
+
+
+$numrowsb=mysql_num_rows($resultb); 
+echo "<table>"; 
+
+while($rowb = mysql_fetch_row($resultb)) 
+{ 
+echo "<tr>"; 
+
+foreach($rowb as $cellb){ 
+echo "<td>$cellb</td>"; 
+} 
+echo "</tr>"; 
+
+} 
+echo "</table>"; 
+
+mysql_free_result($resultb);
+
+}
+}
 ?>
 
             </center>

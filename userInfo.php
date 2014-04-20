@@ -9,14 +9,24 @@ $password=$_POST['password'];
 //$name=$_POST['name'];
 $username=$_POST['username'];
 $rfidnum=$_POST['rfidnum'];
-//$height=$_POST['height'];
+$coach=$_POST['coach'];
 //$weight=$_POST['weight'];
 $usertype=$_POST['usertype'];
 $rt=mysql_query("SELECT * FROM admin");
 $count=mysql_num_rows($rt);
 $newid=$count+1;
-$query="INSERT INTO admin VALUES($newid,'$username','$password','$usertype','$rfidnum')";
+$query="INSERT INTO admin VALUES($newid,'$username','$password','$usertype','$rfidnum','$coach')";
 $result=mysql_query($query);
+if($coach=='coach')
+{
+    $rt2=mysql_query("SELECT * FROM coachstable");
+    $count2=mysql_num_rows($rt2);
+    $newid2=$count2+1;
+    $result2=mysql_query("INSERT INTO coachstable VALUES($newid2,'$username')");
+}
+else
+{
+}
 header('location: loginPage.php');
 }
 else
@@ -75,12 +85,12 @@ $printbelow=1;
 						<span><input name="username" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
-						<label>Tag Number</label></div><div class="form-row">
+						<label>Tag Number:</label></div><div class="form-row">
 						<span><input name="rfidnum" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
-						<label>Height:</label></div><div class="form-row">
-						<span><input name="height" value="" id="" type="text" /></span>
+						<label>Coach:</label></div><div class="form-row">
+						<span><input name="coach" value="" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Weight:</label></div><div class="form-row">
