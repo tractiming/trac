@@ -14,7 +14,7 @@ $(document).ready(function() {
 	
 
 	$("#register").click(function(){
-		window.location = 'userInfo.php';
+		window.location = 'register.php';
 	});
 	
 	$(".nav-tabs li").click(function(){

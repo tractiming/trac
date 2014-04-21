@@ -1,39 +1,11 @@
 <?php
-include("config.php");			
-if(isset($_POST['save']))
+if (isset($_COOKIE["username"]))
 {
-if($_POST['password']==$_POST['password2']  && !empty($_POST['password']) && !empty($_POST['username']))
-//need to prevent blank submissions
-{
-$password=$_POST['password'];
-//$name=$_POST['name'];
-$username=$_POST['username'];
-$rfidnum=$_POST['rfidnum'];
-$coach=$_POST['coach'];
-//$weight=$_POST['weight'];
-$usertype=$_POST['usertype'];
-$rt=mysql_query("SELECT * FROM admin");
-$count=mysql_num_rows($rt);
-$newid=$count+1;
-$query="INSERT INTO admin VALUES($newid,'$username','$password','$usertype','$rfidnum','$coach')";
-$result=mysql_query($query);
-if($coach=='coach')
-{
-    $rt2=mysql_query("SELECT * FROM coachstable");
-    $count2=mysql_num_rows($rt2);
-    $newid2=$count2+1;
-    $result2=mysql_query("INSERT INTO coachstable VALUES($newid2,'$username')");
+$printhome=1; 
 }
 else
 {
-}
-header('location: loginPage.php');
-}
-else
-{
-$printbelow=1;
-//echo"Your Password is invalid";
-}
+header('Location: loginPage.php');
 }
 ?>
 <html>
@@ -50,7 +22,14 @@ $printbelow=1;
 		<!-- Header Wrapper starts -->
 		<div class="header no-border">
 			<div class="user-details">
-				<span class="bold"></span> <span></span>
+				<span class="bold">Welcome:</span> <span><?php
+				if($printhome==1)
+				{
+				echo $_COOKIE['username'];
+				}
+				else
+				{}
+				?></span>
 			</div>
 			<div class="product-name"></div>
 			<div class="product-info">
@@ -62,9 +41,13 @@ $printbelow=1;
 		<!-- Navigation Tabs starts -->
 		<ul class="nav-tabs">
 			<li class="selected" id="userInfo">USER INFO</li>
-			
+			<li id="race">RACES</li>
+			<li id="training">TRAINING LOG</li>
+			<li id="home">LIVE LAP TIME</li>
 		</ul>
-		
+		<form action="signout.php" method="post">
+		<input type="submit" name="" value="Sign Out" id="signout" class="signout" />
+		</form>
 		<!-- Navigation Tabs starts -->
 		
 		<!-- Content Wrapper starts -->
