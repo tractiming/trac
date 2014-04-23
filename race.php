@@ -42,10 +42,11 @@ header('Location: loginPage.php');
 		
 		<!-- Navigation Tabs starts -->
 		<ul class="nav-tabs">
+			<li id="home">HOME</li>
 			<li id="userInfo">USER INFO</li>
 			<li class="selected" id="race">RACES</li>
 			<li id="training">TRAINING LOG</li>
-			<li  id="home">LIVE LAP TIME</li>
+			<li  id="liveView">LIVE LAP TIME</li>
 		</ul>
 		<form action="signout.php" method="post">
 		<input type="submit" name="" value="Sign Out" id="signout" class="signout" />

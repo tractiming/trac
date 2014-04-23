@@ -40,10 +40,11 @@ header('Location: loginPage.php');
 		
 		<!-- Navigation Tabs starts -->
 		<ul class="nav-tabs">
-			<li id="userInfo">USER INFO</li>
+			<li id="home">HOME</li>
+                        <li id="userInfo">USER INFO</li>
 			<li id="race">RACES</li>
 			<li id="training">TRAINING LOG</li>
-			<li class="selected" id="home">LIVE LAP TIME</li>
+			<li class="selected" id="liveView">LIVE LAP TIME</li>
 		</ul>
 		<form action="signout.php" method="post">
 		<input type="submit" name="" value="Sign Out" id="signout" class="signout" />
@@ -61,10 +62,10 @@ header('Location: loginPage.php');
     
   
   <body>
-    <div id="graph" style="width: 900px; height: 300px;">
+    
         <h3>
             <center>
-                Test Database
+                My Test Database
         <!--Call php and javascript code here-->
 <?php 
 
@@ -173,28 +174,12 @@ mysql_free_result($resultb);
             </center>
         
         </h3>
-    </div>
-  </body>
+    
+  
   
   </div>
   </div>
-<div class="lower-area">
-	<div class="inner">
-		<head>
-    
-  </head>
-  <body>
-    <div id="graph-down" style="width: 600px; height: 400px;">
-        <!--Call php and javascript code here-->
-        
-        
-    </div>
-  </body>
-		
-	</div>
-	
-	
-</div>
+
 		</div>
 		</div>
 		</div>
