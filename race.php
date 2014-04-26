@@ -58,7 +58,11 @@ header('Location: loginPage.php');
                     <div class="race-box">
                         <div class="left-panel">
                             <div class="picture">
-<iframe src="https://mapsengine.google.com/map/u/0/embed?mid=zzktW7boz04w.kn-14FvnhX5A" width="500" height="450" frameborder="0" style="border:0"></iframe>                            </div>
+
+
+
+<iframe src="https://mapsengine.google.com/map/u/0/embed?mid=zzktW7boz04w.kn-14FvnhX5A" width="500" height="450" frameborder="0" style="border:0"></iframe>
+			    </div>
                         </div>
                         <div class="right-panel">   
                             <h2><font color="#5D6770">Race Results & Registration</h2></font>

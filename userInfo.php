@@ -61,20 +61,20 @@ header('Location: loginPage.php');
 					<div class="form-row">
 						<label>Name:</label></div>
 						<div class="form-row">
-						<span><input name="name" value="" id="" type="text" /></span>
+						<span><input name="name" value="name goes here" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>User Name:</label></div>
 						<div class="form-row">
-						<span><input name="username" value="" id="" type="text" /></span>
+						<span><input name="username" value="username goes here" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Tag Number:</label></div><div class="form-row">
-						<span><input name="rfidnum" value="" id="" type="text" /></span>
+						<span><input name="rfidnum" value="tag number is here" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Coach:</label></div><div class="form-row">
-						<span><input name="coach" value="" id="" type="text" /></span>
+						<span><input name="coach" value="coachesname here" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Weight:</label></div><div class="form-row">
@@ -97,11 +97,11 @@ header('Location: loginPage.php');
 					
 					<div class="form-row">
 						<label>Password:</label></div><div class="form-row">
-						<span><input name="password" value="" id="" type="text" /></span>
+						<span><input name="password" value="******" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Verify Password:</label></div><div class="form-row">
-						<span><input name="password2" value="" id="" type="text" /></span>
+						<span><input name="password2" value="******" id="" type="text" /></span>
 					</div>
 					<?php
 					if($printbelow==1)

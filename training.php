@@ -22,6 +22,47 @@ header('Location: loginPage.php');
 				$(".inline").colorbox({inline:true, width:"50%"});
 			});
 		</script>
+	<style>
+      html, body, #map-canvas {
+        height: 400px;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	 <script>
+	
+		function getlat() {
+		    var lat = 41.8819;
+		    return lat;
+		    }
+		    
+		function getlon(){
+		    var lon = -87.6278;
+		    return lon;
+		}
+	    
+function initialize() {
+   lat = getlat();
+   lon = getlon();
+  var myLatlng = new google.maps.LatLng(lat,lon);
+  var mapOptions = {
+    zoom: 17,
+    center: myLatlng
+  }
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+  var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map,
+      title: 'Hello World!'
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize)
+
+    </script>
+	
     </head>
 
 <body class="theme1">
@@ -64,7 +105,12 @@ header('Location: loginPage.php');
                     <div class="race-box">
                         <div class="left-panel">
                             <div class="picture">
-<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d2968.3243196513286!2d-87.63383800000001!3d41.928881865927806!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1396896339365" width="500" height="450" frameborder="0" style="border:0"></iframe>                            </div>
+				<div id="map-canvas"></div>
+				
+				
+				
+				
+<!--iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d2968.3243196513286!2d-87.63383800000001!3d41.928881865927806!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1396896339365" width="500" height="450" frameborder="0" style="border:0"></iframe>     -->                       </div>
                         </div>
                         <div class="right-panel">   
                             <h2><font color="#5D6770">Past Runs</h2></font>

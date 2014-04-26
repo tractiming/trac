@@ -105,7 +105,7 @@ header('Location: loginPage.php');
 <div class="right">
 <div class="upper-boarder">
 	<div class="inner">
-          <br><h3>April 23rd</h3§>
+          <br><h3>Saturday, April 26 2014</h3§>
             <div class="graph">
                 <br>
                     No running log for today!
