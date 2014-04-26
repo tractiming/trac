@@ -13,9 +13,15 @@ header('Location: loginPage.php');
     <head> 
         <title>TRAC Demo site--Training</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" href="colorbox.css" />
 	<script src="js/jquery-1.4.2.min.js"></script>
 	<script src="js/script.js"></script>
-        <link rel="stylesheet" type="text/css" href="css/popup.css" />
+        <script src="../jquery.colorbox.js"></script>
+	<script>
+			$(document).ready(function(){
+				$(".inline").colorbox({inline:true, width:"50%"});
+			});
+		</script>
     </head>
 
 <body class="theme1">
@@ -89,29 +95,27 @@ header('Location: loginPage.php');
                                                   <td><u>Time</u></td>
                                                 </tr>
                                                 <tr>
-                                                  <td><a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">August 12</a></td><div id="light" class="white_content"> Insert Inline Splits
-                                                <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a></div>
-		<div id="fade" class="black_overlay"></div>
+                                                  <td><p><a class='inline' href="#inline_content1">August 12</a></p></td>		
                                                   <td>10 miles</td> 
                                                   <td>1:12:44</td>
                                                 </tr>
                                                  <tr>
-                                                  <td>August 11</td>
+                                                  <td><p><a class='inline' href="#inline_content2">August 11</a></p></td>
                                                   <td>4.5 miles</td> 
                                                   <td>00:31:01</td>
                                                 </tr>
                                                   <tr>
-                                                  <td>August 10</td>
+                                                  <td><p><a class='inline' href="#inline_content3">August 10</a></p></td>
                                                   <td>15 miles</td> 
                                                   <td>1:59:36</td>
                                                 </tr>
                                                    <tr>
-                                                  <td>August 3</td>
+                                                  <td><p><a class='inline' href="#inline_content4">August 3</a></p></td>
                                                   <td>6 miles</td> 
                                                   <td>00:42:12</td>
                                                 </tr>
                                                     <tr>
-                                                  <td>August 1</td>
+                                                  <td><p><a class='inline' href="#inline_content5">August 1</a></p></td>
                                                   <td>10 miles</td> 
                                                   <td>1:25:15</td>
                                                 </tr>
@@ -127,17 +131,17 @@ header('Location: loginPage.php');
                                                   <td><u>Splits</u></td>
                                                 </tr>
                                                 <tr>
-                                                  <td>August 9</td>
+                                                  <td><p><a class='inline' href="#inline_content6">August 9</a></p></td>
                                                   <td>4x400m</td> 
                                                   <td>69,67,64,62</td>
                                                 </tr>
                                                  <tr>
-                                                  <td>August 7</td>
+                                                  <td><p><a class='inline' href="#inline_content7">August 7</a></p></td>
                                                   <td>4x800</td> 
                                                   <td>2:31,2:31,2:30,2:18</td>
                                                 </tr>
                                                  <tr>
-                                                  <td>August 6</td>
+                                                  <td><p><a class='inline' href="#inline_content8">August 6</a></p></td>
                                                   <td>3x1 mile</td> 
                                                   <td>5:00,4:58,4:44</td>
                                                 </tr>
@@ -154,7 +158,36 @@ header('Location: loginPage.php');
                          </div>
                     </div>
                  </div>
-           
+            <div style='display:none'>
+			<div id='inline_content1' style='padding:10px; background:#fff;'>
+			<p><strong>Splits from August 12</strong></p>
+			<table>
+			    <tr>
+				<td>.5</td>
+				<td>1</td>
+				<td>1.5</td>
+				<td>2</td>
+				<td>2.5</td>
+				<td>3</td>
+				<td>3.5</td>
+				<td>4</td>
+				<td>4.5</td>
+				<td>5</td>
+				<td>5.5</td>
+				<td>6</td>
+				<td>6.5</td>
+				<td>7</td>
+				<td>7.5</td>
+				<td>8</td>
+				<td>8.5</td>
+				<td>9</td>
+				<td>9.5</td>
+				<td>10</td>
+			    </tr>
+			</table>
+			</div>
+			
+	    </div>
 
                 
                 
