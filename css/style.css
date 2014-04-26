@@ -58,8 +58,8 @@ input[type="submit"]{border:solid 1px; border-radius:3px; float:right; width:100
 .graph-area .right .upper-boarder{float:left; background:#f3bb2a; width:400px; height:190px; border:solid 1px #f3bb2a; border-radius:3px; border-width:1px 1px 1px 11px;}
 .graph-area .right .upper-boarder .inner{background:#FFFFFF; width:400px; height:190px; text-align: right; }
 .graph-area .right .upper-boarder .inner .graph-up{background:#FFFFFF; width:400px; height:190px; border-left:25px;}
-.graph-area .right .lower-boarder{float:left; background:#f3bb2a; width:400px; height:190px; border:solid 1px #f3bb2a; border-radius:3px; border-width:1px 1px 1px 11px; position:absolute; bottom:0;}
-.graph-area .right .lower-boarder .outer{background:#FFFFFF; width:395px; height:190px; position:absolute; bottom:0; padding-left:5px;}
+.graph-area .right .lower-boarder{float:left; background:#f3bb2a; width:400px; height:200px; border:solid 1px #f3bb2a; border-radius:3px; border-width:1px 1px 1px 11px; position:absolute; bottom:0;}
+.graph-area .right .lower-boarder .outer{background:#FFFFFF; width:395px; height:200px; position:absolute; bottom:0; padding-left:5px;}
 .graph-area .right .lower-boarder .outer .table table{background:#FFFFFF; text-align: center; padding-left: 45px;border-spacing: 8px}
 
 /*Styles for Login Page*/

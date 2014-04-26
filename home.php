@@ -107,8 +107,8 @@ header('Location: loginPage.php');
 	<div class="inner">
           <br><h3>Saturday, April 26 2014</h3§>
             <div class="graph">
-                <br>
-                    No running log for today!
+                
+                <img  src="images/chi.jpg">
                     
                 
             </div>
@@ -121,23 +121,27 @@ header('Location: loginPage.php');
             <TABLE >
                 <tr>
                 <td><h5></h5></td>
+                 <td><h5></h5></td>
                 <td><h5>Distance</h5></td>
                 <td><h5>Time</h5></td>
                   <td><h5>Pace</h5></td> 
                 </tr>
                 <tr>
+                <td><img src="images/e.png"></td>    
                 <td><h5>Elliot</h5></td>
                 <td><h5>17 miles</h5></td>
                 <td><h5>1:42:14</h5></td>
                 <td><h5>6:01</h5></td>
                 </tr>
                 <tr>
+                <td><img src="images/g.png"></td>  
                 <td><h5>Griffin</h5></td>
                 <td><h5>17 miles</h5></td>
                 <td><h5>1:42:15</h5></td>
                   <td><h5>6:01</h5></td> 
                 </tr>
                 <tr>
+                    <td><img src="images/alex.png"></td>  
                 <td><h5>Alex</h5></td>
                 <td><h5>12 miles</h5></td>
                 <td><h5>1:20:00</h5></td>
