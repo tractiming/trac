@@ -105,11 +105,11 @@ header('Location: loginPage.php');
 <div class="right">
 <div class="upper-boarder">
 	<div class="inner">
-          <br><h3>Saturday, April 26 2014</h3§>
+          <h3>Saturday, April 26 2014
             <div class="graph">
                 
-                <img  src="images/chi.jpg">
-                    
+                <img  src="images/weather.png">
+                <img  src="images/weather2.png">
                 
             </div>
         </div>

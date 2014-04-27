@@ -56,7 +56,7 @@ input[type="submit"]{border:solid 1px; border-radius:3px; float:right; width:100
 .graph-area .left .inner{background:#3577A8; width:500px; height:400px;}
 .graph-area .right{float:right; width:420px; height:400px; position:relative;}
 .graph-area .right .upper-boarder{float:left; background:#f3bb2a; width:400px; height:190px; border:solid 1px #f3bb2a; border-radius:3px; border-width:1px 1px 1px 11px;}
-.graph-area .right .upper-boarder .inner{background:#FFFFFF; width:400px; height:190px; text-align: right; }
+.graph-area .right .upper-boarder .inner{background:#FFFFFF; width:400px; height:190px; text-align: right; padding-top:2px; }
 .graph-area .right .upper-boarder .inner .graph-up{background:#FFFFFF; width:400px; height:190px; border-left:25px;}
 .graph-area .right .lower-boarder{float:left; background:#f3bb2a; width:400px; height:200px; border:solid 1px #f3bb2a; border-radius:3px; border-width:1px 1px 1px 11px; position:absolute; bottom:0;}
 .graph-area .right .lower-boarder .outer{background:#FFFFFF; width:395px; height:200px; position:absolute; bottom:0; padding-left:5px;}
