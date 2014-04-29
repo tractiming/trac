@@ -61,7 +61,7 @@ $printdown=1;
 <meta http-equiv="Expires" content="-1" /><title>Sign In</title>
 
 <link rel="stylesheet" type="text/css" href="css/style.css" />
-<script src="js/jquery-1.4.2.min.js"></script>
+<script src="js/jquery-1.11.0.js"></script>
 <script src="js/script.js"></script>
 </head>
 <body class="theme1">

@@ -14,7 +14,7 @@ header('Location: loginPage.php');
         <title>TRAC Demo site--Training</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<link rel="stylesheet" href="colorbox.css" />
-	<script src="js/jquery-1.4.2.min.js"></script>
+	  <script src="js/jquery-1.11.0.js"></script>
 	<script src="js/script.js"></script>
         <script src="../jquery.colorbox.js"></script>
 	<script>
@@ -30,38 +30,6 @@ header('Location: loginPage.php');
       }
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-	 <script>
-	
-		function getlat() {
-		    var lat = 41.8819;
-		    return lat;
-		    }
-		    
-		function getlon(){
-		    var lon = -87.6278;
-		    return lon;
-		}
-	    
-function initialize() {
-   lat = getlat();
-   lon = getlon();
-  var myLatlng = new google.maps.LatLng(lat,lon);
-  var mapOptions = {
-    zoom: 17,
-    center: myLatlng
-  }
-  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-  var marker = new google.maps.Marker({
-      position: myLatlng,
-      map: map,
-      title: 'Hello World!'
-  });
-}
-
-google.maps.event.addDomListener(window, 'load', initialize)
-
-    </script>
 	
     </head>
 
@@ -141,12 +109,12 @@ google.maps.event.addDomListener(window, 'load', initialize)
                                                   <td><u>Time</u></td>
                                                 </tr>
                                                 <tr>
-                                                  <td><p><a class='inline' href="#inline_content1">August 12</a></p></td>		
+                                                  <td><p><a class='inline' id="link" href="#inline_content1">August 12</a></p></td>		
                                                   <td>10 miles</td> 
                                                   <td>1:12:44</td>
                                                 </tr>
                                                  <tr>
-                                                  <td><p><a class='inline' href="#inline_content2">August 11</a></p></td>
+                                                  <td><p><a class='inline' href="#inline_content2" id="link">August 11</a></p></td>
                                                   <td>4.5 miles</td> 
                                                   <td>00:31:01</td>
                                                 </tr>
@@ -204,6 +172,54 @@ google.maps.event.addDomListener(window, 'load', initialize)
                          </div>
                     </div>
                  </div>
+		
+		
+		<!--Insert Javascript to dynamically change google map-->
+		
+		<script>
+	$( "a" ).hover(
+  function() {
+    $( this ).append( $( "<span> ***</span>" ) );
+  }, function() {
+    $( this ).find( "span:last" ).remove();
+  }
+);
+	$( this ).getElementById("")
+	
+		//function getlat() {
+		//    var lat = 41.8819;
+		//    return lat;
+		//    }
+		    
+		//function getlon(){
+		//    var lon = -87.6278;
+		//    return lon;
+		//}
+	    
+function initialize() {
+    var lat = 41.8819;
+   var lon = -87.6278;
+  var myLatlng = new google.maps.LatLng(lat,lon);
+  var mapOptions = {
+    zoom: 17,
+    center: myLatlng
+  }
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+  var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map,
+      title: 'Hello World!'
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize)
+
+    </script>
+		
+		<!--End Javascript-->
+		<!--Start tables for inline popups-->
+		
             <div style='display:none'>
 			<div id='inline_content1' style='padding:10px; background:#fff;'>
 			<p><strong>Splits from August 12</strong></p>
@@ -237,7 +253,7 @@ google.maps.event.addDomListener(window, 'load', initialize)
 
                 
                 
-                
+                <!--End inline popups-->
                 
 		<!-- Content Wrapper ends -->
 	    
