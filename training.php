@@ -109,27 +109,27 @@ header('Location: loginPage.php');
                                                   <td><u>Time</u></td>
                                                 </tr>
                                                 <tr>
-                                                  <td><p><a class='inline' id="link" href="#inline_content1">August 12</a></p></td>		
+                                                  <td><p><a class='inline' href="#inline_content1" onmouseover="gc(this);">August 12</a></p></td>		
                                                   <td>10 miles</td> 
                                                   <td>1:12:44</td>
                                                 </tr>
                                                  <tr>
-                                                  <td><p><a class='inline' href="#inline_content2" id="link">August 11</a></p></td>
+                                                  <td><p><a class='inline' href="#inline_content2">August 11</a></p></td>
                                                   <td>4.5 miles</td> 
                                                   <td>00:31:01</td>
                                                 </tr>
                                                   <tr>
-                                                  <td><p><a class='inline' href="#inline_content3">August 10</a></p></td>
+                                                  <td><p><a class='inline' href="#inline_content3" >August 10</a></p></td>
                                                   <td>15 miles</td> 
                                                   <td>1:59:36</td>
                                                 </tr>
                                                    <tr>
-                                                  <td><p><a class='inline' href="#inline_content4">August 3</a></p></td>
+                                                  <td><p><a class='inline' href="#inline_content4" >August 3</a></p></td>
                                                   <td>6 miles</td> 
                                                   <td>00:42:12</td>
                                                 </tr>
                                                     <tr>
-                                                  <td><p><a class='inline' href="#inline_content5">August 1</a></p></td>
+                                                  <td><p><a class='inline' href="#inline_content5" >August 1</a></p></td>
                                                   <td>10 miles</td> 
                                                   <td>1:25:15</td>
                                                 </tr>
@@ -176,46 +176,40 @@ header('Location: loginPage.php');
 		
 		<!--Insert Javascript to dynamically change google map-->
 		
-		<script>
-	$( "a" ).hover(
-  function() {
-    $( this ).append( $( "<span> ***</span>" ) );
-  }, function() {
-    $( this ).find( "span:last" ).remove();
-  }
-);
-	$( this ).getElementById("")
-	
-		//function getlat() {
-		//    var lat = 41.8819;
-		//    return lat;
-		//    }
-		    
-		//function getlon(){
-		//    var lon = -87.6278;
-		//    return lon;
-		//}
-	    
-function initialize() {
-    var lat = 41.8819;
-   var lon = -87.6278;
-  var myLatlng = new google.maps.LatLng(lat,lon);
-  var mapOptions = {
-    zoom: 17,
-    center: myLatlng
-  }
-  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+		<script type="text/javascript"> 
+     var address = 'Chicago, IL';
 
-  var marker = new google.maps.Marker({
-      position: myLatlng,
-      map: map,
-      title: 'Hello World!'
-  });
-}
+     var map = new google.maps.Map(document.getElementById('map-canvas'), { 
+         mapTypeId: google.maps.MapTypeId.ROADMAP,
+         center: new google.maps.LatLng(41.8819, -87.60),
+         zoom: 13
+     });
+     var geocoder = new google.maps.Geocoder();
+     var marker;
 
-google.maps.event.addDomListener(window, 'load', initialize)
+     function gc(element) {
+       geocoder.geocode({
+           'address': element.innerHTML
+        }, 
+        function(results, status) {
+          if(status == google.maps.GeocoderStatus.OK) {
 
-    </script>
+            // Clear the previous marker
+            if (marker) marker.setMap(null);
+
+            // Set the new marker
+            marker = new google.maps.Marker({
+              position: results[0].geometry.location,
+              map: map
+            });
+
+            // Center the map on the geocoded result
+            map.setCenter(results[0].geometry.location);
+          }
+       });
+     }
+
+   </script> 
 		
 		<!--End Javascript-->
 		<!--Start tables for inline popups-->
