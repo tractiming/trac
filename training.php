@@ -109,27 +109,27 @@ header('Location: loginPage.php');
                                                   <td><u>Time</u></td>
                                                 </tr>
                                                 <tr>
-                                                  <td><p><a class='inline' href="#inline_content1" onmouseover="gc(this);">August 12</a></p></td>		
+                                                  <td><p><a class='inline' href="#inline_content1" onmouseover="gc('Chicago,IL');">August 12</a></p></td>		
                                                   <td>10 miles</td> 
                                                   <td>1:12:44</td>
                                                 </tr>
                                                  <tr>
-                                                  <td><p><a class='inline' href="#inline_content2">August 11</a></p></td>
+                                                  <td><p><a class='inline' href="#inline_content2" onmouseover="gc('Evanston,IL');">August 11</a></p></td>
                                                   <td>4.5 miles</td> 
                                                   <td>00:31:01</td>
                                                 </tr>
                                                   <tr>
-                                                  <td><p><a class='inline' href="#inline_content3" >August 10</a></p></td>
+                                                  <td><p><a class='inline' href="#inline_content3" onmouseover="gc('Evanston,IL');">August 10</a></p></td>
                                                   <td>15 miles</td> 
                                                   <td>1:59:36</td>
                                                 </tr>
                                                    <tr>
-                                                  <td><p><a class='inline' href="#inline_content4" >August 3</a></p></td>
+                                                  <td><p><a class='inline' href="#inline_content4" onmouseover="gc('Evanston,IL');">August 3</a></p></td>
                                                   <td>6 miles</td> 
                                                   <td>00:42:12</td>
                                                 </tr>
                                                     <tr>
-                                                  <td><p><a class='inline' href="#inline_content5" >August 1</a></p></td>
+                                                  <td><p><a class='inline' href="#inline_content5" onmouseover="gc('Chicago,IL');">August 1</a></p></td>
                                                   <td>10 miles</td> 
                                                   <td>1:25:15</td>
                                                 </tr>
@@ -145,17 +145,17 @@ header('Location: loginPage.php');
                                                   <td><u>Splits</u></td>
                                                 </tr>
                                                 <tr>
-                                                  <td><p><a class='inline' href="#inline_content6">August 9</a></p></td>
+                                                  <td><p><a class='inline' href="#inline_content6" onmouseover="gc('Evanston,IL');">August 9</a></p></td>
                                                   <td>4x400m</td> 
                                                   <td>69,67,64,62</td>
                                                 </tr>
                                                  <tr>
-                                                  <td><p><a class='inline' href="#inline_content7">August 7</a></p></td>
+                                                  <td><p><a class='inline' href="#inline_content7" onmouseover="gc('Evanston,IL');">August 7</a></p></td>
                                                   <td>4x800</td> 
                                                   <td>2:31,2:31,2:30,2:18</td>
                                                 </tr>
                                                  <tr>
-                                                  <td><p><a class='inline' href="#inline_content8">August 6</a></p></td>
+                                                  <td><p><a class='inline' href="#inline_content8" onmouseover="gc('Evanston,IL');">August 6</a></p></td>
                                                   <td>3x1 mile</td> 
                                                   <td>5:00,4:58,4:44</td>
                                                 </tr>
@@ -189,7 +189,7 @@ header('Location: loginPage.php');
 
      function gc(element) {
        geocoder.geocode({
-           'address': element.innerHTML
+           'address': element
         }, 
         function(results, status) {
           if(status == google.maps.GeocoderStatus.OK) {
