@@ -65,7 +65,7 @@ header('Location: loginPage.php');
     
         <h3>
             <center>
-                My Test Database
+                Live Split Tracker
         <!--Call php and javascript code here-->
 <?php 
 

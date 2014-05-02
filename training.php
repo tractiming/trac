@@ -109,27 +109,27 @@ header('Location: loginPage.php');
                                                   <td><u>Time</u></td>
                                                 </tr>
                                                 <tr>
-                                                  <td><p><a class='inline' href="#inline_content1" onmouseover="gc('Chicago,IL');">August 12</a></p></td>		
+                                                  <td><p><a class='inline place' href="#inline_content1" >August 12</a></p></td>		
                                                   <td>10 miles</td> 
                                                   <td>1:12:44</td>
                                                 </tr>
                                                  <tr>
-                                                  <td><p><a class='inline' href="#inline_content2" onmouseover="gc('Chicago, IL');">August 11</a></p></td>
+                                                  <td><p><a class='inline placetwo' href="#inline_content2">August 11</a></p></td>
                                                   <td>4.5 miles</td> 
                                                   <td>00:31:01</td>
                                                 </tr>
                                                   <tr>
-                                                  <td><p><a class='inline' href="#inline_content3" onmouseover="gc('Loyola University, Chicago,IL');">August 10</a></p></td>
+                                                  <td><p><a class='inline placethree' href="#inline_content3">August 10</a></p></td>
                                                   <td>15 miles</td> 
                                                   <td>1:59:36</td>
                                                 </tr>
                                                    <tr>
-                                                  <td><p><a class='inline' href="#inline_content4" onmouseover="gc('Depaul University, Chicago,IL');">August 3</a></p></td>
+                                                  <td><p><a class='inline placetwo' href="#inline_content4">August 3</a></p></td>
                                                   <td>6 miles</td> 
                                                   <td>00:42:12</td>
                                                 </tr>
                                                     <tr>
-                                                  <td><p><a class='inline' href="#inline_content5" onmouseover="gc('Chicago,IL');">August 1</a></p></td>
+                                                  <td><p><a class='inline placethree' href="#inline_content5">August 1</a></p></td>
                                                   <td>10 miles</td> 
                                                   <td>1:25:15</td>
                                                 </tr>
@@ -145,17 +145,17 @@ header('Location: loginPage.php');
                                                   <td><u>Splits</u></td>
                                                 </tr>
                                                 <tr>
-                                                  <td><p><a class='inline' href="#inline_content6" onmouseover="gc('Evanston Township High School, Evanston,IL');">August 9</a></p></td>
+                                                  <td><p><a class='inline place' href="#inline_content6">August 9</a></p></td>
                                                   <td>4x400m</td> 
                                                   <td>69,67,64,62</td>
                                                 </tr>
                                                  <tr>
-                                                  <td><p><a class='inline' href="#inline_content7" onmouseover="gc('Evanston Township High School, Evanston,IL');">August 7</a></p></td>
+                                                  <td><p><a class='inline place' href="#inline_content7">August 7</a></p></td>
                                                   <td>4x800</td> 
                                                   <td>2:31,2:31,2:30,2:18</td>
                                                 </tr>
                                                  <tr>
-                                                  <td><p><a class='inline' href="#inline_content8" onmouseover="gc('Dyche Stadium, Evanston,IL');">August 6</a></p></td>
+                                                  <td><p><a class='inline placethree' href="#inline_content8">August 6</a></p></td>
                                                   <td>3x1 mile</td> 
                                                   <td>5:00,4:58,4:44</td>
                                                 </tr>
@@ -187,9 +187,13 @@ header('Location: loginPage.php');
      var geocoder = new google.maps.Geocoder();
      var marker;
 
-     function gc(element) {
+
+     
+     
+     $('a.place').on('mouseover',
+     function gc() {
        geocoder.geocode({
-           'address': element
+           'address': 'Clark St, Chicago, IL'
         }, 
         function(results, status) {
           if(status == google.maps.GeocoderStatus.OK) {
@@ -207,14 +211,61 @@ header('Location: loginPage.php');
             map.setCenter(results[0].geometry.location);
           }
        });
-     }
+     });
+     
+         $('a.placetwo').on('mouseover',
+     function gc() {
+       geocoder.geocode({
+           'address': 'Sox Park, Chicago, IL'
+        }, 
+        function(results, status) {
+          if(status == google.maps.GeocoderStatus.OK) {
+
+            // Clear the previous marker
+            if (marker) marker.setMap(null);
+
+            // Set the new marker
+            marker = new google.maps.Marker({
+              position: results[0].geometry.location,
+              map: map
+            });
+
+            // Center the map on the geocoded result
+            map.setCenter(results[0].geometry.location);
+          }
+       });
+     });
+	 
+	          $('a.placethree').on('mouseover',
+     function gc() {
+       geocoder.geocode({
+           'address': 'Loyola University, Chicago, IL'
+        }, 
+        function(results, status) {
+          if(status == google.maps.GeocoderStatus.OK) {
+
+            // Clear the previous marker
+            if (marker) marker.setMap(null);
+
+            // Set the new marker
+            marker = new google.maps.Marker({
+              position: results[0].geometry.location,
+              map: map
+            });
+
+            // Center the map on the geocoded result
+            map.setCenter(results[0].geometry.location);
+          }
+       });
+     });
+
 
    </script> 
 		
 		<!--End Javascript-->
 		<!--Start tables for inline popups-->
 		
-            <div style='display:none'>
+            <div class="hidden" style='display:none'>
 			<div id='inline_content1' style='padding:10px; background:#fff;'>
 			<p><strong>Splits from August 12</strong></p>
 			<table>
@@ -239,6 +290,28 @@ header('Location: loginPage.php');
 				<td>9</td>
 				<td>9.5</td>
 				<td>10</td>
+			    </tr>
+			    <tr>
+				<td>3:00</td>
+				<td>6:00</td>
+				<td>9:00</td>
+				<td>12:00</td>
+				<td>15:00</td>
+				<td>18:00</td>
+				<td>20:00</td>
+				<td>23:00</td>
+				<td>26:00</td>
+				<td>29:00</td>
+				<td>31:00</td>
+				<td>34:00</td>
+				<td>37:01</td>
+				<td>40:02</td>
+				<td>43:32</td>
+				<td>46:22</td>
+				<td>51:50</td>
+				<td>55:20</td>
+				<td>59:01</td>
+				<td>1:12:44</td>
 			    </tr>
 			</table>
 			</div>

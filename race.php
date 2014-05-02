@@ -13,8 +13,15 @@ header('Location: loginPage.php');
     <head> 
         <title>TRAC Demo site--RACE</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" href="colorbox.css" />
 	  <script src="js/jquery-1.11.0.js"></script>
 	<script src="js/script.js"></script>
+	<script src="../jquery.colorbox.js"></script>
+	<script>
+			$(document).ready(function(){
+				$(".inline").colorbox({inline:true, width:"50%"});
+			});
+		</script>
     </head>
 
 <body class="theme1">
@@ -70,15 +77,15 @@ header('Location: loginPage.php');
                                     <form>
                                              <div class="form-row"> <h4>North Ave Shuffle (5k), June 8, 2012</h4>
                                                 </div>
-                                             <div class="form-row"> <center><h4>104st, 21:54</h4></center>
+                                             <div class="form-row"> <center><h4><a class='inline' href="#inline_content1" >104st, 21:54</a></h4></center>
                                                 </div>
                                                     <div class="form-row"><h4> Wilson Street Run (5k), July 10, 2012  </h4>
                                                         </div>
-                                                    <div class="form-row"> <center><h4>254th, 20:14</h4></center>
+                                                    <div class="form-row"> <center><h4><a class='inline' href="#inline_content1" >254th, 20:14</a></h4></center>
                                                 </div>
                                                     <div class="form-row"> <h4>Rogers Park to Wilson Run (8k), July 14, 2012</h4>
                                                 </div>
-                                             <div class="form-row"> <center><h4>55th, 33:54</h4></center>
+                                             <div class="form-row"> <center><h4><a class='inline' href="#inline_content1" >55th, 33:54</a></h4></center>
                                                 </div>
                                              
                                                             
@@ -91,7 +98,26 @@ header('Location: loginPage.php');
                          </div>
                     </div>
                  </div>
-           
+            <div class="hidden" style='display:none'>
+			<div class="one" id='inline_content1' style='padding:10px; background:#fff;'>
+			<p><strong>Race Results, June 8th, 2012</strong></p>
+			<table>
+			    <tr>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				
+			    </tr>
+			    <tr>
+				<td>7:21</td>
+				<td>14:15</td>
+				<td>21:54</td>
+				
+			    </tr>
+			</table>
+			</div>
+			
+	    </div>
                 
                 
                 
