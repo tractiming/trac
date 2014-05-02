@@ -14,7 +14,7 @@ header('Location: loginPage.php');
         <title>TRAC Demo site--RACE</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<link rel="stylesheet" href="colorbox.css" />
-	  <script src="js/jquery-1.11.0.js"></script>
+	<script src="js/jquery-1.11.0.js"></script>
 	<script src="js/script.js"></script>
 	<script src="../jquery.colorbox.js"></script>
 	<script>

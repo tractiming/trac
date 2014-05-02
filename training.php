@@ -266,7 +266,7 @@ header('Location: loginPage.php');
 		<!--Start tables for inline popups-->
 		
             <div class="hidden" style='display:none'>
-			<div id='inline_content1' style='padding:10px; background:#fff;'>
+			<div class="one" id='inline_content1' style='padding:10px; background:#fff;'>
 			<p><strong>Splits from August 12</strong></p>
 			<table>
 			    <tr>

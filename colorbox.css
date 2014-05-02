@@ -22,6 +22,7 @@
 */
 #cboxOverlay{background:url(images/overlay.png) repeat 0 0;}
 #colorbox{outline:0;}
+    
     #cboxTopLeft{width:21px; height:21px; background:url(images/controls.png) no-repeat -101px 0;}
     #cboxTopRight{width:21px; height:21px; background:url(images/controls.png) no-repeat -130px 0;}
     #cboxBottomLeft{width:21px; height:21px; background:url(images/controls.png) no-repeat -101px -29px;}
@@ -31,6 +32,9 @@
     #cboxTopCenter{height:21px; background:url(images/border.png) 0 0 repeat-x;}
     #cboxBottomCenter{height:21px; background:url(images/border.png) 0 -29px repeat-x;}
     #cboxContent{background:#fff; overflow:hidden;}
+        .one table{background:#FFFFFF; width:100%; border:1px solid black; border-collapse: collapse; }
+       .one td{border:1px solid black; border-collapse: collapse; padding-left:2px;}
+        .one tr{border:1px solid black; border-collapse: collapse;} 
         .cboxIframe{background:#fff;}
         #cboxError{padding:50px; border:1px solid #ccc;}
         #cboxLoadedContent{margin-bottom:28px;}

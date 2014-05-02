@@ -24,6 +24,9 @@ ul.nav-tabs li.selected{background:#f3bb2a;}
 input[type="submit"]{border:solid 1px; border-radius:3px; float:right; width:100px; height:29px; padding:5px; background:#f3bb2a; font-size:14px; font-weight:bold; color:#FFF; text-shadow:0px 1px 1px #000; filter:dropshadow(color=#000, offx=0, offy=1); border:solid 1px #f3bb2a; cursor:pointer;}
 .content{background:#FFF; border:solid 1px #f3bb2a; padding:20px 30px; clear:both; margin:20px 0 0 0; overflow:hidden; border-radius:3px;}
 
+
+
+
 .title-bar{overflow:hidden;}
 .title-bar h4{float:left; font-size:17px; font-weight:bold; color:#5D6770; background:url('../images/help_icon.png') left 3px no-repeat; display:inline-block; padding:0 0 0 20px; margin:15px 30px 0 0;}
 .title-bar .pagination{float:left; margin:15px 0 0 0;}
