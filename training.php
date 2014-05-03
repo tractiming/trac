@@ -119,17 +119,17 @@ header('Location: loginPage.php');
                                                   <td>00:31:01</td>
                                                 </tr>
                                                   <tr>
-                                                  <td><p><a class='inline placethree' href="#inline_content3">August 10</a></p></td>
+                                                  <td><p><a class='inline placethree' href="#inline_content1">August 10</a></p></td>
                                                   <td>15 miles</td> 
                                                   <td>1:59:36</td>
                                                 </tr>
                                                    <tr>
-                                                  <td><p><a class='inline placetwo' href="#inline_content4">August 3</a></p></td>
+                                                  <td><p><a class='inline placetwo' href="#inline_content2">August 3</a></p></td>
                                                   <td>6 miles</td> 
                                                   <td>00:42:12</td>
                                                 </tr>
                                                     <tr>
-                                                  <td><p><a class='inline placethree' href="#inline_content5">August 1</a></p></td>
+                                                  <td><p><a class='inline placethree' href="#inline_content1">August 1</a></p></td>
                                                   <td>10 miles</td> 
                                                   <td>1:25:15</td>
                                                 </tr>
@@ -270,6 +270,7 @@ header('Location: loginPage.php');
 			<p><strong>Splits from August 12</strong></p>
 			<table>
 			    <tr>
+				<td>Distance</td>
 				<td>.5</td>
 				<td>1</td>
 				<td>1.5</td>
@@ -292,6 +293,30 @@ header('Location: loginPage.php');
 				<td>10</td>
 			    </tr>
 			    <tr>
+				<td>Split</td>
+				<td>3:00</td>
+				<td>3:00</td>
+				<td>3:00</td>
+				<td>3:00</td>
+				<td>3:00</td>
+				<td>3:00</td>
+				<td>2:00</td>
+				<td>3:00</td>
+				<td>3:00</td>
+				<td>3:00</td>
+				<td>2:00</td>
+				<td>3:00</td>
+				<td>3:01</td>
+				<td>3:01</td>
+				<td>3:30</td>
+				<td>2:10</td>
+				<td>5:40</td>
+				<td>3:20</td>
+				<td>3:49</td>
+				<td>13:43</td>
+			    </tr>
+			    <tr>
+				<td>Total Time</td>
 				<td>3:00</td>
 				<td>6:00</td>
 				<td>9:00</td>
@@ -315,6 +340,151 @@ header('Location: loginPage.php');
 			    </tr>
 			</table>
 			</div>
+			
+			<div class="one" id='inline_content2' style='padding:10px; background:#fff;'>
+			<p><strong>Splits from August 11</strong></p>
+			<table>
+			    <tr>
+				<td>Distance</td>
+				<td>.5</td>
+				<td>1</td>
+				<td>1.5</td>
+				<td>2</td>
+				<td>2.5</td>
+				<td>3</td>
+				<td>3.5</td>
+				<td>4</td>
+				<td>4.5</td>
+			    </tr>
+			    <tr>
+				<td>Split</td>
+				<td>3:00</td>
+				<td>3:00</td>
+				<td>3:00</td>
+				<td>3:00</td>
+				<td>3:00</td>
+				<td>3:00</td>
+				<td>2:00</td>
+				<td>3:00</td>
+				<td>8:01</td>
+				
+			    </tr>
+			    <tr>
+				<td>Total Time</td>
+				<td>3:00</td>
+				<td>6:00</td>
+				<td>9:00</td>
+				<td>12:00</td>
+				<td>15:00</td>
+				<td>18:00</td>
+				<td>20:00</td>
+				<td>23:00</td>
+				<td>31:01</td>
+				
+			    </tr>
+			</table>
+			</div>
+			
+			
+			
+			
+			
+			
+			
+			<div class="one" id='inline_content6' style='padding:10px; background:#fff;'>
+			<p><strong>Splits from August 9</strong><br><br>
+			4x400m</p>
+			<table>
+			    <tr>
+				<td>Number/Distance</td>
+				<td>Split</td>
+			    </tr>
+			    <tr>
+				<td>1/400</td>
+				<td>69</td>
+			    </tr>
+			    <tr>
+				<td>2/400</td>
+				<td>67</td>
+			    </tr>
+			    <tr>
+				<td>3/400</td>
+				<td>64</td>
+			    </tr>
+			    <tr>
+				<td>4/400</td>
+				<td>62</td>
+			    </tr>
+			</table>
+			</div>
+			<div class="one" id='inline_content7' style='padding:10px; background:#fff;'>
+			<p><strong>Splits from August 7</strong><br><br>
+			4x800m</p>
+			<table>
+			    <tr>
+				<td>Number/Distance</td>
+				<td>Split</td>
+			    </tr>
+			    <tr>
+				<td>1/800</td>
+				<td>75</td>
+				<td>76 (2:31)</td>
+			    </tr>
+			    <tr>
+				<td>2/800</td>
+				<td>75</td>
+				<td>76 (2:31)</td>
+			    </tr>
+			    <tr>
+				<td>3/800</td>
+				<td>75</td>
+				<td>75 (2:30)</td>
+			    </tr>
+			    <tr>
+				<td>4/800</td>
+				<td>75</td>
+				<td>63 (2:18)</td>
+			    </tr>
+			</table>
+			</div>
+			<div class="one" id='inline_content8' style='padding:10px; background:#fff;'>
+			<p><strong>Splits from August 6</strong><br><br>
+			3x1 Mile</p>
+			<table>
+			    <tr>
+				<td>Number/Distance</td>
+				<td>Split</td>
+			    </tr>
+			    <tr>
+				<td>1/Mile</td>
+				<td>75</td>
+				<td>76 (2:31)</td>
+				<td>76 (3:46)</td>
+				<td>73 (5:00)</td>
+			    </tr>
+			    <tr>
+				<td>2/Mile</td>
+				<td>75</td>
+				<td>76 (2:31)</td>
+				<td>76 (3:46)</td>
+				<td>71 (4:58)</td>
+			    </tr>
+			    <tr>
+				<td>3/Mile</td>
+				<td>75</td>
+				<td>75 (2:30)</td>
+				<td>67 (3:37)</td>
+				<td>67 (4:44)</td>
+			    </tr>
+			   
+			</table>
+			</div>
+			
+			
+			
+			
+			
+			
 			
 	    </div>
 

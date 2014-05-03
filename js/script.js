@@ -9,7 +9,7 @@ $(document).ready(function() {
 	//alert(windowHeight);
 	//alert(contentLocation);
 	//alert(footerOuterHeight);
-	var setContentNewHeight = (windowHeight) - (contentLocation + footerOuterHeight + 70);
+	var setContentNewHeight = (windowHeight) - (contentLocation + footerOuterHeight + 500);
 	$(".content").css({"min-height" : setContentNewHeight});
 	
 

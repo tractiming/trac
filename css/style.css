@@ -1,6 +1,8 @@
+@import 'http://fonts.googleapis.com/css?family=Montserrat:300,400,700';
 body{padding:0; margin:0; font-family:arial, helvetica, san-sarif; font-size:12px;}
 body{overflow-x:hidden; overflow-y:scroll;}
 body.theme1{background:#3577A8;}
+h1 { font-weight: normal; letter-spacing: -1px;color: #34495E;}
 h2{font-size:24px; font-weight:normal; color:white; padding:0; margin:0;}
 h3{font-size:24px; color:black; font-weight: normal;}
 h4{font-size:15px; font-weight: normal; color:#5D6770; padding:0; margin:0;}
@@ -120,7 +122,9 @@ input[type="submit"]{border:solid 1px; border-radius:3px; float:right; width:100
 .active-area .box{width:938px; height:610px; position:relative;}
 .active-area .box .upper-area{float:left; background:#FFFFFF; width:920px; height:300px; border:solid 1px #FFFFFF; border-radius:3px; border-width:1px 1px 1px 11px}
 .active-area .box .upper-area .inner{background:#FFFFFF; width:920px; height:300px;}
-.active-area .box .upper-area .inner table{background:#FFFFFF; text-align: center; padding-left: 45px; width:100%;}
-.active-area .box .upper-area .inner table tr:hover{background-color:#9BC4E2;}
+.active-area .box .upper-area .inner table{background:#34495E; text-align: center; width:100%; margin:1em 0; min-width:300px; color: #fff; border-radius: .4em;font-family: Montserrat, sans-serif;-webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;}
+.active-area .box .upper-area .inner tr{border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;   border-color: lighten(#34495E, 10%)}
+.active-area .box .upper-area .inner td{display:block;  margin: .5em 1em; padding: 1em !important; }
+.active-area .box .upper-area .inner table tr:hover{background-color:#1BA1E2;}
 
 

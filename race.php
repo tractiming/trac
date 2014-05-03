@@ -81,11 +81,11 @@ header('Location: loginPage.php');
                                                 </div>
                                                     <div class="form-row"><h4> Wilson Street Run (5k), July 10, 2012  </h4>
                                                         </div>
-                                                    <div class="form-row"> <center><h4><a class='inline' href="#inline_content1" >254th, 20:14</a></h4></center>
+                                                    <div class="form-row"> <center><h4><a class='inline' href="#inline_content2" >254th, 20:14</a></h4></center>
                                                 </div>
                                                     <div class="form-row"> <h4>Rogers Park to Wilson Run (8k), July 14, 2012</h4>
                                                 </div>
-                                             <div class="form-row"> <center><h4><a class='inline' href="#inline_content1" >55th, 33:54</a></h4></center>
+                                             <div class="form-row"> <center><h4><a class='inline' href="#inline_content3" >55th, 33:54</a></h4></center>
                                                 </div>
                                              
                                                             
@@ -100,15 +100,25 @@ header('Location: loginPage.php');
                  </div>
             <div class="hidden" style='display:none'>
 			<div class="one" id='inline_content1' style='padding:10px; background:#fff;'>
-			<p><strong>Race Results, June 8th, 2012</strong></p>
+			<p><strong>Race Results, June 8th, 2012</strong><br><br>
+			<a href="">Full Results</a></p>
 			<table>
 			    <tr>
+				<td>Distance</td>
 				<td>1</td>
 				<td>2</td>
 				<td>3</td>
 				
 			    </tr>
 			    <tr>
+				<td>Split</td>
+				<td>7:21</td>
+				<td>6:54</td>
+				<td>7:41</td>
+				
+			    </tr>
+			    <tr>
+				<td>Total Time</td>
 				<td>7:21</td>
 				<td>14:15</td>
 				<td>21:54</td>
@@ -117,6 +127,68 @@ header('Location: loginPage.php');
 			</table>
 			</div>
 			
+			<div class="one" id='inline_content2' style='padding:10px; background:#fff;'>
+			<p><strong>Race Results, June 8th, 2012</strong><br><br>
+			<a href="">Full Results</a></p>
+			<table>
+			    <tr>
+				<td>Distance</td>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				
+			    </tr>
+			    <tr>
+				<td>Split</td>
+				<td>6:40</td>
+				<td>7:01</td>
+				<td>7:33</td>
+				
+			    </tr>
+			    <tr>
+				<td>Total Time</td>
+				<td>6:40</td>
+				<td>13:41</td>
+				<td>20:14</td>
+				
+			    </tr>
+			</table>
+			</div>
+			
+			<div class="one" id='inline_content3' style='padding:10px; background:#fff;'>
+			<p><strong>Race Results, June 8th, 2012</strong><br><br>
+			<a href="">Full Results</a></p>
+			<table>
+			   
+			    <tr>
+				<td>Distance</td>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				
+			    </tr>
+			    <tr>
+				<td>Split</td>
+				<td>6:30</td>
+				<td>6:31</td>
+				<td>6:29</td>
+				<td>6:53</td>
+				<td>9:31</td>
+				
+			    </tr>
+			    <tr>
+				<td>Total Time</td>
+				<td>6:30</td>
+				<td>13:01</td>
+				<td>18:30</td>
+				<td>24:23</td>
+				<td>33:54</td>
+				
+			    </tr>
+			</table>
+			</div>
 	    </div>
                 
                 
