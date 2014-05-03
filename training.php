@@ -114,22 +114,22 @@ header('Location: loginPage.php');
                                                   <td>1:12:44</td>
                                                 </tr>
                                                  <tr>
-                                                  <td><p><a class='inline placetwo' href="#inline_content2">August 11</a></p></td>
+                                                  <td><p><a class='inline placefour' href="#inline_content2">August 11</a></p></td>
                                                   <td>4.5 miles</td> 
                                                   <td>00:31:01</td>
                                                 </tr>
                                                   <tr>
-                                                  <td><p><a class='inline placethree' href="#inline_content1">August 10</a></p></td>
+                                                  <td><p><a class='inline place' href="#inline_content1">August 10</a></p></td>
                                                   <td>15 miles</td> 
                                                   <td>1:59:36</td>
                                                 </tr>
                                                    <tr>
-                                                  <td><p><a class='inline placetwo' href="#inline_content2">August 3</a></p></td>
+                                                  <td><p><a class='inline placefour' href="#inline_content2">August 3</a></p></td>
                                                   <td>6 miles</td> 
                                                   <td>00:42:12</td>
                                                 </tr>
                                                     <tr>
-                                                  <td><p><a class='inline placethree' href="#inline_content1">August 1</a></p></td>
+                                                  <td><p><a class='inline place' href="#inline_content1">August 1</a></p></td>
                                                   <td>10 miles</td> 
                                                   <td>1:25:15</td>
                                                 </tr>
@@ -145,12 +145,12 @@ header('Location: loginPage.php');
                                                   <td><u>Splits</u></td>
                                                 </tr>
                                                 <tr>
-                                                  <td><p><a class='inline place' href="#inline_content6">August 9</a></p></td>
+                                                  <td><p><a class='inline placethree' href="#inline_content6">August 9</a></p></td>
                                                   <td>4x400m</td> 
                                                   <td>69,67,64,62</td>
                                                 </tr>
                                                  <tr>
-                                                  <td><p><a class='inline place' href="#inline_content7">August 7</a></p></td>
+                                                  <td><p><a class='inline placetwo' href="#inline_content7">August 7</a></p></td>
                                                   <td>4x800</td> 
                                                   <td>2:31,2:31,2:30,2:18</td>
                                                 </tr>
@@ -192,31 +192,45 @@ header('Location: loginPage.php');
      
      $('a.place').on('mouseover',
      function gc() {
-       geocoder.geocode({
-           'address': 'Clark St, Chicago, IL'
-        }, 
-        function(results, status) {
-          if(status == google.maps.GeocoderStatus.OK) {
+	
+	  var mapOptions = {
+    zoom: 13,
+    center: new google.maps.LatLng(41.915702, -87.627129),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
 
-            // Clear the previous marker
-            if (marker) marker.setMap(null);
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-            // Set the new marker
-            marker = new google.maps.Marker({
-              position: results[0].geometry.location,
-              map: map
-            });
+       var flightPlanCoordinates = [
+    new google.maps.LatLng(41.893918, -87.610999),
+    new google.maps.LatLng(41.902926, -87.622843),
+    new google.maps.LatLng(41.915702, -87.627129),
+    new google.maps.LatLng(41.935849, -87.632316)
+  ];
 
-            // Center the map on the geocoded result
-            map.setCenter(results[0].geometry.location);
-          }
-       });
+  flightPath = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
+  
+  addLine();
+  function addLine() {
+  flightPath.setMap(map);
+ 
+}
      });
      
          $('a.placetwo').on('mouseover',
      function gc() {
+	removeLine()
+	function removeLine() {
+  flightPath.setMap(null);
+}
+	
        geocoder.geocode({
-           'address': 'Sox Park, Chicago, IL'
+           'address': '1032 W Sheridan Rd, Chicago, IL'
         }, 
         function(results, status) {
           if(status == google.maps.GeocoderStatus.OK) {
@@ -238,8 +252,13 @@ header('Location: loginPage.php');
 	 
 	          $('a.placethree').on('mouseover',
      function gc() {
+	removeLine()
+	function removeLine() {
+  flightPath.setMap(null);
+}
+	
        geocoder.geocode({
-           'address': 'Loyola University, Chicago, IL'
+           'address': 'Evanston Township High School, Evanston, IL'
         }, 
         function(results, status) {
           if(status == google.maps.GeocoderStatus.OK) {
@@ -259,6 +278,44 @@ header('Location: loginPage.php');
        });
      });
 
+     
+          $('a.placefour').on('mouseover',
+     function gc() {
+	
+	  var mapOptions = {
+    zoom: 12,
+    center: new google.maps.LatLng(42.005521, -87.660846),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+       var flightPlanCoordinates = [
+    new google.maps.LatLng(41.998328, -87.656604),
+    new google.maps.LatLng(42.005521, -87.660846),
+    new google.maps.LatLng(42.026915, -87.668077),
+    new google.maps.LatLng(42.046454, -87.673536),
+    new google.maps.LatLng(42.052747, -87.669910),
+    new google.maps.LatLng(42.059093, -87.669965)
+  ];
+
+  flightPath = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
+  
+  addLine();
+  function addLine() {
+  flightPath.setMap(map);
+ 
+}
+     });
+     
+     
+     
+     
 
    </script> 
 		
@@ -423,7 +480,7 @@ header('Location: loginPage.php');
 			<table>
 			    <tr>
 				<td>Number/Distance</td>
-				<td>Split</td>
+				<td colspan="2">Split</td>
 			    </tr>
 			    <tr>
 				<td>1/800</td>
@@ -453,7 +510,7 @@ header('Location: loginPage.php');
 			<table>
 			    <tr>
 				<td>Number/Distance</td>
-				<td>Split</td>
+				<td colspan="5">Split</td>
 			    </tr>
 			    <tr>
 				<td>1/Mile</td>

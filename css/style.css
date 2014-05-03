@@ -125,6 +125,6 @@ input[type="submit"]{border:solid 1px; border-radius:3px; float:right; width:100
 .active-area .box .upper-area .inner table{background:#34495E; text-align: center; width:100%; margin:1em 0; min-width:300px; color: #fff; border-radius: .4em;font-family: Montserrat, sans-serif;-webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;}
 .active-area .box .upper-area .inner tr{border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;   border-color: lighten(#34495E, 10%)}
 .active-area .box .upper-area .inner td{display:block;  margin: .5em 1em; padding: 1em !important; }
-.active-area .box .upper-area .inner table tr:hover{background-color:#1BA1E2;}
+.active-area .box .upper-area .inner table tr:hover{background-color:#1BA1E2; border-color:#1BA1E2;}
 
 

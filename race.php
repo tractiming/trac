@@ -104,6 +104,7 @@ header('Location: loginPage.php');
 			<a href="">Full Results</a></p>
 			<table>
 			    <tr>
+				<td rowspan="3">104th, 21:54</td>
 				<td>Distance</td>
 				<td>1</td>
 				<td>2</td>
@@ -132,6 +133,7 @@ header('Location: loginPage.php');
 			<a href="">Full Results</a></p>
 			<table>
 			    <tr>
+				<td rowspan="3">254th, 20:14</td>
 				<td>Distance</td>
 				<td>1</td>
 				<td>2</td>
@@ -161,6 +163,7 @@ header('Location: loginPage.php');
 			<table>
 			   
 			    <tr>
+				<td rowspan="3">55th, 33:54</td>
 				<td>Distance</td>
 				<td>1</td>
 				<td>2</td>
