@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry kind="lib" path="/Users/griffinkelly/Downloads/okhttp-1.5.4.jar"/>
+	<classpathentry kind="lib" path="libs/okhttp-2.0.0-RC2.jar"/>
+	<classpathentry kind="lib" path="libs/okio-1.0.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
