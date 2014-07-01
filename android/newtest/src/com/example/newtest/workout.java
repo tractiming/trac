@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class workout {
 	@SerializedName ("one")
-	private String one;
+	public String one;
 	@SerializedName ("key")
-	private String key;
+	public String key;
 	
 
 	
