@@ -407,6 +407,8 @@ int drawable tab_unselected_focused_actionbar 0x7f02007a
 int drawable tab_unselected_pressed_actionbar 0x7f02007b
 int drawable trac_blue_start 0x7f02007c
 int drawable trac_initial 0x7f02007d
+int drawable trac_launcher 0x7f02007e
+int drawable trac_start_01 0x7f02007f
 int id action_bar 0x7f05001c
 int id action_bar_activity_content 0x7f050015
 int id action_bar_container 0x7f05001b

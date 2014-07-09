@@ -1162,6 +1162,8 @@ containing a value of this type.
         public static final int tab_unselected_pressed_actionbar=0x7f02007b;
         public static final int trac_blue_start=0x7f02007c;
         public static final int trac_initial=0x7f02007d;
+        public static final int trac_launcher=0x7f02007e;
+        public static final int trac_start_01=0x7f02007f;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;
