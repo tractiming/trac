@@ -1,9 +1,67 @@
-<html><head>
+<?php
+include("config.php");
+//change roots more easily in config.php
+session_start();
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+// username and password sent from Form 
+$myusername=addslashes($_POST['username']); 
+$mypassword=addslashes($_POST['password']); 
+
+$sql="SELECT id FROM admin WHERE username='$myusername' and password='$mypassword'";
+//sql table is of form: CREATE TABLE admin
+//id INT PRIMARY KEY AUTO_INCREMENT,
+//username VARCHAR(30) UNIQUE,
+//password VARCHAR(30),
+//usertype VARCHAR(30),
+//rfidnum VARCHAR(30)
+
+
+$result=mysql_query($sql);
+$row=mysql_fetch_array($result);
+$active=$row['active'];
+$count=mysql_num_rows($result);
+
+
+$result2=mysql_query("SELECT usertype FROM admin WHERE username='$myusername'");
+$myusertype=mysql_fetch_row($result2);
+
+$result3=mysql_query("SELECT rfidnum FROM admin WHERE username='$myusername'");
+$myrfidnum=mysql_fetch_row($result3);
+
+// If result matched $myusername and $mypassword, table row must be 1 row
+if($count==1)
+{
+if (isset($_POST['PersistentCookie'])) {
+/* Set cookie to last 1 year */
+setcookie('username', $myusername, time()+3600);
+setcookie('password', $mypassword, time()+3600);
+setcookie('usertype', $myusertype[0], time()+3600);
+setcookie('rfidnum', $myrfidnum[0], time()+3600);
+}
+else {
+/* Cookie expires when browser closes */
+setcookie('username', $myusername, false);
+setcookie('password', $mypassword, false);
+setcookie('usertype', $myusertype[0], false);
+setcookie('rfidnum', $myrfidnum[0], false);
+//late need to do md5($_POST['password']); to encrypt
+}
+header('Location: home.php');
+}
+else 
+{
+$printdown=1;   
+}
+}
+?>
+<html>
+	<head>
 <meta http-equiv="PRAGMA" content="NO-CACHE" />
 <meta http-equiv="Expires" content="-1" /><title>Sign In</title>
 
 <link rel="stylesheet" type="text/css" href="css/style.css" />
-<script src="js/jquery-1.4.2.min.js"></script>
+<script src="js/jquery-1.11.0.js"></script>
 <script src="js/script.js"></script>
 </head>
 <body class="theme1">
@@ -37,58 +95,26 @@
 <div class="inner">
 	
 	<!--Query SQL Database for username-->
-	<?php
-include("config.php");
-//change roots more easily in config.php
-session_start();
-if($_SERVER["REQUEST_METHOD"] == "POST")
-{
-// username and password sent from Form 
-$myusername=addslashes($_POST['username']); 
-$mypassword=addslashes($_POST['password']); 
-
-$sql="SELECT id FROM admin WHERE username='$myusername' and passcode='$mypassword'";
-//sql table is of form: CREATE TABLE admin
-//id INT PRIMARY KEY AUTO_INCREMENT,
-//username VARCHAR(30) UNIQUE,
-//passcode VARCHAR(30)
-
-
-$result=mysql_query($sql);
-$row=mysql_fetch_array($result);
-$active=$row['active'];
-$count=mysql_num_rows($result);
-
-
-// If result matched $myusername and $mypassword, table row must be 1 row
-if($count==1)
-{
-session_register("myusername");
-$_SESSION['login_user']=$myusername;
-header("home.php");
-//this is where I'm having trouble hyperlinking
-}
-else 
-{
-$error="Your Login Name or Password is invalid";
-echo"$error";    
-}
-}
-?>
-
+	
 	
 <form action="" method="post">
 <div class="form-row"> <label>User ID</label>
 <input name="username" value="" id="" type="text" /></div>
 <div class="form-row"> <label>Password</label>
 <input name="password" value="" id="" type="password" /></div>
+<?php
+if($printdown==1)
+{
+echo"<font color='red'>Your Password/Username is invalid</font>";
+}
+?>
 <div class="long-row">
 	<div class="middle">
 <div class="button-container"> 
 
 <input name="" value="Sign In" id="signin" type="submit" /></div>
 <div class="check"> 
-<input type="checkbox" name="PersistentCookie" id="PersistentCookie" value="yes"checked="checked"> Stay signed in
+<input type="checkbox" name="PersistentCookie" id="PersistentCookie" value="1" checked="checked"> Stay signed in
  </div>
 </div>
 </div>

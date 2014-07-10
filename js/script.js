@@ -1,3 +1,7 @@
+function delete_cookie( name ) {
+  document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+};
+
 $(document).ready(function() {
 	var windowHeight = $(window).height();
 	var contentLocation = $(".content").position().top;
@@ -5,12 +9,12 @@ $(document).ready(function() {
 	//alert(windowHeight);
 	//alert(contentLocation);
 	//alert(footerOuterHeight);
-	var setContentNewHeight = (windowHeight) - (contentLocation + footerOuterHeight + 70);
+	var setContentNewHeight = (windowHeight) - (contentLocation + footerOuterHeight + 500);
 	$(".content").css({"min-height" : setContentNewHeight});
 	
 
 	$("#register").click(function(){
-		window.location = 'userInfo.php';	
+		window.location = 'register.php';
 	});
 	
 	$(".nav-tabs li").click(function(){
@@ -21,9 +25,9 @@ $(document).ready(function() {
 		window.location = pageName;
 	});
 	
-	$("#signout").click(function(){
-		window.location = 'loginPage.php';
-	});
+	//$("#signout").click(function(){
+	//	window.location = 'loginPage.php';
+	//});
 	
 	$(".pagination a").click(function(){
 			$(".pagination a").removeClass("selected");

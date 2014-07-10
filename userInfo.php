@@ -1,8 +1,18 @@
+<?php
+if (isset($_COOKIE["username"]))
+{
+$printhome=1; 
+}
+else
+{
+header('Location: loginPage.php');
+}
+?>
 <html>
     <head> 
         <title>TRAC Demo site--User Info</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
-	<script src="js/jquery-1.4.2.min.js"></script>
+	  <script src="js/jquery-1.11.0.js"></script>
 	<script src="js/script.js"></script>
     </head>
 
@@ -12,7 +22,14 @@
 		<!-- Header Wrapper starts -->
 		<div class="header no-border">
 			<div class="user-details">
-				<span class="bold">Welcome:</span> <span>user123</span>
+				<span class="bold">Welcome:</span> <span><?php
+				if($printhome==1)
+				{
+				echo $_COOKIE['username'];
+				}
+				else
+				{}
+				?></span>
 			</div>
 			<div class="product-name"></div>
 			<div class="product-info">
@@ -23,12 +40,15 @@
 		
 		<!-- Navigation Tabs starts -->
 		<ul class="nav-tabs">
+			<li id="home">HOME</li>
 			<li class="selected" id="userInfo">USER INFO</li>
 			<li id="race">RACES</li>
 			<li id="training">TRAINING LOG</li>
-			<li id="home">LIVE LAP TIME</li>
+			<li id="liveView">LIVE LAP TIME</li>
 		</ul>
-		<input type="button" name="" value="Sign Out" id="signout" class="signout" />
+		<form action="signout.php" method="post">
+		<input type="submit" name="" value="Sign Out" id="signout" class="signout" />
+		</form>
 		<!-- Navigation Tabs starts -->
 		
 		<!-- Content Wrapper starts -->
@@ -41,20 +61,20 @@
 					<div class="form-row">
 						<label>Name:</label></div>
 						<div class="form-row">
-						<span><input name="name" value="" id="" type="text" /></span>
+						<span><input name="name" value="name goes here" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>User Name:</label></div>
 						<div class="form-row">
-						<span><input name="username" value="" id="" type="text" /></span>
+						<span><input name="username" value="username goes here" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
-						<label>Date of Birth:</label></div><div class="form-row">
-						<span><input name="dob" value="" id="" type="text" /></span>
+						<label>Tag Number:</label></div><div class="form-row">
+						<span><input name="rfidnum" value="tag number is here" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
-						<label>Height:</label></div><div class="form-row">
-						<span><input name="height" value="" id="" type="text" /></span>
+						<label>Coach:</label></div><div class="form-row">
+						<span><input name="coach" value="coachesname here" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Weight:</label></div><div class="form-row">
@@ -62,48 +82,42 @@
 					</div>
 					<div class="form-row">
 						<label>Male or Female:</label></div><div class="form-row">
-						<span><select>
-									<option>Male</option><option>Female</option>
+						<span><select name="sex">
+									<option value="male">Male</option><option value="female">Female</option>
 							</select></span>
 					</div>
                                         <div class="form-row">
 						<label>User Type:</label></div><div class="form-row">
 						<span>
-							<select>
-									<option>Athlete</option><option>Coach</option>
+							<select name="usertype">
+									<option value="athlete">Athlete</option><option  value="coach">Coach</option>
 							</select>
 						</span>
 					</div>
 					
 					<div class="form-row">
 						<label>Password:</label></div><div class="form-row">
-						<span><input name="password" value="" id="" type="text" /></span>
+						<span><input name="password" value="******" id="" type="text" /></span>
 					</div>
 					<div class="form-row">
 						<label>Verify Password:</label></div><div class="form-row">
-						<span><input name="password2" value="" id="" type="text" /></span>
+						<span><input name="password2" value="******" id="" type="text" /></span>
 					</div>
+					<?php
+					if($printbelow==1)
+					{
+					    echo"<font color='red'>Your Password/Username is invalid</font>";
+					}
+					?> 
 					<div class="form-row button-container">
-								<input type="button" name="save" id="save" value="Save" />
+								<input type="submit" name="save" id="save" value="Save" />
 							</div>
 					</div>
 					
+					
 				</div>
-				<?php
-				session_start();
-				if(isset($_POST['save']))
-				{
-				    $name=$_POST['name'];
-				    $username=$_POST['username'];
-				    $dob=$_POST['dob'];
-				    $height=$_POST['height'];
-				    $weight=$_POST['weight'];
-				    
-				}
-				echo"$name";
-				?>
 				
-				
+
 				
 				<div class="right-panel">
 					<div class="body">
