@@ -9,10 +9,6 @@ PORT = 36740
 
 # If DEBUG is set to True, simply echo out any incoming data, but do not process it.
 DEBUG = False
-if DEBUG:
-    bug_msg = "ON"
-else:
-    bug_msg = "OFF"
 
 class ReaderComm(Protocol):
 
@@ -50,6 +46,12 @@ def main():
 
 
 if __name__ == "__main__":
+    if '--debug' in sys.argv:
+        DEBUG = True
+    if DEBUG:
+        bug_msg = "ON"
+    else:
+        bug_msg = "OFF"
     print "Server started! (DEBUG is %s)" %(bug_msg)
     main()
         
