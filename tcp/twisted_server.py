@@ -1,8 +1,13 @@
 import sys
+import signal
 from twisted.internet.protocol import Factory, Protocol
 from twisted.internet import reactor
 from twisted.python import log
 import rfid
+
+#TODO: Figure out how to better monitor dropped tcp connections.
+# Timeout (in seconds) for dropped tcp connections.
+TIMEOUT = 30
 
 # TCP port.
 PORT = 36740
@@ -12,11 +17,19 @@ DEBUG = False
 
 class ReaderComm(Protocol):
 
-    reader_id = None
-    tag = rfid.RFIDTag()
-    db = rfid.Database(**rfid.DB_PARAMS)
+    def __init__(self):
+        self.reader_id = None
+        self.tag = rfid.RFIDTag()
+        self.db = rfid.Database(**rfid.DB_PARAMS)
+        signal.signal(signal.SIGALRM, self.alarm_handler)
 
+    def alarm_handler(self, signum, frame):
+        """Handles timeouts from dropped tcp connections."""
+        log.msg("Connection timeout.")
+        self.transport.loseConnection()
+ 
     def dataReceived(self, data):
+        signal.alarm(TIMEOUT)
         if DEBUG:
             log.msg(data)
         else:
@@ -30,6 +43,7 @@ class ReaderComm(Protocol):
 
     def connectionMade(self):
         log.msg("Connection made!")
+        signal.alarm(TIMEOUT)
 
     def connectionLost(self, reason):
         log.msg("Connection lost!"+ str(reason))
