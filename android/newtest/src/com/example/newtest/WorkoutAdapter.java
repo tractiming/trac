@@ -47,12 +47,13 @@ public class WorkoutAdapter extends BaseAdapter{
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
 		textView.setText(parsedJson.runners.get(position).name);
 		
-		TextView textView2 =(TextView) convertView.findViewById(R.id.list_text2);
-		textView2.setText("SAMPLE TEXT");
+		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
+		textView2.setText(parsedJson.runners.get(position).interval.toString());
 		
 		
 		
-		//Fill that view with mother fuckin data
+		
+		//Fill that view with data
 		//Return that view
 		return convertView;
 	}

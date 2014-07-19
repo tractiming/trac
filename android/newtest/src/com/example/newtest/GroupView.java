@@ -35,7 +35,7 @@ public class GroupView extends Fragment{
 		View rootView = inflater.inflate(R.layout.fragment_group_view, container,
 				false);
 		mTextView = (TextView) rootView.findViewById(R.id.group_text_view);
-		new AsyncServiceCall().execute("http://76.12.155.219/trac/scripts/hello.php");
+		new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
 		
 		Log.d(DEBUG_TAG, "onCreateView CALLED");
 		return rootView;

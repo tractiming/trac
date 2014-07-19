@@ -23,15 +23,19 @@ public class WorkoutView extends ListFragment {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    new AsyncServiceCall().execute("http://76.12.155.219/trac/files/data.json");
-  
+   
+    new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
+   
   }
 
   @Override
   public void onListItemClick(ListView l, View v, int position, long id) {
-    Toast.makeText(getActivity(), ((Runners)l.getItemAtPosition(position)).interval + "", Toast.LENGTH_SHORT).show();
+    Toast.makeText(getActivity(), ((Runners)l.getItemAtPosition(position)).name + "", Toast.LENGTH_SHORT).show();
   }
   private TextView mTextView;
+
+  
+  
   	OkHttpClient client = new OkHttpClient();
 	Gson gson = new Gson();
 	private static final String DEBUG_TAG = "griffinSucks";
@@ -60,8 +64,10 @@ public class WorkoutView extends ListFragment {
 			protected void onPostExecute(Workout result) {
 				Log.d(DEBUG_TAG,"execute");
 				String resultstring = result.toString();
+				
 				//System.out.println(resultstring);
 				//set result to show on screen
+				
 			  
 			    setListAdapter(new WorkoutAdapter(result, getActivity()));			
 			}
