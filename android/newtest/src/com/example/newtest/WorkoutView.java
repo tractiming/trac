@@ -8,7 +8,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,13 +19,20 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Chronometer;
+
 
 public class WorkoutView extends ListFragment {
-
+	
+	
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-   
     new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
    
   }
@@ -32,7 +41,7 @@ public class WorkoutView extends ListFragment {
   public void onListItemClick(ListView l, View v, int position, long id) {
     Toast.makeText(getActivity(), ((Runners)l.getItemAtPosition(position)).name + "", Toast.LENGTH_SHORT).show();
   }
-  private TextView mTextView;
+
 
   
   
@@ -63,13 +72,14 @@ public class WorkoutView extends ListFragment {
 			@Override
 			protected void onPostExecute(Workout result) {
 				Log.d(DEBUG_TAG,"execute");
-				String resultstring = result.toString();
-				
-				//System.out.println(resultstring);
+				//String resultstring = result.toString();
+
 				//set result to show on screen
 				
 			  
-			    setListAdapter(new WorkoutAdapter(result, getActivity()));			
+			    setListAdapter(new WorkoutAdapter(result, getActivity()));		
+			   
+			    
 			}
 			  
 		  }

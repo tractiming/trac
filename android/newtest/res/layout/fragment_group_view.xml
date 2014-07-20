@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,6 +11,41 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world"
-        android:id="@+id/group_text_view"/>
-</RelativeLayout>
+        android:id="@+id/workout_date_view"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/workout_id_view"/>
+    
+
+            <Button
+              style="?android:attr/borderlessButtonStyle"
+               android:text="@string/start"
+               android:id="@+id/start_button"
+               android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"/>
+              <Button
+                  style="?android:attr/borderlessButtonStyle"
+                android:text="@string/stop"
+                android:id="@+id/stop_button"
+                android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"/>
+ 
+      
+    <Chronometer
+        android:id="@+id/chronometer"
+        android:format="%s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"/>
+    
+    
+    
+    <ListView
+  android:id="@android:id/list"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+   >
+	</ListView> 
+</LinearLayout>
