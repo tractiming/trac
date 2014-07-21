@@ -1184,7 +1184,7 @@ containing a value of this type.
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
         public static final int checkbox=0x7f05002d;
-        public static final int chronometer=0x7f050049;
+        public static final int chronometer=0x7f050047;
         public static final int collapseActionView=0x7f05000d;
         public static final int container=0x7f05003c;
         public static final int default_activity_button=0x7f050028;
@@ -1235,8 +1235,8 @@ containing a value of this type.
         public static final int showTitle=0x7f050006;
         public static final int sign_in_button=0x7f050043;
         public static final int split_action_bar=0x7f05001e;
-        public static final int start_button=0x7f050047;
-        public static final int stop_button=0x7f050048;
+        public static final int start_button=0x7f050048;
+        public static final int stop_button=0x7f050049;
         public static final int submit_area=0x7f050039;
         public static final int tabMode=0x7f050002;
         public static final int title=0x7f05002b;

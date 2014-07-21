@@ -427,7 +427,7 @@ int id activity_chooser_view_content 0x7f050025
 int id always 0x7f05000b
 int id beginning 0x7f050011
 int id checkbox 0x7f05002d
-int id chronometer 0x7f050049
+int id chronometer 0x7f050047
 int id collapseActionView 0x7f05000d
 int id container 0x7f05003c
 int id default_activity_button 0x7f050028
@@ -478,8 +478,8 @@ int id showHome 0x7f050004
 int id showTitle 0x7f050006
 int id sign_in_button 0x7f050043
 int id split_action_bar 0x7f05001e
-int id start_button 0x7f050047
-int id stop_button 0x7f050048
+int id start_button 0x7f050048
+int id stop_button 0x7f050049
 int id submit_area 0x7f050039
 int id tabMode 0x7f050002
 int id title 0x7f05002b
