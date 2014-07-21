@@ -3,6 +3,8 @@ package com.example.newtest;
 
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -32,7 +35,6 @@ public class GroupView extends ListFragment implements OnClickListener {
 	private Chronometer chronometer;
 	
 	
-     
 
 	
 	@Override
@@ -55,13 +57,17 @@ public class GroupView extends ListFragment implements OnClickListener {
     public void onClick(View v) {
         switch(v.getId()) {
         case R.id.start_button:
+        	SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
+        	String starttime = s.format(new Date());
                chronometer.setBase(SystemClock.elapsedRealtime());
                chronometer.start();
-               Log.d(DEBUG_TAG, "start");
+               Log.d(DEBUG_TAG, "start"+ starttime);
                break;
        case R.id.stop_button:
               chronometer.stop();
-              Log.d(DEBUG_TAG, "stop");
+              SimpleDateFormat st = new SimpleDateFormat("ddMMyyyyhhmmss");
+          	String stoptime = st.format(new Date());
+              Log.d(DEBUG_TAG, "stop" + stoptime );
               break;
        }
 }
