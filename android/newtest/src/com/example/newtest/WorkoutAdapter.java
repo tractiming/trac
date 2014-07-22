@@ -1,5 +1,7 @@
 package com.example.newtest;
 
+import java.util.List;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +50,9 @@ public class WorkoutAdapter extends BaseAdapter{
 		textView.setText(parsedJson.runners.get(position).name);
 		
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
-		textView2.setText(parsedJson.runners.get(position).interval.toString());
+		
+		List<String[]> intervals = parsedJson.runners.get(position).interval;
+		textView2.setText(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[2]);
 		
 		
 		
