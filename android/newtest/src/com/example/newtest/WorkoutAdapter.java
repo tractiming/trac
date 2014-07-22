@@ -38,6 +38,7 @@ public class WorkoutAdapter extends BaseAdapter{
 		return 0;
 	}
 
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
@@ -51,8 +52,12 @@ public class WorkoutAdapter extends BaseAdapter{
 		
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
 		
+		
+		
 		List<String[]> intervals = parsedJson.runners.get(position).interval;
-		textView2.setText(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[2]);
+		int ii = parsedJson.runners.get(position).interval.get(intervals.size() - 1).length - 1;
+		
+		textView2.setText(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[ii]);
 		
 		
 		
@@ -62,4 +67,6 @@ public class WorkoutAdapter extends BaseAdapter{
 		return convertView;
 	}
 
+
+	
 }
