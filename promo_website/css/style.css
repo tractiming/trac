@@ -261,11 +261,10 @@ div.parallax {
       max-width: 960px; }
   div.parallax div#top {
     
-    background: url("../images/startup.jpg") no-repeat;
-     margin:auto;
-    text-align: center;
-    position: relative;
-    height: 700px;}
+    
+     background: url("../images/startup.jpg") center top no-repeat fixed;
+    height: 850px; }
+ 
    
      
           
