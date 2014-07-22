@@ -127,7 +127,7 @@ def remove_tag(database, tag):
 def update_database_tags(database, tag):
     """Updates a tag's info in the database."""
     database.connect()
-    database.cursor.execute("UPDATE %s SET tagTime='%s' WHERE tagID='%s'"
+    database.cursor.execute("UPDATE %s SET tagTime='%s', parsed=0 WHERE tagID='%s'"
             %(database.table, tag.time.strftime('%Y-%m-%d %H:%M:%S'), tag.id))
     database.disconnect()
 
@@ -168,7 +168,7 @@ test_string_3 = ("""
 #Reason: TAGS ADDED
 #StartTriggerLines: 0
 #StopTriggerLines: 0
-Tag:11C4 00E3 2A39, Disc:1970/03/11 16:06:33.285, Last:1970/03/11 16:06:33.285, Count:1, Ant:0, Proto:2
+Tag:11C4 00E3 2A39, Disc:1970/03/11 16:06:33.285, Last:1970/03/11 16:17:33.285, Count:1, Ant:0, Proto:2
 #End of Notification Message""")
 
 # Then some functions for reading from and writing to the database.
