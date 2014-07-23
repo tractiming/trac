@@ -30,10 +30,10 @@ import android.widget.Button;
 import android.widget.Chronometer;
 
 
-public class GroupView extends ListFragment implements OnClickListener {
+public class GroupView extends ListFragment implements OnClickListener{
 	
-	private Chronometer chronometer;
 	
+	private ChronometerSubs mChronometer;
 	
 
 	
@@ -44,7 +44,9 @@ public class GroupView extends ListFragment implements OnClickListener {
 				false);
 		
 		
-		chronometer = (Chronometer) rootView.findViewById(R.id.chronometer);
+		mChronometer = (ChronometerSubs) rootView.findViewById(R.id.chronometer);
+        //mChronometer.start();        
+		//chronometer = (Chronometer) rootView.findViewById(R.id.chronometer);
 		((Button) rootView.findViewById(R.id.start_button)).setOnClickListener(this);
         ((Button) rootView.findViewById(R.id.stop_button)).setOnClickListener(this);
         
@@ -57,17 +59,17 @@ public class GroupView extends ListFragment implements OnClickListener {
     public void onClick(View v) {
         switch(v.getId()) {
         case R.id.start_button:
-        	SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
+        	SimpleDateFormat s = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         	String starttime = s.format(new Date());
-               chronometer.setBase(SystemClock.elapsedRealtime());
-               chronometer.start();
-               Log.d(DEBUG_TAG, "start"+ starttime);
+               mChronometer.setBase(SystemClock.elapsedRealtime());
+               mChronometer.start();
+               Log.i(DEBUG_TAG, "start"+ starttime);
                break;
        case R.id.stop_button:
-              chronometer.stop();
-              SimpleDateFormat st = new SimpleDateFormat("ddMMyyyyhhmmss");
+              mChronometer.stop();
+              SimpleDateFormat st = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
           	String stoptime = st.format(new Date());
-              Log.d(DEBUG_TAG, "stop" + stoptime );
+              Log.i(DEBUG_TAG, "stop" + stoptime );
               break;
        }
 }
@@ -75,6 +77,7 @@ public class GroupView extends ListFragment implements OnClickListener {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+    
     new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
    
   }
