@@ -34,7 +34,7 @@ public class GroupView extends ListFragment implements OnClickListener{
 	
 	
 	private ChronometerSubs mChronometer;
-	
+	private ListView labels;
 
 	
 	@Override
@@ -52,6 +52,11 @@ public class GroupView extends ListFragment implements OnClickListener{
         
 		mTextView = (TextView) rootView.findViewById(R.id.workout_date_view);
 		mTextView1 = (TextView) rootView.findViewById(R.id.workout_id_view);
+		
+		//labels = (ListView) rootView.findViewById(R.id.list_titles);
+		//labels.setAdapter("[Hello]");
+		
+		
 		return rootView;
 	}	
 	
@@ -84,7 +89,14 @@ public class GroupView extends ListFragment implements OnClickListener{
 
   @Override
   public void onListItemClick(ListView l, View v, int position, long id) {
-    Toast.makeText(getActivity(), ((Runners)l.getItemAtPosition(position)).name + "", Toast.LENGTH_SHORT).show();
+    //Toast.makeText(getActivity(), ((Runners)l.getItemAtPosition(position)).name + "", Toast.LENGTH_SHORT).show();
+	  View toolbar = v.findViewById(R.id.expanded_bar_group);
+		 
+      // Creating the expand animation for the item
+      ExpandAnimation expandAni = new ExpandAnimation(toolbar, 500);
+
+      // Start the animation on the toolbar
+     toolbar.startAnimation(expandAni);
   }
   private TextView mTextView;
   private TextView mTextView1;
@@ -123,7 +135,7 @@ public class GroupView extends ListFragment implements OnClickListener{
 				//set result to show on screen
 				
 			  
-			    setListAdapter(new WorkoutAdapter(result, getActivity()));		
+			    setListAdapter(new GroupAdapter(result, getActivity()));		
 			    mTextView.setText("Date: " + result.date);
 			    mTextView1.setText("Workout ID: " + result.id);
 			    
