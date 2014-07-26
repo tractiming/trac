@@ -33,7 +33,7 @@
         android:textSize="18sp"
         android:id="@+id/dropdown"
         android:focusable="false"
-        android:text="Hello"
+       
        
         />
         

@@ -84,7 +84,7 @@ public class GroupView extends ListFragment implements OnClickListener{
     super.onActivityCreated(savedInstanceState);
     
     new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
-   
+    
   }
 
   @Override

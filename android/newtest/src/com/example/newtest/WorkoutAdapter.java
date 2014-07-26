@@ -14,6 +14,7 @@ public class WorkoutAdapter extends BaseAdapter{
 	private Workout parsedJson; 
 	private Context context;
 	
+	
 	public WorkoutAdapter(Workout workout, Context context) {
 	 this.parsedJson = workout;
 	 this.context = context;
@@ -52,10 +53,27 @@ public class WorkoutAdapter extends BaseAdapter{
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text_workout);
 		textView.setText(parsedJson.runners.get(position).name);
 		
-		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
-		List<String[]> intervals = parsedJson.runners.get(position).interval;
-		textView3.setText("Interval: " + parsedJson.runners.get(position).counter[1] + "; Split Time: " + parsedJson.runners.get(position).interval.get(intervals.size() - 1)[1]);
+		//TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
+		//List<String[]> intervals = parsedJson.runners.get(position).interval;
+		//textView3.setText("Interval: " + parsedJson.runners.get(position).counter[1] + "; Split Time: " + parsedJson.runners.get(position).interval.get(intervals.size() - 1)[1]);
 		
+		
+		
+		StringBuilder builder = new StringBuilder();
+		List<String[]> intervals = parsedJson.runners.get(position).interval;
+		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
+		
+		for (String count: parsedJson.runners.get(position).counter)
+		{	
+				builder.append("Interval: " + count +";  ");
+				builder.append("Splits:" );
+			for (String splits: parsedJson.runners.get(position).interval.get(intervals.size() - 1))
+			{
+				builder.append(splits + " ");
+			}
+				builder.append("\n");
+		}
+		textView3.setText(builder.toString());
 		
 		
 		//TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);

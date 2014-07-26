@@ -61,6 +61,17 @@ public class GroupAdapter extends BaseAdapter{
 		
 		textView2.setText(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[ii]);
 		
+		StringBuilder builder_group = new StringBuilder();
+		//List<String[]> interval = parsedJson.runners.get(position).interval;
+		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
+		
+		for (String count: parsedJson.runners.get(position).counter)
+		{		
+			for (String splits: parsedJson.runners.get(position).interval.get(intervals.size() - 1))
+			builder_group.append(splits + " ");
+		}
+		textView3.setText(builder_group.toString());
+		
 		
 		
 		
