@@ -30,11 +30,11 @@ import android.widget.Button;
 import android.widget.Chronometer;
 
 
-public class GroupView extends ListFragment implements OnClickListener {
-	
-	private Chronometer chronometer;
+public class GroupView extends ListFragment implements OnClickListener{
 	
 	
+	private ChronometerSubs mChronometer;
+	private ListView labels;
 
 	
 	@Override
@@ -44,12 +44,19 @@ public class GroupView extends ListFragment implements OnClickListener {
 				false);
 		
 		
-		chronometer = (Chronometer) rootView.findViewById(R.id.chronometer);
+		mChronometer = (ChronometerSubs) rootView.findViewById(R.id.chronometer);
+        //mChronometer.start();        
+		//chronometer = (Chronometer) rootView.findViewById(R.id.chronometer);
 		((Button) rootView.findViewById(R.id.start_button)).setOnClickListener(this);
         ((Button) rootView.findViewById(R.id.stop_button)).setOnClickListener(this);
         
 		mTextView = (TextView) rootView.findViewById(R.id.workout_date_view);
 		mTextView1 = (TextView) rootView.findViewById(R.id.workout_id_view);
+		
+		//labels = (ListView) rootView.findViewById(R.id.list_titles);
+		//labels.setAdapter("[Hello]");
+		
+		
 		return rootView;
 	}	
 	
@@ -57,17 +64,17 @@ public class GroupView extends ListFragment implements OnClickListener {
     public void onClick(View v) {
         switch(v.getId()) {
         case R.id.start_button:
-        	SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
+        	SimpleDateFormat s = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         	String starttime = s.format(new Date());
-               chronometer.setBase(SystemClock.elapsedRealtime());
-               chronometer.start();
-               Log.d(DEBUG_TAG, "start"+ starttime);
+               mChronometer.setBase(SystemClock.elapsedRealtime());
+               mChronometer.start();
+               Log.i(DEBUG_TAG, "start"+ starttime);
                break;
        case R.id.stop_button:
-              chronometer.stop();
-              SimpleDateFormat st = new SimpleDateFormat("ddMMyyyyhhmmss");
+              mChronometer.stop();
+              SimpleDateFormat st = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
           	String stoptime = st.format(new Date());
-              Log.d(DEBUG_TAG, "stop" + stoptime );
+              Log.i(DEBUG_TAG, "stop" + stoptime );
               break;
        }
 }
@@ -75,13 +82,21 @@ public class GroupView extends ListFragment implements OnClickListener {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+    
     new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
    
   }
 
   @Override
   public void onListItemClick(ListView l, View v, int position, long id) {
-    Toast.makeText(getActivity(), ((Runners)l.getItemAtPosition(position)).name + "", Toast.LENGTH_SHORT).show();
+    //Toast.makeText(getActivity(), ((Runners)l.getItemAtPosition(position)).name + "", Toast.LENGTH_SHORT).show();
+	  View toolbar = v.findViewById(R.id.expanded_bar_group);
+		 
+      // Creating the expand animation for the item
+      ExpandAnimation expandAni = new ExpandAnimation(toolbar, 500);
+
+      // Start the animation on the toolbar
+     toolbar.startAnimation(expandAni);
   }
   private TextView mTextView;
   private TextView mTextView1;
@@ -120,7 +135,7 @@ public class GroupView extends ListFragment implements OnClickListener {
 				//set result to show on screen
 				
 			  
-			    setListAdapter(new WorkoutAdapter(result, getActivity()));		
+			    setListAdapter(new GroupAdapter(result, getActivity()));		
 			    mTextView.setText("Date: " + result.date);
 			    mTextView1.setText("Workout ID: " + result.id);
 			    

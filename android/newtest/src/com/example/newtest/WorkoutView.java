@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -28,6 +29,9 @@ import android.widget.Chronometer;
 
 
 public class WorkoutView extends ListFragment {
+	
+	private TextView mTextView;
+	
 	
 	
   @Override
@@ -39,7 +43,13 @@ public class WorkoutView extends ListFragment {
 
   @Override
   public void onListItemClick(ListView l, View v, int position, long id) {
-    Toast.makeText(getActivity(), ((Runners)l.getItemAtPosition(position)).name + "", Toast.LENGTH_SHORT).show();
+	  View toolbar = v.findViewById(R.id.expanded_bar);
+	 
+      // Creating the expand animation for the item
+      ExpandAnimation expandAni = new ExpandAnimation(toolbar, 500);
+
+      // Start the animation on the toolbar
+     toolbar.startAnimation(expandAni);
   }
 
 
@@ -72,13 +82,12 @@ public class WorkoutView extends ListFragment {
 			@Override
 			protected void onPostExecute(Workout result) {
 				Log.d(DEBUG_TAG,"execute");
-				//String resultstring = result.toString();
-
+				
 				//set result to show on screen
 				
 			  
 			    setListAdapter(new WorkoutAdapter(result, getActivity()));		
-			   
+			  
 			    
 			}
 			  

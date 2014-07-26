@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class WorkoutAdapter extends BaseAdapter{
+public class GroupAdapter extends BaseAdapter{
 
 	private Workout parsedJson; 
 	private Context context;
 	
-	public WorkoutAdapter(Workout workout, Context context) {
+	public GroupAdapter(Workout workout, Context context) {
 	 this.parsedJson = workout;
 	 this.context = context;
 	}
@@ -44,28 +44,22 @@ public class WorkoutAdapter extends BaseAdapter{
 		// TODO Auto-generated method stub
 		//Inflate a view to show peoples names
 		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_workout, null);
+			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_group, null);
 		}
 		
 		
 		
-		TextView textView =(TextView) convertView.findViewById(R.id.list_text_workout);
+		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
 		textView.setText(parsedJson.runners.get(position).name);
 		
-		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
+		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
+		
+		
+		
 		List<String[]> intervals = parsedJson.runners.get(position).interval;
-		textView3.setText("Interval: " + parsedJson.runners.get(position).counter[1] + "; Split Time: " + parsedJson.runners.get(position).interval.get(intervals.size() - 1)[1]);
+		int ii = parsedJson.runners.get(position).interval.get(intervals.size() - 1).length - 1;
 		
-		
-		
-		//TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
-		
-		
-		
-		//List<String[]> intervals = parsedJson.runners.get(position).interval;
-		//int ii = parsedJson.runners.get(position).interval.get(intervals.size() - 1).length - 1;
-		
-		//textView2.setText(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[ii]);
+		textView2.setText(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[ii]);
 		
 		
 		
