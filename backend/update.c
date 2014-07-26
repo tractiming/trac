@@ -7,6 +7,11 @@
 #include "update.h"
 #include "cJSON.h"
 
+const char hostname[] = "localhost";
+const char username[] = "elliot";
+const char password[] = "millie";
+const char database[] = "trac";
+
 const char update_query[] = "SELECT * FROM readerData AS r "
                             "INNER JOIN sessionData AS s ON " 
                             "(r.readerID=s.R1 OR r.readerID=s.R2 OR r.readerID=s.R3 "
@@ -203,8 +208,6 @@ int get_date_string(char *time_s)
     return SUCCESS;
 }
 
-
-
 /* Updates all the json split files where new data has been found. */
 int write_json_splits(MYSQL *con)
 {
@@ -218,7 +221,7 @@ int write_json_splits(MYSQL *con)
     const char *json_string;
     char date[15];
     FILE *fp;
-    char *filename;
+    char filename[50];
 
     // Get the ids of any session where a tag has been added.
     if (get_new_session_ids(con, &w_id, &ns))
@@ -226,10 +229,17 @@ int write_json_splits(MYSQL *con)
         free(w_id);
         return ERROR;
     }
-        
+
     // For each session, update the split file.
     for (k=0; k<ns; k++)
     {
+        // Immediately clear the new flag for all tags in an active session.
+        // Note: new can only be set by the process_new_split_data() method, so it is not 
+        // possible for a new tag to have been added since the list was made.
+        sprintf(g_query, "UPDATE splitData SET new=0 WHERE workoutID=%i", w_id[k]);
+        if (mysql_query(con, g_query))
+    	    return ERROR;    // query failed
+
         // Create a new cJSON object.
         root = cJSON_CreateObject();
         get_date_string(date); 
@@ -269,8 +279,9 @@ int write_json_splits(MYSQL *con)
         }
         
         // Print the json string to an appropriate file.
-        sprintf(filename, "../splits/w%i.json", w_id[k]);
-        fp = fopen(filename, "ab");
+        // Note: use absolute path since daemon runs in root dir.
+        sprintf(filename, "/web/html/trac/splits/w%i.json", w_id[k]); 
+        fp = fopen(filename, "w");
         if (fp != NULL)
         {
             json_string = cJSON_Print(root);
@@ -288,7 +299,21 @@ int write_json_splits(MYSQL *con)
     return SUCCESS;
 }
 
-int main(void)
+/* Handles one update cycle - update tables and split files. */
+int handle_updates(MYSQL *con)
+{
+    if (process_new_split_data(con))
+        return ERROR;
+    if (write_json_splits(con))
+        return ERROR;
+    //if (process_new_split_data(con) || write_json_splits(con))
+    //    return ERROR;
+
+    return SUCCESS;
+}
+
+
+/*int main(void)
 {
     // Connect to the MYSQL database.
     MYSQL *con = mysql_init(NULL);
@@ -318,4 +343,4 @@ int main(void)
     
 
     return 0;
-}
+}*/
