@@ -48,36 +48,70 @@ public class GroupAdapter extends BaseAdapter{
 		}
 		
 		
-		
+		//this finds the name and displays it
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
 		textView.setText(parsedJson.runners.get(position).name);
 		
+		
+		
+		
+		//This determines the what is the most recent split, and display it
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
-		
-		
-		
 		List<String[]> intervals = parsedJson.runners.get(position).interval;
 		int ii = parsedJson.runners.get(position).interval.get(intervals.size() - 1).length - 1;
-		
 		textView2.setText(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[ii]);
 		
+		
+		//Add times together and display elapsed time for split
+				TextView textView4 =(TextView) convertView.findViewById(R.id.list_text3);
+			    int temp_var = 0; 
+				for (int i = 0; i < parsedJson.runners.get(position).interval.get(intervals.size() - 1).length; i++)			
+				{
+					
+					int foo = Integer.parseInt(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[i]);
+					temp_var=temp_var + foo;
+				}
+				StringBuilder sb = new StringBuilder();
+				int min = (int) Math.floor(temp_var/60);
+				int sec = (int) (((temp_var*60)-Math.floor(temp_var/60)*3600)/60);
+				if (sec < 10)
+				{
+					sb.append(min + ":0" + sec);
+				}
+				else
+				{
+					sb.append(min + ":" +sec);
+				}
+				
+				String strI = sb.toString();
+				
+				textView4.setText(strI);
+			    
+		
+		//This is for the popup window
 		StringBuilder builder_group = new StringBuilder();
 		//List<String[]> interval = parsedJson.runners.get(position).interval;
 		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
 		
-		for (String count: parsedJson.runners.get(position).counter)
-		{		
-			for (String splits: parsedJson.runners.get(position).interval.get(intervals.size() - 1))
-			builder_group.append(splits + " ");
-		}
+				builder_group.append("Session Splits: ");
+			for (int i = 0; i < parsedJson.runners.get(position).interval.get(intervals.size() - 1).length; i++)			
+			{
+				builder_group.append(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[i] + " ");
+				
+			}
 		textView3.setText(builder_group.toString());
 		
-		
-		
+	
 		
 		//Fill that view with data
 		//Return that view
 		return convertView;
+	}
+
+
+	private Object Integer(int temp_var) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
