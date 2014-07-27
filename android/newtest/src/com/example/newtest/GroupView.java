@@ -35,6 +35,9 @@ public class GroupView extends ListFragment implements OnClickListener{
 	
 	private ChronometerSubs mChronometer;
 	private ListView labels;
+	View detailListHeader;
+	View detailListHeader2;
+	View detailListHeader3;
 
 	
 	@Override
@@ -50,13 +53,17 @@ public class GroupView extends ListFragment implements OnClickListener{
 		((Button) rootView.findViewById(R.id.start_button)).setOnClickListener(this);
         ((Button) rootView.findViewById(R.id.stop_button)).setOnClickListener(this);
         
+        
+        //Inflate ID and Workout Numbers
 		mTextView = (TextView) rootView.findViewById(R.id.workout_date_view);
 		mTextView1 = (TextView) rootView.findViewById(R.id.workout_id_view);
 		
-		//labels = (ListView) rootView.findViewById(R.id.list_titles);
-		//labels.setAdapter("[Hello]");
+		//Inflate Header
+		detailListHeader = rootView.findViewById(R.id.header);
+		detailListHeader2 = rootView.findViewById(R.id.header2);
+		detailListHeader3 = rootView.findViewById(R.id.header3);
 		
-		
+
 		return rootView;
 	}	
 	
@@ -116,8 +123,10 @@ public class GroupView extends ListFragment implements OnClickListener{
 		        .build();
 				try {
 				    Response response = client.newCall(request).execute();
-				    Workout parsedjWorkout = gson.fromJson(response.body().charStream(), Workout.class);
 				   
+				    Workout parsedjWorkout = gson.fromJson(response.body().charStream(), Workout.class);
+				    
+				    	
 				    Log.d(DEBUG_TAG, "GSON");
 				    return parsedjWorkout;
 				    

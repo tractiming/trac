@@ -63,15 +63,19 @@ public class WorkoutAdapter extends BaseAdapter{
 		List<String[]> intervals = parsedJson.runners.get(position).interval;
 		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
 		
-		for (String count: parsedJson.runners.get(position).counter)
+		for (int i = 0; i < parsedJson.runners.get(position).counter.length;i++)
 		{	
-				builder.append("Interval: " + count +";  ");
+				builder.append("Interval: " +  parsedJson.runners.get(position).counter[i] +";  ");
 				builder.append("Splits:" );
-			for (String splits: parsedJson.runners.get(position).interval.get(intervals.size() - 1))
+				
+			for (String splits: parsedJson.runners.get(position).interval.get(i))
 			{
 				builder.append(splits + " ");
+				
 			}
-				builder.append("\n");
+				
+			builder.append("\n");
+				
 		}
 		textView3.setText(builder.toString());
 		
