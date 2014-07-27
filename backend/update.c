@@ -182,7 +182,7 @@ int get_splits_from_id(MYSQL *con, int s_id, int t_id, float **splits, int **cnt
     while ((row = mysql_fetch_row(res)))
     {
         (*splits)[k] = atof(row[0]);
-        (*cnt)[k] = k;
+        (*cnt)[k] = k+1; // index the counter from 1
         //printf("test %i\n", (*splits)[k]);
         k++;
     }
@@ -217,7 +217,7 @@ int write_json_splits(MYSQL *con)
     char **name_list;
     float *splits;
     int k, j, m;
-    cJSON *root, *rnr, *rnr_a;
+    cJSON *root, *rnr, *rnr_a, *splt_a;
     const char *json_string;
     char date[15];
     FILE *fp;
@@ -269,9 +269,11 @@ int write_json_splits(MYSQL *con)
                 return ERROR;
             }
 
-            // Add splits and counter to json.
+            // Add splits and counter to json. Note: use nested splits.
 	    cJSON_AddItemToObject(rnr, "counter",  cJSON_CreateIntArray(cntr, ni));
- 	    cJSON_AddItemToObject(rnr, "interval", cJSON_CreateFloatArray(splits, ni) );
+ 	    cJSON_AddItemToObject(rnr, "interval", splt_a = cJSON_CreateArray());
+            for (m=0; m<ni; m++)
+                cJSON_AddItemToArray(splt_a, cJSON_CreateFloatArray(&splits[m], 1));
 
             // Free the memory for splits and counter.
             free(splits);            
@@ -306,8 +308,6 @@ int handle_updates(MYSQL *con)
         return ERROR;
     if (write_json_splits(con))
         return ERROR;
-    //if (process_new_split_data(con) || write_json_splits(con))
-    //    return ERROR;
 
     return SUCCESS;
 }
