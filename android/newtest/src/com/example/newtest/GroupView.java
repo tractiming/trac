@@ -76,12 +76,14 @@ public class GroupView extends ListFragment implements OnClickListener{
                mChronometer.setBase(SystemClock.elapsedRealtime());
                mChronometer.start();
                Log.i(DEBUG_TAG, "start"+ starttime);
+               new AsyncServiceCall().execute("http://76.12.155.219/trac/splits/w1000.json");
                break;
        case R.id.stop_button:
               mChronometer.stop();
               SimpleDateFormat st = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
           	String stoptime = st.format(new Date());
               Log.i(DEBUG_TAG, "stop" + stoptime );
+              new AsyncServiceCall().execute("http://76.12.155.219/trac/splits/w1000.json");
               break;
        }
 }
@@ -90,7 +92,7 @@ public class GroupView extends ListFragment implements OnClickListener{
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
     
-    new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
+    new AsyncServiceCall().execute("http://76.12.155.219/trac/splits/w1000.json");
     
   }
 

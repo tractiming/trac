@@ -35,7 +35,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:gravity="center">
+    android:gravity="center"
+    >
             <Button
               style="?android:attr/borderlessButtonStyle"
                android:text="@string/start"
@@ -109,6 +110,7 @@
   android:id="@android:id/list"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:headerDividersEnabled="true">
+  android:headerDividersEnabled="true"
+  >
 	</ListView> 
 </LinearLayout>
