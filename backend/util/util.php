@@ -128,6 +128,16 @@ function clear_workout_data($db, $w_name)
     make_query($db, "DELETE FROM splitData WHERE workoutID=${w_name}");
 }
 
+function get_splits($db, $w_name, $tag_id_int)
+{
+    $result =make_query($db, "SELECT (TIMESTAMPDIFF(SECOND, (SELECT MIN(time) FROM "
+                 ."splitData WHERE (workoutID=${w_name} AND tagID=${tag_id_int})), time)) "
+                 ."AS dt FROM splitData WHERE (workoutID=${w_name} AND "
+                 ."tagID=${tag_id_int}) ORDER BY dt ASC");
+    
+
+
+}
 
 if (!debug_backtrace()) 
 {

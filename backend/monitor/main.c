@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <errno.h>
 #include <unistd.h>
 #include <syslog.h>
@@ -14,6 +15,28 @@
 
 #define RUN_AS_DAEMON 1 
 #define SLEEP_MS(ms) (usleep(1000*ms))
+
+const char pid_filename[] = "/web/html/trac/backend/logs/monitor.pid";
+int lfp;
+
+/* Handles interrupts. Deletes the pid when program is killed. */
+void signal_handler(int sig)
+{
+    switch(sig)
+    {
+        case SIGHUP:
+            unlink(pid_filename);
+            exit(EXIT_SUCCESS);
+        case SIGINT:
+            unlink(pid_filename);
+            exit(EXIT_SUCCESS);
+        case SIGTERM:
+            unlink(pid_filename);
+            exit(EXIT_SUCCESS);
+        default:
+            break;
+    }
+}
 
 int main(void) {
         
@@ -37,7 +60,7 @@ int main(void) {
             umask(0);
                 
             /* Open any logs here */        
-            //openlog("traclog", LOG_PID, LOG_DAEMON);
+            //openlog("/web/html/trac/backend/logs/tr.log", LOG_PID, LOG_DAEMON);
                 
             /* Create a new SID for the child process */
             sid = setsid();
@@ -51,6 +74,18 @@ int main(void) {
                 /* Log the failure */
                 exit(EXIT_FAILURE);
             }
+
+            /* Set the lock file. */
+            signal(SIGHUP, signal_handler);
+            lfp = open(pid_filename, O_RDWR|O_CREAT, 0640);
+            if (lfp < 0)
+                exit(EXIT_FAILURE); // can't open
+            if (lockf(lfp, F_TLOCK, 0) < 0)
+                exit(EXIT_FAILURE); // can't lock
+            char str[10];
+            sprintf(str, "%d\n", getpid());
+            write(lfp, str, strlen(str));
+            close(lfp);
         
             /* Close out the standard file descriptors */
             close(STDIN_FILENO);
@@ -65,7 +100,7 @@ int main(void) {
         if (con == NULL)
             exit(EXIT_FAILURE);
 
-        if (mysql_real_connect(con, hostname, username, password, database,0,NULL,0)==NULL)
+        if (!mysql_real_connect(con, hostname, username, password, database,0,NULL,0))
         {
             mysql_close(con);
             exit(EXIT_FAILURE);
@@ -80,5 +115,7 @@ int main(void) {
            
            SLEEP_MS(1000); /* wait */
         }
+
+   mysql_library_end();
    exit(EXIT_SUCCESS);
 }

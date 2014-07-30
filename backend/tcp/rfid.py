@@ -37,6 +37,7 @@ def update_tag_info(tag, string):
             t4 = (s[1].split(' '))[0].split('/')
             tag.time = datetime.datetime(int(t4[0]), int(t4[1]), int(t4[2]),
                                          hours, minutes, seconds, microseconds)
+            tag.millisec = microseconds/1000
         elif s[0] == "Ant":
             tag.ant = int(s[1])
 
@@ -59,6 +60,7 @@ def update_tag_info_old(tag, string):
             t4 = (s[1].split(' '))[0].split('/')
             tag.time = datetime.datetime(int(t4[0]), int(t4[1]), int(t4[2]),
                                          hours, minutes, seconds, microseconds)
+            tag.millisec = 1000*microseconds
         elif s[0] == "Ant":
             tag.ant = int(s[1])
 
@@ -145,11 +147,13 @@ def remove_tag(database, tag):
 def update_database_tags(database, tag):
     """Updates a tag's info in the database."""
     database.connect()
-    database.cursor.execute("INSERT INTO %s (tagID, tagTime, readerID, parsed) "
-                            "VALUES ('%s', '%s', '%s', %i) ON DUPLICATE KEY UPDATE "
-                            "tagTime = values (tagTime), readerID = values (readerID), "
-                            "parsed = values (parsed)"
-            %(database.table, tag.id, tag.time.strftime('%Y-%m-%d %H:%M:%S'), '1', 0))
+    database.cursor.execute("INSERT INTO %s (tagID, tagTime, milliseconds, readerID, "
+                            "parsed) VALUES ('%s', '%s', %i, '%s', %i) ON DUPLICATE "
+                            "KEY UPDATE tagTime = values (tagTime), readerID = values "
+                            "(readerID), parsed = values (parsed), milliseconds = "
+                            "values (milliseconds)" 
+            %(database.table, tag.id, tag.time.strftime('%Y-%m-%d %H:%M:%S'), 
+              tag.millisec, '1', 0))
     database.disconnect()
 
 def handle_msg(db, tag, msg):
@@ -158,7 +162,7 @@ def handle_msg(db, tag, msg):
         return 1
 
     update_tag_info(tag, msg)
-    print print_tag_info(tag)
+    #print print_tag_info(tag)
     update_database_tags(db, tag)
     return 0
 
@@ -196,6 +200,9 @@ test_string_3 = ("""
 Tag:11C4 00E3 2A39, Disc:1970/03/11 16:06:33.285, Last:1970/03/11 16:17:33.285, Count:1, Ant:0, Proto:2
 #End of Notification Message""")
 
+test_string_4 = "Tag:11C4 00E3 2A39, Disc:1970/03/11 16:06:33.285, Last:1970/03/11 16:17:33.285, Count:1, Ant:0, Proto:2"
+
+
 # Then some functions for reading from and writing to the database.
 def test_full_msg_read():
     """Tests the parsing and reading functions (No database)."""
@@ -213,8 +220,8 @@ def test_full_msg_add():
 
     print "Updating tag info...",
     tag = RFIDTag()
-    update_tag_info(tag, test_string_3)
-    register_tag(db, tag)
+    update_tag_info(tag, test_string_4)
+    #register_tag(db, tag)
     update_database_tags(db, tag)
     print "Updated!"
 

@@ -1,0 +1,52 @@
+2014/07/29 20:42 -0400 [-] Log opened.
+2014/07/29 20:42 -0400 [-] twistd 2.5.0 (/usr/bin/python 2.4.3) starting up
+2014/07/29 20:42 -0400 [-] reactor class: <class 'twisted.internet.selectreactor.SelectReactor'>
+2014/07/29 20:42 -0400 [-] Loading twisted_server.py...
+2014/07/29 20:42 -0400 [-] Traceback (most recent call last):
+2014/07/29 20:42 -0400 [-]   File "/usr/lib/python2.4/site-packages/twisted/application/app.py", line 218, in getApplication
+2014/07/29 20:42 -0400 [-]     application = service.loadApplication(filename, style, passphrase)
+2014/07/29 20:42 -0400 [-]   File "/usr/lib/python2.4/site-packages/twisted/application/service.py", line 341, in loadApplication
+2014/07/29 20:42 -0400 [-]     application = sob.loadValueFromFile(filename, 'application', passphrase)
+2014/07/29 20:42 -0400 [-]   File "/usr/lib/python2.4/site-packages/twisted/persisted/sob.py", line 216, in loadValueFromFile
+2014/07/29 20:42 -0400 [-]     value = d[variable]
+2014/07/29 20:42 -0400 [-] KeyError: 'application'
+2014/07/29 20:42 -0400 [-] Failed to load application: 'application'
+	Could not find 'application' in the file. To use 'twistd -y', your .tac
+	file must create a suitable object (e.g., by calling service.Application())
+	and store it in a variable named 'application'. twistd loads your .tac file
+	and scans the global variables for one of this name.
+	
+	Please read the 'Using Application' HOWTO for details.
+	
+2014/07/29 20:42 -0400 [-] Unhandled Error
+	Traceback (most recent call last):
+	  File "/usr/lib/python2.4/site-packages/twisted/application/app.py", line 379, in run
+	    runApp(config)
+	  File "/usr/lib/python2.4/site-packages/twisted/scripts/twistd.py", line 23, in runApp
+	    _SomeApplicationRunner(config).run()
+	  File "/usr/lib/python2.4/site-packages/twisted/application/app.py", line 157, in run
+	    self.application = self.createOrGetApplication()
+	  File "/usr/lib/python2.4/site-packages/twisted/application/app.py", line 207, in createOrGetApplication
+	    application = getApplication(self.config, passphrase)
+	--- <exception caught here> ---
+	  File "/usr/lib/python2.4/site-packages/twisted/application/app.py", line 218, in getApplication
+	    application = service.loadApplication(filename, style, passphrase)
+	  File "/usr/lib/python2.4/site-packages/twisted/application/service.py", line 341, in loadApplication
+	    application = sob.loadValueFromFile(filename, 'application', passphrase)
+	  File "/usr/lib/python2.4/site-packages/twisted/persisted/sob.py", line 216, in loadValueFromFile
+	    value = d[variable]
+	exceptions.KeyError: 'application'
+	
+2014/07/29 20:42 -0400 [-] 
+2014/07/29 20:43 -0400 [-] Log opened.
+2014/07/29 20:43 -0400 [-] twistd 2.5.0 (/usr/bin/python 2.4.3) starting up
+2014/07/29 20:43 -0400 [-] reactor class: <class 'twisted.internet.selectreactor.SelectReactor'>
+2014/07/29 20:43 -0400 [-] Loading twisted_server.py...
+2014/07/29 20:43 -0400 [-] Loaded.
+2014/07/29 20:43 -0400 [-] twisted.internet.protocol.Factory starting on 36740
+2014/07/29 20:43 -0400 [-] Starting factory <twisted.internet.protocol.Factory instance at 0x839e0ac>
+2014/07/29 20:44 -0400 [-] Received SIGTERM, shutting down.
+2014/07/29 20:44 -0400 [-] (Port 36740 Closed)
+2014/07/29 20:44 -0400 [-] Stopping factory <twisted.internet.protocol.Factory instance at 0x839e0ac>
+2014/07/29 20:44 -0400 [-] Main loop terminated.
+2014/07/29 20:44 -0400 [-] Server Shut Down.

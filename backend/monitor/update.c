@@ -41,9 +41,9 @@ int process_new_split_data(MYSQL *con)
     {
 	// For each match, insert a new entry into the splitData table.
         sprintf(g_query, "INSERT IGNORE INTO splitData "
-                         "(name, workoutID, time, tagID, new) "
-                         "VALUES (\"%s\", %s, \"%s\", \"%s\", %i)", 
-                row[12], row[4], row[1], row[16], 1);
+                         "(name, workoutID, time, milliseconds, tagID, new) "
+                         "VALUES (\"%s\", %s, \"%s\", \"%s\", \"%s\", %i)", 
+                row[13], row[5], row[1], row[2], row[17], 1);
         
         if (mysql_query(con, g_query))
         {
@@ -116,7 +116,7 @@ int get_tags_in_session(MYSQL *con, int s_id, int **tag_ints, char ***names, int
 
     res = mysql_store_result(con);
     if (res == NULL)
-        return 0;    
+        return SUCCESS;    
 
     // Get an array of all the tag ints.
     int temp = mysql_num_rows(res); *n = temp;
@@ -152,16 +152,17 @@ int get_splits_from_id(MYSQL *con, int s_id, int t_id, float **splits, int **cnt
     MYSQL_ROW row;
 
     // Get all time differences for the runner.
-    sprintf(g_query, "SELECT (TIMESTAMPDIFF(SECOND, (SELECT MIN(time) FROM splitData "
-                     "WHERE (workoutID=%i AND tagID=%i)), time)) as dt FROM splitData "
-                     "WHERE (workoutID=%i AND tagID=%i) ORDER BY dt ASC", 
-                     s_id, t_id, s_id, t_id);
+    sprintf(g_query, "SELECT (UNIX_TIMESTAMP(time)+(milliseconds/1000))- "
+                     "(SELECT MIN(UNIX_TIMESTAMP(time)+(milliseconds/1000)) "
+                     "FROM splitData WHERE (tagID=%i AND workoutID=%i)) AS dt "
+                     "FROM splitData WHERE (tagID=%i AND workoutID=%i) "
+                     "ORDER BY dt ASC", t_id, s_id, t_id, s_id);
     if (mysql_query(con, g_query))
     	return ERROR;    // query failed
 
     res = mysql_store_result(con);
     if (res == NULL)
-        return 0;    
+        return SUCCESS;    
 
     // Get an array of all the tag ints.
     int temp = mysql_num_rows(res); *n = temp;
@@ -174,6 +175,7 @@ int get_splits_from_id(MYSQL *con, int s_id, int t_id, float **splits, int **cnt
     *cnt = malloc(temp*sizeof(int));
     if (*cnt == NULL)
     {
+        free(*splits);
         mysql_free_result(res);
         return ERROR;
     }
@@ -181,11 +183,15 @@ int get_splits_from_id(MYSQL *con, int s_id, int t_id, float **splits, int **cnt
     k = 0; 
     while ((row = mysql_fetch_row(res)))
     {
-        (*splits)[k] = atof(row[0]);
+        (*splits)[k] = atof(row[0]); // each value is the time since start
         (*cnt)[k] = k+1; // index the counter from 1
-        //printf("test %i\n", (*splits)[k]);
         k++;
     }
+
+    // Calculate true splits based on differences.
+    for (k=(temp-1); k>0; k--)
+        (*splits)[k] = (*splits)[k]-(*splits)[k-1];
+
     mysql_free_result(res);
     return SUCCESS;
 
@@ -233,12 +239,6 @@ int write_json_splits(MYSQL *con)
     // For each session, update the split file.
     for (k=0; k<ns; k++)
     {
-        // Immediately clear the new flag for all tags in an active session.
-        // Note: new can only be set by the process_new_split_data() method, so it is not 
-        // possible for a new tag to have been added since the list was made.
-        sprintf(g_query, "UPDATE splitData SET new=0 WHERE workoutID=%i", w_id[k]);
-        if (mysql_query(con, g_query))
-    	    return ERROR;    // query failed
 
         // Create a new cJSON object.
         root = cJSON_CreateObject();
@@ -251,7 +251,12 @@ int write_json_splits(MYSQL *con)
         //printf("For workout %i:\n", w_id[k]);
         if (get_tags_in_session(con, w_id[k], &t_id, &name_list, &nr))
         {
-            free(w_id); free(t_id); cJSON_Delete(root);
+            cJSON_Delete(root);
+            free(t_id);
+            for (m=0;m<nr;m++) 
+                free(name_list[m]); 
+            free(name_list);
+            free(w_id);
             return ERROR;
         }
 
@@ -265,7 +270,14 @@ int write_json_splits(MYSQL *con)
             // Get all of the splits for this runner.
             if (get_splits_from_id(con, w_id[k], t_id[j], &splits, &cntr, &ni))
             {
-                free(w_id); free(t_id); free(splits); free(cntr); cJSON_Delete(root);
+                free(splits); 
+                free(cntr);
+                cJSON_Delete(root);
+                free(t_id);
+                for (m=0;m<nr;m++) 
+                    free(name_list[m]); 
+                free(name_list);
+                free(w_id);
                 return ERROR;
             }
 
@@ -290,11 +302,21 @@ int write_json_splits(MYSQL *con)
             fputs(json_string, fp);
             fclose(fp);
         }
+
+        // Clear the new flag for all tags in an active session.
+        // Note: new can only be set by the process_new_split_data() method, 
+        // so it is not possible for a new tag to have been added since the 
+        // list was made.
+        sprintf(g_query, "UPDATE splitData SET new=0 WHERE workoutID=%i", w_id[k]);
+        if (mysql_query(con, g_query))
+    	    return ERROR;    // query failed
         cJSON_Delete(root);
 
         // Free memory for tag list, name list.
         free(t_id);
-        for (m=0;m<nr;m++) free(name_list[m]); free(name_list);
+        for (m=0;m<nr;m++) 
+            free(name_list[m]); 
+        free(name_list);
     }
 
     free(w_id);
@@ -312,35 +334,3 @@ int handle_updates(MYSQL *con)
     return SUCCESS;
 }
 
-
-/*int main(void)
-{
-    // Connect to the MYSQL database.
-    MYSQL *con = mysql_init(NULL);
-    if (con == NULL)
-        exit(EXIT_FAILURE);
-
-    if (mysql_real_connect(con, hostname, username, password, database, 0, NULL, 0)
-         == NULL)
-    {
-        mysql_close(con);
-        exit(EXIT_FAILURE);
-    }
-    if(write_json_splits(con))
-    {
-        mysql_close(con);
-        exit(EXIT_FAILURE);
-    }
-        //printf("n is %d\n", n);
-        //int k;
-        //for (k=0; k<2; k++)
-        //    printf("%i\n", w_id[k]);
-        //if (process_new_split_data(con))
-        //{
-        //    mysql_close(con);
-        //    exit(EXIT_FAILURE);
-        //}
-    
-
-    return 0;
-}*/
