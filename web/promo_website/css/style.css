@@ -256,16 +256,80 @@ div.parallax {
       div.parallax > div {
         background-attachment: scroll !important; } }
     div.parallax > div div.content {
-      
       margin: 0 auto;
       max-width: 960px; }
   div.parallax div#top {
-    
-    
-     background: url("../images/startup.jpg") center top no-repeat fixed;
-    height: 850px; }
- 
-   
+    background: none;
+    text-align: center;
+    position: relative;
+    height: 945px; }
+    @media only screen and (max-width: 719px) {
+      div.parallax div#top {
+        height: 245px; } }
+    div.parallax div#top div.content {
+      padding: 300px 0;
+      z-index: 10;
+      position: relative;
+      visibility: hidden; }
+      div.parallax div#top div.content h1.logo {
+        background: url("../images/logo.png") no-repeat;
+        display: block;
+        height: 191px;
+        margin: 0 auto;
+        text-indent: -999999px;
+        width: 280px; }
+  div.parallax div.top-hide {
+    background: none !important; }
+  div.parallax div.lower-opacity {
+    opacity: 0.5; }
+  div.parallax div.visible {
+    visibility: visible !important; }
+  div.parallax div.video-background {
+    overflow: hidden;
+    background-color: #000;
+    height: 900px;
+    position: absolute;
+    width: 100%;
+    top: 45px;
+    left: 0; }
+    @media only screen and (max-width: 719px) {
+      div.parallax div.video-background {
+        height: 200px; } }
+    div.parallax div.video-background video {
+      min-height: 100%;
+      width: 100%;
+      background-color: #000; }
+    div.parallax div.video-background div.ui-video-background {
+      position: absolute;
+      top: 100px;
+      right: 100px; }
+    div.parallax div.video-background a.ui-icon {
+      text-indent: -99999px;
+      display: block;
+      opacity: 0.7;
+      background-image: no-repeat;
+      overflow: hidden; }
+    div.parallax div.video-background li.ui-video-background-play {
+      visibility: hidden; }
+    div.parallax div.video-background li.ui-video-background-mute {
+      padding: 10px;
+      display: block; }
+      div.parallax div.video-background li.ui-video-background-mute a.ui-icon-volume-on {
+        background: url("../images/Icon_unmute.png") no-repeat;
+        display: block;
+        width: 70px;
+        height: 65px; }
+      div.parallax div.video-background li.ui-video-background-mute a.ui-icon-volume-off {
+        background: url("../images/Icon_mute.png") no-repeat;
+        display: block;
+        width: 70px;
+        height: 65px; }
+      @media only screen and (device-width: 768px) {
+        div.parallax div.video-background li.ui-video-background-mute {
+          display: none; } }
+      @media only screen and (device-width: 320px) {
+        div.parallax div.video-background li.ui-video-background-mute {
+          display: none; } }
      
           
           
@@ -355,9 +419,8 @@ div.parallax {
     text-align: center; }
     @media only screen and (min-width: 960px) {
       div.parallax div#bg3 {
-        min-height: 650px; } }
+        min-height: 800px; } }
     div.parallax div#bg3 div.content {
-      width:800px;
       padding-top: 135px;
       padding-bottom: 135px; }
       @media only screen and (min-width: 720px) and (max-width: 959px) {
@@ -371,12 +434,15 @@ div.parallax {
       div.parallax div#bg3 div.content p {
         margin: 0 auto 24px; }
         
-        
+        div.parallax div#bg3 div.content .picture{
+          float:left;
+        }
         
          div.parallax div#bg3 div.content .text{
-          
-         
+          float:right;
+          width: 450px;
          }
+        
         
         
         
@@ -395,9 +461,12 @@ div.parallax {
           padding-top: 100px;
           padding-bottom: 100px; } }
       @media only screen and (max-width: 719px) {
-        div.parallax div#bg4 div.content {
+        div.parallax div#bg4 div.content {  
           padding-top: 80px;
           padding-bottom: 80px; } }
       div.parallax div#bg4 div.content p {
         margin: 0 auto 24px; }
  
+ #top{
+	xbackground:url("images/shoes-video.jpg");   
+ }

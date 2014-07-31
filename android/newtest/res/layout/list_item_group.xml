@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal" 
+    android:weightSum="3">
 
     <TextView 
         android:id="@+id/list_text"
@@ -10,6 +11,8 @@
         android:layout_height="wrap_content"
         android:padding= "10dp"
         android:textSize="18sp"
+        android:layout_weight="0"
+        android:gravity="left"
         />
     
     <TextView 
@@ -18,14 +21,18 @@
         android:layout_height="wrap_content"
         android:padding= "10dp"
         android:textSize="18sp"
-        android:layout_marginLeft="45dp"/>
+        android:layout_marginLeft="45dp"
+        android:layout_weight="1"
+        android:gravity="right|center_vertical"/>
     <TextView 
         android:id="@+id/list_text3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding= "10dp"
         android:textSize="18sp"
-        android:layout_marginLeft="65dp"/>
+        android:layout_marginLeft="65dp"
+        android:layout_weight="1"
+        android:gravity="right|center_vertical"/>
     
 	    
     
@@ -65,3 +72,4 @@
 	    />
 
 </LinearLayout>
+

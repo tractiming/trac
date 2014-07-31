@@ -67,7 +67,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="#3577A8"
-    >
+    android:weightSum="4">
     <TextView
     android:id="@+id/header"
     android:layout_width="wrap_content"
@@ -76,7 +76,9 @@
     android:background="#3577A8"
     android:textSize="18sp"
     android:textColor="#FFFFFF"
-    android:layout_marginLeft="5dp"
+    
+    android:layout_weight="0"
+    android:gravity="left"
     />
     <TextView
     android:id="@+id/header2"
@@ -86,7 +88,8 @@
     android:background="#3577A8"
     android:textSize="18sp"
     android:textColor="#FFFFFF"
-    android:layout_marginLeft="40dp"
+    android:layout_weight="1"
+    android:gravity="right|center_vertical"
     />
     <TextView
     android:id="@+id/header3"
@@ -97,6 +100,8 @@
     android:textSize="18sp"
     android:textColor="#FFFFFF"
     android:layout_marginLeft="40dp"
+    android:layout_weight="1"
+    android:gravity="right|center_vertical"
     />
     
     </LinearLayout>
