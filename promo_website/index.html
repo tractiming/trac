@@ -71,10 +71,11 @@
   <div class="parallax">
     <div id="top">
       <div id="banner" class="content">
-       
-       
+        <h1 class="logo">Bow Truss</h1>
+        <a href="#" class="target" id="target" title="play">PLAY</a>
       </div>
-      
+      <div class="video-background">
+      </div>
     </div>
 
     <div id="bg2">
@@ -127,7 +128,11 @@
     <div id="bg3">
       <div class="content">
         <h2>Meet T.R.A.C.</h2>
-       
+       <div class="picture">
+          <h3>Our Founders:</h3>
+          <img src="images/083A6144.jpg" width="500px">
+          <h4>Elliot Hevel &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  Griffin Kelly</h4>
+        </div>
           
         <div class="text"><p>
         <h3>Our Team:</h3>
@@ -182,9 +187,7 @@
   $(document).ready(function() {
     /* fancy background video player deally */    
     $('.video-background').videobackground({
-      videoSource: [['https://vimeo.com/49330578/download?t=1369858220&v=117134159&s=75ad0765595426e6f9216716a2f076c8', 'video/mp4'],
-        ['video/bow_truss_1280x720.webmhd.webm', 'video/webm'], 
-        ['http://vid.ly/8j1j6f?content=video', 'video/ogg']], 
+      videoSource: ['video/trac.mov', 'video/mov'], 
       poster: '',
       resize: false,
       loop: true,
