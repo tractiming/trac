@@ -461,9 +461,12 @@ div.parallax {
           padding-top: 100px;
           padding-bottom: 100px; } }
       @media only screen and (max-width: 719px) {
-        div.parallax div#bg4 div.content {
+        div.parallax div#bg4 div.content {  
           padding-top: 80px;
           padding-bottom: 80px; } }
       div.parallax div#bg4 div.content p {
         margin: 0 auto 24px; }
  
+ #top{
+	xbackground:url("images/shoes-video.jpg");   
+ }
