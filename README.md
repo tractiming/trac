@@ -3,9 +3,14 @@ trac
 
 timing and racing system
 
-Potential SQL Database Information
+This repo is organized as follows:
 
-Database: testrfid
-Table Name: demotable
-Row 1: RFID Tag string--"ID"
-Row 2: Time-------------"passtime"
+web/ - the trac-us.com website
+
+android/ - android app
+
+pic/ - embedded code running on the pic mocrocontroller
+
+backend/ - server-side code managing incoming data and the database
+
+

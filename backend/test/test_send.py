@@ -8,6 +8,10 @@ TCP_PORT = 36740
 BUFFER_SIZE = 1024
 
 
+def build_example_msg(tag):
+    pass
+
+
 def init_tcp():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((TCP_IP, TCP_PORT))

@@ -44,3 +44,6 @@ disassembly/
 
 # Python
 *.pyc
+
+# Log files
+logs/
