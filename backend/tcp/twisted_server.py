@@ -49,27 +49,27 @@ class ReaderComm(LineReceiver):
     def connectionLost(self, reason):
         log.msg("Connection lost!"+ str(reason))
 
-#def main():
-    #"""Creates factory and listens for incoming connections."""
-    # Log all output to standard output. TODO: log to appropriate file.    
-    #log.startLogging(sys.stdout)
 factory = Factory()
 factory.protocol = ReaderComm
 
 application = Application("tcp_server")
 tcpServerService = TCPServer(PORT, factory)
 tcpServerService.setServiceParent(application)
-    #reactor.listenTCP(PORT, factory)
-    #reactor.run()
 
+def main():
+    """Creates factory and listens for incoming connections."""
+    # Log all output to standard output. TODO: log to appropriate file.    
+    #log.startLogging(sys.stdout)
+    reactor.listenTCP(PORT, factory)
+    reactor.run()
 
-#if __name__ == "__main__":
-#    if '--debug' in sys.argv:
-#        DEBUG = True
-#    if DEBUG:
-#        bug_msg = "ON"
-#    else:
-#        bug_msg = "OFF"
-#    print "Server started! (DEBUG is %s)" %(bug_msg)
-#    main()
+if __name__ == "__main__":
+    if '--debug' in sys.argv:
+        DEBUG = True
+    if DEBUG:
+        bug_msg = "ON"
+    else:
+        bug_msg = "OFF"
+    print "Server started! (DEBUG is %s)" %(bug_msg)
+    main()
         

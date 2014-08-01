@@ -28,24 +28,42 @@ stop_tcp ()
   fi
 }
 
-while getopts bre name
+while getopts udsr name
 do
   case $name in
-    b)bopt=1;;
+    u)uopt=1;;
+    d)dopt=1;;
+    s)sopt=1;;
     r)ropt=1;;
-    e)eopt=1;;
     *)echo "Invalid argument"
   esac
 done
 
-if [[ ! -z $bopt ]]
+if [[ ! -z $sopt ]]
+then 
+  if [ -f logs/monitor.pid ]
+  then  
+    echo "Monitor daemon is running."
+  else
+    echo "Monitor daemon is not running."
+  fi
+
+  if [ -f logs/tcp_server.pid ]
+  then
+    echo "TCP listener is running."
+  else
+    echo "TCP listener is not running."
+  fi
+fi
+
+if [[ ! -z $uopt ]]
 then
   start_monitor
   start_tcp
   echo "TRAC server started."
 fi
 
-if [[ ! -z $eopt ]]
+if [[ ! -z $dopt ]]
 then 
   stop_tcp
   stop_monitor
