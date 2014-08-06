@@ -74,13 +74,14 @@ public class GroupAdapter extends BaseAdapter{
 				StringBuilder sb = new StringBuilder();
 				int min = (int) Math.floor(temp_var/60);
 				int sec = (int) (((temp_var*60)-Math.floor(temp_var/60)*3600)/60);
+				//int mili = (int) (temp_var-Math.floor(temp_var));
 				if (sec < 10)
 				{
 					sb.append(min + ":0" + sec);
 				}
 				else
 				{
-					sb.append(min + ":" +sec);
+					sb.append(min + ":" +sec );
 				}
 				
 				String strI = sb.toString();
