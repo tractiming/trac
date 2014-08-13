@@ -5,9 +5,12 @@ package com.example.newtest;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +41,10 @@ public class GroupView extends ListFragment implements OnClickListener{
 	View detailListHeader;
 	View detailListHeader2;
 	View detailListHeader3;
+	//private final static int INTERVAL = 1000; //runs every 2 minutes
+	//private Handler mHandler;
+	
+	
 
 	
 	@Override
@@ -45,6 +52,29 @@ public class GroupView extends ListFragment implements OnClickListener{
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_group_view, container,
 				false);
+		
+		    final Handler handler = new Handler();
+		    Timer timer = new Timer();
+		    TimerTask doAsynchronousTask = new TimerTask() {       
+		        @Override
+		        public void run() {
+		            handler.post(new Runnable() {
+		                public void run() {       
+		                    try {
+		                    	AsyncServiceCall asyncServiceCall = new AsyncServiceCall();
+		                        // PerformBackgroundTask this class is the class that extends AsynchTask 
+		                    	asyncServiceCall.execute("http://76.12.155.219/trac/json/test.json");
+		                    	Log.i(DEBUG_TAG, "counter");
+		                    } catch (Exception e) {
+		                        // TODO Auto-generated catch block
+		                    }
+		                }
+		            });
+		        }
+		    };
+		    timer.schedule(doAsynchronousTask, 0, 1000); //execute in every 50000 ms
+		
+		
 		
 		
 		mChronometer = (ChronometerSubs) rootView.findViewById(R.id.chronometer);
@@ -76,14 +106,14 @@ public class GroupView extends ListFragment implements OnClickListener{
                mChronometer.setBase(SystemClock.elapsedRealtime());
                mChronometer.start();
                Log.i(DEBUG_TAG, "start"+ starttime);
-               new AsyncServiceCall().execute("http://76.12.155.219/trac/splits/w1000.json");
+               //new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
                break;
        case R.id.stop_button:
               mChronometer.stop();
               SimpleDateFormat st = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
           	String stoptime = st.format(new Date());
               Log.i(DEBUG_TAG, "stop" + stoptime );
-              new AsyncServiceCall().execute("http://76.12.155.219/trac/splits/w1000.json");
+              //new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
               break;
        }
 }
@@ -92,7 +122,7 @@ public class GroupView extends ListFragment implements OnClickListener{
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
     
-    new AsyncServiceCall().execute("http://76.12.155.219/trac/splits/w1000.json");
+    //new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
     
   }
 

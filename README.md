@@ -9,7 +9,7 @@ web/ - the trac-us.com website
 
 android/ - android app
 
-pic/ - embedded code running on the pic mocrocontroller
+pic/ - embedded code running on the microcontroller
 
 backend/ - server-side code managing incoming data and the database
 

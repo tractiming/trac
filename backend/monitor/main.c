@@ -25,6 +25,8 @@ void signal_handler(int sig)
     switch(sig)
     {
         case SIGHUP:
+            syslog(LOG_INFO, "Daemon shutting down.");
+            closelog();
             unlink(pid_filename);
             exit(EXIT_SUCCESS);
         case SIGINT:
@@ -60,7 +62,8 @@ int main(void) {
             umask(0);
                 
             /* Open any logs here */        
-            //openlog("/web/html/trac/backend/logs/tr.log", LOG_PID, LOG_DAEMON);
+            //openlog("/web/html/trac/backend/logs/monitor.log", LOG_PID|LOG_CONS,
+            //        LOG_DAEMON);
                 
             /* Create a new SID for the child process */
             sid = setsid();
@@ -105,7 +108,7 @@ int main(void) {
             mysql_close(con);
             exit(EXIT_FAILURE);
         }
-
+        syslog(LOG_INFO, "Daemon connected to MYSQL database.");
         
         /* The Big Loop */
         while (1) {
@@ -115,7 +118,7 @@ int main(void) {
            
            SLEEP_MS(1000); /* wait */
         }
-
+   closelog();
    mysql_library_end();
    exit(EXIT_SUCCESS);
 }
