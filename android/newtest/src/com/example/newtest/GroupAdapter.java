@@ -64,24 +64,24 @@ public class GroupAdapter extends BaseAdapter{
 		
 		//Add times together and display elapsed time for split
 				TextView textView4 =(TextView) convertView.findViewById(R.id.list_text3);
-			    int temp_var = 0; 
+			    float temp_var = 0; 
 				for (int i = 0; i < parsedJson.runners.get(position).interval.get(intervals.size() - 1).length; i++)			
 				{
 					
-					int foo = Integer.parseInt(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[i]);
+					float foo = Float.parseFloat(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[i]);
 					temp_var=temp_var + foo;
 				}
 				StringBuilder sb = new StringBuilder();
 				int min = (int) Math.floor(temp_var/60);
 				int sec = (int) (((temp_var*60)-Math.floor(temp_var/60)*3600)/60);
-				//int mili = (int) (temp_var-Math.floor(temp_var));
+				int mili = (int) (temp_var*100-Math.floor(temp_var)*100);
 				if (sec < 10)
 				{
-					sb.append(min + ":0" + sec);
+					sb.append(min + ":0" + sec +"." + mili );
 				}
 				else
 				{
-					sb.append(min + ":" +sec );
+					sb.append(min + ":" +sec +"."+ mili);
 				}
 				
 				String strI = sb.toString();
@@ -110,7 +110,7 @@ public class GroupAdapter extends BaseAdapter{
 	}
 
 
-	private Object Integer(int temp_var) {
+	private Object Integer(float temp_var) {
 		// TODO Auto-generated method stub
 		return null;
 	}
