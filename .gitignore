@@ -47,3 +47,7 @@ disassembly/
 
 # Log files
 logs/
+
+# Generated files
+bin/
+gen/
