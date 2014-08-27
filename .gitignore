@@ -47,3 +47,6 @@ disassembly/
 
 # Log files
 logs/
+
+# Binaries
+bin/
