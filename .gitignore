@@ -48,10 +48,9 @@ disassembly/
 # Log files
 logs/
 
-<<<<<<< HEAD
 # Binaries
 bin/
-=======
+
 # Built application files
 *.apk
 *.ap_
