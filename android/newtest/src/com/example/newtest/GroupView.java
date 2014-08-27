@@ -63,7 +63,7 @@ public class GroupView extends ListFragment implements OnClickListener{
 		                    try {
 		                    	AsyncServiceCall asyncServiceCall = new AsyncServiceCall();
 		                        // PerformBackgroundTask this class is the class that extends AsynchTask 
-		                    	asyncServiceCall.execute("http://76.12.155.219/trac/json/test.json");
+		                    	asyncServiceCall.execute("http://76.12.155.219/trac/splits/w1000.json");
 		                    	Log.i(DEBUG_TAG, "counter");
 		                    } catch (Exception e) {
 		                        // TODO Auto-generated catch block
