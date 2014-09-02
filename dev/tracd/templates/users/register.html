@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>trac - register</title>
+    </head>
+
+    <body>
+        <hl>Sign up for trac</hl>
+
+        {% if registered %}
+        trac: <strong>Thanks for signing up!</strong>
+        {% else %}
+        trac: <strong>Register here!</strong>
+
+        <form id="user_form" method="post" action=""
+            enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            {{ user_form.as_p }}
+
+            <input type="submit" name="submit" value="Register" />
+        </form> 
+        {% endif %}
+    </body>
+</html>

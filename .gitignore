@@ -99,3 +99,9 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+
+# Django
+migrations/
+*.sqlite3
+env/
+fixtures/
