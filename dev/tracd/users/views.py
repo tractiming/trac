@@ -4,8 +4,11 @@ from users.forms import UserForm
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.models import User, Group
+from util import user_type
 
 def register(request):
+    """Registers a user and saves their information to the database."""
     context = RequestContext(request)
 
     registered = False
@@ -14,20 +17,29 @@ def register(request):
         user_form = UserForm(data=request.POST)
 
         if user_form.is_valid():
+           
             user = user_form.save()
-
             user.set_password(user.password)
             user.save()
+            
+            user_type = user_form.cleaned_data['user_type']
+            if user_type == '1':
+                Group.objects.get(name='athletes').user_set.add(user)
+
+            elif user_type == '2':
+                Group.objects.get(name='coaches').user_set.add(user)
 
             registered = True
+            auth_login(request, user)
+
         else:
             print user_form.errors
 
     else:
         user_form = UserForm()
 
-    return render_to_response('users/register.html', {'user_form': user_form,
-        'registered': registered}, context)    
+    return render(request, 'users/register.html', {'user_form': user_form,
+        'registered': registered})    
 
 
 def user_login(request):
@@ -56,10 +68,12 @@ def user_login(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect('/users/')
+    return HttpResponseRedirect('/')
 
 @login_required
 def user_home(request):
     context = RequestContext(request)
-    return render(request, 'users/home.html')
+    utype = user_type(request.user)
+    print request.user
+    return render(request, 'users/home.html', {'user_type': utype})
 

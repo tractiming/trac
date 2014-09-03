@@ -6,10 +6,16 @@
     </head>
 
     <body>
+        {% csrf_token %}
+        <hl>{{ user_type }}'s homepage</hl><br />
         welcome, 
         {{ user.username }}<br /><br />
-        <a href="logout">Logout</a><br />
+        <a href="/users/logout">Logout</a><br />
         <a href="/results">My workout log</a><br />
+
+        {% if perms.auth.can_create_workout %}
+        <a href="/results/createworkout">Create new workout</a><br />
+        {% endif %}
     </body>
 
 </html>

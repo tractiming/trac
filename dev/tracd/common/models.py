@@ -45,6 +45,8 @@ class Reader(models.Model):
     """An RFID reader. Has an identifying number and can belong to many workouts."""
     num = models.IntegerField(default=0)
     workouts = models.ManyToManyField(Workout)
+    owner = models.ForeignKey(User)
+    key = models.CharField(max_length=50)
 
     def __unicode__(self):
         return "%i" %self.num
