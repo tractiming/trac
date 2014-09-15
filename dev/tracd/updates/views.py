@@ -19,7 +19,7 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
-@csrf_exempt
+#@csrf_exempt
 @api_view(['GET', 'POST'])
 def workout_data(request):
     """Interfaces with readers/clients to provide up-to-date workout info."""
@@ -28,6 +28,7 @@ def workout_data(request):
     # To get the info, we first try to read from the cache, if it is not there,
     # recalculate the splits and save to cache.
     if request.method == 'GET':
+        #return HttpResponse(200)
         w_num = request.GET['w']
         cache_name = 'w'+str(w_num)+'_cached'
         split_data = cache.get(cache_name)
@@ -39,9 +40,14 @@ def workout_data(request):
     # A post request adds the split to the database with the correct tag, time,
     # and workout information.
     elif request.method == 'POST':
+        
+        print request.POST
+        #print request.META
+        return HttpResponse()
+        """
         # Get the raw data from the post.
         data = parse_msg(request.POST['m'])
-
+        
         # Get the workouts to which the tag currently belongs.
         t = Tag.objects.get(id_str=data['name'])
         r = Reader.objects.get(num=int(request.POST['r']))
@@ -59,5 +65,5 @@ def workout_data(request):
 
             # Clear the workout cache.
             cache.delete('w'+str(w.num)+'_cached')
-
+        """
         return HttpResponse(200)

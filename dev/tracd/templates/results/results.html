@@ -7,7 +7,7 @@
     <body>
         {{ user.username }}'s workout home<br /><br />
         {% for x in workout_list %}
-        <hl>{{ x }}</hl><br \>
+        <a href="{% url 'workout_results' wnum=x %}">Workout {{ x }}</a><br \>
         {% endfor %}
     </body>
 

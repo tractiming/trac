@@ -30,7 +30,10 @@ def register(request):
                 Group.objects.get(name='coaches').user_set.add(user)
 
             registered = True
-            auth_login(request, user)
+            new_user = authenticate(username=request.POST['username'],
+                                    password=request.POST['password'])
+            auth_login(request, new_user)
+            return HttpResponseRedirect('/')
 
         else:
             print user_form.errors

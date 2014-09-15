@@ -12,12 +12,12 @@ class Tag(models.Model):
 
 class Workout(models.Model):
     """A workout session. Has start and stop time."""
-    num = models.IntegerField(unique=True)
     start_time = models.DateTimeField()
     stop_time = models.DateTimeField()
+    owner = models.ForeignKey(User)
 
     def __unicode__(self):
-        return "num=%i, start=%s" %(self.num, self.start_time)
+        return "num=%i, start=%s" %(self.id, self.start_time)
 
     def is_active(self, time=None):
         """Returns True if the current time is between the start and stop times."""
