@@ -105,3 +105,12 @@ migrations/
 *.sqlite3
 env/
 fixtures/
+
+# Google app engine
+djangoappengine/
+djangotoolbox/
+autoload/
+dbindexer/
+build/
+simplejson/
+django/
