@@ -18,6 +18,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.example.newtest.WorkoutListActivity"
+            android:label="@string/title_activity_list_workout" >
+        </activity>
+        <activity
             android:name="com.example.newtest.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
@@ -35,6 +39,7 @@
             android:name="com.example.newtest.WorkoutView"
             android:label="@string/title_activity_workout_view" >
         </activity>
+        
     </application>
 
 </manifest>

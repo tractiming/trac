@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="title_activity_login">TRAC.us</string>
+    <string name="title_activity_login">TRAC</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

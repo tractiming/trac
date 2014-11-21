@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">TRAC.us</string>
+    <string name="app_name">TRAC</string>
     <string name="title_section1">Group</string>
     <string name="title_section2">Workout</string>
     <string name="action_settings">Settings</string>
@@ -9,6 +9,7 @@
     <string name="title_activity_group_view">GroupView</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_workout_view">WorkoutView</string>
+    <string name="title_activity_list_workout">Workout List</string>
 	<string name="hello_world1">Hello world!</string>
 	<string name="start">Start</string>
 	<string name="stop">Stop</string>
