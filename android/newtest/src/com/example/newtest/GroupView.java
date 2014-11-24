@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +34,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 
 
-public class GroupView extends ListFragment implements OnClickListener{
+public class GroupView extends ListFragment {
 	
 	
 	private ChronometerSubs mChronometer;
@@ -52,8 +53,8 @@ public class GroupView extends ListFragment implements OnClickListener{
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_group_view, container,
 				false);
-		
-		    final Handler handler = new Handler();
+
+		final Handler handler = new Handler();
 		    Timer timer = new Timer();
 		    TimerTask doAsynchronousTask = new TimerTask() {       
 		        @Override
@@ -63,7 +64,7 @@ public class GroupView extends ListFragment implements OnClickListener{
 		                    try {
 		                    	AsyncServiceCall asyncServiceCall = new AsyncServiceCall();
 		                        // PerformBackgroundTask this class is the class that extends AsynchTask 
-		                    	asyncServiceCall.execute("http://76.12.155.219/trac/splits/w1000.json");
+		                    	asyncServiceCall.execute("http://76.12.155.219/trac/json/test.json");
 		                    	Log.i(DEBUG_TAG, "counter");
 		                    } catch (Exception e) {
 		                        // TODO Auto-generated catch block
@@ -72,16 +73,16 @@ public class GroupView extends ListFragment implements OnClickListener{
 		            });
 		        }
 		    };
-		    timer.schedule(doAsynchronousTask, 0, 1000); //execute in every 50000 ms
+		    timer.schedule(doAsynchronousTask, 0, 1000); //execute in every 1 second
 		
 		
 		
 		
-		mChronometer = (ChronometerSubs) rootView.findViewById(R.id.chronometer);
-        //mChronometer.start();        
-		//chronometer = (Chronometer) rootView.findViewById(R.id.chronometer);
-		((Button) rootView.findViewById(R.id.start_button)).setOnClickListener(this);
-        ((Button) rootView.findViewById(R.id.stop_button)).setOnClickListener(this);
+		//mChronometer = (ChronometerSubs) rootView.findViewById(R.id.chronometer);
+        ////mChronometer.start();        
+		////chronometer = (Chronometer) rootView.findViewById(R.id.chronometer);
+		//((Button) rootView.findViewById(R.id.start_button)).setOnClickListener(this);
+       // ((Button) rootView.findViewById(R.id.stop_button)).setOnClickListener(this);
         
         
         //Inflate ID and Workout Numbers
@@ -97,8 +98,8 @@ public class GroupView extends ListFragment implements OnClickListener{
 		return rootView;
 	}	
 	
-	@Override
-    public void onClick(View v) {
+	//@Override
+   /* public void onClick(View v) {
         switch(v.getId()) {
         case R.id.start_button:
         	SimpleDateFormat s = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
@@ -116,7 +117,7 @@ public class GroupView extends ListFragment implements OnClickListener{
               //new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
               break;
        }
-}
+}*/
 	
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
@@ -126,21 +127,21 @@ public class GroupView extends ListFragment implements OnClickListener{
     
   }
 
-  @Override
-  public void onListItemClick(ListView l, View v, int position, long id) {
-    //Toast.makeText(getActivity(), ((Runners)l.getItemAtPosition(position)).name + "", Toast.LENGTH_SHORT).show();
-	  View toolbar = v.findViewById(R.id.expanded_bar_group);
-		 
-      // Creating the expand animation for the item
-      ExpandAnimation expandAni = new ExpandAnimation(toolbar, 500);
-
-      // Start the animation on the toolbar
-     toolbar.startAnimation(expandAni);
-  }
-  private TextView mTextView;
-  private TextView mTextView1;
-
-  
+//  @Override
+//  public void onListItemClick(ListView l, View v, int position, long id) {
+//    //Toast.makeText(getActivity(), ((Runners)l.getItemAtPosition(position)).name + "", Toast.LENGTH_SHORT).show();
+//	  View toolbar = v.findViewById(R.id.expanded_bar_group);
+//		 
+//      // Creating the expand animation for the item
+//      ExpandAnimation expandAni = new ExpandAnimation(toolbar, 500);
+//
+//      // Start the animation on the toolbar
+//     toolbar.startAnimation(expandAni);
+//  }
+ private TextView mTextView;
+ private TextView mTextView1;
+//
+//  
   
   	OkHttpClient client = new OkHttpClient();
 	Gson gson = new Gson();
@@ -175,7 +176,6 @@ public class GroupView extends ListFragment implements OnClickListener{
 
 				//set result to show on screen
 				
-			  
 			    setListAdapter(new GroupAdapter(result, getActivity()));		
 			    mTextView.setText("Date: " + result.date);
 			    mTextView1.setText("Workout ID: " + result.id);

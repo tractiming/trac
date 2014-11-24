@@ -37,7 +37,7 @@ public class WorkoutView extends ListFragment {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    new AsyncServiceCall().execute("http://76.12.155.219/trac/splits/w1000.json");
+    new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
    
   }
 
@@ -50,6 +50,8 @@ public class WorkoutView extends ListFragment {
 
       // Start the animation on the toolbar
      toolbar.startAnimation(expandAni);
+     
+     
   }
 
 

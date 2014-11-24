@@ -85,7 +85,7 @@ public class LoginActivity extends Activity {
 					public void onClick(View view) {
 						
 				        
-				        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+				        startActivity(new Intent(LoginActivity.this, WorkoutListActivity.class));
 					}
 				});
 	}

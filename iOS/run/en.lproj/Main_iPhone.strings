@@ -1,0 +1,36 @@
+
+/* Class = "IBUITextView"; text = "Split Viewer"; ObjectID = "0pe-9K-E1y"; */
+"0pe-9K-E1y.text" = "Split Viewer";
+
+/* Class = "IBUILabel"; text = "Username"; ObjectID = "21W-Y1-u8U"; */
+"21W-Y1-u8U.text" = "Username";
+
+/* Class = "IBUILabel"; text = "Workout ID"; ObjectID = "8cU-Xq-Ykx"; */
+"8cU-Xq-Ykx.text" = "Workout ID";
+
+/* Class = "IBUILabel"; text = "Password"; ObjectID = "ABP-jk-rvG"; */
+"ABP-jk-rvG.text" = "Password";
+
+/* Class = "IBUILabel"; text = "Date"; ObjectID = "C7x-L3-8SB"; */
+"C7x-L3-8SB.text" = "Date";
+
+/* Class = "IBUIViewController"; title = "First"; ObjectID = "CZ4-MO-1fc"; */
+"CZ4-MO-1fc.title" = "First";
+
+/* Class = "IBUILabel"; text = "Detail"; ObjectID = "OEs-Lh-GTl"; */
+"OEs-Lh-GTl.text" = "Detail";
+
+/* Class = "IBUIViewController"; title = "Second"; ObjectID = "QUy-BD-bpt"; */
+"QUy-BD-bpt.title" = "Second";
+
+/* Class = "IBUIButton"; normalTitle = "Sign In"; ObjectID = "Tah-Ba-neb"; */
+"Tah-Ba-neb.normalTitle" = "Sign In";
+
+/* Class = "IBUITabBarItem"; title = "Workout"; ObjectID = "Z7h-1E-pvt"; */
+"Z7h-1E-pvt.title" = "Workout";
+
+/* Class = "IBUITabBarItem"; title = "Group"; ObjectID = "u1e-5L-l1D"; */
+"u1e-5L-l1D.title" = "Group";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "zYT-Ne-HiK"; */
+"zYT-Ne-HiK.text" = "Title";
