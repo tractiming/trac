@@ -20,7 +20,8 @@
         <activity
             android:name="com.example.newtest.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustResize|stateVisible" 
+            >
             
         </activity>
         <activity

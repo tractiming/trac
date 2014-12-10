@@ -1,6 +1,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.newtest.LoginActivity" >
+    tools:context="com.example.newtest.LoginActivity"
+    >
 
     <!-- Login progress -->
 
@@ -36,10 +37,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
+       
         <LinearLayout
             style="@style/LoginFormContainer"
             android:orientation="vertical" >
 
+            <ImageView 
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:src="@drawable/traclogo_blue4"/>
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
@@ -67,8 +73,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginTop="16dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
+                android:paddingLeft="60dp"
+                android:paddingRight="60dp"
                 android:text="@string/action_sign_in_register" />
         </LinearLayout>
     </ScrollView>
