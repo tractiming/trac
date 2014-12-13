@@ -15,19 +15,20 @@
  <RelativeLayout android:id="@+id/expanded_bar"
           android:layout_marginBottom="-50dip"
           android:visibility="gone"
-          android:layout_height="200dip"
+          android:layout_height="fill_parent"
           android:layout_width="fill_parent">
           
         <TextView
         android:layout_width="wrap_content"
-        android:layout_height="200dip"
+        android:layout_height="fill_parent"
         android:layout_marginTop="30dip"
         android:textSize="18sp"
         android:id="@+id/dropdown"
         android:focusable="false"
         android:scrollbars="vertical"
-        android:maxLines="15"
+        android:maxLines="100"
         android:layout_marginLeft="5dp"
+        
         />
         
         <TextView
