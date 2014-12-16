@@ -4,10 +4,13 @@ package com.example.newtest;
 
 import java.io.IOException;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,11 +37,22 @@ public class WorkoutFragment extends ListFragment {
 	
 	private TextView mTextView;
 	private Boolean isVisible;
+	private AlertDialog alertDialog;
 	
 	
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+    
+    alertDialog = new AlertDialog.Builder(getActivity()).create();
+	alertDialog.setTitle("No Internet Connectivity");
+	alertDialog.setMessage("Please connect to the internet and reopen application.");
+	alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+		public void onClick(DialogInterface dialog, int which) {
+		// here you can add functions
+		}
+		});
+    
     
     // 1. get passed intent 
 		Intent intent = getActivity().getIntent();
@@ -64,6 +78,7 @@ public class WorkoutFragment extends ListFragment {
      
      TextView mLayout = (TextView) v.findViewById(R.id.expand_button);
      TextView collapse = (TextView) v.findViewById(R.id.collapse_button);
+     
      //mLayout.setVisibility(v.GONE);
      if (mLayout.isShown()){
     	 mLayout.setVisibility(v.INVISIBLE);
@@ -73,9 +88,9 @@ public class WorkoutFragment extends ListFragment {
      {
     	 mLayout.setVisibility(v.VISIBLE);
     	 collapse.setVisibility(v.INVISIBLE);
+ 
      }
-    
-     
+   
   }
 
 
@@ -114,11 +129,16 @@ public class WorkoutFragment extends ListFragment {
 			protected void onPostExecute(Workout result) {
 				Log.d(DEBUG_TAG,"execute");
 				
+				if(result==null){
+					alertDialog.show();
+				}
+				else
+				{
 				//set result to show on screen
 				
 			  
 			    setListAdapter(new WorkoutAdapter(result, getActivity()));		
-			  
+				}
 			    
 			}
 			  

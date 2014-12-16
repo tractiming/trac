@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -55,7 +57,7 @@ public class GroupFragment extends ListFragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_group_view, container,
 				false);
-		
+
 		// 1. get passed intent 
 		Intent intent = getActivity().getIntent();
 		
@@ -188,13 +190,17 @@ public class GroupFragment extends ListFragment {
 			protected void onPostExecute(Workout result) {
 				Log.d(DEBUG_TAG,"execute");
 				//String resultstring = result.toString();
-
+				if(result==null){
+					return;
+				}
+				else
+				{
 				//set result to show on screen
 				
 			    setListAdapter(new GroupAdapter(result, getActivity()));		
 			    mTextView.setText("Date: " + result.date);
 			    mTextView1.setText("Workout ID: " + result.id);
-			    
+				}
 			}
 			  
 		  }

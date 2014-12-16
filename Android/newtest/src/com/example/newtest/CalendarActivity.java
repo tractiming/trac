@@ -14,8 +14,10 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -33,6 +35,7 @@ public class CalendarActivity extends ListActivity{
 	private String access_token;
 	private ArrayList<Results> positionArray;
 	private View mLoginStatusView;
+	private AlertDialog alertDialog;
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,6 +79,15 @@ public class CalendarActivity extends ListActivity{
 		   
 		   mLoginStatusView = findViewById(R.id.login_status);
 		   
+		  alertDialog = new AlertDialog.Builder(this).create();
+			alertDialog.setTitle("No Internet Connectivity");
+			alertDialog.setMessage("Please connect to the internet and reopen application.");
+			alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+				// here you can add functions
+				}
+				});
+			//alertDialog.setIcon(R.drawable.icon);
 		    new AsyncServiceCall().execute(url);
 		    //"http://10.0.2.2:8888/workoutTestList.json"
 		  }
@@ -160,12 +172,16 @@ public class CalendarActivity extends ListActivity{
 					@Override
 					protected void onPostExecute(ArrayList<Results> result) {
 						
-						
+						if(result==null){
+							alertDialog.show();
+							mLoginStatusView.setVisibility(View.GONE);
+						}
+						else{
 						CalendarAdapter var = new CalendarAdapter(result, getApplicationContext());
 						setListAdapter(var);
 						positionArray = result;
 						 mLoginStatusView.setVisibility(View.GONE);
-					    
+						}
 					}
 			  }
 }

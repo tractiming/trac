@@ -15,7 +15,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -68,11 +70,22 @@ public class LoginActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 	private String access_token;
+	private AlertDialog alertDialog ;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
+		//create alert box if no internet
+		alertDialog = new AlertDialog.Builder(this).create();
+		alertDialog.setTitle("No Internet Connectivity");
+		alertDialog.setMessage("Please connect to the internet and try again.");
+		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+			// here you can add functions
+			}
+			});
 		
 		// Is there a token present?
 		SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
@@ -305,8 +318,10 @@ public class LoginActivity extends Activity {
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			showProgress(false);
-
-			if (success) {
+			if (success == null){
+				alertDialog.show();
+			}
+			else if (success) {
 				//finish();
 				//store the token
 				Gson gson = new Gson();
