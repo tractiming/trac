@@ -3,6 +3,7 @@ package com.example.newtest;
 import java.util.List;
 
 import android.content.Context;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,7 @@ public class WorkoutAdapter extends BaseAdapter{
 		StringBuilder builder = new StringBuilder();
 		List<String[]> intervals = parsedJson.runners.get(position).interval;
 		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
+		
 		
 		for (int i = 0; i < parsedJson.runners.get(position).counter.length;i++)
 		{	
