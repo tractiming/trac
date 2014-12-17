@@ -37,7 +37,7 @@ public class CalendarActivity extends ListActivity{
 	//protected Context context;
 	private String access_token;
 	private ArrayList<Results> positionArray;
-	private View mLoginStatusView;
+	//private View mLoginStatusView;
 	private AlertDialog alertDialog;
 	private  SwipeRefreshLayout swipeLayout;
 	private String url;
@@ -75,6 +75,7 @@ public class CalendarActivity extends ListActivity{
 		    super.onCreate(savedInstanceState);
 		    
 		    setContentView(R.layout.activity_calendar);
+		    //mLoginStatusView = findViewById(R.id.login_status);
 		    SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 			   access_token = userDetails.getString("token","");
 			   Log.d("Access_token, CalendarActivity:", access_token);
@@ -104,7 +105,7 @@ public class CalendarActivity extends ListActivity{
 	        });
 		    
 		  
-		   mLoginStatusView = findViewById(R.id.login_status);
+		   
 		   
 		  alertDialog = new AlertDialog.Builder(this).create();
 			alertDialog.setTitle("No Internet Connectivity");
@@ -153,7 +154,9 @@ public class CalendarActivity extends ListActivity{
 				  
 				  @Override
 				  protected void onPreExecute(){
-					  mLoginStatusView.setVisibility(View.VISIBLE);
+					  Log.d("On Pre Execute", "On Pre Execute");
+					 // mLoginStatusView.setVisibility(View.VISIBLE);
+					  swipeLayout.setRefreshing(true);
 					  
 				  }
 				  
@@ -172,7 +175,6 @@ public class CalendarActivity extends ListActivity{
 							   
 							   
 							   
-							  // ListResults parsedjWorkout = gson.fromJson(response.body().charStream(), collectionType);
 							   
 							   JsonParser parser = new JsonParser();
 							    JsonArray jArray = parser.parse(response.body().charStream()).getAsJsonArray();
@@ -202,13 +204,14 @@ public class CalendarActivity extends ListActivity{
 						
 						if(result==null){
 							alertDialog.show();
-							mLoginStatusView.setVisibility(View.GONE);
+							 swipeLayout.setRefreshing(false);
 						}
 						else{
 						CalendarAdapter var = new CalendarAdapter(result, getApplicationContext());
 						setListAdapter(var);
 						positionArray = result;
-						 mLoginStatusView.setVisibility(View.GONE);
+					
+						 swipeLayout.setRefreshing(false);
 						}
 					}
 			  }
