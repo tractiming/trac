@@ -23,12 +23,15 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 
 public class CalendarActivity extends ListActivity{
 	//protected Context context;
@@ -36,6 +39,8 @@ public class CalendarActivity extends ListActivity{
 	private ArrayList<Results> positionArray;
 	private View mLoginStatusView;
 	private AlertDialog alertDialog;
+	private  SwipeRefreshLayout swipeLayout;
+	private String url;
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -70,13 +75,35 @@ public class CalendarActivity extends ListActivity{
 		    super.onCreate(savedInstanceState);
 		    
 		    setContentView(R.layout.activity_calendar);
-		   SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
-		   access_token = userDetails.getString("token","");
-		   Log.d("Access_token, CalendarActivity:", access_token);
-		   
-		   String url = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
-		   Log.d("URL ! : ", url);
-		   
+		    SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
+			   access_token = userDetails.getString("token","");
+			   Log.d("Access_token, CalendarActivity:", access_token);
+			   
+			   url = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
+			   Log.d("URL ! : ", url);
+			   
+		    
+		    swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+		    swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_light);
+	        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+	            @Override
+	            public void onRefresh() {
+	                swipeLayout.setRefreshing(true);
+	                Log.d("Swipe", "Refreshing Number");
+	                new AsyncServiceCall().execute(url);
+	                ( new Handler()).postDelayed(new Runnable() {
+	                    @Override
+	                    public void run() {
+	                        swipeLayout.setRefreshing(false);
+	                        Log.d("Refresh","REfresh");
+	                        //new AsyncServiceCall().execute(url);
+	                    }
+	                }, 3000);
+	            }
+		    
+	        });
+		    
+		  
 		   mLoginStatusView = findViewById(R.id.login_status);
 		   
 		  alertDialog = new AlertDialog.Builder(this).create();
@@ -91,6 +118,7 @@ public class CalendarActivity extends ListActivity{
 		    new AsyncServiceCall().execute(url);
 		    //"http://10.0.2.2:8888/workoutTestList.json"
 		  }
+	 
 
 		  @Override
 		  protected void onListItemClick(ListView l, View v, int position, long id) {

@@ -9,7 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.newtest.CalendarActivity.AsyncServiceCall;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -38,11 +41,15 @@ public class WorkoutFragment extends ListFragment {
 	private TextView mTextView;
 	private Boolean isVisible;
 	private AlertDialog alertDialog;
+	private  SwipeRefreshLayout swipeLayout;
 	
 	
-  @Override
-  public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_workout_view, container,
+				false);
     
     alertDialog = new AlertDialog.Builder(getActivity()).create();
 	alertDialog.setTitle("No Internet Connectivity");
@@ -58,11 +65,34 @@ public class WorkoutFragment extends ListFragment {
 		Intent intent = getActivity().getIntent();
 		
      // 2. get message value from intent
-     String message = intent.getStringExtra("message");
+     final String message = intent.getStringExtra("message");
      Log.d("The passed Variable Workout Fragment", message);
+   
+     swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+	    swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_light);
+	    swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(true);
+                Log.d("Swipe", "Refreshing Number");
+                new AsyncServiceCall().execute(message);
+                ( new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeLayout.setRefreshing(false);
+                        Log.d("Refresh","REfresh");
+                        //new AsyncServiceCall().execute(url);
+                    }
+                }, 3000);
+            }
+	    
+        });
+     
+     
+     
     new AsyncServiceCall().execute(message);
     
-         
+         return rootView;
     
   }
 
