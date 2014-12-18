@@ -27,7 +27,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="tjr-Lq-bOq">
-                                <rect key="frame" x="0.0" y="79" width="320" height="375"/>
+                                <rect key="frame" x="0.0" y="79" width="320" height="376"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -105,7 +105,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="cny-pq-efy">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="293"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="296"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -292,8 +292,8 @@
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="RDq-S4-L6c" id="PKm-jc-koi"/>
-                                    <outlet property="delegate" destination="RDq-S4-L6c" id="1fi-fd-4dl"/>
+                                    <outlet property="dataSource" destination="RDq-S4-L6c" id="n1h-UJ-NwJ"/>
+                                    <outlet property="delegate" destination="RDq-S4-L6c" id="1wA-vG-flT"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -307,7 +307,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="tableData" destination="QEt-Hw-QJR" id="cYp-fF-hD6"/>
+                        <outlet property="tableData" destination="QEt-Hw-QJR" id="LgQ-GN-DPf"/>
                         <segue destination="XB9-YH-zY5" kind="modal" identifier="logout" id="2ri-eW-05b"/>
                     </connections>
                 </viewController>

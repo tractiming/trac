@@ -11,4 +11,5 @@
 @interface WorkoutViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITableView *tableData;
 - (IBAction)logoutClicked:(id)sender;
+
 @end

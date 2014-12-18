@@ -16,8 +16,14 @@
 //change url as necessary
 
 #import "WorkoutViewController.h"
+#import "Reachability.h"
 
 @interface WorkoutViewController ()
+
+@property (nonatomic) Reachability *hostReachability;
+@property (nonatomic) Reachability *internetReachability;
+@property (nonatomic) Reachability *wifiReachability;
+
 
 @end
 
@@ -26,29 +32,39 @@
 NSArray *title;
 NSMutableArray *date;
 NSMutableArray *url;
-
-    
+    NSString *url_token;
+    UIActivityIndicatorView *spinner;
+    UIRefreshControl *refreshControl;
+ 
 }
 
 @synthesize tableData;
 
 
-
-
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    /*
+     Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the method reachabilityHasChanged will be called.
+     */
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityHasChanged:) name:kReachabilityChangedNotification object:nil];
+    
+    //Change the host name here to change the server you want to monitor. Apple.com as its never down... should probably switch to our site at some point
+   NSString *remoteHostName = @"www.apple.com";
+    
+	self.hostReachability = [Reachability reachabilityWithHostName:remoteHostName];
+	[self.hostReachability startNotifier];
+
+ 
+	
     // Initialize table data
-    
-    
     NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
     
     NSLog(@"Secutiy Token: %@",savedToken);
-    NSString *url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/?access_token=%@", savedToken];
+    url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/?access_token=%@", savedToken];
     
-    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     //spinner.color = [UIColor grayColor];
     float navigationBarHeight = [[self.navigationController navigationBar] frame].size.height;
     float tabBarHeight = [[[super tabBarController] tabBar] frame].size.height;
@@ -56,19 +72,9 @@ NSMutableArray *url;
     [spinner startAnimating];
     [self.view addSubview:spinner];
     
-    dispatch_async(TRACQueue, ^{
-        NSData* data = [NSData dataWithContentsOfURL:
-                        [NSURL URLWithString:url_token]];
-        
-        dispatch_async(dispatch_get_main_queue() ,^{
-            [self fetchedData:data];
-            [self.tableData reloadData];
-            [spinner removeFromSuperview];
-        });
-        
-        
-    });
-    
+    refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(doLoad) forControlEvents:UIControlEventValueChanged];
+    [self.tableData addSubview:refreshControl];
     
     //NSLog(@"Names view load: %@", self.runners);
     
@@ -81,6 +87,97 @@ NSMutableArray *url;
     
 }
 
+- (void) doLoad
+{
+    NSLog(@"Pull to Refresh");
+    dispatch_async(TRACQueue, ^{
+        NSData* data = [NSData dataWithContentsOfURL:
+                        [NSURL URLWithString:url_token]];
+        
+        dispatch_async(dispatch_get_main_queue() ,^{
+            [self fetchedData:data];
+            [self.tableData reloadData];
+            
+            
+        });
+        
+        
+    });
+    [refreshControl endRefreshing];
+}
+
+
+
+/*!
+ * Called by Reachability whenever status changes.
+ */
+-(void) reachabilityHasChanged:(NSNotification *)notice
+{
+    // called after network status changes
+    
+    NetworkStatus hostStatus = [self.hostReachability currentReachabilityStatus];
+    BOOL hostActive;
+    
+    switch (hostStatus)
+    {
+        case ReachableViaWWAN:
+        {
+            NSLog(@"3G");
+            
+            hostActive=YES;
+            
+            dispatch_async(TRACQueue, ^{
+                NSData* data = [NSData dataWithContentsOfURL:
+                                [NSURL URLWithString:url_token]];
+                
+                dispatch_async(dispatch_get_main_queue() ,^{
+                    [self fetchedData:data];
+                    [self.tableData reloadData];
+                    [spinner removeFromSuperview];
+                });
+                
+                
+            });
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            
+             NSLog(@"WIFI");
+            dispatch_async(TRACQueue, ^{
+                NSData* data = [NSData dataWithContentsOfURL:
+                                [NSURL URLWithString:url_token]];
+                
+                dispatch_async(dispatch_get_main_queue() ,^{
+                    [self fetchedData:data];
+                    [self.tableData reloadData];
+                    [spinner removeFromSuperview];
+                });
+                
+                
+            });
+            
+            hostActive=YES;
+            break;
+        }
+        case NotReachable:
+        {
+            
+            hostActive=NO;
+            UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"No Internet Connection" message:@"You currently do not have internet connectivity." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            break;
+        }
+            
+    }
+    
+    
+}
+
+
+
+
 -(void)awakeFromNib{
     [super awakeFromNib];
     
@@ -92,59 +189,70 @@ NSMutableArray *url;
 }
 
 - (NSArray *)fetchedData:(NSData *)responseData {
-    //parse out the json data
-    NSError* error;
-    NSDictionary* json = [NSJSONSerialization
-                          JSONObjectWithData:responseData //1
-                          
-                          options:kNilOptions
-                          error:&error];
-    
-    //NSDictionary* workoutid = [json valueForKey:@"workoutID"]; //2
-    
-    title= [json valueForKey:@"name"];
-    date = [json valueForKey:@"start_time"];
-    url = [json valueForKey:@"id"];
-    int date_length = [date count];
-  NSLog(@"Length: %d", date_length);
-    
-    int i;
-    NSString *tempvar;
-    NSMutableArray *temparray;
-    NSString *idurl;
-    NSMutableArray *idarray;
-    
-    
-    for (i=0; i<date_length; i++) {
-        tempvar = date[i];
-        tempvar = [tempvar substringToIndex:10];
-        idurl = url[i];
-        NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
-        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/?access_token=%@", idurl,savedToken];
+    @try {
+        //parse out the json data
+        NSError* error;
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:responseData //1
+                              
+                              options:kNilOptions
+                              error:&error];
+        
+        //NSDictionary* workoutid = [json valueForKey:@"workoutID"]; //2
+        
+        title= [json valueForKey:@"name"];
+        date = [json valueForKey:@"start_time"];
+        url = [json valueForKey:@"id"];
+        int date_length = [date count];
+        NSLog(@"Length: %d", date_length);
+        
+        int i;
+        NSString *tempvar;
+        NSMutableArray *temparray;
+        NSString *idurl;
+        NSMutableArray *idarray;
         
         
-        if(i==0){
-            temparray=[NSMutableArray arrayWithObject:tempvar];
-            idarray = [NSMutableArray arrayWithObject:idurl2];
-        }
-        else{
-        [temparray addObject:tempvar];
-        [idarray addObject:idurl2];
-        //[temparray addObject:tempvar];
-        //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
-        //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
+        for (i=0; i<date_length; i++) {
+            tempvar = date[i];
+            tempvar = [tempvar substringToIndex:10];
+            idurl = url[i];
+            NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+            NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/?access_token=%@", idurl,savedToken];
             
-NSLog(@"IDArray %@", idarray);
+            
+            if(i==0){
+                temparray=[NSMutableArray arrayWithObject:tempvar];
+                idarray = [NSMutableArray arrayWithObject:idurl2];
+            }
+            else{
+                [temparray addObject:tempvar];
+                [idarray addObject:idurl2];
+                //[temparray addObject:tempvar];
+                //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
+                //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
+                
+                NSLog(@"IDArray %@", idarray);
+            }
         }
+        
+        date = temparray;
+        url = idarray;
+        
+        //    // Initialize Labels
+        return title;
+        return date;
+        return url;
+
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception %s","Except!");
+        return title;
+        return date;
+        return url;
+
     }
     
-    date = temparray;
-    url = idarray;
-    
-    //    // Initialize Labels
-    return title;
-    return date;
-    return url;
     
     
 }

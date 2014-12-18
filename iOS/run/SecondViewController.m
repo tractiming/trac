@@ -15,6 +15,7 @@
 {
     //NSArray *name;
     NSArray *name;
+     UIRefreshControl *refreshControl;
 }
 //@property (strong, nonatomic) NSArray *runners;
 //@property (strong, nonatomic) IBOutlet UITableView *tableData;
@@ -57,73 +58,105 @@
 //        [self performSelectorOnMainThread:@selector(fetchedData:)
 //                               withObject:data waitUntilDone:YES];
 //    });
+    refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(doLoad) forControlEvents:UIControlEventValueChanged];
+    [self.tableData addSubview:refreshControl];
+    
+    
     
     }
+
+- (void) doLoad
+{
+    NSLog(@"Pull to Refresh");
+    dispatch_async(TRACQueue, ^{
+        NSData* data = [NSData dataWithContentsOfURL:
+                        [NSURL URLWithString:self.urlName_VC2]];
+        
+        dispatch_async(dispatch_get_main_queue() ,^{
+            [self fetchedData:data];
+            [self.tableData reloadData];
+            
+            
+        });
+        
+        
+    });
+    [refreshControl endRefreshing];
+}
 
 - (NSArray *)fetchedData:(NSData *)responseData {
-    //parse out the json data
-    NSError* error;
-    NSDictionary* json = [NSJSONSerialization
-                          JSONObjectWithData:responseData //1
-                          
-                          options:kNilOptions
-                          error:&error];
-    
-    //NSArray* workoutid = [json valueForKey:@"workoutID"]; //2
-   // NSArray* date = [json valueForKey:@"date"];
-    
-    NSString* results = [json valueForKey:@"results"];
-    NSData* results_data = [results dataUsingEncoding:NSUTF8StringEncoding];
-    
-    NSLog(@"Results: %@",results_data);
-    
-    
-    NSDictionary* resultsParsed= [NSJSONSerialization
-                                  JSONObjectWithData:results_data //1
-                                  
-                                  options:kNilOptions
-                                  error:&error];
+    @try {
+        //parse out the json data
+        NSError* error;
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:responseData //1
+                              
+                              options:kNilOptions
+                              error:&error];
+        
+        //NSArray* workoutid = [json valueForKey:@"workoutID"]; //2
+        // NSArray* date = [json valueForKey:@"date"];
+        
+        NSString* results = [json valueForKey:@"results"];
+        NSData* results_data = [results dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSLog(@"Results: %@",results_data);
+        
+        
+        NSDictionary* resultsParsed= [NSJSONSerialization
+                                      JSONObjectWithData:results_data //1
+                                      
+                                      options:kNilOptions
+                                      error:&error];
+        
+        
+        
+        
+        
+        
+        
+        
+        self.runners= [resultsParsed valueForKey:@"runners"];
+        
+        NSArray* interval = [self.runners valueForKey:@"interval"];
+        self.lasttimearray=[[NSMutableArray alloc] init];;
+        
+        
+        for (NSArray *personalinterval in interval ) {
+            
+            // NSLog(@"Loop Data: %@", personalinterval);
+            NSArray* lastsettime=[personalinterval lastObject];
+            // NSLog(@"Loop Data time: %@", lastsettime);
+            NSArray* lasttime=[lastsettime lastObject];
+            // NSLog(@"Last Rep: %@", lasttime);
+            //arraycounter = [lasttimearray count];
+            // NSLog(@"the coutn: %@", arraycounter);
+            
+            self.lasttimearray=[self.lasttimearray arrayByAddingObject:lasttime];
+            
+            
+            
+            
+            NSLog(@"Adding Reps: %@", self.lasttimearray);
+            
+            
+        }
+        
+        
+        
+        
+        
+        // NSLog(@"Names fetcheddata: %@", self.runners);
+        return self.runners;
+        
 
-    
-    
-    
-    
-    
-    
-    
-    self.runners= [resultsParsed valueForKey:@"runners"];
-    
-    NSArray* interval = [self.runners valueForKey:@"interval"];
-    self.lasttimearray=[[NSMutableArray alloc] init];;
-   
-    
-    for (NSArray *personalinterval in interval ) {
-        
-       // NSLog(@"Loop Data: %@", personalinterval);
-        NSArray* lastsettime=[personalinterval lastObject];
-       // NSLog(@"Loop Data time: %@", lastsettime);
-        NSArray* lasttime=[lastsettime lastObject];
-       // NSLog(@"Last Rep: %@", lasttime);
-        //arraycounter = [lasttimearray count];
-        // NSLog(@"the coutn: %@", arraycounter);
-        
-        self.lasttimearray=[self.lasttimearray arrayByAddingObject:lasttime];
-        
-        
-        
-        
-        NSLog(@"Adding Reps: %@", self.lasttimearray);
-        
-    
     }
-
+    @catch (NSException *exception) {
+        NSLog(@"Exception %s","Except!");
+        return self.runners;
+    }
     
-    
-    
-    
-   // NSLog(@"Names fetcheddata: %@", self.runners);
-    return self.runners;
-
     
 }
 
