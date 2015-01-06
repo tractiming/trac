@@ -50,7 +50,7 @@ public class WorkoutAdapter extends BaseAdapter{
 		}
 		
 		
-		
+		//Show the athletes name
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text_workout);
 		textView.setText(parsedJson.runners.get(position).name);
 		
@@ -59,7 +59,7 @@ public class WorkoutAdapter extends BaseAdapter{
 		//textView3.setText("Interval: " + parsedJson.runners.get(position).counter[1] + "; Split Time: " + parsedJson.runners.get(position).interval.get(intervals.size() - 1)[1]);
 		
 		
-		
+		//Build a string for each athlete adn interate over every one of their splits and display all of them
 		StringBuilder builder = new StringBuilder();
 		List<String[]> intervals = parsedJson.runners.get(position).interval;
 		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);

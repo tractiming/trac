@@ -3,7 +3,7 @@ package com.example.newtest;
 import com.google.gson.annotations.SerializedName;
 
 public class Results {
-	
+	//For JSON 
 	
 	@SerializedName ("id")
 	public String id;

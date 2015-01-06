@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class GroupAdapter extends BaseAdapter{
-
+	//class for group fragment
 	private Workout parsedJson; 
 	private Context context;
 	
@@ -89,7 +89,8 @@ public class GroupAdapter extends BaseAdapter{
 				textView4.setText(strI);
 			    
 		
-		//This is for the popup window
+		//This is for the popup window, when opened, display all splits from the session
+		//removed from GroupFragment.java document so will not show
 		StringBuilder builder_group = new StringBuilder();
 		//List<String[]> interval = parsedJson.runners.get(position).interval;
 		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);

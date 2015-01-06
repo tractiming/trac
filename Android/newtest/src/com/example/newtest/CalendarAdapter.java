@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class CalendarAdapter extends BaseAdapter {
-
+	//Adapter specifically for CalendarActivity.class
 	private ArrayList<Results> parsedJson; 
 	private Context context;
 	
@@ -23,13 +23,13 @@ public class CalendarAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
+		// dynamically find size of array
 		return this.parsedJson.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
+		// when clicked determine which position was clicked
 		return this.parsedJson.get(position);
 	}
 
@@ -52,7 +52,7 @@ public class CalendarAdapter extends BaseAdapter {
 		//this finds the name and displays it
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
 		textView.setText(parsedJson.get(position).name);
-		
+		//find date adn display it, only show first 10 characters of the date--avoiding the timestamp
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text3);
 		textView2.setText(parsedJson.get(position).startTime.substring(0,10));
 		

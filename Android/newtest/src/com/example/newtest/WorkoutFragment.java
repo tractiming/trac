@@ -50,7 +50,7 @@ public class WorkoutFragment extends ListFragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_workout_view, container,
 				false);
-    
+    //Alert Box if no connectivity
     alertDialog = new AlertDialog.Builder(getActivity()).create();
 	alertDialog.setTitle("No Internet Connectivity");
 	alertDialog.setMessage("Please connect to the internet and reopen application.");
@@ -68,6 +68,7 @@ public class WorkoutFragment extends ListFragment {
      final String message = intent.getStringExtra("message");
      Log.d("The passed Variable Workout Fragment", message);
    
+     //pull to refresh initialized and async called when pulled
      swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
 	    swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_light);
 	    swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -110,6 +111,8 @@ public class WorkoutFragment extends ListFragment {
      TextView collapse = (TextView) v.findViewById(R.id.collapse_button);
      
      //mLayout.setVisibility(v.GONE);
+     
+     //For directional arrows up and down, when clicked, change direction
      if (mLayout.isShown()){
     	 mLayout.setVisibility(v.INVISIBLE);
      	 collapse.setVisibility(v.VISIBLE);

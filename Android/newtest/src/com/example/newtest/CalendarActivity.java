@@ -56,6 +56,9 @@ public class CalendarActivity extends ListActivity{
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
+		
+		//If signout clicked, check for token in Shard Preferences and override
+		//Bring to LoginActivity.class then clear the stack of previous pages.
 		if (id == R.id.action_signout) {
 			SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
 			Editor edit = pref.edit();
@@ -73,10 +76,12 @@ public class CalendarActivity extends ListActivity{
 	
 	 public void onCreate(Bundle savedInstanceState) {
 		    super.onCreate(savedInstanceState);
-		    
+		    //initialize content views
 		    setContentView(R.layout.activity_calendar);
 		    mLoginStatusView = findViewById(R.id.login_status);
 		    mLoginStatusView.setVisibility(View.VISIBLE);
+		    
+		    //Get token from Shared Preferences and create url endpoint with token inserted
 		    SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 			   access_token = userDetails.getString("token","");
 			   Log.d("Access_token, CalendarActivity:", access_token);
@@ -84,7 +89,7 @@ public class CalendarActivity extends ListActivity{
 			   url = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
 			   Log.d("URL ! : ", url);
 			   
-		    
+		    //Initialize swipe to refresh layout, what happens when swiped: async task called again
 		    swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
 		    swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_light);
 	        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -106,19 +111,21 @@ public class CalendarActivity extends ListActivity{
 	        });
 		    
 		  
-		   
+		   //When No Internet connection, display alert dialog
 		   
 		  alertDialog = new AlertDialog.Builder(this).create();
 			alertDialog.setTitle("No Internet Connectivity");
 			alertDialog.setMessage("Please connect to the internet and reopen application.");
 			alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-				// here you can add functions
+				
 				}
 				});
-			//alertDialog.setIcon(R.drawable.icon);
+			
+			
+			//OnCreate Async Task Called, see below for async task class
 		    new AsyncServiceCall().execute(url);
-		    //"http://10.0.2.2:8888/workoutTestList.json"
+		    
 		  }
 	 
 
@@ -130,10 +137,11 @@ public class CalendarActivity extends ListActivity{
 			  String idPosition = positionArray.get(position).id;
 			  Log.d("Position ID", idPosition);
 			  
-			  // int count = position + 1; 
+			  // On Click, intent to go to main activity from calendar activity
 		        Intent intent = new Intent(CalendarActivity.this, MainActivity.class);
 		        Log.d("Token On Pass CLICK?", access_token);
-		        // 2. put key/value data
+		        
+		        // 2. put key/value data to pass on mainactivity load
 		        intent.putExtra("message", "https://trac-us.appspot.com/api/sessions/" + idPosition +"/?access_token=" + access_token);
 		 
 		        // 3. or you can add data to a bundle
@@ -176,7 +184,7 @@ public class CalendarActivity extends ListActivity{
 							   
 							   
 							   
-							   
+							   //Parse each entry in json array and add to new array
 							   JsonParser parser = new JsonParser();
 							    JsonArray jArray = parser.parse(response.body().charStream()).getAsJsonArray();
 
@@ -202,13 +210,14 @@ public class CalendarActivity extends ListActivity{
 					
 					@Override
 					protected void onPostExecute(ArrayList<Results> result) {
-						
+						//If the array/string doesnt come through alert will popup, hide spinner
 						if(result==null){
 							alertDialog.show();
 							mLoginStatusView.setVisibility(View.GONE);
 							// swipeLayout.setRefreshing(false);
 						}
 						else{
+							//else parse the result and put in adapter, hide spinner
 						CalendarAdapter var = new CalendarAdapter(result, getApplicationContext());
 						setListAdapter(var);
 						positionArray = result;

@@ -49,7 +49,7 @@ public class MainActivity extends ActionBarActivity implements
 		// 1. get passed intent 
         Intent intent = getIntent();
  
-        // 2. get message value from intent
+        // 2. get message--token-- value from intent
         String message = intent.getStringExtra("message");
         Log.d("The passed Variable", message);
         

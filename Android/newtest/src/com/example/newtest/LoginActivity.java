@@ -83,7 +83,7 @@ public class LoginActivity extends Activity {
 		alertDialog.setMessage("Please connect to the internet and try again.");
 		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-			// here you can add functions
+			
 			}
 			});
 		
@@ -122,7 +122,7 @@ public class LoginActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						
+						//on click of signin, attemptLogin function called
 				        attemptLogin();
 				       // startActivity(new Intent(LoginActivity.this, CalendarActivity.class));
 					}
@@ -247,10 +247,10 @@ public class LoginActivity extends Activity {
 	public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(String... params) {
-			// TODO: attempt authentication against a network service.
+			// Attempt authentication against a network service.
 			Log.d("Username:", mEmail);
 			Log.d("Password:",mPassword);
-			
+			//inserts text into string
 			String pre_json = "username="+mEmail+"&password="+mPassword+"&grant_type=password"+"&client_id="+mEmail;
 			Log.d(DEBUG_TAG, "Pre JSON Data: "+ pre_json);
 			
@@ -323,7 +323,7 @@ public class LoginActivity extends Activity {
 			}
 			else if (success) {
 				//finish();
-				//store the token
+				//store the token in Shared Preferences for other Acitivties to access
 				Gson gson = new Gson();
 				AccessToken parsedLogin = gson.fromJson(var, AccessToken.class);
 				Log.d("Test Test var ???", var);

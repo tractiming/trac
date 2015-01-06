@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
 
 
 public class Workout {
+	
+	//For JSON
 	@SerializedName ("date")
 	public String date;
 	@SerializedName ("workoutID")

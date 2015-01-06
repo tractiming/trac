@@ -58,14 +58,14 @@ public class GroupFragment extends ListFragment {
 		View rootView = inflater.inflate(R.layout.fragment_group_view, container,
 				false);
 
-		// 1. get passed intent 
+		// 1. get passed intent from MainActivity
 		Intent intent = getActivity().getIntent();
 		
         // 2. get message value from intent
         message = intent.getStringExtra("message");
         Log.d("The passed Variable in frag baby", message);
         
-		
+		//Repeat the async task every few seconds
 		final Handler handler = new Handler();
 		    Timer timer = new Timer();
 		    TimerTask doAsynchronousTask = new TimerTask() {       
@@ -77,6 +77,7 @@ public class GroupFragment extends ListFragment {
 		                    	AsyncServiceCall asyncServiceCall = new AsyncServiceCall();
 		                        // PerformBackgroundTask this class is the class that extends AsynchTask 
 		                    	Log.d("URL:", message);
+		                    	//performs async service call on the message--url--passed
 		                    	asyncServiceCall.execute(message);
 		                    	Log.i(DEBUG_TAG, "counter");
 		                    } catch (Exception e) {
@@ -88,7 +89,7 @@ public class GroupFragment extends ListFragment {
 		    };
 		    timer.schedule(doAsynchronousTask, 0, 2500); //execute in every 2.5 seconds
 		
-
+//Commented out the stopwatch features with buttons to start/stop
 //		
 //		mChronometer = (ChronometerSubs) rootView.findViewById(R.id.chronometer);
 //        //mChronometer.start();        
@@ -101,7 +102,7 @@ public class GroupFragment extends ListFragment {
 		mTextView = (TextView) rootView.findViewById(R.id.workout_date_view);
 		mTextView1 = (TextView) rootView.findViewById(R.id.workout_id_view);
 		
-		//Inflate Header
+		//Inflate Header--gives titles above names and splits
 		detailListHeader = rootView.findViewById(R.id.header);
 		detailListHeader2 = rootView.findViewById(R.id.header2);
 		detailListHeader3 = rootView.findViewById(R.id.header3);
@@ -190,6 +191,8 @@ public class GroupFragment extends ListFragment {
 			protected void onPostExecute(Workout result) {
 				Log.d(DEBUG_TAG,"execute");
 				//String resultstring = result.toString();
+				
+				//did not have popup appear if null due to async every 2 seconds being called. Popup will continuously popup then
 				if(result==null){
 					return;
 				}

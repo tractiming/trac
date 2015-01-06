@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 public class Runners {
+	//For JSON
 	@SerializedName ("name")
 	public String name;
 	@SerializedName ("counter")
