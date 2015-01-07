@@ -35,7 +35,7 @@
     [super viewDidLoad];
     NSLog(@"URL: %@", self.urlName);
    
-
+    //initilize spinner
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     //spinner.color = [UIColor grayColor];
     float navigationBarHeight = [[self.navigationController navigationBar] frame].size.height;
@@ -62,7 +62,7 @@
     SecondViewController *svc = [self.tabBarController.viewControllers objectAtIndex:1];
     svc.urlName_VC2 = self.urlName;
     
-    // regular [super init], etc. etc.
+    // call timer on launch and call sendRequest every 5 seconds
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(sendRequest) userInfo:nil repeats:YES];
     // other custom initialization continues
     
@@ -115,7 +115,7 @@
         
         NSLog(@"Results: %@",results_data);
         
-        
+        //parse json
         NSDictionary* resultsParsed= [NSJSONSerialization
                                       JSONObjectWithData:results_data //1
                                       
@@ -141,12 +141,14 @@
             //arraycounter = [lasttimearray count];
             // NSLog(@"the coutn: %@", arraycounter);
             
+            //determine minute and seconds
             NSNumber *sum = [lastsettime valueForKeyPath:@"@sum.self"];
             NSLog(@"Sum: %@", sum);
             NSNumber *minutes = @([sum integerValue] / 60);
             NSNumber *seconds = @([sum integerValue] % 60);
             NSLog(@"SEconds: %@", seconds);
             
+            //format total time in minute second format
             if ([seconds intValue]<10) {
                 NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@",minutes,seconds];
                 NSLog(@"TIME? %@",elapsedtime);
@@ -194,7 +196,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    
+    //depending on ipad or phone use different custom cell spacing, and fill in cell data
     if (IDIOM ==IPAD) {
         static NSString *simpleTableIdentifier = @"myCelliPad";
         CustomCelliPad *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];

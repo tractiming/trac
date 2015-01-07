@@ -59,34 +59,30 @@ NSMutableArray *url;
  
 	
     // Initialize table data
+    //get token from nsuserdefaults
     NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
-    
+    //add token to url to find session data
     NSLog(@"Secutiy Token: %@",savedToken);
     url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/?access_token=%@", savedToken];
     
+    //initialize spinner
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    //spinner.color = [UIColor grayColor];
     float navigationBarHeight = [[self.navigationController navigationBar] frame].size.height;
     float tabBarHeight = [[[super tabBarController] tabBar] frame].size.height;
     spinner.center = CGPointMake(self.view.frame.size.width / 2.0, (self.view.frame.size.height  - navigationBarHeight - tabBarHeight) / 4.0);
     [spinner startAnimating];
     [self.view addSubview:spinner];
     
+    //pull to refresh set up
     refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(doLoad) forControlEvents:UIControlEventValueChanged];
     [self.tableData addSubview:refreshControl];
     
-    //NSLog(@"Names view load: %@", self.runners);
-    
-    //    dispatch_async(kBgQueue, ^{
-    //        NSData* data = [NSData dataWithContentsOfURL:
-    //                        kLatestKivaLoansURL];
-    //        [self performSelectorOnMainThread:@selector(fetchedData:)
-    //                               withObject:data waitUntilDone:YES];
-    //    });
+
     
 }
 
+//pull to refresh--async task
 - (void) doLoad
 {
     NSLog(@"Pull to Refresh");
@@ -118,6 +114,7 @@ NSMutableArray *url;
     NetworkStatus hostStatus = [self.hostReachability currentReachabilityStatus];
     BOOL hostActive;
     
+    //if network changes try async task again
     switch (hostStatus)
     {
         case ReachableViaWWAN:
@@ -162,7 +159,7 @@ NSMutableArray *url;
         }
         case NotReachable:
         {
-            
+            //if no internet conenction, have popup appear
             hostActive=NO;
             UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"No Internet Connection" message:@"You currently do not have internet connectivity." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
@@ -180,7 +177,7 @@ NSMutableArray *url;
 
 -(void)awakeFromNib{
     [super awakeFromNib];
-    
+    //set colors for navigation bar and text
    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:53/255.0f green:119/255.0f blue:168/255.0f alpha:1.0f]];
     NSDictionary *navbarTitleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -200,6 +197,7 @@ NSMutableArray *url;
         
         //NSDictionary* workoutid = [json valueForKey:@"workoutID"]; //2
         
+        //variable for json decoding
         title= [json valueForKey:@"name"];
         date = [json valueForKey:@"start_time"];
         url = [json valueForKey:@"id"];
@@ -212,7 +210,7 @@ NSMutableArray *url;
         NSString *idurl;
         NSMutableArray *idarray;
         
-        
+        //interate through id and associate url with each date
         for (i=0; i<date_length; i++) {
             tempvar = date[i];
             tempvar = [tempvar substringToIndex:10];
@@ -220,7 +218,7 @@ NSMutableArray *url;
             NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
             NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/?access_token=%@", idurl,savedToken];
             
-            
+            //to initialize array, for the first entry create variable, then add object for subsequent entries
             if(i==0){
                 temparray=[NSMutableArray arrayWithObject:tempvar];
                 idarray = [NSMutableArray arrayWithObject:idurl2];
@@ -275,6 +273,7 @@ NSMutableArray *url;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //put data into cells for tableView
     static NSString *simpleTableIdentifier = @"SimpleTableCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
@@ -292,6 +291,7 @@ NSMutableArray *url;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    //on view controller change, move to next page, and pass url to next view
     if ([segue.identifier isEqualToString:@"showWorkoutDetail"]) {
         NSIndexPath *indexPath = [self.tableData indexPathForSelectedRow];
        UITabBarController *tabViewController = segue.destinationViewController;
@@ -304,6 +304,7 @@ NSMutableArray *url;
 }
 
 - (IBAction)logoutClicked:(id)sender{
+    //if logout clicked, perform segue and clear token
     [[NSUserDefaults standardUserDefaults] setPersistentDomain:[NSDictionary dictionary] forName:[[NSBundle mainBundle] bundleIdentifier]];
     NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
     

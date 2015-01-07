@@ -39,14 +39,17 @@
 
 
 - (IBAction)signinClicked:(id)sender {
+    
+    //if signin button clicked query server with credentials
     NSInteger success = 0;
     @try {
         
         if([[self.txtUsername text] isEqualToString:@""] || [[self.txtPassword text] isEqualToString:@""] ) {
-            
+            //if sign in failed
             [self alertStatus:@"Please enter Username and Password" :@"Sign in Failed!" :0];
             
         } else {
+            //if success
             NSString *post =[[NSString alloc] initWithFormat:@"username=%@&password=%@&grant_type=password&client_id=%@",[self.txtUsername text],[self.txtPassword text],[self.txtUsername text]];
             NSLog(@"Post: %@",post);
             
@@ -96,7 +99,7 @@
                     NSLog(@"SecToken: %@", [jsonData objectForKey:@"access_token"]);
                     self.access_token = [jsonData objectForKey:@"access_token"];
                     
-                    
+                    //store sequrity token in NSuserdefaults
                     NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
                     [defaults setObject:self.access_token forKey:@"token"];
                     [defaults synchronize];
@@ -123,7 +126,7 @@
    // }
 }
 
-
+//configure popup if signin fails
 
 - (void) alertStatus:(NSString *)msg :(NSString *)title :(int) tag
 {

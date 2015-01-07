@@ -29,8 +29,8 @@
     // Initialize table data
     NSLog(@"URL TEST/TESt:%@",self.urlName_VC2);
     
+    //Initialize the spinner
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    //spinner.color = [UIColor grayColor];
     float navigationBarHeight = [[self.navigationController navigationBar] frame].size.height;
     float tabBarHeight = [[[super tabBarController] tabBar] frame].size.height;
     spinner.center = CGPointMake(self.view.frame.size.width / 2.0, (self.view.frame.size.height  - navigationBarHeight - tabBarHeight) / 4.0);
@@ -58,6 +58,8 @@
 //        [self performSelectorOnMainThread:@selector(fetchedData:)
 //                               withObject:data waitUntilDone:YES];
 //    });
+    
+    //Pull to Refresh Setup
     refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(doLoad) forControlEvents:UIControlEventValueChanged];
     [self.tableData addSubview:refreshControl];
@@ -66,6 +68,7 @@
     
     }
 
+//Pull to refresh class called when pulled
 - (void) doLoad
 {
     NSLog(@"Pull to Refresh");
@@ -109,20 +112,14 @@
                                       
                                       options:kNilOptions
                                       error:&error];
-        
-        
-        
-        
-        
-        
-        
+
         
         self.runners= [resultsParsed valueForKey:@"runners"];
         
         NSArray* interval = [self.runners valueForKey:@"interval"];
         self.lasttimearray=[[NSMutableArray alloc] init];;
         
-        
+        //to display last relevant interval--not being displayed currently
         for (NSArray *personalinterval in interval ) {
             
             // NSLog(@"Loop Data: %@", personalinterval);
@@ -164,6 +161,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
    // NSLog(@"Names tableview: %@", self.runners);
+    //number of rows in tableview
     return [self.runners count];
 }
 
@@ -176,7 +174,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:simpleTableIdentifier];
     }
-    
+    //set data into cells, name and icon
     cell.textLabel.text = self.runners[indexPath.row][@"name"];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   
@@ -195,7 +193,7 @@
     self.personalSplits=[[NSMutableArray alloc] init];
     self.splitString= self.runners[indexPath.row][@"name"];
     NSInteger ii=0;
-    
+    //on click, display every repeat done. iterate through all splits per individual selected
     for (NSArray *personalRepeats in self.runners[indexPath.row][@"interval"] ) {
         ii=ii+1;
         NSLog(@"Loop Data: %@", personalRepeats);
@@ -205,11 +203,13 @@
         NSInteger jj=0;
         for(NSArray *subInterval in personalRepeats){
             NSLog(@" Subinterval count %ld", (long)jj);
+            //if the first interval create array
             if (jj==0) {
                 self.personalSplits=[self.personalSplits arrayByAddingObject:subInterval];
                 self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@"%@",subInterval]];
                 jj=jj+1;
             }
+            //else add to the already created array
             else
             {
             
@@ -223,7 +223,7 @@
     
     
     
-    
+    //set text to see splits
      self.splitViewer.text = [NSString stringWithFormat:@"Name: %@", self.splitString];
     // Display Alert Message
     //[messageAlert show];

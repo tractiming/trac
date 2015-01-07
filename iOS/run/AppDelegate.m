@@ -13,6 +13,7 @@
 
 @implementation AppDelegate
 
+//depending if logged in, show splash screen and segue to either login or workoutviewcontroller
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     NSLog(@"entered funt");
@@ -25,7 +26,7 @@
     
     return YES;
 }
-
+//Enter differnet storyboard depending on iPad or iPhone
 -(void) showLoginScreen:(BOOL)animated
 {
     
