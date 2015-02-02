@@ -1,8 +1,22 @@
 package com.example.newtest;
  
+import java.io.IOException;
+
+import com.example.newtest.LoginActivity.UserLoginTask;
+import com.google.gson.Gson;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -12,6 +26,9 @@ public class SplashScreen extends Activity {
     // Splash screen timer, hold 3 seconds
     private static int SPLASH_TIME_OUT = 3000;
     private String access_token;
+	private static String var; 
+	private TokenValidation mAuthTask = null;
+	private AlertDialog alertDialog ;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +39,16 @@ public class SplashScreen extends Activity {
         SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 		   access_token = userDetails.getString("token","");
 		   Log.d("Access_token, SplashScreen:", access_token);
+		   
+			//create alert box if no internet
+			alertDialog = new AlertDialog.Builder(this).create();
+			alertDialog.setTitle("No Internet Connectivity");
+			alertDialog.setMessage("Please connect to the internet and try again.");
+			alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+				
+				}
+				});
 		   
 		  
         
@@ -44,8 +71,10 @@ public class SplashScreen extends Activity {
       		   }
       		   else
       		   {
-      			   //TODO: Check if token is actually valid.
-      			   startActivity(new Intent(SplashScreen.this,CalendarActivity.class));
+      			   //Check if token is actually valid.If it is go to 
+      			   //startActivity(new Intent(SplashScreen.this,CalendarActivity.class));
+      			 mAuthTask = new TokenValidation();
+     			 mAuthTask.execute("https://trac-us.appspot.com/api/verifyLogin/");
       		   }
  
                 // close this activity
@@ -53,5 +82,92 @@ public class SplashScreen extends Activity {
             }
         }, SPLASH_TIME_OUT);
     }
- 
+    
+    
+    
+	OkHttpClient client = new OkHttpClient();
+	Gson gson = new Gson();
+	
+	private static final String DEBUG_TAG = "Token Check";
+	  public static final MediaType JSON = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
+	
+	public class TokenValidation extends AsyncTask<String, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(String... params) {
+			// Attempt authentication against a network service.
+			Log.d("Token:",access_token);
+			//inserts text into string
+			String pre_json = "token="+access_token;
+			Log.d(DEBUG_TAG, "Pre JSON Data: "+ pre_json);
+			
+			
+			RequestBody body = RequestBody.create(JSON, pre_json);
+			Log.d(DEBUG_TAG, "Request Body "+ body);
+			
+			
+			
+			Request request = new Request.Builder()
+	        .url(params[0])
+	        .post(body)
+	        .build();
+			
+			Log.d(DEBUG_TAG, "Request Data: "+ request);
+			try {
+			    Response response = client.newCall(request).execute();
+			    Log.d(DEBUG_TAG, "Response Data: "+ response);
+			    
+			    int codevar = response.code();
+			    Log.d(DEBUG_TAG, "Response Code: "+ codevar);
+			    
+			    Log.d(DEBUG_TAG, "Request Data: "+ request);
+			    var = response.body().string();
+			    
+			    Log.d(DEBUG_TAG, "VAR: "+ var);
+			    
+			    if (codevar == 200) {
+			    return true;
+			    }
+			    else {
+			    return false;
+			    }
+			    
+			} catch (IOException e) {
+				Log.d(DEBUG_TAG, "IoException" + e.getMessage());
+				return null;
+			}
+
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mAuthTask = null;
+
+			if (success == null){
+				alertDialog.show();
+			}
+			else if (success) {
+				//go to calendar page
+				Log.d("HE","WORK");
+				 Intent intent = new Intent(SplashScreen.this, CalendarActivity.class);
+				 startActivity(intent);
+			} else {
+				//It it doesnt work segue to login page
+				Log.d("NOPE","NO WORK");
+				Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
+				 startActivity(intent);
+				 
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			mAuthTask = null;
+
+		}
+	}
+    
+    
+    
+    
 }
+

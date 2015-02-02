@@ -3,6 +3,7 @@ package com.example.newtest;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,17 +54,18 @@ public class GroupAdapter extends BaseAdapter{
 		textView.setText(parsedJson.runners.get(position).name);
 		
 		
-		
+		TextView textView4 =(TextView) convertView.findViewById(R.id.list_text3);
 		
 		//This determines the what is the most recent split, and display it
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
 		List<String[]> intervals = parsedJson.runners.get(position).interval;
+		if (intervals != null && !intervals.isEmpty()){
 		int ii = parsedJson.runners.get(position).interval.get(intervals.size() - 1).length - 1;
 		textView2.setText(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[ii]);
 		
 		
 		//Add times together and display elapsed time for split
-				TextView textView4 =(TextView) convertView.findViewById(R.id.list_text3);
+				
 			    float temp_var = 0; 
 				for (int i = 0; i < parsedJson.runners.get(position).interval.get(intervals.size() - 1).length; i++)			
 				{
@@ -88,22 +90,29 @@ public class GroupAdapter extends BaseAdapter{
 				
 				textView4.setText(strI);
 			    
-		
+		}
+		else{
+			Log.d("Throwing the ","Exception");
+			textView2.setText("NT");
+			textView4.setText("NT");
+		}
+				
+				
 		//This is for the popup window, when opened, display all splits from the session
 		//removed from GroupFragment.java document so will not show
-		StringBuilder builder_group = new StringBuilder();
+//		StringBuilder builder_group = new StringBuilder();
 		//List<String[]> interval = parsedJson.runners.get(position).interval;
-		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
-		
-				builder_group.append("Session Splits: ");
-			for (int i = 0; i < parsedJson.runners.get(position).interval.get(intervals.size() - 1).length; i++)			
-			{
-				builder_group.append(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[i] + " ");
-				
-			}
-		textView3.setText(builder_group.toString());
-		
-	
+//		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
+//		
+//				builder_group.append("Session Splits: ");
+//			for (int i = 0; i < parsedJson.runners.get(position).interval.get(intervals.size() - 1).length; i++)			
+//			{
+//				builder_group.append(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[i] + " ");
+//				
+//			}
+//		textView3.setText(builder_group.toString());
+//		
+//	
 		
 		//Fill that view with data
 		//Return that view
