@@ -99,7 +99,7 @@
 - (NSArray *)fetchedData:(NSData *)responseData {
     //parse out the json data
     
-    @try {
+   @try {
         NSError* error;
         NSLog(@"Feteched Data: %@",responseData);
         NSDictionary* json= [NSJSONSerialization
@@ -130,10 +130,17 @@
         self.summationTimeArray=[[NSMutableArray alloc] init];
         self.lasttimearray=[[NSMutableArray alloc] init];
         
+
         //find the last relevant interval
         for (NSArray *personalinterval in interval ) {
             
-            NSLog(@"Loop Data: %@", personalinterval);
+            if(!personalinterval || !personalinterval.count){
+            NSLog(@"ITS EMPTY");
+            self.lasttimearray = [self.lasttimearray arrayByAddingObject:@"NT"];
+            self.summationTimeArray = [self.summationTimeArray arrayByAddingObject:@"NT"];
+            }
+            else{
+            NSLog(@"Personal Interval: %@", personalinterval);
             NSArray* lastsettime=[personalinterval lastObject];
             NSLog(@"Loop Data time: %@", lastsettime);
             NSArray* lasttime=[lastsettime lastObject];
@@ -170,16 +177,17 @@
             
             
             self.lasttimearray = [self.lasttimearray arrayByAddingObject:lasttime];
+            }
         }
-        
+        NSLog(@"TimeArrays %@",self.lasttimearray);
         
         //    // Initialize Labels
         self.humanReadble.text = [NSString stringWithFormat:@"Date: %@", date];
         self.jsonSummary.text = [NSString stringWithFormat:@"WorkoutID: %@", workoutid];
         return self.runners;
-    }
+   }
     @catch (NSException *exception) {
-        NSLog(@"Exception %s","Except!");
+        NSLog(@"Exception.......... %s","Except!");
         return self.runners;
     }
 
@@ -222,7 +230,10 @@
         [tableView registerNib:[UINib nibWithNibName:@"CustomCell" bundle:nil] forCellReuseIdentifier:@"myCell"];
         cell = [tableView dequeueReusableCellWithIdentifier:@"myCell"];
     }
-    
+       // NSLog(@"TimeArray %@",self.lasttimearray[indexPath.row]);
+        
+
+    NSLog(@"IN else Timearray %@",self.lasttimearray);
     cell.Name.text = self.runners[indexPath.row][@"name"];
     cell.Split.text= [NSString stringWithFormat:@"%@",self.lasttimearray[indexPath.row]];
     cell.Total.text= [NSString stringWithFormat:@"%@",self.summationTimeArray[indexPath.row]];

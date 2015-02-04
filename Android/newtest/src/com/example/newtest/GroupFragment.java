@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ public class GroupFragment extends ListFragment {
 	View detailListHeader;
 	View detailListHeader2;
 	View detailListHeader3;
+	public ListView lview;
 	private String message;
 	//private final static int INTERVAL = 1000; //runs every 2 minutes
 	//private Handler mHandler;
@@ -57,7 +59,7 @@ public class GroupFragment extends ListFragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_group_view, container,
 				false);
-
+		
 		// 1. get passed intent from MainActivity
 		Intent intent = getActivity().getIntent();
 		
@@ -135,6 +137,7 @@ public class GroupFragment extends ListFragment {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+    lview = getListView();
     
     //new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
     
@@ -156,9 +159,9 @@ public class GroupFragment extends ListFragment {
 
   
   
-  	OkHttpClient client = new OkHttpClient();
+  	private final OkHttpClient client = new OkHttpClient();
 	Gson gson = new Gson();
-	private static final String DEBUG_TAG = "griffinSucks";
+	private static final String DEBUG_TAG = "Debug";
 	
 	  private class AsyncServiceCall extends AsyncTask<String, Void, Workout> {
 		  
@@ -170,8 +173,9 @@ public class GroupFragment extends ListFragment {
 		        .url(params[0])
 		        .build();
 				try {
+					Log.d(DEBUG_TAG, "Pre Response");
 				    Response response = client.newCall(request).execute();
-				   
+				    Log.d(DEBUG_TAG, "Post Response");
 				    Results preFullyParsed = gson.fromJson(response.body().charStream(), Results.class);
 					String text = preFullyParsed.results;
 				    
@@ -200,7 +204,9 @@ public class GroupFragment extends ListFragment {
 				{
 				//set result to show on screen
 				
-			    setListAdapter(new GroupAdapter(result, getActivity()));		
+				Parcelable state = lview.onSaveInstanceState();
+			    setListAdapter(new GroupAdapter(result, getActivity()));	
+			    lview.onRestoreInstanceState(state);
 			    mTextView.setText("Date: " + result.date);
 			    mTextView1.setText("Workout ID: " + result.id);
 				}

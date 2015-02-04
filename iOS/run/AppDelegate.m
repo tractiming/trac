@@ -18,13 +18,75 @@
 {
     NSLog(@"entered funt");
     NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+    
+    //NSString *savedToken =@"dfda";
     // Show login view if not logged in already
     if(savedToken == NULL){
         NSLog(@"HI");
         [self showLoginScreen:NO];
     }
+    else{
+    NSLog(@"Going to the calendar");
     
-    return YES;
+    
+    
+    @try {
+        
+        
+            //if success
+            NSString *post =[[NSString alloc] initWithFormat:@"token=%@",savedToken];
+            NSLog(@"Post: %@",post);
+            
+            NSURL *url=[NSURL URLWithString:@"https://trac-us.appspot.com/api/verifyLogin/"];
+            
+            NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+            NSLog(@"Post Data:%@", postData);
+            NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+            [request setURL:url];
+            [request setHTTPMethod:@"POST"];
+            [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+            [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+            [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+            [request setHTTPBody:postData];
+            
+            
+            //[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
+            
+            NSError *error = [[NSError alloc] init];
+            NSHTTPURLResponse *response = nil;
+            NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            
+            NSLog(@"Response code: %ld", (long)[response statusCode]);
+            // NSLog(@"Error Code: %@", [error localizedDescription]);
+            
+            if ([response statusCode] == 200 )
+            {
+              
+                NSLog(@"To Login Screen");
+                return YES;
+            }
+        }
+    
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        [self showLoginScreen:NO];
+        
+    }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   [self showLoginScreen:NO];
 }
 //Enter differnet storyboard depending on iPad or iPhone
 -(void) showLoginScreen:(BOOL)animated

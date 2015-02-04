@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class WorkoutAdapter extends BaseAdapter{
 		//Show the athletes name
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text_workout);
 		textView.setText(parsedJson.runners.get(position).name);
+		Log.d("Debug",parsedJson.runners.get(position).name);
 		
 		//TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
 		//List<String[]> intervals = parsedJson.runners.get(position).interval;

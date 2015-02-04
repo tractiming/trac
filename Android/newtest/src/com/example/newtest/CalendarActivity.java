@@ -67,7 +67,7 @@ public class CalendarActivity extends ListActivity{
 			
 			Intent i = new Intent(CalendarActivity.this, LoginActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
-			startActivity(i);;
+			startActivity(i);
 		}
 		return super.onOptionsItemSelected(item);
 	}
