@@ -51,8 +51,13 @@ public class GroupFragment extends ListFragment {
 	//private final static int INTERVAL = 1000; //runs every 2 minutes
 	//private Handler mHandler;
 	private View mLoginStatusView;
-	
+	public static Timer timer;
+	public TimerTask doAsynchronousTask;
 
+	public static void backButtonWasPressed() {
+		timer.cancel();
+        Log.d("HI","Passed");
+    }
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,12 +73,9 @@ public class GroupFragment extends ListFragment {
         Log.d("The passed Variable in frag baby", message);
         
 		//Repeat the async task every few seconds
-		final Handler handler = new Handler();
-		    Timer timer = new Timer();
-		    TimerTask doAsynchronousTask = new TimerTask() {       
-		        @Override
-		        public void run() {
-		            handler.post(new Runnable() {
+
+		    timer = new Timer();
+		    doAsynchronousTask = new TimerTask() {       
 		                public void run() {       
 		                    try {
 		                    	AsyncServiceCall asyncServiceCall = new AsyncServiceCall();
@@ -85,8 +87,6 @@ public class GroupFragment extends ListFragment {
 		                    } catch (Exception e) {
 		                        // TODO Auto-generated catch block
 		                    }
-		                }
-		            });
 		        }
 		    };
 		    timer.schedule(doAsynchronousTask, 0, 2500); //execute in every 2.5 seconds

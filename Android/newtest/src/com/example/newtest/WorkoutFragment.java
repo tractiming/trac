@@ -43,7 +43,9 @@ public class WorkoutFragment extends ListFragment {
 	private AlertDialog alertDialog;
 	private  SwipeRefreshLayout swipeLayout;
 	
-	
+	public static void backButtonWasPressed() {
+        Log.d("HI","Passed");
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

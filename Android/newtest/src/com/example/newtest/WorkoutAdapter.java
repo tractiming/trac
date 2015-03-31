@@ -74,8 +74,27 @@ public class WorkoutAdapter extends BaseAdapter{
 				
 			for (String splits: parsedJson.runners.get(position).interval.get(i))
 			{
+				float temp = Float.parseFloat(splits);
+				if (temp>90){
+					int min = (int) Math.floor(temp/60);
+					int sec = (int) (((temp*60)-Math.floor(temp/60)*3600)/60);
+					int mili = (int) (temp*100-Math.floor(temp)*100);
+					if (sec < 10)
+					{
+						StringBuilder sb = new StringBuilder();
+						sb.append(min + ":0" + sec +"." + mili );
+						builder.append(sb + " ");
+					}
+					else
+					{
+						StringBuilder sb = new StringBuilder();
+						sb.append(min + ":" +sec +"."+ mili);
+						builder.append(sb + " ");
+					}
+				}
+				else{
 				builder.append(splits + " ");
-				
+				}
 			}
 				
 			builder.append("\n");

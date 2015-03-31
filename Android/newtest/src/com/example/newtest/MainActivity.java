@@ -39,7 +39,21 @@ public class MainActivity extends ActionBarActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+	private Fragment fragment;
+	int check = 0;
+	
+	
+    public void onBackPressed() {
+    	fragment = new Fragment();
+    	super.onBackPressed();
+			GroupFragment.backButtonWasPressed();
+			Log.d("Back","PRESSED");
+			WorkoutFragment.backButtonWasPressed();
+			Log.d("Back","PRESSED FROM WORKOUT");
 
+        
+    }
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -155,8 +169,9 @@ public class MainActivity extends ActionBarActivity implements
 
 		@Override
 		public Fragment getItem(int position) {
+			check = position;
 			// getItem is called to instantiate the fragment for the given page.
-			Fragment fragment = new Fragment();
+			fragment = new Fragment();
 			switch(position){
 			case 0:
 				return fragment = new GroupFragment();
@@ -168,6 +183,7 @@ public class MainActivity extends ActionBarActivity implements
 		return fragment;
 		
 		}
+
 		@Override
 	    public CharSequence getPageTitle(int position) {
 	        Locale l = Locale.getDefault();
