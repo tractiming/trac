@@ -205,14 +205,52 @@
             NSLog(@" Subinterval count %ld", (long)jj);
             //if the first interval create array
             if (jj==0) {
-                self.personalSplits=[self.personalSplits arrayByAddingObject:subInterval];
-                self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@"%@",subInterval]];
-                jj=jj+1;
+                NSLog(@"Subinterval %@",subInterval);
+                NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+                f.numberStyle = NSNumberFormatterDecimalStyle;
+                NSNumber *sum = [f numberFromString:subInterval];
+                NSLog(@"SUM VALUE%@",sum);
+                NSNumber *sumInt =@([sum integerValue]);
+                NSNumber*decimal =[NSNumber numberWithFloat:(([sum floatValue]-[sumInt floatValue])*1000)];
+                NSNumber *decimalInt = @([decimal integerValue]);
+                
+               
+                //to do add decimal to string, round to 3 digits
+                NSNumber *minutes = @([sum integerValue] / 60);
+                NSNumber *seconds = @([sum integerValue] % 60);
+                NSLog(@"SEconds: %@", seconds);
+                NSNumber *ninty = [NSNumber numberWithInt:90];
+                if ([sumInt intValue]<[ninty intValue]){
+                    //if less than 90 display in seconds
+                    NSLog(@"YES %@, %@",sumInt, subInterval);
+                    self.personalSplits=[self.personalSplits arrayByAddingObject:subInterval];
+                    self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@"%@",subInterval]];
+                    jj=jj+1;
+                }
+                else{
+                    //if greater than 90 seconds display in minute format
+                    //format total time in minute second format
+                    if ([seconds intValue]<10) {
+                        NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@.%@",minutes,seconds,decimalInt];
+                        self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
+                        self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@"%@",elapsedtime]];
+                        jj=jj+1;
+                        
+                    }
+                    else{
+                        NSString* elapsedtime = [NSString stringWithFormat:@"%@:%@.%@",minutes,seconds,decimalInt];
+                        self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
+                        self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@"%@",elapsedtime]];
+                        jj=jj+1;
+                    }
+                }
+                
+                
             }
             //else add to the already created array
             else
             {
-            
+            NSLog(@"LKAJSLKJLSKJlk %@",subInterval);
             self.personalSplits=[self.personalSplits arrayByAddingObject:subInterval];
             self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@", %@ ",subInterval]];
             jj=jj+1;

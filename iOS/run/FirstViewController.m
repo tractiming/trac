@@ -24,12 +24,18 @@
     //NSArray *name;
     NSArray *name;
     UIActivityIndicatorView *spinner;
+    NSTimer *timer;
 }
 @end
 
 @implementation FirstViewController
 
+- (void)viewWillDisappear:(BOOL)animated {
 
+        NSLog(@"Pressed Back");
+    [timer invalidate];
+
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -63,7 +69,7 @@
     svc.urlName_VC2 = self.urlName;
     
     // call timer on launch and call sendRequest every 5 seconds
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(sendRequest) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(sendRequest) userInfo:nil repeats:YES];
     // other custom initialization continues
     
     
