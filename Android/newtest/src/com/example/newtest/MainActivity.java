@@ -1,6 +1,15 @@
 package com.example.newtest;
 
+import java.io.IOException;
 import java.util.Locale;
+
+import com.example.newtest.SplashScreen.TokenValidation;
+import com.google.gson.Gson;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -8,9 +17,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -41,7 +53,10 @@ public class MainActivity extends ActionBarActivity implements
 	ViewPager mViewPager;
 	private Fragment fragment;
 	int check = 0;
-	
+	private WorkoutReset mAuthTask = null;
+	private static String var; 
+	private String access_token;
+	private String numID;
 	
     public void onBackPressed() {
     	fragment = new Fragment();
@@ -59,6 +74,9 @@ public class MainActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		 SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
+		   access_token = userDetails.getString("token","");
+		   Log.d("Access_token, MainActivity:", access_token);
 		
 		// 1. get passed intent 
         Intent intent = getIntent();
@@ -66,6 +84,9 @@ public class MainActivity extends ActionBarActivity implements
         // 2. get message--token-- value from intent
         String message = intent.getStringExtra("message");
         Log.d("The passed Variable", message);
+        
+        numID = intent.getStringExtra("positionID");
+        Log.d("The ID Number", numID);
         
         
 		// Set up the action bar.
@@ -104,13 +125,14 @@ public class MainActivity extends ActionBarActivity implements
 					.setTabListener(this));
 			
 		}
+
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.group_view, menu);
 		return true;
 	}
 
@@ -120,7 +142,7 @@ public class MainActivity extends ActionBarActivity implements
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_signout) {
+		if (id == R.id.action_signout2) {
 			SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
 			Editor edit = pref.edit();
 			edit.putString("token", "");
@@ -129,6 +151,30 @@ public class MainActivity extends ActionBarActivity implements
 			Intent i = new Intent(MainActivity.this, LoginActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
 			startActivity(i);
+		}
+		else if (id == R.id.action_reset)
+		{
+			Log.d("PRESSED BUTTOn","REset");
+			
+			
+			new AlertDialog.Builder(this)
+		    .setTitle("Reset Workout")
+		    .setMessage("Are you sure you want to reset this workout?")
+		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) { 
+					mAuthTask = new WorkoutReset();
+					String url = "https://trac-us.appspot.com/api/TimingSessionReset/?access_token=" + access_token;
+					 mAuthTask.execute(url);
+		        }
+		     })
+		    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) { 
+		            // do nothing
+		        	Log.d("Do Nothing","Cancel");
+		        }
+		     })
+		    .setIcon(android.R.drawable.ic_dialog_alert)
+		     .show();			
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -197,4 +243,81 @@ public class MainActivity extends ActionBarActivity implements
 	    }
 	}
 
+	OkHttpClient client = new OkHttpClient();
+	Gson gson = new Gson();
+	
+	private static final String DEBUG_TAG = "Token Check";
+	  public static final MediaType JSON = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
+	
+	public class WorkoutReset extends AsyncTask<String, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(String... params) {
+			// Attempt authentication against a network service.
+
+			String pre_json = "id="+numID;
+			Log.d(DEBUG_TAG, "Pre JSON Data: "+ pre_json);
+			
+			
+			RequestBody body = RequestBody.create(JSON, pre_json);
+			Log.d(DEBUG_TAG, "Request Body "+ body);
+			
+			
+			
+			Request request = new Request.Builder()
+	        .url(params[0])
+	        .post(body)
+	        .build();
+			
+			Log.d(DEBUG_TAG, "Request Data: "+ request);
+			try {
+			    Response response = client.newCall(request).execute();
+			    Log.d(DEBUG_TAG, "Response Data: "+ response);
+			    
+			    int codevar = response.code();
+			    Log.d(DEBUG_TAG, "Response Code: "+ codevar);
+			    
+			    Log.d(DEBUG_TAG, "Request Data: "+ request);
+			    var = response.body().string();
+			    
+			    Log.d(DEBUG_TAG, "VAR: "+ var);
+			    
+			    if (codevar == 200) {
+			    return true;
+			    }
+			    else {
+			    return false;
+			    }
+			    
+			} catch (IOException e) {
+				Log.d(DEBUG_TAG, "IoException" + e.getMessage());
+				return null;
+			}
+
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mAuthTask = null;
+
+			if (success == null){
+				Log.d("NULL","WORK");
+			}
+			else if (success) {
+				//go to calendar page
+				Log.d("HE","WORK");
+
+			} else {
+				//It it doesnt work segue to login page
+				Log.d("NOPE","NO WORK");
+
+				 
+			}
+		}
+
+
+	}
+    
+    
+	
+	
 }

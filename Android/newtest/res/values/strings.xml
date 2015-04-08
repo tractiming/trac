@@ -14,4 +14,6 @@
 	<string name="hello_world1">Hello world!</string>
 	<string name="start">Start</string>
 	<string name="stop">Stop</string>
+	<string name="action_reset">Reset Workout</string>
+	<string name="action_search">Search</string>
 </resources>

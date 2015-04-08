@@ -1,17 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:newtest="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.newtest.MainActivity" >
 
-  <!--   <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/> -->
-    <item
+    <item android:id="@+id/action_search2"
+          android:icon="@drawable/ic_action_search"
+          android:title="@string/action_search"
+          android:orderInCategory="100"
+          android:showAsAction="collapseActionView|ifRoom"
+          android:actionViewClass="android.widget.SearchView"/>
+    
+   <item
         android:id="@+id/action_signout"
         android:orderInCategory="100"
         android:title="@string/action_signout"
-        app:showAsAction="never"/>
+        android:showAsAction="never"
+        />
+
 
 </menu>

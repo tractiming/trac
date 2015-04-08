@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -16,6 +17,7 @@ import com.squareup.okhttp.Response;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -124,6 +127,7 @@ public class CalendarActivity extends ListActivity{
 		  alertDialog = new AlertDialog.Builder(this).create();
 			alertDialog.setTitle("No Internet Connectivity");
 			alertDialog.setMessage("Please connect to the internet and reopen application.");
+			alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
 			alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 				
@@ -151,7 +155,8 @@ public class CalendarActivity extends ListActivity{
 		        
 		        // 2. put key/value data to pass on mainactivity load
 		        intent.putExtra("message", "https://trac-us.appspot.com/api/sessions/" + idPosition +"/?access_token=" + access_token);
-		 
+		        intent.putExtra("positionID", idPosition);
+
 		        // 3. or you can add data to a bundle
 		        Bundle extras = new Bundle();
 		        extras.putString("status", "Data Received!");
@@ -207,7 +212,8 @@ public class CalendarActivity extends ListActivity{
 							   
 							   // Log.d("ID NUmbers", cse.name);
 							   Log.d("Array", lcs.toString());
-							   
+							 //Reverse calendar array
+							   Collections.reverse(lcs);
 						    return lcs;
 						    
 						} catch (IOException e) {
