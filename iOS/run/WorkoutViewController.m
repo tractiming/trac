@@ -32,6 +32,7 @@
 NSArray *title;
 NSMutableArray *date;
 NSMutableArray *url;
+    NSMutableArray *idNumberSelector;
     NSString *url_token;
     UIActivityIndicatorView *spinner;
     UIRefreshControl *refreshControl;
@@ -185,8 +186,11 @@ NSMutableArray *url;
     [[UINavigationBar appearance] setTitleTextAttributes:navbarTitleTextAttributes];
 }
 
+
+
 - (NSArray *)fetchedData:(NSData *)responseData {
     @try {
+        
         //parse out the json data
         NSError* error;
         NSDictionary* json = [NSJSONSerialization
@@ -209,6 +213,7 @@ NSMutableArray *url;
         NSMutableArray *temparray;
         NSString *idurl;
         NSMutableArray *idarray;
+        NSMutableArray *idNumber;
         
         //interate through id and associate url with each date
         for (i=0; i<date_length; i++) {
@@ -222,10 +227,12 @@ NSMutableArray *url;
             if(i==0){
                 temparray=[NSMutableArray arrayWithObject:tempvar];
                 idarray = [NSMutableArray arrayWithObject:idurl2];
+                idNumber = [NSMutableArray arrayWithObject:idurl];
             }
             else{
                 [temparray addObject:tempvar];
                 [idarray addObject:idurl2];
+                [idNumber addObject:idurl];
                 //[temparray addObject:tempvar];
                 //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
                 //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
@@ -233,10 +240,15 @@ NSMutableArray *url;
                 NSLog(@"IDArray %@", idarray);
             }
         }
-        
+        idNumberSelector = idNumber;
         date = temparray;
         url = idarray;
         
+        idNumberSelector = [[idNumberSelector reverseObjectEnumerator] allObjects];
+        //flip orientation of arrays
+        date = [[date reverseObjectEnumerator] allObjects];
+        title = [[title reverseObjectEnumerator] allObjects];
+        url = [[url reverseObjectEnumerator] allObjects];
         //    // Initialize Labels
         return title;
         return date;
@@ -298,7 +310,7 @@ NSMutableArray *url;
         FirstViewController *firstVC=[[tabViewController viewControllers] objectAtIndex:0];
         
         
-        
+        firstVC.urlID = [idNumberSelector objectAtIndex:indexPath.row];
         firstVC.urlName = [url objectAtIndex:indexPath.row];
     }
 }

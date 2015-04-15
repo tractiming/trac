@@ -84,7 +84,7 @@
                             <accessibilityTraits key="traits" none="YES" image="YES"/>
                         </accessibility>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Group" image="time" id="u1e-5L-l1D"/>
+                    <tabBarItem key="tabBarItem" title="Live" image="time" id="u1e-5L-l1D"/>
                     <navigationItem key="navigationItem" id="chm-gv-XP7"/>
                     <connections>
                         <outlet property="humanReadble" destination="C7x-L3-8SB" id="eOp-bt-kSa"/>
@@ -149,7 +149,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Workout" image="Image" id="Z7h-1E-pvt"/>
+                    <tabBarItem key="tabBarItem" title="Summary" image="Image" id="Z7h-1E-pvt"/>
                     <navigationItem key="navigationItem" id="YHp-g4-3Pi"/>
                     <connections>
                         <outlet property="splitViewer" destination="0pe-9K-E1y" id="TMc-4t-zBk"/>

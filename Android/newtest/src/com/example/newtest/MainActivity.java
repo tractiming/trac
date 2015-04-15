@@ -176,6 +176,31 @@ public class MainActivity extends ActionBarActivity implements
 		    .setIcon(android.R.drawable.ic_dialog_alert)
 		     .show();			
 		}
+		else if (id == R.id.action_play)
+		{
+			RaceCalibration raceAuth = new RaceCalibration();
+			String url = "https://trac-us.appspot.com/api/sessions/"+ numID+"/?access_token="+access_token;
+			String pre_json = "id=1";
+			 raceAuth.execute(url,pre_json);
+			
+		}
+		else if (id == R.id.action_record)
+		{
+			//TODO:HIT START WORKOUT ENDPOINT WHEN SETUP
+			//Log.d("Start","Pressed");
+			//RaceStart raceStart = new RaceStart();
+			//String url = "https://trac-us.appspot.com/api/sessions/"+ numID+"/?access_token="+access_token;
+			//String pre_json = "id=1";
+			//raceStart.execute(url,pre_json);
+		}
+		else if (id == R.id.action_stop)
+		{
+			RaceStop raceStop = new RaceStop();
+			String url = "https://trac-us.appspot.com/api/sessions/"+ numID+"/?access_token="+access_token;
+			String pre_json = "id=1";
+			 raceStop.execute(url,pre_json);
+			
+		}
 		return super.onOptionsItemSelected(item);
 	}
 

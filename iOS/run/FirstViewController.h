@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableData;
 @property (weak, nonatomic)  IBOutlet UILabel* humanReadble;
 @property (weak, nonatomic) IBOutlet UILabel* jsonSummary;
+@property (nonatomic, strong) NSString *urlID;
 @property (nonatomic, strong) NSString *urlName;
 
    // IBOutlet UITableView* groupTable;

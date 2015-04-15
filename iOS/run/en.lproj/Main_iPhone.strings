@@ -27,10 +27,10 @@
 "Tah-Ba-neb.normalTitle" = "Sign In";
 
 /* Class = "IBUITabBarItem"; title = "Workout"; ObjectID = "Z7h-1E-pvt"; */
-"Z7h-1E-pvt.title" = "Workout";
+"Z7h-1E-pvt.title" = "Summary";
 
 /* Class = "IBUITabBarItem"; title = "Group"; ObjectID = "u1e-5L-l1D"; */
-"u1e-5L-l1D.title" = "Group";
+"u1e-5L-l1D.title" = "Live";
 
 /* Class = "IBUILabel"; text = "Title"; ObjectID = "zYT-Ne-HiK"; */
 "zYT-Ne-HiK.text" = "Title";

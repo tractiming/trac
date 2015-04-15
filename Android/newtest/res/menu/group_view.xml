@@ -8,7 +8,23 @@
           android:title="@string/action_search"
           android:orderInCategory="100"
         newtest:showAsAction="collapseActionView|ifRoom"
-        android:actionViewClass="android.widget.SearchView" />
+          newtest:actionViewClass="android.widget.SearchView" />
+    
+    <item android:id="@+id/action_play"
+          android:icon="@drawable/ic_action_play"
+          android:title="@string/play"
+          android:orderInCategory="100"
+        newtest:showAsAction="ifRoom" />
+    <item android:id="@+id/action_record"
+          android:icon="@drawable/ic_action_play_over_video"
+          android:title="@string/record"
+          android:orderInCategory="100"
+        newtest:showAsAction="ifRoom" />
+    <item android:id="@+id/action_stop"
+          android:icon="@drawable/ic_action_stop"
+          android:title="@string/action_stop"
+          android:orderInCategory="100"
+        newtest:showAsAction="ifRoom" />
     
     <item
         android:id="@+id/action_reset"

@@ -89,7 +89,7 @@ public class GroupFragment extends ListFragment {
 		                    }
 		        }
 		    };
-		    timer.schedule(doAsynchronousTask, 0, 4000); //execute in every 2.5 seconds
+		    timer.schedule(doAsynchronousTask, 0, 4000); //execute in every 4.0 seconds
 		
 //Commented out the stopwatch features with buttons to start/stop
 //		
