@@ -15,7 +15,8 @@
 - (IBAction)startWorkout:(id)sender;
 - (IBAction)endWorkout:(id)sender;
 - (IBAction)goButton:(id)sender;
-
+@property (nonatomic, strong) NSString *urlID;
+@property (nonatomic, strong) NSDictionary *jsonData;
 
 
 
