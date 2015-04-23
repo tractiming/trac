@@ -164,7 +164,7 @@ public class MainActivity extends ActionBarActivity implements
 		        public void onClick(DialogInterface dialog, int which) { 
 					mAuthTask = new WorkoutReset();
 					String url = "https://trac-us.appspot.com/api/TimingSessionReset/?access_token=" + access_token;
-					 mAuthTask.execute(url);
+					 mAuthTask.execute(url,numID);
 		        }
 		     })
 		    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -235,7 +235,7 @@ public class MainActivity extends ActionBarActivity implements
 		@Override
 		public int getCount() {
 			// Show 2 total pages.
-			return 2;
+			return 3;
 		}
 
 		@Override
@@ -248,6 +248,8 @@ public class MainActivity extends ActionBarActivity implements
 				return fragment = new GroupFragment();
 			case 1:
 				return fragment = new WorkoutFragment();
+			case 2:
+				return fragment = new SettingsFragment();
 			default:
 				break;			
 		}
@@ -263,86 +265,14 @@ public class MainActivity extends ActionBarActivity implements
 	            return getString(R.string.title_section1).toUpperCase(l);
 	        case 1:
 	            return getString(R.string.title_section2).toUpperCase(l);
+	        case 2:
+	            return getString(R.string.title_section3).toUpperCase(l);
 	        }
 	        return null;
 	    }
 	}
 
-	OkHttpClient client = new OkHttpClient();
-	Gson gson = new Gson();
-	
-	private static final String DEBUG_TAG = "Token Check";
-	  public static final MediaType JSON = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
-	
-	public class WorkoutReset extends AsyncTask<String, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(String... params) {
-			// Attempt authentication against a network service.
 
-			String pre_json = "id="+numID;
-			Log.d(DEBUG_TAG, "Pre JSON Data: "+ pre_json);
-			
-			
-			RequestBody body = RequestBody.create(JSON, pre_json);
-			Log.d(DEBUG_TAG, "Request Body "+ body);
-			
-			
-			
-			Request request = new Request.Builder()
-	        .url(params[0])
-	        .post(body)
-	        .build();
-			
-			Log.d(DEBUG_TAG, "Request Data: "+ request);
-			try {
-			    Response response = client.newCall(request).execute();
-			    Log.d(DEBUG_TAG, "Response Data: "+ response);
-			    
-			    int codevar = response.code();
-			    Log.d(DEBUG_TAG, "Response Code: "+ codevar);
-			    
-			    Log.d(DEBUG_TAG, "Request Data: "+ request);
-			    var = response.body().string();
-			    
-			    Log.d(DEBUG_TAG, "VAR: "+ var);
-			    
-			    if (codevar == 200) {
-			    return true;
-			    }
-			    else {
-			    return false;
-			    }
-			    
-			} catch (IOException e) {
-				Log.d(DEBUG_TAG, "IoException" + e.getMessage());
-				return null;
-			}
-
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-
-			if (success == null){
-				Log.d("NULL","WORK");
-			}
-			else if (success) {
-				//go to calendar page
-				Log.d("HE","WORK");
-
-			} else {
-				//It it doesnt work segue to login page
-				Log.d("NOPE","NO WORK");
-
-				 
-			}
-		}
-
-
-	}
-    
-    
 	
 	
 }

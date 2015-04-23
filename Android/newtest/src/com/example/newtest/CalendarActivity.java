@@ -156,6 +156,7 @@ public class CalendarActivity extends ListActivity{
 		        // 2. put key/value data to pass on mainactivity load
 		        intent.putExtra("message", "https://trac-us.appspot.com/api/sessions/" + idPosition +"/?access_token=" + access_token);
 		        intent.putExtra("positionID", idPosition);
+		        intent.putExtra("token", access_token);
 
 		        // 3. or you can add data to a bundle
 		        Bundle extras = new Bundle();
