@@ -12,7 +12,9 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -25,7 +27,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class SettingsFragment extends ListFragment {
+public class SettingsFragment extends ListFragment implements BooleanAsyncResponse{
     private List<ListViewItem> mItems;        // ListView items list
     private String access_token;
     private String positionID;
@@ -38,11 +40,15 @@ public class SettingsFragment extends ListFragment {
     private String interval_distance;
     private String interval_number;
     private String filter_choice;
+    RaceCalibration raceAuth;
+    RaceStop raceStop;
+    private Boolean successVariable;
 
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        	
         	// 1. get passed intent from MainActivity
      		Intent intent = getActivity().getIntent();
      		
@@ -94,7 +100,8 @@ public class SettingsFragment extends ListFragment {
         	String tomorrowDate = sdf.format(new Date(System.currentTimeMillis() + 86400000));
         	Log.d("Date", tomorrowDate);
         	
-        	RaceCalibration raceAuth = new RaceCalibration();
+        	raceAuth = new RaceCalibration();
+        	raceAuth.delegate = this;
 			String url = "https://trac-us.appspot.com/api/sessions/"+ positionID+"/?access_token="+access_token;
 			String pre_json = "id=" + positionID + "&name="+name+"&start_time="+currentDateandTime+"&stop_time="+tomorrowDate+"&rest_time="+rest_time+"&track_size="+track_size+"&interval_distance="+interval_distance+"&interval_number="+interval_number+"&filter_choice="+filter_choice;
 			 raceAuth.execute(url,pre_json);
@@ -113,10 +120,11 @@ public class SettingsFragment extends ListFragment {
         	String currentDateandTime = sdf.format(new Date());
         	Log.d("Date", currentDateandTime);
         	
-			RaceStop raceAuth = new RaceStop();
+			raceStop = new RaceStop();
+			raceStop.delegate = this;
 			String url = "https://trac-us.appspot.com/api/sessions/"+ positionID+"/?access_token="+access_token;
 			String pre_json = "id=" + positionID + "&name="+name+"&start_time="+start_date+"&stop_time="+currentDateandTime+"&rest_time="+rest_time+"&track_size="+track_size+"&interval_distance="+interval_distance+"&interval_number="+interval_number+"&filter_choice="+filter_choice;
-			 raceAuth.execute(url,pre_json);
+			 raceStop.execute(url,pre_json);
 			 //Update Data
 			 ParseData parseData = new ParseData();
              parseData.execute(message);
@@ -124,10 +132,25 @@ public class SettingsFragment extends ListFragment {
         }
         else if (position == 3){
         	//Reset Button
+        	new AlertDialog.Builder(getActivity())
+		    .setTitle("Reset Workout")
+		    .setMessage("Are you sure you want to reset this workout?")
+		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) { 
         	WorkoutReset raceReset = new WorkoutReset();
         	String url = "https://trac-us.appspot.com/api/TimingSessionReset/?access_token=" + access_token;
         	String id_number = positionID;
         	raceReset.execute(url,id_number);
+		        }
+		    })
+		    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) { 
+		            // do nothing
+		        	Log.d("Do Nothing","Cancel");
+		        }
+		     })
+		    .setIcon(android.R.drawable.ic_dialog_alert)
+		     .show();
         }
         else if (position == 4){
         	//Logout Button
@@ -194,6 +217,24 @@ public class SettingsFragment extends ListFragment {
     			 
     		}
     	}
+
+	@Override
+	public void processFinish(Boolean success) {
+		// TODO Auto-generated method stub
+		successVariable =  success;
+		if (successVariable){
+			new AlertDialog.Builder(getActivity())
+		    .setTitle("Success!")
+		    .setMessage("Time successfully changed")
+		    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) { 
+        	
+		        }
+		    })
+		    .setIcon(android.R.drawable.ic_dialog_info)
+		     .show();
+		}
+	}
 
     
     

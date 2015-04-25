@@ -15,6 +15,7 @@ import com.squareup.okhttp.Response;
 
 
 	public class RaceCalibration extends AsyncTask<String, Void, Boolean> {
+		public BooleanAsyncResponse delegate = null; 
 		@Override
 		protected Boolean doInBackground(String... params) {
 			// Attempt authentication against a network service.
@@ -63,14 +64,14 @@ import com.squareup.okhttp.Response;
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			
-
+			delegate.processFinish(success);
 			if (success == null){
 				Log.d("NULL","WORK");
 			}
 			else if (success) {
 				//go to calendar page
 				Log.d("HE","WORK");
-
+				
 			} else {
 				//It it doesnt work segue to login page
 				Log.d("NOPE","NO WORK");

@@ -29,6 +29,7 @@ public class SplashScreen extends Activity {
 	private static String var; 
 	private TokenValidation mAuthTask = null;
 	private AlertDialog alertDialog ;
+	private static String userVariable; 
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,9 @@ public class SplashScreen extends Activity {
       		   {
       			   //Check if token is actually valid.If it is go to 
       			   //startActivity(new Intent(SplashScreen.this,CalendarActivity.class));
+      			 UserType userType = new UserType();
+      			 String url = "https://trac-us.appspot.com/api/userType/?access_token="+access_token;
+      			 userType.execute(url);
       			 mAuthTask = new TokenValidation();
      			 mAuthTask.execute("https://trac-us.appspot.com/api/verifyLogin/");
       		   }
@@ -166,6 +170,72 @@ public class SplashScreen extends Activity {
 		}
 	}
     
+	
+	public class UserType extends AsyncTask<String, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(String... params) {
+			// Attempt authentication against a network service.
+
+			
+			Request request = new Request.Builder()
+	        .url(params[0])
+	        .build();
+			
+			Log.d(DEBUG_TAG, "Request Data: "+ request);
+			try {
+			    Response response = client.newCall(request).execute();
+			    Log.d(DEBUG_TAG, "Response Data: "+ response);
+			    
+			    int codevar = response.code();
+			    Log.d(DEBUG_TAG, "Response Code: "+ codevar);
+			    
+			    Log.d(DEBUG_TAG, "Request Data: "+ request);
+			    userVariable = response.body().string();
+			    
+			    Log.d(DEBUG_TAG, "USERTYPE RESPONSE: "+ userVariable);
+			    
+			    if (codevar == 200) {
+			    return true;
+			    }
+			    else {
+			    return false;
+			    }
+			    
+			} catch (IOException e) {
+				Log.d(DEBUG_TAG, "IoException" + e.getMessage());
+				return null;
+			}
+
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mAuthTask = null;
+
+			if (success == null){
+				alertDialog.show();
+			}
+			else if (success) {
+				//go to calendar page
+				Log.d("HE","WORK");
+				SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
+				Editor edit = pref.edit();
+				edit.putString("usertype", userVariable);
+				edit.commit();
+
+			} else {
+				//It it doesnt work segue to login page
+				Log.d("NOPE","NO WORK");
+
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			mAuthTask = null;
+
+		}
+	}
     
     
     

@@ -57,6 +57,8 @@ public class MainActivity extends ActionBarActivity implements
 	private static String var; 
 	private String access_token;
 	private String numID;
+	private static String userVariable;
+	boolean resultOfComparison;
 	
     public void onBackPressed() {
     	fragment = new Fragment();
@@ -76,8 +78,10 @@ public class MainActivity extends ActionBarActivity implements
 
 		 SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 		   access_token = userDetails.getString("token","");
-		   Log.d("Access_token, MainActivity:", access_token);
-		
+		   userVariable = userDetails.getString("usertype", "");
+		   Log.d("Access_token, MainActivity:", userVariable);
+		  
+		   resultOfComparison=userVariable.equals("coach");
 		// 1. get passed intent 
         Intent intent = getIntent();
  
@@ -235,7 +239,12 @@ public class MainActivity extends ActionBarActivity implements
 		@Override
 		public int getCount() {
 			// Show 2 total pages.
+			if (resultOfComparison){
 			return 3;
+			}
+			else{
+				return 2;
+			}
 		}
 
 		@Override
@@ -243,6 +252,7 @@ public class MainActivity extends ActionBarActivity implements
 			check = position;
 			// getItem is called to instantiate the fragment for the given page.
 			fragment = new Fragment();
+			if (resultOfComparison){
 			switch(position){
 			case 0:
 				return fragment = new GroupFragment();
@@ -253,6 +263,19 @@ public class MainActivity extends ActionBarActivity implements
 			default:
 				break;			
 		}
+			}
+			else {
+				
+				switch(position){
+				case 0:
+					return fragment = new GroupFragment();
+				case 1:
+					return fragment = new WorkoutFragment();
+				default:
+					break;			
+			}
+				
+			}
 		return fragment;
 		
 		}

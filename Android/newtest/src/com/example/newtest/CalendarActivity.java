@@ -44,6 +44,7 @@ public class CalendarActivity extends ListActivity{
 	private AlertDialog alertDialog;
 	private  SwipeRefreshLayout swipeLayout;
 	private String url;
+
 	
 
 	 public void onBackPressed() {
@@ -96,6 +97,7 @@ public class CalendarActivity extends ListActivity{
 		    SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 			   access_token = userDetails.getString("token","");
 			   Log.d("Access_token, CalendarActivity:", access_token);
+			   
 			   
 			   url = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
 			   Log.d("URL ! : ", url);
