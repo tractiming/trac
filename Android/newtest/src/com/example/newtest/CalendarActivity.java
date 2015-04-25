@@ -129,7 +129,7 @@ public class CalendarActivity extends ListActivity{
 		  alertDialog = new AlertDialog.Builder(this).create();
 			alertDialog.setTitle("No Internet Connectivity");
 			alertDialog.setMessage("Please connect to the internet and reopen application.");
-			alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+			alertDialog.setIcon(R.drawable.trac_launcher);
 			alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 				
@@ -179,7 +179,7 @@ public class CalendarActivity extends ListActivity{
 				  
 				  @Override
 				  protected void onPreExecute(){
-					  Log.d("On Pre Execute", "On Pre Execute");
+					  Log.d("On Pre Execute", "Calendar Activity");
 					 //mLoginStatusView.setVisibility(View.VISIBLE);
 					  //swipeLayout.setRefreshing(true);
 					  
@@ -227,6 +227,7 @@ public class CalendarActivity extends ListActivity{
 					
 					@Override
 					protected void onPostExecute(ArrayList<Results> result) {
+						Log.d("Finished", "Calendar Activity");
 						//If the array/string doesnt come through alert will popup, hide spinner
 						if(result==null){
 							alertDialog.show();

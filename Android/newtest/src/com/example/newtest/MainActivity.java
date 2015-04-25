@@ -147,6 +147,13 @@ public class MainActivity extends ActionBarActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_signout2) {
+			fragment = new Fragment();
+	    	super.onBackPressed();
+				GroupFragment.backButtonWasPressed();
+				Log.d("Back","PRESSED");
+				WorkoutFragment.backButtonWasPressed();
+				Log.d("Back","PRESSED FROM WORKOUT");
+			
 			SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
 			Editor edit = pref.edit();
 			edit.putString("token", "");
@@ -177,7 +184,7 @@ public class MainActivity extends ActionBarActivity implements
 		        	Log.d("Do Nothing","Cancel");
 		        }
 		     })
-		    .setIcon(android.R.drawable.ic_dialog_alert)
+		    .setIcon(R.drawable.trac_launcher)
 		     .show();			
 		}
 		else if (id == R.id.action_play)

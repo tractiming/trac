@@ -149,7 +149,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 		        	Log.d("Do Nothing","Cancel");
 		        }
 		     })
-		    .setIcon(android.R.drawable.ic_dialog_alert)
+		    .setIcon(R.drawable.trac_launcher)
 		     .show();
         }
         else if (position == 4){
@@ -231,7 +231,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         	
 		        }
 		    })
-		    .setIcon(android.R.drawable.ic_dialog_info)
+		    .setIcon(R.drawable.trac_launcher)
 		     .show();
 		}
 	}

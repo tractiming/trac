@@ -56,6 +56,7 @@ public class WorkoutFragment extends ListFragment {
     alertDialog = new AlertDialog.Builder(getActivity()).create();
 	alertDialog.setTitle("No Internet Connectivity");
 	alertDialog.setMessage("Please connect to the internet and reopen application.");
+	alertDialog.setIcon(R.drawable.trac_launcher);
 	alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int which) {
 		// here you can add functions

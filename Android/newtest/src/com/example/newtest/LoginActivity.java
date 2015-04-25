@@ -70,7 +70,8 @@ public class LoginActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 	private String access_token;
-	private AlertDialog alertDialog ;
+	private AlertDialog alertDialog;
+	private static String userVariable; 
 	
 	
 	 public void onBackPressed() {
@@ -89,6 +90,7 @@ public class LoginActivity extends Activity {
 		alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setTitle("No Internet Connectivity");
 		alertDialog.setMessage("Please connect to the internet and try again.");
+		alertDialog.setIcon(R.drawable.trac_launcher);
 		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 			
@@ -349,8 +351,13 @@ public class LoginActivity extends Activity {
 				  // Log.d("Access_token", access_token2);
 				
 				//go to calendar page
+     			 UserType userType = new UserType();
+     			 String url = "https://trac-us.appspot.com/api/userType/?access_token="+access_token;
+     			 userType.execute(url);
+     			 
 				 Intent intent = new Intent(LoginActivity.this, CalendarActivity.class);
 				 startActivity(intent);
+				 
 			} else {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));
@@ -364,4 +371,72 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 		}
 	}
+	
+	public class UserType extends AsyncTask<String, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(String... params) {
+			// Attempt authentication against a network service.
+
+			
+			Request request = new Request.Builder()
+	        .url(params[0])
+	        .build();
+			
+			Log.d(DEBUG_TAG, "Request Data: "+ request);
+			try {
+			    Response response = client.newCall(request).execute();
+			    Log.d(DEBUG_TAG, "Response Data: "+ response);
+			    
+			    int codevar = response.code();
+			    Log.d(DEBUG_TAG, "Response Code: "+ codevar);
+			    
+			    Log.d(DEBUG_TAG, "Request Data: "+ request);
+			    userVariable = response.body().string();
+			    
+			    Log.d(DEBUG_TAG, "USERTYPE RESPONSE: "+ userVariable);
+			    
+			    if (codevar == 200) {
+			    return true;
+			    }
+			    else {
+			    return false;
+			    }
+			    
+			} catch (IOException e) {
+				Log.d(DEBUG_TAG, "IoException" + e.getMessage());
+				return null;
+			}
+
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			Log.d("On Post Execute", "Coach Athlete Activity");
+			mAuthTask = null;
+
+			if (success == null){
+				alertDialog.show();
+			}
+			else if (success) {
+				//go to calendar page
+				Log.d("Success","Coach or Athlete");
+				SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
+				Editor edit = pref.edit();
+				edit.putString("usertype", userVariable);
+				edit.commit();
+
+			} else {
+				//It it doesnt work segue to login page
+				Log.d("NOPE","NO WORK");
+
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			mAuthTask = null;
+
+		}
+	}
+	
 }
