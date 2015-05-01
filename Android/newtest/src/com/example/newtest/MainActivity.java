@@ -172,30 +172,30 @@ public class MainActivity extends ActionBarActivity implements
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
 			startActivity(i);
 		}
-		else if (id == R.id.action_reset)
-		{
-			Log.d("PRESSED BUTTOn","REset");
-			
-			
-			new AlertDialog.Builder(this)
-		    .setTitle("Reset Workout")
-		    .setMessage("Are you sure you want to reset this workout?")
-		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int which) { 
-					mAuthTask = new WorkoutReset();
-					String url = "https://trac-us.appspot.com/api/TimingSessionReset/?access_token=" + access_token;
-					 mAuthTask.execute(url,numID);
-		        }
-		     })
-		    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int which) { 
-		            // do nothing
-		        	Log.d("Do Nothing","Cancel");
-		        }
-		     })
-		    .setIcon(R.drawable.trac_launcher)
-		     .show();			
-		}
+//		else if (id == R.id.action_reset)
+//		{
+//			Log.d("PRESSED BUTTOn","REset");
+//			
+//			
+//			new AlertDialog.Builder(this)
+//		    .setTitle("Reset Workout")
+//		    .setMessage("Are you sure you want to reset this workout?")
+//		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//		        public void onClick(DialogInterface dialog, int which) { 
+//					mAuthTask = new WorkoutReset();
+//					String url = "https://trac-us.appspot.com/api/TimingSessionReset/?access_token=" + access_token;
+//					 mAuthTask.execute(url,numID);
+//		        }
+//		     })
+//		    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//		        public void onClick(DialogInterface dialog, int which) { 
+//		            // do nothing
+//		        	Log.d("Do Nothing","Cancel");
+//		        }
+//		     })
+//		    .setIcon(R.drawable.trac_launcher)
+//		     .show();			
+//		}
 //		else if (id == R.id.action_play)
 //		{
 //			RaceCalibration raceAuth = new RaceCalibration();

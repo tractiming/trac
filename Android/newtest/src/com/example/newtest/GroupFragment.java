@@ -78,6 +78,11 @@ public class GroupFragment extends ListFragment {
 		//Log.d("Instance State in Group on Create",savedInstanceState.toString());
 		View rootView = inflater.inflate(R.layout.fragment_group_view, container,
 				false);
+        //Inflate ID and Workout Numbers
+		mTextView = (TextView) rootView.findViewById(R.id.workout_date_view);
+		mTextView1 = (TextView) rootView.findViewById(R.id.workout_id_view);
+		
+		
 		if(testvar != null){
 			timer.cancel();
 			asyncServiceCall.cancel(true);
@@ -118,10 +123,7 @@ public class GroupFragment extends ListFragment {
 //        ((Button) rootView.findViewById(R.id.stop_button)).setOnClickListener(this);
 //        
 //        
-        //Inflate ID and Workout Numbers
-		mTextView = (TextView) rootView.findViewById(R.id.workout_date_view);
-		mTextView1 = (TextView) rootView.findViewById(R.id.workout_id_view);
-		
+
 		//Inflate Header--gives titles above names and splits
 		detailListHeader = rootView.findViewById(R.id.header);
 		detailListHeader2 = rootView.findViewById(R.id.header2);
