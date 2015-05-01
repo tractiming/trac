@@ -10,6 +10,7 @@
     <string name="title_activity_group_view">GroupView</string>
     <string name="title_fragment_settings">SettingsView</string>
     <string name="hello_world">Hello world!</string>
+    <string name="search">Search</string>
     <string name="title_splash_screen">TRAC</string>
     <string name="title_activity_workout_view">WorkoutView</string>
     <string name="title_activity_calendar">Calendar</string>

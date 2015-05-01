@@ -11,4 +11,18 @@
            parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">#FFFFFF</item>
     </style>
+    
+        <style name="ActionBarWidget" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- SearchView customization-->
+        <item name="searchViewSearchIcon">@drawable/ic_action_search</item>
+        <item name="searchViewCloseIcon">@drawable/ic_action_remove</item>
+        <item name="searchViewAutoCompleteTextView">@style/AutoCompleteTextView</item>
+    </style>
+    
+           <style name="AutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textCursorDrawable">@null</item>
+      
+    </style>
+ 
 </resources>

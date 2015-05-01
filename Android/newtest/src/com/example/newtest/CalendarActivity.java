@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,6 +46,7 @@ public class CalendarActivity extends ListActivity{
 	private  SwipeRefreshLayout swipeLayout;
 	private String url;
 	private static AsyncServiceCall asyncCall;
+	public CalendarAdapter var;
 
 	
 
@@ -66,7 +68,48 @@ public class CalendarActivity extends ListActivity{
 
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+
+	    // Get the SearchView and set the searchable configuration
+	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+	    SearchView searchView = (SearchView) menu.findItem(R.id.action_search2).getActionView();
+	    // Assumes current activity is the searchable activity
+	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+	    searchView.setIconifiedByDefault(false);
+	    
+	    // Do not iconify the widget; expand it by default
+
+
+        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                try{// this is your adapter that will be filtered
+                var.getFilter(newText);
+                System.out.println("on text chnge text: "+newText);
+                return true;
+                }
+                finally{
+                	Log.d("early","finally");
+                	return true;
+                	}
+            }
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                try{// this is your adapter that will be filtered
+                var.getFilter(query);
+                System.out.println("on query submit: "+query);
+                return true;}
+                finally{Log.d("early","finally");
+                	return true;}
+            }
+        };
+        searchView.setOnQueryTextListener(textChangeListener);
+	    
+	    return true;
+
+
 	}
 
 	@Override
@@ -244,7 +287,7 @@ public class CalendarActivity extends ListActivity{
 						}
 						else{
 							//else parse the result and put in adapter, hide spinner
-						CalendarAdapter var = new CalendarAdapter(result, getApplicationContext());
+						var = new CalendarAdapter(result, getApplicationContext());
 						setListAdapter(var);
 						positionArray = result;
 						mLoginStatusView.setVisibility(View.GONE);
