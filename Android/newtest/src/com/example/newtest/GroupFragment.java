@@ -53,17 +53,48 @@ public class GroupFragment extends ListFragment {
 	private View mLoginStatusView;
 	public static Timer timer;
 	public TimerTask doAsynchronousTask;
-
+	public static AsyncServiceCall asyncServiceCall;
+	public static String testvar;
+	public static String title;
+	public static String date;
+	
 	public static void backButtonWasPressed() {
 		timer.cancel();
+		asyncServiceCall.cancel(true);
         Log.d("HI","Passed");
+        testvar = null;
     }
+
+	public void onPause(){
+		super.onPause();
+		timer.cancel();
+		asyncServiceCall.cancel(true);
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
+		//Log.d("Instance State in Group on Create",savedInstanceState.toString());
 		View rootView = inflater.inflate(R.layout.fragment_group_view, container,
 				false);
+		if(testvar != null){
+			timer.cancel();
+			asyncServiceCall.cancel(true);
+			mLoginStatusView = rootView.findViewById(R.id.login_status);
+		    mLoginStatusView.setVisibility(View.GONE);
+		    mTextView.setText("Date: " + date);
+		    mTextView1.setText("Workout ID: " + title);
+		    Log.d("Log","Not NULL");
+
+		}
+		else{
+			testvar = "FragmentCheckCreation";
+			Log.d("Test","NONNULL?");
+			mLoginStatusView = rootView.findViewById(R.id.login_status);
+		    mLoginStatusView.setVisibility(View.VISIBLE);
+		}
+		
 		
 		// 1. get passed intent from MainActivity
 		Intent intent = getActivity().getIntent();
@@ -72,24 +103,11 @@ public class GroupFragment extends ListFragment {
         message = intent.getStringExtra("message");
         Log.d("The passed Variable in frag baby", message);
         
-		//Repeat the async task every few seconds
 
-		    timer = new Timer();
-		    doAsynchronousTask = new TimerTask() {       
-		                public void run() {       
-		                    try {
-		                    	AsyncServiceCall asyncServiceCall = new AsyncServiceCall();
-		                        // PerformBackgroundTask this class is the class that extends AsynchTask 
-		                    	Log.d("URL:", message);
-		                    	//performs async service call on the message--url--passed
-		                    	asyncServiceCall.execute(message);
-		                    	Log.i(DEBUG_TAG, "counter");
-		                    } catch (Exception e) {
-		                        // TODO Auto-generated catch block
-		                    }
-		        }
-		    };
-		    timer.schedule(doAsynchronousTask, 0, 4000); //execute in every 4.0 seconds
+        asyncServiceCall = new AsyncServiceCall();
+    	asyncServiceCall.execute(message);
+        
+		   
 		
 //Commented out the stopwatch features with buttons to start/stop
 //		
@@ -108,11 +126,35 @@ public class GroupFragment extends ListFragment {
 		detailListHeader = rootView.findViewById(R.id.header);
 		detailListHeader2 = rootView.findViewById(R.id.header2);
 		detailListHeader3 = rootView.findViewById(R.id.header3);
-		
+	    
 
 		return rootView;
 	}	
 	
+	public void onResume(){
+		super.onResume();
+		 timer = new Timer();
+		    doAsynchronousTask = new TimerTask() {       
+		                public void run() {       
+		                    try {
+		                    	asyncServiceCall.cancel(true);
+		                    	asyncServiceCall = new AsyncServiceCall();
+		                        // PerformBackgroundTask this class is the class that extends AsynchTask 
+		                    	Log.d("URL:", message);
+		                    	//performs async service call on the message--url--passed
+		                    	asyncServiceCall.execute(message);
+		                    	Log.i(DEBUG_TAG, "counter");
+		                    } catch (Exception e) {
+		                        // TODO Auto-generated catch block
+		                    }
+		        }
+		    };
+		    timer.schedule(doAsynchronousTask, 0, 5000); //execute in every 4.0 seconds
+		
+		
+	}
+	
+
 /*	@Override
     public void onClick(View v) {
         switch(v.getId()) {
@@ -142,6 +184,8 @@ public class GroupFragment extends ListFragment {
     //new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
     
   }
+  
+
 /*
   @Override
   public void onListItemClick(ListView l, View v, int position, long id) {
@@ -164,7 +208,9 @@ public class GroupFragment extends ListFragment {
 	private static final String DEBUG_TAG = "Debug";
 	
 	  private class AsyncServiceCall extends AsyncTask<String, Void, Workout> {
-		  
+		  protected void onPreExecute(){
+			  Log.d("Async", "PreExcute");
+		  }
 		  
 		  
 			@Override
@@ -195,7 +241,7 @@ public class GroupFragment extends ListFragment {
 			protected void onPostExecute(Workout result) {
 				Log.d(DEBUG_TAG,"execute");
 				//String resultstring = result.toString();
-				
+				 mLoginStatusView.setVisibility(View.GONE);
 				//did not have popup appear if null due to async every 2 seconds being called. Popup will continuously popup then
 				if(result==null){
 					return;
@@ -208,6 +254,8 @@ public class GroupFragment extends ListFragment {
 			    setListAdapter(new GroupAdapter(result, getActivity()));	
 			    lview.onRestoreInstanceState(state);
 			    mTextView.setText("Date: " + result.date);
+			    title = result.id;
+			    date = result.date;
 			    mTextView1.setText("Workout ID: " + result.id);
 				}
 			}

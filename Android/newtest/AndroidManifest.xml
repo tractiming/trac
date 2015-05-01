@@ -16,12 +16,14 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.example.newtest.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.example.newtest.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" 
+            android:screenOrientation="portrait" 
             >
             
         </activity>
@@ -29,7 +31,8 @@
             android:name="com.example.newtest.SplashScreen"
             android:label="@string/title_splash_screen"
             android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@android:style/Theme.NoTitleBar" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,15 +41,23 @@
         </activity>
         <activity
             android:name="com.example.newtest.CalendarActivity"
-            android:label="@string/title_activity_calendar" >
+            android:label="@string/title_activity_calendar"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.newtest.GroupFragment"
-            android:label="@string/title_activity_group_view" >
+            android:label="@string/title_activity_group_view" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.example.newtest.WorkoutFragment"
-            android:label="@string/title_activity_workout_view" >
+            android:label="@string/title_activity_workout_view" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.example.newtest.SettingsFragment"
+            android:label="@string/title_fragment_settings" 
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

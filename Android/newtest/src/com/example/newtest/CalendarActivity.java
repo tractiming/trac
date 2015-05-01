@@ -44,15 +44,22 @@ public class CalendarActivity extends ListActivity{
 	private AlertDialog alertDialog;
 	private  SwipeRefreshLayout swipeLayout;
 	private String url;
+	private static AsyncServiceCall asyncCall;
 
 	
 
 	 public void onBackPressed() {
+		   asyncCall.cancel(true);
 		   Intent intent = new Intent(Intent.ACTION_MAIN);
 		   intent.addCategory(Intent.CATEGORY_HOME);
 		   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		   startActivity(intent);
+
 		 }
+	public void onPause(){
+		super.onPause();
+		   asyncCall.cancel(true);
+	}
 	  
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,6 +83,7 @@ public class CalendarActivity extends ListActivity{
 			Editor edit = pref.edit();
 			edit.putString("token", "");
 			edit.commit();
+			asyncCall.cancel(true);
 			
 			Intent i = new Intent(CalendarActivity.this, LoginActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
@@ -110,7 +118,7 @@ public class CalendarActivity extends ListActivity{
 	            public void onRefresh() {
 	                swipeLayout.setRefreshing(true);
 	                Log.d("Swipe", "Refreshing Number");
-	                new AsyncServiceCall().execute(url);
+	                asyncCall = (AsyncServiceCall) new AsyncServiceCall().execute(url);
 	                ( new Handler()).postDelayed(new Runnable() {
 	                    @Override
 	                    public void run() {
@@ -138,7 +146,7 @@ public class CalendarActivity extends ListActivity{
 			
 			
 			//OnCreate Async Task Called, see below for async task class
-		    new AsyncServiceCall().execute(url);
+			asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
 		    
 		  }
 	 

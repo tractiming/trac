@@ -42,14 +42,23 @@ public class WorkoutFragment extends ListFragment {
 	private Boolean isVisible;
 	private AlertDialog alertDialog;
 	private  SwipeRefreshLayout swipeLayout;
+	private static AsyncWorkoutCall asyncTask;
 	
 	public static void backButtonWasPressed() {
+		
         Log.d("HI","Passed");
+        asyncTask.cancel(true);
     }
 
+	public void onPause(){
+		super.onPause();
+		asyncTask.cancel(true);
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.d("Created","Workout Fragment");
 		View rootView = inflater.inflate(R.layout.fragment_workout_view, container,
 				false);
     //Alert Box if no connectivity
@@ -79,7 +88,7 @@ public class WorkoutFragment extends ListFragment {
             public void onRefresh() {
                 swipeLayout.setRefreshing(true);
                 Log.d("Swipe", "Refreshing Number");
-                new AsyncServiceCall().execute(message);
+                asyncTask = (AsyncWorkoutCall) new AsyncWorkoutCall().execute(message);
                 ( new Handler()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -94,7 +103,7 @@ public class WorkoutFragment extends ListFragment {
      
      
      
-    new AsyncServiceCall().execute(message);
+	    asyncTask = (AsyncWorkoutCall) new AsyncWorkoutCall().execute(message);
     
          return rootView;
     
@@ -136,7 +145,7 @@ public class WorkoutFragment extends ListFragment {
 	Gson gson = new Gson();
 	private static final String DEBUG_TAG = "griffinSucks";
 	
-	  private class AsyncServiceCall extends AsyncTask<String, Void, Workout> {
+	  private class AsyncWorkoutCall extends AsyncTask<String, Void, Workout> {
 		  
 			@Override
 			protected Workout doInBackground(String... params) {

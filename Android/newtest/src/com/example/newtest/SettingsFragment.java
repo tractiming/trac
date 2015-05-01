@@ -42,13 +42,16 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
     private String filter_choice;
     RaceCalibration raceAuth;
     RaceStop raceStop;
+    RaceStart raceGo;
     private Boolean successVariable;
 
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	Log.d("Created","Settings Fragment");
         super.onCreate(savedInstanceState);
-        	
+        //GroupFragment.backButtonWasPressed();
+		//WorkoutFragment.backButtonWasPressed();
         	// 1. get passed intent from MainActivity
      		Intent intent = getActivity().getIntent();
      		
@@ -112,6 +115,10 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         }
         else if (position == 1){
         	//TODO: Go Button. When endpoint made, hit it!
+        	raceGo = new RaceStart();
+        	String url = "https://trac-us.appspot.com/api/start_timer/?access_token=" + access_token;
+        	String pre_json = "id="+positionID;
+        	raceGo.execute(url,pre_json);
         	
         }
         else if (position == 2){
@@ -158,6 +165,10 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 			Editor edit = pref.edit();
 			edit.putString("token", "");
 			edit.commit();
+			
+			GroupFragment.backButtonWasPressed();
+			Log.d("Back","PRESSED");
+			WorkoutFragment.backButtonWasPressed();
 			
 			Intent i = new Intent(getActivity(), LoginActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
