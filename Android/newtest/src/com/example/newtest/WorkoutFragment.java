@@ -43,6 +43,8 @@ public class WorkoutFragment extends ListFragment {
 	private AlertDialog alertDialog;
 	private  SwipeRefreshLayout swipeLayout;
 	private static AsyncWorkoutCall asyncTask;
+	public WorkoutAdapter workoutAdapter;
+	public WorkoutAsyncResponse delegate;
 	
 	public static void backButtonWasPressed() {
 		
@@ -181,8 +183,9 @@ public class WorkoutFragment extends ListFragment {
 				{
 				//set result to show on screen
 				
-			  
-			    setListAdapter(new WorkoutAdapter(result, getActivity()));		
+				workoutAdapter = new WorkoutAdapter(result, getActivity());
+			    setListAdapter(workoutAdapter);		
+			    delegate.processFinish(workoutAdapter);
 				}
 			    
 			}

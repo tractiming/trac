@@ -1,6 +1,8 @@
 package com.example.newtest;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.text.method.ScrollingMovementMethod;
@@ -15,11 +17,14 @@ public class WorkoutAdapter extends BaseAdapter{
 
 	private Workout parsedJson; 
 	private Context context;
+	private ArrayList<Runners> runnersList;
 	
 	
 	public WorkoutAdapter(Workout workout, Context context) {
+	 runnersList = new ArrayList<Runners>();
 	 this.parsedJson = workout;
 	 this.context = context;
+	 runnersList.addAll(parsedJson.runners);
 	}
 	
 	
@@ -120,6 +125,23 @@ public class WorkoutAdapter extends BaseAdapter{
 		return convertView;
 	}
 
-
+	public void getFilter(String charText) {
+		charText = charText.toLowerCase(Locale.getDefault());
+		parsedJson.runners.clear();
+				if (charText.length() == 0) {
+					parsedJson.runners.addAll(runnersList);
+		} 
+		else 
+		{
+			for (Runners wp : runnersList) 
+			{
+				if (wp.name.toLowerCase(Locale.getDefault()).contains(charText)) 
+				{
+					parsedJson.runners.add(wp);
+				}
+			}
+		}
+		notifyDataSetChanged();
+	}
 	
 }

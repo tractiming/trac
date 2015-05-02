@@ -57,6 +57,9 @@ public class GroupFragment extends ListFragment {
 	public static String testvar;
 	public static String title;
 	public static String date;
+	public GroupAdapter groupList;
+	public GroupAsyncResponse delegate; 
+	
 	
 	public static void backButtonWasPressed() {
 		timer.cancel();
@@ -188,6 +191,7 @@ public class GroupFragment extends ListFragment {
   }
   
 
+ 
 /*
   @Override
   public void onListItemClick(ListView l, View v, int position, long id) {
@@ -253,12 +257,14 @@ public class GroupFragment extends ListFragment {
 				//set result to show on screen
 				
 				Parcelable state = lview.onSaveInstanceState();
-			    setListAdapter(new GroupAdapter(result, getActivity()));	
+				groupList = new GroupAdapter(result, getActivity());
+			    setListAdapter(groupList);	
 			    lview.onRestoreInstanceState(state);
 			    mTextView.setText("Date: " + result.date);
 			    title = result.id;
 			    date = result.date;
 			    mTextView1.setText("Workout ID: " + result.id);
+			    delegate.processFinish(groupList);
 				}
 			}
 			  

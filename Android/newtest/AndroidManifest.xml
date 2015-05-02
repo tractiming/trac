@@ -57,6 +57,12 @@
             android:name="com.example.newtest.GroupFragment"
             android:label="@string/title_activity_group_view" 
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@layout/searchable" />
         </activity>
         <activity
             android:name="com.example.newtest.WorkoutFragment"

@@ -1,6 +1,8 @@
 package com.example.newtest;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,10 +16,13 @@ public class GroupAdapter extends BaseAdapter{
 	//class for group fragment
 	private Workout parsedJson; 
 	private Context context;
+	private ArrayList<Runners> runnersList;
 	
 	public GroupAdapter(Workout workout, Context context) {
+	 runnersList = new ArrayList<Runners>();
 	 this.parsedJson = workout;
 	 this.context = context;
+	 runnersList.addAll(parsedJson.runners);
 	}
 	
 	
@@ -123,6 +128,25 @@ public class GroupAdapter extends BaseAdapter{
 	private Object Integer(float temp_var) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void getFilter(String charText) {
+		charText = charText.toLowerCase(Locale.getDefault());
+		parsedJson.runners.clear();
+				if (charText.length() == 0) {
+					parsedJson.runners.addAll(runnersList);
+		} 
+		else 
+		{
+			for (Runners wp : runnersList) 
+			{
+				if (wp.name.toLowerCase(Locale.getDefault()).contains(charText)) 
+				{
+					parsedJson.runners.add(wp);
+				}
+			}
+		}
+		notifyDataSetChanged();
 	}
 
 

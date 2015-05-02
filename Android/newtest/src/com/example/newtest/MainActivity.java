@@ -18,6 +18,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,11 +34,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.support.v4.app.ListFragment;
 
 public class MainActivity extends ActionBarActivity implements
-		ActionBar.TabListener {
+		ActionBar.TabListener{
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -59,6 +62,10 @@ public class MainActivity extends ActionBarActivity implements
 	private String numID;
 	private static String userVariable;
 	boolean resultOfComparison;
+	GroupFragment groupFrag;
+	private GroupAdapter groupAdapter;
+	WorkoutFragment workoutFrag;
+	private WorkoutAdapter workoutAdapter;
 	
     public void onBackPressed() {
     	fragment = new Fragment();
@@ -146,7 +153,48 @@ public class MainActivity extends ActionBarActivity implements
 
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.group_view, menu);
-		return true;
+		// Get the SearchView and set the searchable configuration
+	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+	    SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+	    // Assumes current activity is the searchable activity
+	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+	    searchView.setIconifiedByDefault(false);
+	    
+	    // Do not iconify the widget; expand it by default
+
+
+        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                try{// this is your adapter that will be filtered
+                groupAdapter.getFilter(newText);
+                workoutAdapter.getFilter(newText);
+                System.out.println("on text chnge text: "+newText);
+                return true;
+                }
+                finally{
+                	Log.d("early","finally");
+                	return true;
+                	}
+            }
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                try{// this is your adapter that will be filtered
+                groupAdapter.getFilter(query);
+                workoutAdapter.getFilter(query);
+                System.out.println("on query submit: "+query);
+                return true;}
+                finally{Log.d("early","finally");
+                	return true;}
+            }
+        };
+        searchView.setOnQueryTextListener(textChangeListener);
+	    
+	    return true;
+
 	}
 
 	@Override
@@ -248,7 +296,7 @@ public class MainActivity extends ActionBarActivity implements
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
 	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+	public class SectionsPagerAdapter extends FragmentPagerAdapter implements GroupAsyncResponse, WorkoutAsyncResponse {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -273,9 +321,13 @@ public class MainActivity extends ActionBarActivity implements
 			if (resultOfComparison){
 			switch(position){
 			case 0:
-				return fragment = new GroupFragment();
+				groupFrag = new GroupFragment();
+				groupFrag.delegate = this;
+				return groupFrag;
 			case 1:
-				return fragment = new WorkoutFragment();
+				 workoutFrag = new WorkoutFragment();
+				 workoutFrag.delegate = this;
+				return workoutFrag;
 			case 2:
 				return fragment = new SettingsFragment();
 			default:
@@ -311,6 +363,19 @@ public class MainActivity extends ActionBarActivity implements
 	        }
 	        return null;
 	    }
+
+		@Override
+		public void processFinish(GroupAdapter groupList) {
+			// TODO Auto-generated method stub
+			groupAdapter = groupList;
+		}
+
+		@Override
+		public void processFinish(WorkoutAdapter groupList) {
+			// TODO Auto-generated method stub
+			workoutAdapter = groupList;
+			
+		}
 	}
 
 
