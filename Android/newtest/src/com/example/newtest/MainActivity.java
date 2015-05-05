@@ -162,7 +162,7 @@ public class MainActivity extends ActionBarActivity implements
 	    
 	    // Do not iconify the widget; expand it by default
 
-
+	   
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
         {
             @Override

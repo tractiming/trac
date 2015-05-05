@@ -125,11 +125,6 @@ public class GroupAdapter extends BaseAdapter{
 	}
 
 
-	private Object Integer(float temp_var) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void getFilter(String charText) {
 		charText = charText.toLowerCase(Locale.getDefault());
 		parsedJson.runners.clear();

@@ -116,6 +116,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         else if (position == 1){
         	//TODO: Go Button. When endpoint made, hit it!
         	raceGo = new RaceStart();
+        	raceGo.delegate = this;
         	String url = "https://trac-us.appspot.com/api/start_timer/?access_token=" + access_token;
         	String pre_json = "id="+positionID;
         	raceGo.execute(url,pre_json);

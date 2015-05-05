@@ -259,12 +259,13 @@ public class GroupFragment extends ListFragment {
 				Parcelable state = lview.onSaveInstanceState();
 				groupList = new GroupAdapter(result, getActivity());
 			    setListAdapter(groupList);	
-			    lview.onRestoreInstanceState(state);
+			    
 			    mTextView.setText("Date: " + result.date);
 			    title = result.id;
 			    date = result.date;
 			    mTextView1.setText("Workout ID: " + result.id);
 			    delegate.processFinish(groupList);
+			    lview.onRestoreInstanceState(state);
 				}
 			}
 			  
