@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "ic_action_discard_dark-1.png"
+      "filename" : "ic_action_play_over_video_dark.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "ic_action_discard_dark.png"
+      "filename" : "ic_action_play_over_video_dark-1.png"
     }
   ],
   "info" : {

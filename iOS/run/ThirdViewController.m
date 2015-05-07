@@ -276,8 +276,89 @@
     
 }
 
+- (IBAction)goButton:(id)sender{
 
-- (IBAction)startWorkout:(id)sender {
+    NSInteger success = 0;
+    @try {
+        
+    
+        //if success
+        NSString *post =[[NSString alloc] initWithFormat:@"id=%@",self.urlID];
+        NSLog(@"Post: %@",post);
+        
+        NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/start_timer/?access_token=%@", savedToken];
+        
+        NSURL *url=[NSURL URLWithString:idurl2];
+        
+        NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSLog(@"Post Data:%@", postData);
+        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:postData];
+        
+        
+        //[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
+        
+        NSError *error = [[NSError alloc] init];
+        NSHTTPURLResponse *response = nil;
+        NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        
+        NSLog(@"Response code: %ld", (long)[response statusCode]);
+        // NSLog(@"Error Code: %@", [error localizedDescription]);
+        
+        if ([response statusCode] >= 200 && [response statusCode] < 300)
+        {
+            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+            NSLog(@"Response ==> %@", responseData);
+            
+            NSError *error = nil;
+            NSDictionary *jsonData = [NSJSONSerialization
+                                      JSONObjectWithData:urlData
+                                      options:NSJSONReadingMutableContainers
+                                      error:&error];
+            
+            success = [jsonData[@"success"] integerValue];
+            NSLog(@"Success: %ld",(long)success);
+            
+            if(success == 0)
+            {
+                NSLog(@"SUCCESS");
+                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully started race!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+                //return self.access_token;
+            } else {
+                
+                NSLog(@"Failed");
+                
+            }
+            
+        } else {
+            //if (error) NSLog(@"Error: %@", error);
+            NSLog(@"Failed");
+            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+            NSLog(@"Response ==> %@", responseData);
+        }
+        
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        
+    }
+
+        
+
+}
+
+
+- (IBAction)calibrateWorkout:(id)sender {
     
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd"];

@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WorkoutViewController : UIViewController
+@interface WorkoutViewController : UIViewController  <UISearchBarDelegate, UISearchDisplayDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableData;
 - (IBAction)logoutClicked:(id)sender;
+@property (strong,nonatomic) NSMutableArray *filteredWorkoutArray;
 
+@property IBOutlet UISearchBar *workoutSearchBar;
 @end

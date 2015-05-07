@@ -12,7 +12,7 @@
 
 - (IBAction)logoutClicked:(id)sender;
 - (IBAction)resetWorkout:(id)sender;
-- (IBAction)startWorkout:(id)sender;
+- (IBAction)calibrateWorkout:(id)sender;
 - (IBAction)endWorkout:(id)sender;
 - (IBAction)goButton:(id)sender;
 @property (nonatomic, strong) NSString *urlID;

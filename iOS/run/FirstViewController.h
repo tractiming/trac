@@ -21,6 +21,8 @@
 @property (nonatomic, strong) NSString *urlID;
 @property (nonatomic, strong) NSString *urlName;
 
+
+
    // IBOutlet UITableView* groupTable;
 
 @end

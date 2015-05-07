@@ -2,13 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "ic_action_discard_dark-1.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "ic_action_discard_dark.png"
+      "filename" : "trac_launcher.png"
     }
   ],
   "info" : {

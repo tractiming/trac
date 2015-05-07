@@ -37,6 +37,29 @@
     [timer invalidate];
 
 }
+- (void)viewWillAppear:(BOOL)animated{
+    
+    
+NSLog(@"Reappear");
+    dispatch_async(kBgQueue, ^{
+        
+        NSData* data = [NSData dataWithContentsOfURL:
+                        [NSURL URLWithString:self.urlName]];
+        
+        dispatch_async(dispatch_get_main_queue() ,^{
+            
+            [self fetchedData:data];
+            [self.tableData reloadData];
+            [spinner removeFromSuperview];
+        });});
+    
+    NSLog(@"Fires Every? 10");
+    
+    // call timer on launch and call sendRequest every 5 seconds
+    timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(sendRequest) userInfo:nil repeats:YES];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -55,19 +78,7 @@
     [self.view addSubview:spinner];
     
     //Async Task Called
-    dispatch_async(kBgQueue, ^{
-        
-        NSData* data = [NSData dataWithContentsOfURL:
-                        [NSURL URLWithString:self.urlName]];
-        
-        dispatch_async(dispatch_get_main_queue() ,^{
-            
-            [self fetchedData:data];
-            [self.tableData reloadData];
-            [spinner removeFromSuperview];
-        });});
-    
-    NSLog(@"Fires Every? 10");
+
     
     SecondViewController *svc = [self.tabBarController.viewControllers objectAtIndex:1];
     svc.urlName_VC2 = self.urlName;
@@ -75,8 +86,7 @@
     ThirdViewController *tvc = [self.tabBarController.viewControllers objectAtIndex:2];
     tvc.urlID = self.urlID;
     
-    // call timer on launch and call sendRequest every 5 seconds
-    timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(sendRequest) userInfo:nil repeats:YES];
+
     // other custom initialization continues
     
     
@@ -351,6 +361,7 @@
     }
     
 }
+
 
 - (void)didReceiveMemoryWarning
 {

@@ -40,11 +40,19 @@ NSMutableArray *url;
 }
 
 @synthesize tableData;
-
+@synthesize workoutSearchBar;
+@synthesize filteredWorkoutArray;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+      self.filteredWorkoutArray = [NSMutableArray arrayWithCapacity:[title count]];
+   
+    // Hide the search bar until user scrolls up
+    CGRect newBounds = self.tableData.bounds;
+    newBounds.origin.y = newBounds.origin.y + workoutSearchBar.bounds.size.height;
+    self.tableData.bounds = newBounds;
     
     /*
      Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the method reachabilityHasChanged will be called.
@@ -280,7 +288,12 @@ NSMutableArray *url;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [title count];
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return [self.filteredWorkoutArray count];
+    } else {
+        return [title count];
+    }
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -288,30 +301,62 @@ NSMutableArray *url;
     //put data into cells for tableView
     static NSString *simpleTableIdentifier = @"SimpleTableCell";
     
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:simpleTableIdentifier];
     }
     
-    cell.textLabel.text = title[indexPath.row];
-    cell.detailTextLabel.text= date[indexPath.row];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        cell.textLabel.text = self.filteredWorkoutArray[indexPath.row];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        //TODO: Fix this so date is correct
+        //cell.detailTextLabel.text= date[indexPath.row];
+    } else {
+        cell.textLabel.text = title[indexPath.row];
+        cell.detailTextLabel.text= date[indexPath.row];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
+    
     NSLog(@"Date: %@", date);
     
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self performSegueWithIdentifier:@"showWorkoutDetail" sender:self];
+    }
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     //on view controller change, move to next page, and pass url to next view
     if ([segue.identifier isEqualToString:@"showWorkoutDetail"]) {
-        NSIndexPath *indexPath = [self.tableData indexPathForSelectedRow];
+       
        UITabBarController *tabViewController = segue.destinationViewController;
         FirstViewController *firstVC=[[tabViewController viewControllers] objectAtIndex:0];
         
+      if (self.searchDisplayController.active) {
+          
+          NSLog(@"Search Active");
+        NSIndexPath *indexPath2 = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
+          NSLog(@"Index Path %ld", (long)indexPath2.row);
+          firstVC.urlID = [idNumberSelector objectAtIndex:indexPath2.row];
+          firstVC.urlName = [url objectAtIndex:indexPath2.row];
+          
+      }
+          else{
+              
+              NSLog(@"Normal Segue");
+              NSIndexPath *indexPath = [self.tableData indexPathForSelectedRow];
+              firstVC.urlID = [idNumberSelector objectAtIndex:indexPath.row];
+              firstVC.urlName = [url objectAtIndex:indexPath.row];
+          }
         
-        firstVC.urlID = [idNumberSelector objectAtIndex:indexPath.row];
-        firstVC.urlName = [url objectAtIndex:indexPath.row];
     }
 }
 
@@ -323,6 +368,33 @@ NSMutableArray *url;
     NSLog(@"Secutiy Token: %@",savedToken);
     [self performSegueWithIdentifier:@"logout" sender:self];
 
+}
+
+#pragma mark Content Filtering
+-(void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
+    // Update the filtered array based on the search text and scope.
+    // Remove all objects from the filtered search array
+    [self.filteredWorkoutArray removeAllObjects];
+    // Filter the array using NSPredicate
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",searchText];
+    self.filteredWorkoutArray = [NSMutableArray arrayWithArray:[title filteredArrayUsingPredicate:predicate]];
+}
+
+#pragma mark - UISearchDisplayController Delegate Methods
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+    // Tells the table data source to reload when text changes
+    [self filterContentForSearchText:searchString scope:
+     [[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:[self.searchDisplayController.searchBar selectedScopeButtonIndex]]];
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption {
+    // Tells the table data source to reload when scope bar selection changes
+    [self filterContentForSearchText:self.searchDisplayController.searchBar.text scope:
+     [[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:searchOption]];
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
 }
 
 
