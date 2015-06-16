@@ -339,14 +339,17 @@ NSMutableArray *url;
        
        UITabBarController *tabViewController = segue.destinationViewController;
         FirstViewController *firstVC=[[tabViewController viewControllers] objectAtIndex:0];
+        NSIndexPath *indexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
+
         
       if (self.searchDisplayController.active) {
           
           NSLog(@"Search Active");
-        NSIndexPath *indexPath2 = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
-          NSLog(@"Index Path %ld", (long)indexPath2.row);
-          firstVC.urlID = [idNumberSelector objectAtIndex:indexPath2.row];
-          firstVC.urlName = [url objectAtIndex:indexPath2.row];
+          
+          
+                 NSLog(@"Index Path %ld", (long)indexPath.section);
+          firstVC.urlID = [idNumberSelector objectAtIndex:indexPath.row];
+          firstVC.urlName = [url objectAtIndex:indexPath.row];
           
       }
           else{
