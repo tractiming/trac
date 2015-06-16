@@ -28,7 +28,7 @@ public class RaceStop extends AsyncTask<String, Void, Boolean> {
 		
 		Request request = new Request.Builder()
         .url(params[0])
-        .put(body)
+        .post(body)
         .build();
 		
 		Log.d(DEBUG_TAG, "Request Data: "+ request);

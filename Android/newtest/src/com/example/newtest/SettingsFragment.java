@@ -33,12 +33,6 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
     private String positionID;
     private String message;
     private String name;
-    private String start_date;
-    private String end_date;
-    private String rest_time;
-    private String track_size;
-    private String interval_distance;
-    private String interval_number;
     private String filter_choice;
     RaceCalibration raceAuth;
     RaceStop raceStop;
@@ -61,9 +55,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
              access_token = intent.getStringExtra("token");
              Log.d("The passed Variable in frag baby", access_token);
              message = intent.getStringExtra("message");
-             ParseData parseData = new ParseData();
-             parseData.execute(message);
-             
+
              
         // initialize the items list
         mItems = new ArrayList<ListViewItem>();
@@ -96,22 +88,13 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         
         if (position == 0){
         	//Calibrate start, start:now, finish:today+1day
-        	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        	String currentDateandTime = sdf.format(new Date());
-        	Log.d("Date", currentDateandTime);
-        	
-        	String tomorrowDate = sdf.format(new Date(System.currentTimeMillis() + 86400000));
-        	Log.d("Date", tomorrowDate);
-        	
         	raceAuth = new RaceCalibration();
         	raceAuth.delegate = this;
-			String url = "https://trac-us.appspot.com/api/sessions/"+ positionID+"/?access_token="+access_token;
-			String pre_json = "id=" + positionID + "&name="+name+"&start_time="+currentDateandTime+"&stop_time="+tomorrowDate+"&rest_time="+rest_time+"&track_size="+track_size+"&interval_distance="+interval_distance+"&interval_number="+interval_number+"&filter_choice="+filter_choice;
+			String url = "https://trac-us.appspot.com/api/open_session/?access_token=" + access_token;
+			String pre_json = "id="+positionID;
 			 raceAuth.execute(url,pre_json);
 			 
-			 //Update Data
-			 ParseData parseData = new ParseData();
-             parseData.execute(message);
+
         }
         else if (position == 1){
         	//TODO: Go Button. When endpoint made, hit it!
@@ -124,18 +107,13 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         }
         else if (position == 2){
         	//End Workout, finish:now
-        	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        	String currentDateandTime = sdf.format(new Date());
-        	Log.d("Date", currentDateandTime);
         	
 			raceStop = new RaceStop();
 			raceStop.delegate = this;
-			String url = "https://trac-us.appspot.com/api/sessions/"+ positionID+"/?access_token="+access_token;
-			String pre_json = "id=" + positionID + "&name="+name+"&start_time="+start_date+"&stop_time="+currentDateandTime+"&rest_time="+rest_time+"&track_size="+track_size+"&interval_distance="+interval_distance+"&interval_number="+interval_number+"&filter_choice="+filter_choice;
-			 raceStop.execute(url,pre_json);
-			 //Update Data
-			 ParseData parseData = new ParseData();
-             parseData.execute(message);
+			String url = "https://trac-us.appspot.com/api/close_session/?access_token=" + access_token;
+			String pre_json = "id="+positionID;
+			raceStop.execute(url,pre_json);
+
         	
         }
         else if (position == 3){
@@ -180,55 +158,6 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
        // Toast.makeText(getActivity(), item.title, Toast.LENGTH_SHORT).show();
     }
     
-    public class ParseData extends AsyncTask<String, Void, Results> {
-    	private static final String DEBUG_TAG = "Token Check";
-
-    		OkHttpClient client = new OkHttpClient();
-    		Gson gson = new Gson();
-    	@Override
-    	protected Results doInBackground(String... params) {
-    		Request request = new Request.Builder()
-            .url(params[0])
-            .build();
-    		try {
-    			Log.d(DEBUG_TAG, "Pre Response");
-    		    Response response = client.newCall(request).execute();
-    		    Log.d(DEBUG_TAG, "Post Response");
-    		    Results preFullyParsed = gson.fromJson(response.body().charStream(), Results.class);
-
-    		    
-    		    	
-    		    Log.d(DEBUG_TAG, "GSON");
-    		    return preFullyParsed;
-    		    
-    		} catch (IOException e) {
-    			Log.d(DEBUG_TAG, "this is griffins fault now" + e.getMessage());
-    			return null;
-    		}
-    	}
-
-    	protected void onPostExecute(Results results) {
-    		
-
-    		if(results==null){
-    			return;
-    		}
-    		else
-    		{
-    		    name = results.name;
-    		    start_date = results.startTime;
-    		    end_date = results.stopTime;
-    		    rest_time = results.restTime;
-    		    track_size = results.tracksize;
-    		    interval_distance = results.intervaldist;
-    		    interval_number = results.intervalnum;
-    		    filter_choice = results.filterchoice;
-    			 
-    		}
-
-    			 
-    		}
-    	}
 
 	@Override
 	public void processFinish(Boolean success) {
