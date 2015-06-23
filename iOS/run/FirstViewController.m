@@ -227,7 +227,7 @@ NSLog(@"Reappear");
                              options:kNilOptions
                              error:&error];
         
-        NSDictionary* workoutid = [json valueForKey:@"id"]; //2
+        NSDictionary* workoutid = [json valueForKey:@"name"]; //2
         // NSDictionary* date = [json valueForKey:@"start_time"];
         NSString* results = [json valueForKey:@"results"];
         NSData* results_data = [results dataUsingEncoding:NSUTF8StringEncoding];
@@ -248,7 +248,7 @@ NSLog(@"Reappear");
         NSArray* interval = [self.runners valueForKey:@"interval"];
         self.summationTimeArray=[[NSMutableArray alloc] init];
         self.lasttimearray=[[NSMutableArray alloc] init];
-        
+       
 
         //find the last relevant interval
         for (NSArray *personalinterval in interval ) {
@@ -259,16 +259,27 @@ NSLog(@"Reappear");
             self.summationTimeArray = [self.summationTimeArray arrayByAddingObject:@"NT"];
             }
             else{
-            NSLog(@"Personal Interval: %@", personalinterval);
-            NSArray* lastsettime=[personalinterval lastObject];
-            NSLog(@"Loop Data time: %@", lastsettime);
-            NSArray* lasttime=[lastsettime lastObject];
-            NSLog(@"Last Rep: %@", lasttime);
+                //adds all intervals together to give cumulative time
+                NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
+                    for (NSArray *subinterval in personalinterval){
+                        NSArray* subs=[subinterval lastObject];
+                        finaltimeArray =[finaltimeArray arrayByAddingObject:subs];
+                    }
+                        
+                
+                NSNumber *sum = [finaltimeArray valueForKeyPath:@"@sum.floatValue"];
+                
+                
+                NSLog(@"Personal Interval: %@", personalinterval);
+                NSArray* lastsettime=[personalinterval lastObject];
+                NSLog(@"Loop Data time: %@", lastsettime);
+                NSArray* lasttime=[lastsettime lastObject];
+                NSLog(@"Last Rep: %@", lasttime);
             //arraycounter = [lasttimearray count];
             // NSLog(@"the coutn: %@", arraycounter);
             
             //determine minute and seconds
-            NSNumber *sum = [lastsettime valueForKeyPath:@"@sum.self"];
+            //NSNumber *sum = [lastsettime valueForKeyPath:@"@sum.self"];
             NSLog(@"Sum: %@", sum);
             NSNumber *minutes = @([sum integerValue] / 60);
             NSNumber *seconds = @([sum integerValue] % 60);
@@ -302,7 +313,7 @@ NSLog(@"Reappear");
         
         //    // Initialize Labels
         self.humanReadble.text = [NSString stringWithFormat:@"Date: %@", date];
-        self.jsonSummary.text = [NSString stringWithFormat:@"WorkoutID: %@", workoutid];
+        self.jsonSummary.text = [NSString stringWithFormat:@"Workout Name: %@", workoutid];
         return self.runners;
    }
     @catch (NSException *exception) {
