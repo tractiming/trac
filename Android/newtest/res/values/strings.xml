@@ -15,6 +15,7 @@
     <string name="title_activity_workout_view">WorkoutView</string>
     <string name="title_activity_calendar">Calendar</string>
 	<string name="hello_world1">Hello world!</string>
+	<string name="create_workout">Create Workout</string>
 	<string name="start">Start</string>
 	<string name="stop">Stop</string>
 	<string name="action_reset">Reset Workout</string>

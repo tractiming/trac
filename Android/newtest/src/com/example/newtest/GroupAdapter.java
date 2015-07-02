@@ -72,11 +72,18 @@ public class GroupAdapter extends BaseAdapter{
 		//Add times together and display elapsed time for split
 				
 			    float temp_var = 0; 
-				for (int i = 0; i < parsedJson.runners.get(position).interval.get(intervals.size() - 1).length; i++)			
+				for (int i = 0; i < parsedJson.runners.get(position).counter.length;i++)			
 				{
 					
-					float foo = Float.parseFloat(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[i]);
-					temp_var=temp_var + foo;
+					//float foo = Float.parseFloat(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[1]);
+					//Log.d("Loop Variable in Adapter",parsedJson.runners.get(position).interval.get(i).toString());
+					
+					for (String splits: parsedJson.runners.get(position).interval.get(i)){
+						float temp = Float.parseFloat(splits);
+						String f1Str = Float.toString(temp);   
+						Log.d("Splits??!?!?!",f1Str);
+						temp_var=temp_var + temp;
+					}
 				}
 				StringBuilder sb = new StringBuilder();
 				int min = (int) Math.floor(temp_var/60);

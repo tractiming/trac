@@ -132,6 +132,15 @@ public class CalendarActivity extends ListActivity{
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
 			startActivity(i);
 		}
+		else if (id == R.id.create_workout){
+			Log.d("Pressed","Create Workout");
+			createTask createworkout = new createTask();
+			String url = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
+			String pre_json = "name=On-The-Run Workout";
+			createworkout.execute(url,pre_json);
+			String urlSession = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
+			asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(urlSession);
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -177,7 +186,7 @@ public class CalendarActivity extends ListActivity{
 		  
 		   //When No Internet connection, display alert dialog
 		   
-		  alertDialog = new AlertDialog.Builder(this).create();
+	        alertDialog = new AlertDialog.Builder(this).create();
 			alertDialog.setTitle("No Internet Connectivity");
 			alertDialog.setMessage("Please connect to the internet and reopen application.");
 			alertDialog.setIcon(R.drawable.trac_launcher);
@@ -196,13 +205,13 @@ public class CalendarActivity extends ListActivity{
 
 		  @Override
 		  protected void onListItemClick(ListView l, View v, int position, long id) {
-			// 1. create an intent pass class name or intnet action name 
+			  	// 1. create an intent pass class name or intnet action name 
 			  
-			   Log.d("Debug Tag", "THIS IS THE POSITION " + position);
-			  String idPosition = positionArray.get(position).id;
-			  Log.d("Position ID", idPosition);
+			  	Log.d("Debug Tag", "THIS IS THE POSITION " + position);
+			  	String idPosition = positionArray.get(position).id;
+			  	Log.d("Position ID", idPosition);
 			  
-			  // On Click, intent to go to main activity from calendar activity
+			  	// On Click, intent to go to main activity from calendar activity
 		        Intent intent = new Intent(CalendarActivity.this, MainActivity.class);
 		        Log.d("Token On Pass CLICK?", access_token);
 		        
@@ -224,7 +233,7 @@ public class CalendarActivity extends ListActivity{
 		  
 		  OkHttpClient client = new OkHttpClient();
 			Gson gson = new Gson();
-			private static final String DEBUG_TAG = "griffinSucks";
+			private static final String DEBUG_TAG = "Debug";
 			
 			  public class AsyncServiceCall extends AsyncTask<String, Void, ArrayList<Results>> {
 				  

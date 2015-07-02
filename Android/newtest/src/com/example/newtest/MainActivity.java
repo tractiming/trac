@@ -182,7 +182,8 @@ public class MainActivity extends ActionBarActivity implements
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                try{// this is your adapter that will be filtered
+                try{
+                //filter the adapter
                 groupAdapter.getFilter(query);
                 workoutAdapter.getFilter(query);
                 System.out.println("on query submit: "+query);
@@ -211,15 +212,18 @@ public class MainActivity extends ActionBarActivity implements
 				WorkoutFragment.backButtonWasPressed();
 				Log.d("Back","PRESSED FROM WORKOUT");
 			
+			//delete token
 			SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
 			Editor edit = pref.edit();
 			edit.putString("token", "");
 			edit.commit();
 			
+			//go to login page
 			Intent i = new Intent(MainActivity.this, LoginActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
 			startActivity(i);
 		}
+		
 //		else if (id == R.id.action_reset)
 //		{
 //			Log.d("PRESSED BUTTOn","REset");
