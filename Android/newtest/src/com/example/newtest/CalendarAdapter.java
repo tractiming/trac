@@ -1,13 +1,16 @@
 package com.example.newtest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -16,14 +19,22 @@ public class CalendarAdapter extends BaseAdapter {
 	private ArrayList<Results> parsedJson; 
 	private List<Results> parsedJsonList = null;
 	private Context context;
+
 	
 	public CalendarAdapter(List<Results> parsedJsonList, Context context) {
-	this.parsedJsonList = parsedJsonList;
+	 this.parsedJsonList = parsedJsonList;
 	 this.parsedJson = new ArrayList<Results>();
 	 this.parsedJson.addAll(parsedJsonList);
 	 this.context = context;
 	}
 	
+	
+	public void add(List<Results> newData){
+		parsedJsonList.addAll(newData);
+		
+		notifyDataSetChanged();
+		Log.d("Enters","Add SubClass");
+	}
 	
 	@Override
 	public int getCount() {
@@ -87,6 +98,8 @@ public class CalendarAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
+	//add viewholder for 
+	
 	
 	
 }

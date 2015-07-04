@@ -31,13 +31,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 
-public class CalendarActivity extends ListActivity{
+
+
+public class CalendarActivity extends ListActivity implements OnScrollListener{
 	//protected Context context;
 	private String access_token;
 	private ArrayList<Results> positionArray;
@@ -45,9 +51,15 @@ public class CalendarActivity extends ListActivity{
 	private AlertDialog alertDialog;
 	private  SwipeRefreshLayout swipeLayout;
 	private String url;
-	private static AsyncServiceCall asyncCall;
+	private AsyncServiceCall asyncCall;
 	public CalendarAdapter var;
-
+	private boolean executing = false;
+	private OnScrollListener scrollListener;
+    protected TextView firstVisibleItemText;
+    protected TextView visibleItemCountText;
+    protected TextView totalItemCountText;
+    private ListView list;
+    public boolean asyncExecuted = false;
 	
 
 	 public void onBackPressed() {
@@ -65,6 +77,7 @@ public class CalendarActivity extends ListActivity{
 	  
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		//This controls the OnText Change Listener and Inflates it
 
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -77,7 +90,6 @@ public class CalendarActivity extends ListActivity{
 	    searchView.setIconifiedByDefault(false);
 	    
 	    // Do not iconify the widget; expand it by default
-
 
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
         {
@@ -153,14 +165,26 @@ public class CalendarActivity extends ListActivity{
 		    mLoginStatusView = findViewById(R.id.login_status);
 		    mLoginStatusView.setVisibility(View.VISIBLE);
 		    
+		    //Set Listeners for infinite scroll
+		    //listView = (InfiniteScrollListView) this.getListView();
+		    list = getListView();
+		    list.setOnScrollListener(this);
+		    //scrollListener = new OnScrollListener(this);
+		    //listView.setListener(scrollListener);
+		    //CalendarAdapter adapter = new CalendarAdapter(result, getApplicationContext());
+			//setListAdapter(adapter);
+		    
+		    
 		    //Get token from Shared Preferences and create url endpoint with token inserted
 		    SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 			   access_token = userDetails.getString("token","");
 			   Log.d("Access_token, CalendarActivity:", access_token);
 			   
 			   
-			   url = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
+			   url = "https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=" + access_token;
 			   Log.d("URL ! : ", url);
+			   
+			
 			   
 		    //Initialize swipe to refresh layout, what happens when swiped: async task called again
 		    swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
@@ -183,6 +207,8 @@ public class CalendarActivity extends ListActivity{
 		    
 	        });
 		    
+
+	        
 		  
 		   //When No Internet connection, display alert dialog
 		   
@@ -192,9 +218,7 @@ public class CalendarActivity extends ListActivity{
 			alertDialog.setIcon(R.drawable.trac_launcher);
 			alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-				
-				}
-				});
+				}});
 			
 			
 			//OnCreate Async Task Called, see below for async task class
@@ -289,6 +313,8 @@ public class CalendarActivity extends ListActivity{
 					protected void onPostExecute(ArrayList<Results> result) {
 						Log.d("Finished", "Calendar Activity");
 						//If the array/string doesnt come through alert will popup, hide spinner
+						
+						//TODO: Add Logic to know if pull to refresh or not...or created new workout or something else, or pagination infinite scroll.
 						if(result==null){
 							alertDialog.show();
 							mLoginStatusView.setVisibility(View.GONE);
@@ -297,11 +323,63 @@ public class CalendarActivity extends ListActivity{
 						else{
 							//else parse the result and put in adapter, hide spinner
 						var = new CalendarAdapter(result, getApplicationContext());
-						setListAdapter(var);
+						if(asyncExecuted == false ){
+							Log.d("First","Execution");
+							setListAdapter(var);
+							asyncExecuted = true;
+						}
+						else{
+							Log.d("Add","Second...Work?");
+							((CalendarAdapter)getListAdapter()).add(result);
+							((CalendarAdapter)getListAdapter()).notifyDataSetChanged();
+							
+						}
+						
+
 						positionArray = result;
 						mLoginStatusView.setVisibility(View.GONE);
 						// swipeLayout.setRefreshing(false);
 						}
 					}
 			  }
+
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				System.out.println("onScroll");
+				Log.d("State Change","on Scroll");
+				
+			}
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				System.out.println("onScrollStateChanged");
+				Log.d("on Scroll","on Scroll");
+
+				 if (totalItemCount - (firstVisibleItem + 1 + visibleItemCount) < 2 &&
+			                visibleItemCount < totalItemCount) {
+					
+					Log.d("Visible Count",Integer.toString(visibleItemCount));
+					Log.d("Total Count",Integer.toString(totalItemCount)); 
+					//know when on bottom of page and append from here.
+					
+					//TODO: Add Logic to feed correct pagination
+					//TODO: Get Search working again
+					url = "https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=" + access_token;
+					asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
+					
+			        }
+
+			        // Item visibility code
+			        //listener.onScrollCalled(firstVisibleItem, visibleItemCount, totalItemCount);
+				
+			}
+			
+
+
+
+
+			
 }
