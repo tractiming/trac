@@ -20,6 +20,7 @@ public class CalendarAdapter extends BaseAdapter {
 	private List<Results> parsedJsonList = null;
 	private Context context;
 
+
 	
 	public CalendarAdapter(List<Results> parsedJsonList, Context context) {
 	 this.parsedJsonList = parsedJsonList;
@@ -29,22 +30,30 @@ public class CalendarAdapter extends BaseAdapter {
 	}
 	
 	
-	public void add(List<Results> newData){
-		parsedJsonList.addAll(newData);
+	public void add(List<Results> result){
+		
+		this.parsedJsonList.addAll(result);
+		//Log.d("Size of Array",Integer.toString(result.size()));
+		
+		this.getCount();
 		
 		notifyDataSetChanged();
+
+		
 		Log.d("Enters","Add SubClass");
 	}
 	
 	@Override
 	public int getCount() {
 		// dynamically find size of array
+		//Log.d("GetCount",Integer.toString(parsedJsonList.size()));
 		return parsedJsonList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// when clicked determine which position was clicked
+		//Log.d("getItem","Fired");
 		return parsedJsonList.get(position);
 	}
 

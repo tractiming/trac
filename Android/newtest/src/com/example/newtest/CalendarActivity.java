@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -60,6 +61,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
     protected TextView totalItemCountText;
     private ListView list;
     public boolean asyncExecuted = false;
+    private int nextFifteen;
 	
 
 	 public void onBackPressed() {
@@ -150,7 +152,8 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 			String url = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
 			String pre_json = "name=On-The-Run Workout";
 			createworkout.execute(url,pre_json);
-			String urlSession = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
+			String urlSession = "https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=" + access_token;
+			asyncExecuted = false;
 			asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(urlSession);
 		}
 		return super.onOptionsItemSelected(item);
@@ -181,8 +184,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 			   Log.d("Access_token, CalendarActivity:", access_token);
 			   
 			   
-			   url = "https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=" + access_token;
-			   Log.d("URL ! : ", url);
+			  
 			   
 			
 			   
@@ -194,6 +196,8 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 	            public void onRefresh() {
 	                swipeLayout.setRefreshing(true);
 	                Log.d("Swipe", "Refreshing Number");
+	                asyncExecuted = false;
+	                url = "https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=" + access_token;
 	                asyncCall = (AsyncServiceCall) new AsyncServiceCall().execute(url);
 	                ( new Handler()).postDelayed(new Runnable() {
 	                    @Override
@@ -220,7 +224,8 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 				public void onClick(DialogInterface dialog, int which) {
 				}});
 			
-			
+			 url = "https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=" + access_token;
+			  Log.d("URL ! : ", url);
 			//OnCreate Async Task Called, see below for async task class
 			asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
 		    
@@ -312,9 +317,10 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 					@Override
 					protected void onPostExecute(ArrayList<Results> result) {
 						Log.d("Finished", "Calendar Activity");
+						
 						//If the array/string doesnt come through alert will popup, hide spinner
 						
-						//TODO: Add Logic to know if pull to refresh or not...or created new workout or something else, or pagination infinite scroll.
+						
 						if(result==null){
 							alertDialog.show();
 							mLoginStatusView.setVisibility(View.GONE);
@@ -322,54 +328,72 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 						}
 						else{
 							//else parse the result and put in adapter, hide spinner
-						var = new CalendarAdapter(result, getApplicationContext());
-						if(asyncExecuted == false ){
-							Log.d("First","Execution");
-							setListAdapter(var);
-							asyncExecuted = true;
-						}
-						else{
-							Log.d("Add","Second...Work?");
-							((CalendarAdapter)getListAdapter()).add(result);
-							((CalendarAdapter)getListAdapter()).notifyDataSetChanged();
+							var = new CalendarAdapter(result, getApplicationContext());
+							if(asyncExecuted == false ){
+								//Log.d("First","Execution");
+								setListAdapter(var);
+								asyncExecuted = true;
+								positionArray = result;
+							}
+							else{
+								//Log.d("Add","Second...Work?");
+								positionArray.addAll(result);
+								((CalendarAdapter)getListAdapter()).add(result);
+								((CalendarAdapter)getListAdapter()).getCount();
+								((CalendarAdapter)getListAdapter()).notifyDataSetChanged();
 							
 						}
 						
 
-						positionArray = result;
+						
 						mLoginStatusView.setVisibility(View.GONE);
+						executing = false;
 						// swipeLayout.setRefreshing(false);
 						}
 					}
 			  }
 
+			  
 
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				// TODO Auto-generated method stub
+				
+				int totalItemCount = view.getCount();
+				nextFifteen = totalItemCount + 15; 
+				
 				System.out.println("onScroll");
-				Log.d("State Change","on Scroll");
+				//Log.d("State Change","on Scroll");
+				if (executing == false){
+					executing = true;
+					url = "https://trac-us.appspot.com/api/session_Pag/?i1="+Integer.toString(totalItemCount)+"&i2="+Integer.toString(nextFifteen)+"&access_token=" + access_token;
+					asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
+					Log.d("Dynamic URL",url);
+				}
+				else if (executing == true){}
+				
 				
 			}
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				// TODO Auto-generated method stub
-				System.out.println("onScrollStateChanged");
-				Log.d("on Scroll","on Scroll");
-
+				
+				//System.out.println("onScrollStateChanged");
+				//Log.d("on Scroll","on Scroll");
+				
+				
 				 if (totalItemCount - (firstVisibleItem + 1 + visibleItemCount) < 2 &&
 			                visibleItemCount < totalItemCount) {
-					
-					Log.d("Visible Count",Integer.toString(visibleItemCount));
-					Log.d("Total Count",Integer.toString(totalItemCount)); 
+					//Log.d("First",Integer.toString(firstVisibleItem));
+					//Log.d("Visible Count",Integer.toString(visibleItemCount));
+					//Log.d("Total Count",Integer.toString(totalItemCount)); 
 					//know when on bottom of page and append from here.
 					
-					//TODO: Add Logic to feed correct pagination
-					//TODO: Get Search working again
-					url = "https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=" + access_token;
-					asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
 					
+					//TODO: Get Search working again
+					//url = "https://trac-us.appspot.com/api/session_Pag/?i1="+Integer.toString(totalItemCount)+"&i2="+Integer.toString(nextFifteen)+"&access_token=" + access_token;
+					//Log.d("Dynamic URL",url);
+					//asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
+
 			        }
 
 			        // Item visibility code
@@ -377,7 +401,6 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 				
 			}
 			
-
 
 
 
