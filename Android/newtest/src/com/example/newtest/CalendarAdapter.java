@@ -31,16 +31,24 @@ public class CalendarAdapter extends BaseAdapter {
 	
 	
 	public void add(List<Results> result){
+        if (result.size() > 0) {
+        	this.parsedJsonList.addAll(result);
+        	//Log.d("Size of Array",Integer.toString(result.size()));
 		
-		this.parsedJsonList.addAll(result);
-		//Log.d("Size of Array",Integer.toString(result.size()));
+        	this.getCount();
 		
-		this.getCount();
+        	notifyDataSetChanged();
+			this.parsedJson = new ArrayList<Results>();
+			this.parsedJson.addAll(parsedJsonList);
+			//Log.d("Enters","Add SubClass");
+        }
+        else{
+        	
+        	//Log.d("Enters","DO Nothing");
+        }
 		
-		notifyDataSetChanged();
-
 		
-		Log.d("Enters","Add SubClass");
+		//return parsedJsonList;
 	}
 	
 	@Override
@@ -90,9 +98,10 @@ public class CalendarAdapter extends BaseAdapter {
 
 	public void getFilter(String charText) {
 		charText = charText.toLowerCase(Locale.getDefault());
+
 		parsedJsonList.clear();
-				if (charText.length() == 0) {
-					parsedJsonList.addAll(parsedJson);
+		if (charText.length() == 0) {
+			parsedJsonList.addAll(parsedJson);
 		} 
 		else 
 		{

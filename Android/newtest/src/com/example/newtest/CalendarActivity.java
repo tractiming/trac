@@ -62,6 +62,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
     private ListView list;
     public boolean asyncExecuted = false;
     private int nextFifteen;
+    int fakedTotalItemCount = 16;
 	
 
 	 public void onBackPressed() {
@@ -99,7 +100,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
             public boolean onQueryTextChange(String newText)
             {
                 try{// this is your adapter that will be filtered
-                var.getFilter(newText);
+                	((CalendarAdapter)getListAdapter()).getFilter(newText);
                 System.out.println("on text chnge text: "+newText);
                 return true;
                 }
@@ -112,9 +113,10 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
             public boolean onQueryTextSubmit(String query)
             {
                 try{// this is your adapter that will be filtered
-                var.getFilter(query);
-                System.out.println("on query submit: "+query);
-                return true;}
+                	((CalendarAdapter)getListAdapter()).getFilter(query);
+                	System.out.println("on query submit: "+query);
+                	return true;
+                }
                 finally{Log.d("early","finally");
                 	return true;}
             }
@@ -225,7 +227,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 				}});
 			
 			 url = "https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=" + access_token;
-			  Log.d("URL ! : ", url);
+			 // Log.d("URL ! : ", url);
 			//OnCreate Async Task Called, see below for async task class
 			asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
 		    
@@ -309,14 +311,14 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 						    return lcs;
 						    
 						} catch (IOException e) {
-							Log.d(DEBUG_TAG, "this is griffins fault now" + e.getMessage());
+							//Log.d(DEBUG_TAG, "this is griffins fault now" + e.getMessage());
 							return null;
 						}
 					}
 					
 					@Override
 					protected void onPostExecute(ArrayList<Results> result) {
-						Log.d("Finished", "Calendar Activity");
+						//Log.d("Finished", "Calendar Activity");
 						
 						//If the array/string doesnt come through alert will popup, hide spinner
 						
@@ -334,13 +336,14 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 								setListAdapter(var);
 								asyncExecuted = true;
 								positionArray = result;
+							    fakedTotalItemCount = 16;
 							}
 							else{
 								//Log.d("Add","Second...Work?");
-								positionArray.addAll(result);
+								//positionArray.addAll(result);
 								((CalendarAdapter)getListAdapter()).add(result);
-								((CalendarAdapter)getListAdapter()).getCount();
-								((CalendarAdapter)getListAdapter()).notifyDataSetChanged();
+								//((CalendarAdapter)getListAdapter()).getCount();
+								//((CalendarAdapter)getListAdapter()).notifyDataSetChanged();
 							
 						}
 						
@@ -357,19 +360,29 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				
+				Log.d("State Change","StateChange");
 				int totalItemCount = view.getCount();
-				nextFifteen = totalItemCount + 15; 
+				
+				
+				Log.d("Total Item Count",Integer.toString(fakedTotalItemCount));
+				nextFifteen = fakedTotalItemCount + 15; 
+				Log.d("Next 15",Integer.toString(nextFifteen));
 				
 				System.out.println("onScroll");
 				//Log.d("State Change","on Scroll");
 				if (executing == false){
 					executing = true;
-					url = "https://trac-us.appspot.com/api/session_Pag/?i1="+Integer.toString(totalItemCount)+"&i2="+Integer.toString(nextFifteen)+"&access_token=" + access_token;
-					asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
-					Log.d("Dynamic URL",url);
+					String url2 = "https://trac-us.appspot.com/api/session_Pag/?i1="+Integer.toString(fakedTotalItemCount)+"&i2="+Integer.toString(nextFifteen)+"&access_token=" + access_token;
+					fakedTotalItemCount = fakedTotalItemCount + 16;
+					Log.d("Dynamic URL",url2);
+					asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url2);
+					
+					
 				}
-				else if (executing == true){}
+				else if (executing == true){
+					Log.d("Dont fire again","Don't fire again");
+					
+				}
 				
 				
 			}
