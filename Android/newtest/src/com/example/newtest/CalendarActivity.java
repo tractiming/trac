@@ -63,6 +63,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
     public boolean asyncExecuted = false;
     private int nextFifteen;
     int fakedTotalItemCount = 16;
+    int maxTotalSessions;
 	
 
 	 public void onBackPressed() {
@@ -282,32 +283,25 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 				        .url(params[0])
 				        .build();
 						try {
+							Log.d("Enters?","Enters?");
 							   Response response = client.newCall(request).execute();
-							  // JsonParser parser = new JsonParser();
-							  // Results preFullyParsed = gson.fromJson(response.body().charStream(), Results.class);
-								//String text = preFullyParsed.results;
-							   
-							   //Type collectionType = new TypeToken<Collection<Results>>(){}.getType();
-							   
-							   
-							   
-							   //Parse each entry in json array and add to new array
-							   JsonParser parser = new JsonParser();
-							    JsonArray jArray = parser.parse(response.body().charStream()).getAsJsonArray();
 
+							   SessionPaginate preFullyParsed = gson.fromJson(response.body().charStream(), SessionPaginate.class);
+							   Log.d("Full Count",preFullyParsed.id.toString());
+							   maxTotalSessions = Integer.parseInt(preFullyParsed.id);
+							   
+							   JsonArray jArray = preFullyParsed.results;
 							    ArrayList<Results> lcs = new ArrayList<Results>();
 
 							    for(JsonElement obj : jArray )
 							    {
+							    	Log.d("Enters?","Array");
 							        Results cse = gson.fromJson( obj , Results.class);
 							        lcs.add(cse);
+							        Log.d("LCS?",lcs.toString());
 							        //Log.d("ID NUMBA!",cse.id);
 							    }
-							   
-							   // Log.d("ID NUmbers", cse.name);
-							   Log.d("Array", lcs.toString());
-							 //Reverse calendar array
-							   Collections.reverse(lcs);
+
 						    return lcs;
 						    
 						} catch (IOException e) {
@@ -367,11 +361,14 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 				Log.d("Total Item Count",Integer.toString(fakedTotalItemCount));
 				nextFifteen = fakedTotalItemCount + 15; 
 				Log.d("Next 15",Integer.toString(nextFifteen));
-				
+				if (fakedTotalItemCount >= maxTotalSessions){
+					return; 
+				}
 				System.out.println("onScroll");
 				//Log.d("State Change","on Scroll");
 				if (executing == false){
 					executing = true;
+					//TODO: Add max count in, or return, if statement
 					String url2 = "https://trac-us.appspot.com/api/session_Pag/?i1="+Integer.toString(fakedTotalItemCount)+"&i2="+Integer.toString(nextFifteen)+"&access_token=" + access_token;
 					fakedTotalItemCount = fakedTotalItemCount + 16;
 					Log.d("Dynamic URL",url2);
