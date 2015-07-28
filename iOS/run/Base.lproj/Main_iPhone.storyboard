@@ -430,7 +430,7 @@
             </objects>
             <point key="canvasLocation" x="-1466" y="507"/>
         </scene>
-        <!--Workout View Controller - Calendar-->
+        <!--Workout View Controller-->
         <scene sceneID="91e-bb-aI6">
             <objects>
                 <viewController id="RDq-S4-L6c" customClass="WorkoutViewController" sceneMemberID="viewController">
@@ -487,10 +487,23 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Calendar" id="woI-nE-3LM">
-                        <barButtonItem key="rightBarButtonItem" title="Logout" id="nDM-Tj-C6F">
+                    <navigationItem key="navigationItem" id="woI-nE-3LM">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="cLe-GA-sBH">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Bos-FJ-t5J">
+                                <rect key="frame" x="16" y="5" width="71" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Logout">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="logoutClicked:" destination="RDq-S4-L6c" eventType="touchUpInside" id="RWm-wJ-mV4"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="ic_action_new" id="nDM-Tj-C6F">
                             <connections>
-                                <action selector="logoutClicked:" destination="RDq-S4-L6c" id="uT4-Zj-LHm"/>
+                                <action selector="createWorkout:" destination="RDq-S4-L6c" id="db6-Iu-4Qh"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -559,6 +572,7 @@
         <image name="Image" width="32" height="32"/>
         <image name="calibrate" width="48" height="48"/>
         <image name="discard" width="48" height="48"/>
+        <image name="ic_action_new" width="32" height="32"/>
         <image name="logo" width="36" height="36"/>
         <image name="settings" width="32" height="32"/>
         <image name="start" width="48" height="48"/>

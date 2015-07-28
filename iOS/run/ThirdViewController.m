@@ -145,6 +145,7 @@
 
 }
 - (IBAction)resetWorkout:(id)sender{
+    NSLog(@"ID Number, %@",self.urlID);
     UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:@"Reset Workout?"
                                                        message:@"These results will be permanently deleted."
                                                       delegate:self

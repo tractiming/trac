@@ -308,9 +308,6 @@
                                 <state key="normal" title="Logout">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="logoutClicked:" destination="RDq-S4-L6c" eventType="touchUpInside" id="Cuw-61-QX1"/>
-                                </connections>
                             </button>
                         </barButtonItem>
                     </navigationItem>

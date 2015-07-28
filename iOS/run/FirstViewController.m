@@ -84,6 +84,7 @@ NSLog(@"Reappear");
     svc.urlName_VC2 = self.urlName;
     
     ThirdViewController *tvc = [self.tabBarController.viewControllers objectAtIndex:2];
+    NSLog(@"ID: %@",self.urlID);
     tvc.urlID = self.urlID;
     
 
@@ -218,7 +219,7 @@ NSLog(@"Reappear");
 - (NSArray *)fetchedData:(NSData *)responseData {
     //parse out the json data
     
-   @try {
+  // @try {
         NSError* error;
         NSLog(@"Feteched Data: %@",responseData);
         NSDictionary* json= [NSJSONSerialization
@@ -315,11 +316,11 @@ NSLog(@"Reappear");
         self.humanReadble.text = [NSString stringWithFormat:@"Date: %@", date];
         self.jsonSummary.text = [NSString stringWithFormat:@"Workout Name: %@", workoutid];
         return self.runners;
-   }
-    @catch (NSException *exception) {
-        NSLog(@"Exception.......... %s","Except!");
-        return self.runners;
-    }
+ //  }
+   // @catch (NSException *exception) {
+   //     NSLog(@"Exception.......... %s","Except!");
+   //     return self.runners;
+    //}
 
    
 }

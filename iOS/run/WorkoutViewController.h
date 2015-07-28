@@ -11,6 +11,7 @@
 @interface WorkoutViewController : UIViewController  <UISearchBarDelegate, UISearchDisplayDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableData;
 - (IBAction)logoutClicked:(id)sender;
+- (IBAction)createWorkout:(id)sender;
 @property (strong,nonatomic) NSMutableArray *filteredWorkoutArray;
 
 @property IBOutlet UISearchBar *workoutSearchBar;

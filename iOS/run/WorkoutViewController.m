@@ -29,9 +29,10 @@
 
 @implementation WorkoutViewController
 {
-NSArray *title;
-NSMutableArray *date;
-NSMutableArray *url;
+    NSArray *title;
+    NSMutableArray *date;
+    NSMutableArray *url;
+    NSString *numSessions;
     NSMutableArray *idNumberSelector;
     NSString *url_token;
     UIActivityIndicatorView *spinner;
@@ -46,8 +47,9 @@ NSMutableArray *url;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-      self.filteredWorkoutArray = [NSMutableArray arrayWithCapacity:[title count]];
+
+
+    self.filteredWorkoutArray = [NSMutableArray arrayWithCapacity:[title count]];
    
     // Hide the search bar until user scrolls up
     CGRect newBounds = self.tableData.bounds;
@@ -72,7 +74,7 @@ NSMutableArray *url;
     NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
     //add token to url to find session data
     NSLog(@"Secutiy Token: %@",savedToken);
-    url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/?access_token=%@", savedToken];
+    url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=%@", savedToken];
     
     //initialize spinner
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -81,6 +83,17 @@ NSMutableArray *url;
     spinner.center = CGPointMake(self.view.frame.size.width / 2.0, (self.view.frame.size.height  - navigationBarHeight - tabBarHeight) / 4.0);
     [spinner startAnimating];
     [self.view addSubview:spinner];
+    
+    
+    //Put in TRAC image on header
+    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"traclogo_small.png"]];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    UIView* titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120, 120)];
+    imageView.frame = titleView.bounds;
+    [titleView addSubview:imageView];
+    //UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"traclogo_small.png"]];
+    self.navigationItem.titleView = titleView;
     
     //pull to refresh set up
     refreshControl = [[UIRefreshControl alloc] init];
@@ -209,10 +222,17 @@ NSMutableArray *url;
         
         //NSDictionary* workoutid = [json valueForKey:@"workoutID"]; //2
         
-        //variable for json decoding
-        title= [json valueForKey:@"name"];
-        date = [json valueForKey:@"start_time"];
-        url = [json valueForKey:@"id"];
+        //Uncover number of sessions, and nested dictionary for sessions
+        numSessions = [json valueForKey:@"numSessions"];
+        NSLog(@"Results: %@",numSessions);
+        
+        NSDictionary* results = [json valueForKey:@"results"];
+         NSLog(@"Results2: %@",results);
+        NSLog(@"Results (Dictionary): %@", results);
+
+        title= [results valueForKey:@"name"];
+        date = [results valueForKey:@"start_time"];
+        url = [results valueForKey:@"id"];
         int date_length = [date count];
         NSLog(@"Length: %d", date_length);
         
@@ -229,7 +249,7 @@ NSMutableArray *url;
             tempvar = [tempvar substringToIndex:10];
             idurl = url[i];
             NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
-            NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/?access_token=%@", idurl,savedToken];
+            NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/?access_token=%@",idurl, savedToken];
             
             //to initialize array, for the first entry create variable, then add object for subsequent entries
             if(i==0){
@@ -252,11 +272,11 @@ NSMutableArray *url;
         date = temparray;
         url = idarray;
         
-        idNumberSelector = [[idNumberSelector reverseObjectEnumerator] allObjects];
+        //idNumberSelector = [[idNumberSelector reverseObjectEnumerator] allObjects];
         //flip orientation of arrays
-        date = [[date reverseObjectEnumerator] allObjects];
-        title = [[title reverseObjectEnumerator] allObjects];
-        url = [[url reverseObjectEnumerator] allObjects];
+        //date = [[date reverseObjectEnumerator] allObjects];
+        //title = [[title reverseObjectEnumerator] allObjects];
+        //url = [[url reverseObjectEnumerator] allObjects];
         //    // Initialize Labels
         return title;
         return date;
@@ -373,6 +393,84 @@ NSMutableArray *url;
 
 }
 
+- (IBAction)createWorkout:(id)sender{
+    //if plus button clicked, create workout "On-the-run"
+    NSInteger success = 0;
+    @try {
+
+        NSString *post =[[NSString alloc] initWithFormat:@"name=On-The-Run Workout"];
+        NSLog(@"Post: %@",post);
+        
+        NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/?access_token=%@", savedToken];
+        
+        NSURL *url=[NSURL URLWithString:idurl2];
+        
+        NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSLog(@"Post Data:%@", postData);
+        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:postData];
+        
+        
+        //[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
+        
+        NSError *error = [[NSError alloc] init];
+        NSHTTPURLResponse *response = nil;
+        NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        
+        NSLog(@"Response code: %ld", (long)[response statusCode]);
+        // NSLog(@"Error Code: %@", [error localizedDescription]);
+        
+        if ([response statusCode] >= 200 && [response statusCode] < 300)
+        {
+            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+            NSLog(@"Response ==> %@", responseData);
+            
+            NSError *error = nil;
+            NSDictionary *jsonData = [NSJSONSerialization
+                                      JSONObjectWithData:urlData
+                                      options:NSJSONReadingMutableContainers
+                                      error:&error];
+            
+            success = [jsonData[@"success"] integerValue];
+            NSLog(@"Success: %ld",(long)success);
+            
+            if(success == 0)
+            {
+                NSLog(@"SUCCESS");
+                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully created workout!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+                //return self.access_token;
+            } else {
+                
+                NSLog(@"Failed");
+                
+            }
+            
+        } else {
+            //if (error) NSLog(@"Error: %@", error);
+            NSLog(@"Failed");
+            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+            NSLog(@"Response ==> %@", responseData);
+        }
+        
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        
+    }
+
+}
+
+//For Searching Table Content
 #pragma mark Content Filtering
 -(void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
     // Update the filtered array based on the search text and scope.
