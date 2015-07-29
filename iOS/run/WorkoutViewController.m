@@ -29,14 +29,24 @@
 
 @implementation WorkoutViewController
 {
-    NSArray *title;
+    NSMutableArray *title;
     NSMutableArray *date;
     NSMutableArray *url;
     NSString *numSessions;
     NSMutableArray *idNumberSelector;
     NSString *url_token;
+    NSString *pagination_url;
     UIActivityIndicatorView *spinner;
     UIRefreshControl *refreshControl;
+    int fakedTotalItemCount;
+    int nextFifteen;
+    NSString *savedToken;
+    int totalSessions;
+    NSMutableArray *searchIDReference;
+    NSMutableArray *searchURLReference;
+    int searchIndexPath;
+    BOOL pullToRefresh;
+    NSDictionary *cellDict;
  
 }
 
@@ -48,7 +58,7 @@
 {
     [super viewDidLoad];
 
-
+    fakedTotalItemCount = 16;
     self.filteredWorkoutArray = [NSMutableArray arrayWithCapacity:[title count]];
    
     // Hide the search bar until user scrolls up
@@ -71,7 +81,7 @@
 	
     // Initialize table data
     //get token from nsuserdefaults
-    NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+    savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
     //add token to url to find session data
     NSLog(@"Secutiy Token: %@",savedToken);
     url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=%@", savedToken];
@@ -108,6 +118,8 @@
 - (void) doLoad
 {
     NSLog(@"Pull to Refresh");
+    pullToRefresh = YES;
+    fakedTotalItemCount = 16;
     dispatch_async(TRACQueue, ^{
         NSData* data = [NSData dataWithContentsOfURL:
                         [NSURL URLWithString:url_token]];
@@ -150,7 +162,7 @@
                                 [NSURL URLWithString:url_token]];
                 
                 dispatch_async(dispatch_get_main_queue() ,^{
-                    [self fetchedData:data];
+                    [self doLoad];
                     [self.tableData reloadData];
                     [spinner removeFromSuperview];
                 });
@@ -168,7 +180,7 @@
                                 [NSURL URLWithString:url_token]];
                 
                 dispatch_async(dispatch_get_main_queue() ,^{
-                    [self fetchedData:data];
+                    [self doLoad];
                     [self.tableData reloadData];
                     [spinner removeFromSuperview];
                 });
@@ -207,11 +219,162 @@
     [[UINavigationBar appearance] setTitleTextAttributes:navbarTitleTextAttributes];
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // Check scrolled percentage
+    //
+    CGFloat yOffset = tableView.contentOffset.y;
+    CGFloat height = tableView.contentSize.height;
+    CGFloat scrolledPercentage = yOffset / height;
+    nextFifteen = fakedTotalItemCount + 15;
+    if (totalSessions>fakedTotalItemCount)
+        self.hasNextPage = YES;
+    else
+        self.hasNextPage = NO;
+    
+    // Check if all the conditions are met to allow loading the next page
+    //
+    if ((scrolledPercentage > .2f) && !self.isLoading && self.hasNextPage)
+        [self loadNextPage];
+}
 
+
+- (void)loadNextPage{
+    if (self.isLoading) return;
+    self.isLoading = YES;
+    
+    //(yOffset < (height / 8.0) && !self.isLoading && self.hasNextPage)
+    NSLog(@"Table View Scroll");
+    //define URL
+    pagination_url = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/session_Pag/?i1=%d&i2=%d&access_token=%@", fakedTotalItemCount, nextFifteen, savedToken];
+    //pagination_url = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/session_Pag/?i1=16&i2=31&access_token=%@", savedToken];
+    NSLog(@"%@",pagination_url);
+    dispatch_async(TRACQueue, ^{
+        NSData* data2 = [NSData dataWithContentsOfURL:
+                         [NSURL URLWithString:pagination_url]];
+        
+        dispatch_async(dispatch_get_main_queue() ,^{
+            //[self.tableData beginUpdates];
+            [self fetchedData:data2];
+            [self.tableData reloadData];
+            //[indexPath isEqual:[NSIndexPath indexPathForRow:[self tableView:self.tableData numberOfRowsInSection:0]-1 inSection:0]];
+            // [self.tableData endUpdates];
+            
+        });
+        
+        
+    });
+    
+    
+    fakedTotalItemCount = fakedTotalItemCount + 16;
+
+    
+    // Once the request is finished, call this
+    self.isLoading = NO;
+}
 
 - (NSArray *)fetchedData:(NSData *)responseData {
     @try {
         
+        if (title.count>0 && !pullToRefresh){
+            //parse out the json data
+            NSLog(@"Count Test");
+            NSError* error;
+            NSDictionary* json = [NSJSONSerialization
+                                  JSONObjectWithData:responseData //1
+                                  
+                                  options:kNilOptions
+                                  error:&error];
+            
+            //NSDictionary* workoutid = [json valueForKey:@"workoutID"]; //2
+            
+            //Uncover number of sessions, and nested dictionary for sessions
+            numSessions = [json valueForKey:@"numSessions"];
+            totalSessions = [numSessions intValue];
+          //  NSLog(@"Results: %@",numSessions);
+            
+            NSDictionary* results = [json valueForKey:@"results"];
+          //  NSLog(@"Results2: %@",results);
+          //  NSLog(@"Results (Dictionary): %@", results);
+            
+            NSMutableArray* appendedTitle= [results valueForKey:@"name"];
+            NSMutableArray* appendedDate = [results valueForKey:@"start_time"];
+            NSMutableArray* appendedUrl = [results valueForKey:@"id"];
+           // NSLog(@"Appended URL VIEW%@",appendedUrl);
+            
+            
+            
+            int date_length = [appendedDate count];
+            NSLog(@"Length: %d", date_length);
+            
+            int i;
+            NSString *tempvar;
+            NSMutableArray *temparray;
+            NSString *idurl;
+            NSMutableArray *idarray;
+            NSMutableArray *idNumber;
+            NSMutableArray *TitleArray;
+            NSLog(@"NULL??? %@",idurl);
+            
+            //interate through id and associate url with each date
+            for (i=0; i<date_length; i++) {
+                tempvar = appendedDate[i];
+                tempvar = [tempvar substringToIndex:10];
+                idurl = appendedUrl[i];
+                NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/?access_token=%@",idurl, savedToken];
+                
+                //to initialize array, for the first entry create variable, then add object for subsequent entries
+                if(i==0){
+                    
+                    temparray=[NSMutableArray arrayWithObject:tempvar];
+                    idarray = [NSMutableArray arrayWithObject:idurl2];
+                    idNumber = [NSMutableArray arrayWithObject:idurl];
+                }
+                else{
+                    [temparray addObject:tempvar];
+                    [idarray addObject:idurl2];
+                    [idNumber addObject:idurl];
+                    //[temparray addObject:tempvar];
+                    //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
+                    //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
+                    
+                   // NSLog(@"IDArray %@", idarray);
+                }
+            }
+            [idNumberSelector addObjectsFromArray:idNumber];
+            appendedDate = temparray;
+            appendedUrl = idarray;
+            
+            NSLog(@"Debug Tag1");
+            //idNumberSelector = [[idNumberSelector reverseObjectEnumerator] allObjects];
+            //flip orientation of arrays
+            //date = [[date reverseObjectEnumerator] allObjects];
+            //title = [[title reverseObjectEnumerator] allObjects];
+            //url = [[url reverseObjectEnumerator] allObjects];
+            //    // Initialize Labels
+           
+            TitleArray = [NSMutableArray array];
+            [TitleArray setArray:title];
+            [TitleArray addObjectsFromArray:appendedTitle];
+            title = TitleArray;
+
+            [date addObjectsFromArray:appendedDate];
+
+
+            [url addObjectsFromArray:appendedUrl];
+
+            
+            //NSLog(@"Date :%@",date);
+           // NSLog(@"Appended Title%@",TitleArray);
+           // NSLog(@"Appended Title%@",url);
+            NSLog(@"Debug Tag 2");
+            
+            return title;
+            return date;
+            return url;
+
+        }
+        else{
         //parse out the json data
         NSError* error;
         NSDictionary* json = [NSJSONSerialization
@@ -224,17 +387,19 @@
         
         //Uncover number of sessions, and nested dictionary for sessions
         numSessions = [json valueForKey:@"numSessions"];
-        NSLog(@"Results: %@",numSessions);
+        totalSessions = [numSessions intValue];
+            NSLog(@"Total Sessions %d",totalSessions);
+       // NSLog(@"Results: %@",numSessions);
         
         NSDictionary* results = [json valueForKey:@"results"];
-         NSLog(@"Results2: %@",results);
-        NSLog(@"Results (Dictionary): %@", results);
+        // NSLog(@"Results2: %@",results);
+        //NSLog(@"Results (Dictionary): %@", results);
 
         title= [results valueForKey:@"name"];
         date = [results valueForKey:@"start_time"];
         url = [results valueForKey:@"id"];
         int date_length = [date count];
-        NSLog(@"Length: %d", date_length);
+        //NSLog(@"Length: %d", date_length);
         
         int i;
         NSString *tempvar;
@@ -248,7 +413,6 @@
             tempvar = date[i];
             tempvar = [tempvar substringToIndex:10];
             idurl = url[i];
-            NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
             NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/?access_token=%@",idurl, savedToken];
             
             //to initialize array, for the first entry create variable, then add object for subsequent entries
@@ -265,9 +429,11 @@
                 //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
                 //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
                 
-                NSLog(@"IDArray %@", idarray);
+              //  NSLog(@"IDArray %@", idarray);
             }
         }
+        //NSLog(@"IdNumSelector%@",url);//Null
+        //NSLog(@"ID Num Selector%@",idarray);//array
         idNumberSelector = idNumber;
         date = temparray;
         url = idarray;
@@ -278,9 +444,12 @@
         //title = [[title reverseObjectEnumerator] allObjects];
         //url = [[url reverseObjectEnumerator] allObjects];
         //    // Initialize Labels
+        pullToRefresh = NO;
+            
         return title;
         return date;
         return url;
+        }
 
     }
     @catch (NSException *exception) {
@@ -291,8 +460,8 @@
 
     }
     
-    
-    
+    //cellDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSArray arrayWithArray:title], @"title",[NSArray arrayWithArray:date], @"date",[NSArray arrayWithArray:url], @"url",nil];
+    //NSLog(@"Dictionary %@",cellDict);
 }
 
 - (void)viewDidUnload
@@ -309,8 +478,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
+        NSLog(@"Filtered Count %lu", (unsigned long)self.filteredWorkoutArray.count);
         return [self.filteredWorkoutArray count];
     } else {
+        NSLog(@"Regular Count Array");
         return [title count];
     }
     
@@ -340,7 +511,7 @@
     }
     
     
-    NSLog(@"Date: %@", date);
+    //NSLog(@"Date: %@", date);
     
     return cell;
 }
@@ -348,37 +519,42 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
+        NSLog(@"Selected in search view controler");
+        NSLog(@"Index Path %ld", (long)indexPath.row);
+        searchIndexPath = indexPath.row;
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [self performSegueWithIdentifier:@"showWorkoutDetail" sender:self];
+        
     }
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     //on view controller change, move to next page, and pass url to next view
     if ([segue.identifier isEqualToString:@"showWorkoutDetail"]) {
        
-       UITabBarController *tabViewController = segue.destinationViewController;
+        UITabBarController *tabViewController = segue.destinationViewController;
         FirstViewController *firstVC=[[tabViewController viewControllers] objectAtIndex:0];
-        NSIndexPath *indexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
+        
 
         
-      if (self.searchDisplayController.active) {
+        if (self.searchDisplayController.active) {
           
-          NSLog(@"Search Active");
+            NSLog(@"Search Active");
+            NSLog(@"In Search Active: %@",searchIDReference);
+            
+            NSLog(@"Index Path %ld", (long)searchIndexPath);
+            firstVC.urlID = [searchIDReference objectAtIndex:searchIndexPath];
+            firstVC.urlName = [searchURLReference objectAtIndex:searchIndexPath];
           
-          
-                 NSLog(@"Index Path %ld", (long)indexPath.section);
-          firstVC.urlID = [idNumberSelector objectAtIndex:indexPath.row];
-          firstVC.urlName = [url objectAtIndex:indexPath.row];
-          
-      }
-          else{
+        }
+        else{
               
-              NSLog(@"Normal Segue");
-              NSIndexPath *indexPath = [self.tableData indexPathForSelectedRow];
-              firstVC.urlID = [idNumberSelector objectAtIndex:indexPath.row];
-              firstVC.urlName = [url objectAtIndex:indexPath.row];
-          }
+            NSLog(@"Normal Segue");
+            NSIndexPath *indexPath = [self.tableData indexPathForSelectedRow];
+            firstVC.urlID = [idNumberSelector objectAtIndex:indexPath.row];
+            firstVC.urlName = [url objectAtIndex:indexPath.row];
+        }
         
     }
 }
@@ -479,6 +655,18 @@
     // Filter the array using NSPredicate
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",searchText];
     self.filteredWorkoutArray = [NSMutableArray arrayWithArray:[title filteredArrayUsingPredicate:predicate]];
+
+    
+    
+    searchIDReference = [NSMutableArray array];
+    searchURLReference = [NSMutableArray array];
+    for (int i=0; i< [self.filteredWorkoutArray count]; ++i){
+        [searchIDReference addObject: [idNumberSelector objectAtIndex:i] ];
+        [searchURLReference addObject: [url objectAtIndex:i] ];
+    }
+    NSLog(@"After Creation: %@",searchIDReference);
+    NSLog(@"After Creation: %@",searchURLReference);
+    
 }
 
 #pragma mark - UISearchDisplayController Delegate Methods
