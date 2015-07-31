@@ -9,6 +9,7 @@
 #import "FirstViewController.h"
 #import "SecondViewController.h"
 #import "SiginViewController.h"
+#import "Workout.h"
 
 
 #define TRACQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
@@ -42,11 +43,9 @@
     int nextFifteen;
     NSString *savedToken;
     int totalSessions;
-    NSMutableArray *searchIDReference;
-    NSMutableArray *searchURLReference;
     int searchIndexPath;
     BOOL pullToRefresh;
-    NSDictionary *cellDict;
+    NSMutableArray *workoutArray;
  
 }
 
@@ -314,10 +313,12 @@
             NSMutableArray *idarray;
             NSMutableArray *idNumber;
             NSMutableArray *TitleArray;
+            NSString *tempTitle;
             NSLog(@"NULL??? %@",idurl);
             
             //interate through id and associate url with each date
             for (i=0; i<date_length; i++) {
+                tempTitle = appendedTitle[i];
                 tempvar = appendedDate[i];
                 tempvar = [tempvar substringToIndex:10];
                 idurl = appendedUrl[i];
@@ -329,6 +330,16 @@
                     temparray=[NSMutableArray arrayWithObject:tempvar];
                     idarray = [NSMutableArray arrayWithObject:idurl2];
                     idNumber = [NSMutableArray arrayWithObject:idurl];
+                    
+                    //Attempt to make workout a dictionary
+                    Workout *initialArray = [Workout new];
+                    initialArray.name = tempTitle;
+                    initialArray.date = tempvar;
+                    initialArray.url = idurl2;
+                    initialArray.urlID = idurl;
+                    
+                    [workoutArray addObject:initialArray];
+                    
                 }
                 else{
                     [temparray addObject:tempvar];
@@ -339,6 +350,17 @@
                     //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
                     
                    // NSLog(@"IDArray %@", idarray);
+                    Workout *initialArray = [Workout new];
+                    initialArray.name = tempTitle;
+                    initialArray.date = tempvar;
+                    initialArray.url = idurl2;
+                    initialArray.urlID = idurl;
+                    
+                    [workoutArray addObject:initialArray];
+                    
+                    
+                
+                    
                 }
             }
             [idNumberSelector addObjectsFromArray:idNumber];
@@ -368,6 +390,9 @@
            // NSLog(@"Appended Title%@",TitleArray);
            // NSLog(@"Appended Title%@",url);
             NSLog(@"Debug Tag 2");
+            
+            Workout *obj = [workoutArray objectAtIndex:17];
+            NSLog(@"Workout number 17 : %@",obj.name);
             
             return title;
             return date;
@@ -407,12 +432,15 @@
         NSString *idurl;
         NSMutableArray *idarray;
         NSMutableArray *idNumber;
+        NSString *tempTitle;
         
         //interate through id and associate url with each date
         for (i=0; i<date_length; i++) {
             tempvar = date[i];
             tempvar = [tempvar substringToIndex:10];
             idurl = url[i];
+            tempTitle = title[i];
+            
             NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/?access_token=%@",idurl, savedToken];
             
             //to initialize array, for the first entry create variable, then add object for subsequent entries
@@ -420,11 +448,33 @@
                 temparray=[NSMutableArray arrayWithObject:tempvar];
                 idarray = [NSMutableArray arrayWithObject:idurl2];
                 idNumber = [NSMutableArray arrayWithObject:idurl];
+                
+                //Attempt to make workout a dictionary
+                Workout *initialArray = [Workout new];
+                initialArray.name = tempTitle;
+                initialArray.date = tempvar;
+                initialArray.url = idurl2;
+                initialArray.urlID = idurl;
+                
+                workoutArray = [NSMutableArray arrayWithObjects:initialArray, nil];
+                
             }
             else{
+                
                 [temparray addObject:tempvar];
                 [idarray addObject:idurl2];
                 [idNumber addObject:idurl];
+                
+                //Attempt to make workout a dictionary
+                Workout *initialArray = [Workout new];
+                initialArray.name = tempTitle;
+                initialArray.date = tempvar;
+                initialArray.url = idurl2;
+                initialArray.urlID = idurl;
+                
+                [workoutArray addObject:initialArray];
+                
+                
                 //[temparray addObject:tempvar];
                 //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
                 //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
@@ -444,6 +494,10 @@
         //title = [[title reverseObjectEnumerator] allObjects];
         //url = [[url reverseObjectEnumerator] allObjects];
         //    // Initialize Labels
+        Workout *obj = [workoutArray objectAtIndex:13];
+        NSLog(@"worwkout number 3 : %@",obj.name);
+        
+            
         pullToRefresh = NO;
             
         return title;
@@ -500,7 +554,10 @@
     }
     
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        cell.textLabel.text = self.filteredWorkoutArray[indexPath.row];
+        Workout *workout = nil;
+        workout = [self.filteredWorkoutArray objectAtIndex:indexPath.row];
+        cell.textLabel.text = workout.name;
+        cell.detailTextLabel.text= workout.date;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         //TODO: Fix this so date is correct
         //cell.detailTextLabel.text= date[indexPath.row];
@@ -539,13 +596,14 @@
 
         
         if (self.searchDisplayController.active) {
-          
-            NSLog(@"Search Active");
-            NSLog(@"In Search Active: %@",searchIDReference);
+            Workout *workout = nil;
+            workout = [self.filteredWorkoutArray objectAtIndex:searchIndexPath];
+            
+
             
             NSLog(@"Index Path %ld", (long)searchIndexPath);
-            firstVC.urlID = [searchIDReference objectAtIndex:searchIndexPath];
-            firstVC.urlName = [searchURLReference objectAtIndex:searchIndexPath];
+            firstVC.urlID = workout.urlID;
+            firstVC.urlName = workout.url;
           
         }
         else{
@@ -653,19 +711,8 @@
     // Remove all objects from the filtered search array
     [self.filteredWorkoutArray removeAllObjects];
     // Filter the array using NSPredicate
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",searchText];
-    self.filteredWorkoutArray = [NSMutableArray arrayWithArray:[title filteredArrayUsingPredicate:predicate]];
-
-    
-    
-    searchIDReference = [NSMutableArray array];
-    searchURLReference = [NSMutableArray array];
-    for (int i=0; i< [self.filteredWorkoutArray count]; ++i){
-        [searchIDReference addObject: [idNumberSelector objectAtIndex:i] ];
-        [searchURLReference addObject: [url objectAtIndex:i] ];
-    }
-    NSLog(@"After Creation: %@",searchIDReference);
-    NSLog(@"After Creation: %@",searchURLReference);
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[c] %@",searchText];
+    self.filteredWorkoutArray = [NSMutableArray arrayWithArray:[workoutArray filteredArrayUsingPredicate:predicate]];
     
 }
 
