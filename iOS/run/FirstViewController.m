@@ -91,7 +91,6 @@ NSLog(@"Reappear");
     // other custom initialization continues
     
     
-    
    // NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(viewDidLoad) userInfo:nil repeats:YES];
     //[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
 
@@ -219,7 +218,7 @@ NSLog(@"Reappear");
 - (NSArray *)fetchedData:(NSData *)responseData {
     //parse out the json data
     
-  // @try {
+   @try {
         NSError* error;
         NSLog(@"Feteched Data: %@",responseData);
         NSDictionary* json= [NSJSONSerialization
@@ -228,25 +227,26 @@ NSLog(@"Reappear");
                              options:kNilOptions
                              error:&error];
         
-        NSDictionary* workoutid = [json valueForKey:@"name"]; //2
+        //NSDictionary* workoutid = [json valueForKey:@"name"]; //2
         // NSDictionary* date = [json valueForKey:@"start_time"];
         NSString* results = [json valueForKey:@"results"];
-        NSData* results_data = [results dataUsingEncoding:NSUTF8StringEncoding];
+        NSString* num_results = [json valueForKey:@"num_results"];
+        //NSData* results_data = [results dataUsingEncoding:NSUTF8StringEncoding];
         
-        NSLog(@"Results: %@",results_data);
+        NSLog(@"#Results: %@",results);
         
         //parse json
-        NSDictionary* resultsParsed= [NSJSONSerialization
-                                      JSONObjectWithData:results_data //1
-                                      
-                                      options:kNilOptions
-                                      error:&error];
-        NSLog(@"Results (Dictionary): %@", resultsParsed);
-        NSDictionary* date = [resultsParsed valueForKey:@"date"];
+//        NSDictionary* resultsParsed= [NSJSONSerialization
+//                                      JSONObjectWithData:results_data //1
+//                                      
+//                                      options:kNilOptions
+//                                      error:&error];
+       // NSLog(@"Results (Dictionary): %@", resultsParsed);
+       // NSDictionary* date = [resultsParsed valueForKey:@"date"];
+        //NSLog(@"Name????: %@",[results valueForKey:@"name"]);
+        self.runners= [results valueForKey:@"name"];
         
-        self.runners= [resultsParsed valueForKey:@"runners"];
-        
-        NSArray* interval = [self.runners valueForKey:@"interval"];
+        NSArray* interval = [results valueForKey:@"splits"];
         self.summationTimeArray=[[NSMutableArray alloc] init];
         self.lasttimearray=[[NSMutableArray alloc] init];
        
@@ -313,14 +313,16 @@ NSLog(@"Reappear");
         NSLog(@"TimeArrays %@",self.lasttimearray);
         
         //    // Initialize Labels
-        self.humanReadble.text = [NSString stringWithFormat:@"Date: %@", date];
-        self.jsonSummary.text = [NSString stringWithFormat:@"Workout Name: %@", workoutid];
+    
+        //TODO: Fix these so they return name and date.
+        //self.humanReadble.text = [NSString stringWithFormat:@"Date: %@", date];
+        //self.jsonSummary.text = [NSString stringWithFormat:@"Workout Name: %@", workoutid];
         return self.runners;
- //  }
-   // @catch (NSException *exception) {
-   //     NSLog(@"Exception.......... %s","Except!");
-   //     return self.runners;
-    //}
+  }
+    @catch (NSException *exception) {
+        NSLog(@"Exception.......... %s","Except!");
+        return self.runners;
+    }
 
    
 }
@@ -365,7 +367,7 @@ NSLog(@"Reappear");
         
 
     NSLog(@"IN else Timearray %@",self.lasttimearray);
-    cell.Name.text = self.runners[indexPath.row][@"name"];
+    cell.Name.text = self.runners[indexPath.row];
     cell.Split.text= [NSString stringWithFormat:@"%@",self.lasttimearray[indexPath.row]];
     cell.Total.text= [NSString stringWithFormat:@"%@",self.summationTimeArray[indexPath.row]];
     NSLog(@"Does THIS APPEAR: %@", self.lasttimearray);

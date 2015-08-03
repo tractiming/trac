@@ -13,6 +13,7 @@
 - (IBAction)logoutClicked:(id)sender;
 - (IBAction)createWorkout:(id)sender;
 @property (strong,nonatomic) NSMutableArray *filteredWorkoutArray;
+@property (nonatomic,retain) UIRefreshControl *refreshControl NS_AVAILABLE_IOS(6_0);;
 
 @property IBOutlet UISearchBar *workoutSearchBar;
 

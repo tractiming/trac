@@ -16,6 +16,7 @@
     //NSArray *name;
     NSArray *name;
      UIRefreshControl *refreshControl;
+    NSArray* interval;
 }
 //@property (strong, nonatomic) NSArray *runners;
 //@property (strong, nonatomic) IBOutlet UITableView *tableData;
@@ -102,21 +103,21 @@
         // NSArray* date = [json valueForKey:@"date"];
         
         NSString* results = [json valueForKey:@"results"];
-        NSData* results_data = [results dataUsingEncoding:NSUTF8StringEncoding];
+        //NSData* results_data = [results dataUsingEncoding:NSUTF8StringEncoding];
         
-        NSLog(@"Results: %@",results_data);
-        
-        
-        NSDictionary* resultsParsed= [NSJSONSerialization
-                                      JSONObjectWithData:results_data //1
-                                      
-                                      options:kNilOptions
-                                      error:&error];
+//        NSLog(@"Results: %@",results_data);
+//        
+//        
+//        NSDictionary* resultsParsed= [NSJSONSerialization
+//                                      JSONObjectWithData:results_data //1
+//                                      
+//                                      options:kNilOptions
+//                                      error:&error];
 
         
-        self.runners= [resultsParsed valueForKey:@"runners"];
+        self.runners= [results valueForKey:@"name"];
         
-        NSArray* interval = [self.runners valueForKey:@"interval"];
+        interval = [results valueForKey:@"splits"];
         self.lasttimearray=[[NSMutableArray alloc] init];;
         
         //to display last relevant interval--not being displayed currently
@@ -175,7 +176,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:simpleTableIdentifier];
     }
     //set data into cells, name and icon
-    cell.textLabel.text = self.runners[indexPath.row][@"name"];
+    cell.textLabel.text = self.runners[indexPath.row];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   
     //cell.detailTextLabel.text= [NSString stringWithFormat:@"%@",self.lasttimearray[indexPath.row]];
@@ -191,10 +192,10 @@
    //                             initWithTitle:@"Row Selected" message:@"You've selected a row" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     
     self.personalSplits=[[NSMutableArray alloc] init];
-    self.splitString= self.runners[indexPath.row][@"name"];
+    self.splitString= self.runners[indexPath.row];
     NSInteger ii=0;
     //on click, display every repeat done. iterate through all splits per individual selected
-    for (NSArray *personalRepeats in self.runners[indexPath.row][@"interval"] ) {
+    for (NSArray *personalRepeats in interval[indexPath.row] ) {
         ii=ii+1;
         NSLog(@"Loop Data: %@", personalRepeats);
         

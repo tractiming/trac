@@ -10,8 +10,6 @@
 		8915A414D35530C0DD268DE2 /* libPods-run.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65025FA5AE833806EAFCD44D /* libPods-run.a */; };
 		902104AF1A40AF3100FCC771 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 902104AE1A40AF3100FCC771 /* Reachability.m */; };
 		905456FA19E9B11F002CE03C /* SiginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 905456F919E9B11F002CE03C /* SiginViewController.m */; };
-		9073541B1A41FB1300F15E4D /* compass_spinner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 907354191A41FB1300F15E4D /* compass_spinner@2x.png */; };
-		9073541C1A41FB1300F15E4D /* compass_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9073541A1A41FB1300F15E4D /* compass_background@2x.png */; };
 		907377991A37912800F86C7C /* CustomCelliPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 907377981A37912800F86C7C /* CustomCelliPad.xib */; };
 		9073779C1A37917000F86C7C /* CustomCelliPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 9073779B1A37917000F86C7C /* CustomCelliPad.m */; };
 		90862F7D1B6B205100DB9E4B /* Workout.m in Sources */ = {isa = PBXBuildFile; fileRef = 90862F7C1B6B205100DB9E4B /* Workout.m */; };
@@ -54,8 +52,6 @@
 		902104AE1A40AF3100FCC771 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		905456F819E9B11F002CE03C /* SiginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiginViewController.h; sourceTree = "<group>"; };
 		905456F919E9B11F002CE03C /* SiginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiginViewController.m; sourceTree = "<group>"; };
-		907354191A41FB1300F15E4D /* compass_spinner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compass_spinner@2x.png"; path = "../../../JackrabbitRefresh/JackrabbitRefresh/compass_spinner@2x.png"; sourceTree = "<group>"; };
-		9073541A1A41FB1300F15E4D /* compass_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compass_background@2x.png"; path = "../../../JackrabbitRefresh/JackrabbitRefresh/compass_background@2x.png"; sourceTree = "<group>"; };
 		907377981A37912800F86C7C /* CustomCelliPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCelliPad.xib; sourceTree = "<group>"; };
 		9073779A1A37917000F86C7C /* CustomCelliPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCelliPad.h; sourceTree = "<group>"; };
 		9073779B1A37917000F86C7C /* CustomCelliPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCelliPad.m; sourceTree = "<group>"; };
@@ -154,8 +150,6 @@
 		90E687A31915C48B0060B20B /* run */ = {
 			isa = PBXGroup;
 			children = (
-				907354191A41FB1300F15E4D /* compass_spinner@2x.png */,
-				9073541A1A41FB1300F15E4D /* compass_background@2x.png */,
 				902104AD1A40AF3100FCC771 /* Reachability.h */,
 				902104AE1A40AF3100FCC771 /* Reachability.m */,
 				90A069891A360C79008CAA75 /* CustomCell.xib */,
@@ -314,9 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				90A0698A1A360C79008CAA75 /* CustomCell.xib in Resources */,
-				9073541B1A41FB1300F15E4D /* compass_spinner@2x.png in Resources */,
 				90E687BC1915C48B0060B20B /* Images.xcassets in Resources */,
-				9073541C1A41FB1300F15E4D /* compass_background@2x.png in Resources */,
 				909D506B1A12A90600526531 /* Main_iPad.storyboard in Resources */,
 				90E687B11915C48B0060B20B /* Main_iPhone.storyboard in Resources */,
 				907377991A37912800F86C7C /* CustomCelliPad.xib in Resources */,
