@@ -3,6 +3,8 @@ package com.example.newtest;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.newtest.CalendarActivity.AsyncServiceCall;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -147,10 +150,10 @@ public class WorkoutFragment extends ListFragment {
 	Gson gson = new Gson();
 	private static final String DEBUG_TAG = "griffinSucks";
 	
-	  private class AsyncWorkoutCall extends AsyncTask<String, Void, Workout> {
+	  private class AsyncWorkoutCall extends AsyncTask<String, Void, List<Runners>> {
 		  
 			@Override
-			protected Workout doInBackground(String... params) {
+			protected List<Runners> doInBackground(String... params) {
 				Request request = new Request.Builder()
 		        .url(params[0])
 		        .build();
@@ -158,13 +161,14 @@ public class WorkoutFragment extends ListFragment {
 				    Response response = client.newCall(request).execute();
 				    
 				    
-				    Results preFullyParsed = gson.fromJson(response.body().charStream(), Results.class);
-					String text = preFullyParsed.results;
-					
-				    Workout parsedjWorkout = gson.fromJson(text, Workout.class);
-				   
-				    Log.d("preFullyParsed", text);
-				    return parsedjWorkout;
+				    IndividualResults preFullyParsed = gson.fromJson(response.body().charStream(), IndividualResults.class);
+				    List<Runners> text = preFullyParsed.results;
+					//Log.d("TEXT",text);
+				    //Runners parsedjWorkout = gson.fromJson(text, Runners.class);
+				    
+				    Workout test = null;
+				   // Log.d("preFullyParsed", text);
+				    return text;
 				    
 				} catch (IOException e) {
 					Log.d(DEBUG_TAG, "this is griffins fault now" + e.getMessage());
@@ -173,7 +177,7 @@ public class WorkoutFragment extends ListFragment {
 			}
 			
 			@Override
-			protected void onPostExecute(Workout result) {
+			protected void onPostExecute(List<Runners> result) {
 				Log.d(DEBUG_TAG,"execute");
 				
 				if(result==null){

@@ -9,8 +9,10 @@ public class Runners {
 	//For JSON
 	@SerializedName ("name")
 	public String name;
-	@SerializedName ("counter")
-	public String[] counter;
-	@SerializedName ("interval")
+	@SerializedName ("splits")
 	public List<String[]> interval;
+	@SerializedName ("id")
+	public String id;
+	@SerializedName ("total")
+	public String total;
 }

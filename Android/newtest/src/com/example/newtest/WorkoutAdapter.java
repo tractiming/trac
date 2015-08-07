@@ -15,29 +15,29 @@ import android.widget.TextView;
 
 public class WorkoutAdapter extends BaseAdapter{
 
-	private Workout parsedJson; 
+	private List<Runners> parsedJson; 
 	private Context context;
 	private ArrayList<Runners> runnersList;
 	
 	
-	public WorkoutAdapter(Workout workout, Context context) {
+	public WorkoutAdapter(List<Runners> workout, Context context) {
 	 runnersList = new ArrayList<Runners>();
 	 this.parsedJson = workout;
 	 this.context = context;
-	 runnersList.addAll(parsedJson.runners);
+	 runnersList.addAll(parsedJson);
 	}
 	
 	
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return this.parsedJson.runners.size();
+		return this.parsedJson.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return this.parsedJson.runners.get(position);
+		return this.parsedJson.get(position);
 	}
 
 	@Override
@@ -58,8 +58,8 @@ public class WorkoutAdapter extends BaseAdapter{
 		
 		//Show the athletes name
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text_workout);
-		textView.setText(parsedJson.runners.get(position).name);
-		Log.d("Debug",parsedJson.runners.get(position).name);
+		textView.setText(parsedJson.get(position).name);
+		Log.d("Debug",parsedJson.get(position).name);
 		
 		//TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
 		//List<String[]> intervals = parsedJson.runners.get(position).interval;
@@ -68,16 +68,17 @@ public class WorkoutAdapter extends BaseAdapter{
 		
 		//Build a string for each athlete adn interate over every one of their splits and display all of them
 		StringBuilder builder = new StringBuilder();
-		List<String[]> intervals = parsedJson.runners.get(position).interval;
+		List<String[]> intervals = parsedJson.get(position).interval;
 		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
 		
-		
-		for (int i = 0; i < parsedJson.runners.get(position).counter.length;i++)
+		int jj;
+		for (int i = 0; i < intervals.size(); i++)
 		{	
-				builder.append("Interval: " +  parsedJson.runners.get(position).counter[i] +";  ");
+			jj = i+1;
+				builder.append("Interval: " + jj + " ");
 				builder.append("Splits:" );
 				
-			for (String splits: parsedJson.runners.get(position).interval.get(i))
+			for (String splits: parsedJson.get(position).interval.get(i))
 			{
 				float temp = Float.parseFloat(splits);
 				if (temp>90){
@@ -127,9 +128,9 @@ public class WorkoutAdapter extends BaseAdapter{
 
 	public void getFilter(String charText) {
 		charText = charText.toLowerCase(Locale.getDefault());
-		parsedJson.runners.clear();
+		parsedJson.clear();
 				if (charText.length() == 0) {
-					parsedJson.runners.addAll(runnersList);
+					parsedJson.addAll(runnersList);
 		} 
 		else 
 		{
@@ -137,7 +138,7 @@ public class WorkoutAdapter extends BaseAdapter{
 			{
 				if (wp.name.toLowerCase(Locale.getDefault()).contains(charText)) 
 				{
-					parsedJson.runners.add(wp);
+					parsedJson.add(wp);
 				}
 			}
 		}

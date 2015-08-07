@@ -187,6 +187,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 			   Log.d("Access_token, CalendarActivity:", access_token);
 			   
 			   
+			   
 			  
 			   
 			
@@ -228,7 +229,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 				}});
 			
 			 url = "https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=" + access_token;
-			 // Log.d("URL ! : ", url);
+			  Log.d("URL ! : ", url);
 			//OnCreate Async Task Called, see below for async task class
 			asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
 		    
@@ -248,7 +249,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		        Log.d("Token On Pass CLICK?", access_token);
 		        
 		        // 2. put key/value data to pass on mainactivity load
-		        intent.putExtra("message", "https://trac-us.appspot.com/api/sessions/" + idPosition +"/?access_token=" + access_token);
+		        intent.putExtra("message", "https://trac-us.appspot.com/api/sessions/" + idPosition +"/individual_results/?access_token=" + access_token);
 		        intent.putExtra("positionID", idPosition);
 		        intent.putExtra("token", access_token);
 
@@ -285,9 +286,9 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 						try {
 							Log.d("Enters?","Enters?");
 							   Response response = client.newCall(request).execute();
-
+							   //Log.d("Response?",response);
 							   SessionPaginate preFullyParsed = gson.fromJson(response.body().charStream(), SessionPaginate.class);
-							   Log.d("Full Count",preFullyParsed.id.toString());
+							   //Log.d("Full Count",preFullyParsed.id.toString());
 							   maxTotalSessions = Integer.parseInt(preFullyParsed.id);
 							   
 							   JsonArray jArray = preFullyParsed.results;

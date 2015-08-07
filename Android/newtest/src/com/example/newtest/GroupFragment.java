@@ -4,7 +4,9 @@ package com.example.newtest;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -213,29 +216,35 @@ public class GroupFragment extends ListFragment {
 	Gson gson = new Gson();
 	private static final String DEBUG_TAG = "Debug";
 	
-	  private class AsyncServiceCall extends AsyncTask<String, Void, Workout> {
+	  private class AsyncServiceCall extends AsyncTask<String, Void, List<Runners>> {
 		  protected void onPreExecute(){
 			  Log.d("Async", "PreExcute");
 		  }
 		  
 		  
 			@Override
-			protected Workout doInBackground(String... params) {
+			protected List<Runners> doInBackground(String... params) {
 				Request request = new Request.Builder()
 		        .url(params[0])
 		        .build();
 				try {
-					Log.d(DEBUG_TAG, "Pre Response");
+					//Log.d(DEBUG_TAG, "Pre Response");
 				    Response response = client.newCall(request).execute();
-				    Log.d(DEBUG_TAG, "Post Response");
-				    Results preFullyParsed = gson.fromJson(response.body().charStream(), Results.class);
-					String text = preFullyParsed.results;
+				    //Log.d(DEBUG_TAG, "Post Response");
+				    IndividualResults preFullyParsed = gson.fromJson(response.body().charStream(), IndividualResults.class);
+				    //Log.d(DEBUG_TAG, "Post First Parse");
+				    List<Runners> text = preFullyParsed.results;
+				    //Log.d(DEBUG_TAG, "Post First Parse");
+				   // Log.d(DEBUG_TAG, preFullyParsed.results.toString());
 				    
-				    Workout parsedjWorkout = gson.fromJson(text, Workout.class);
+					//Log.d("TEXT",text);
+				   // Runners variable = text.toArray()
+				   // Runners parsedjWorkout = gson.fromJson(text, Runners.class);
 				    
+				    Workout test = null;
 				    	
-				    Log.d(DEBUG_TAG, "GSON");
-				    return parsedjWorkout;
+				    //Log.d(DEBUG_TAG, parsedjWorkout[1].toString());
+				    return text;
 				    
 				} catch (IOException e) {
 					Log.d(DEBUG_TAG, "this is griffins fault now" + e.getMessage());
@@ -244,7 +253,7 @@ public class GroupFragment extends ListFragment {
 			}
 			
 			@Override
-			protected void onPostExecute(Workout result) {
+			protected void onPostExecute(List<Runners> result) {
 				Log.d(DEBUG_TAG,"execute");
 				//String resultstring = result.toString();
 				 mLoginStatusView.setVisibility(View.GONE);
@@ -260,10 +269,10 @@ public class GroupFragment extends ListFragment {
 				groupList = new GroupAdapter(result, getActivity());
 			    setListAdapter(groupList);	
 			    
-			    mTextView.setText("Date: " + result.date);
-			    title = result.id;
-			    date = result.date;
-			    mTextView1.setText("Workout ID: " + result.id);
+			    mTextView.setText("Workout Name: " +"");
+			    //title = result.id;
+			    //date = result.date;
+			    mTextView1.setText("Date: " + "");
 			    delegate.processFinish(groupList);
 			    lview.onRestoreInstanceState(state);
 				}
