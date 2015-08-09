@@ -240,18 +240,18 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		  protected void onListItemClick(ListView l, View v, int position, long id) {
 			  	// 1. create an intent pass class name or intnet action name 
 			  
-			  	Log.d("Debug Tag", "THIS IS THE POSITION " + position);
 			  	String idPosition = positionArray.get(position).id;
-			  	Log.d("Position ID", idPosition);
-			  
+			  	
 			  	// On Click, intent to go to main activity from calendar activity
 		        Intent intent = new Intent(CalendarActivity.this, MainActivity.class);
-		        Log.d("Token On Pass CLICK?", access_token);
 		        
 		        // 2. put key/value data to pass on mainactivity load
 		        intent.putExtra("message", "https://trac-us.appspot.com/api/sessions/" + idPosition +"/individual_results/?access_token=" + access_token);
 		        intent.putExtra("positionID", idPosition);
 		        intent.putExtra("token", access_token);
+		        intent.putExtra("workoutName", positionArray.get(position).name);
+		        intent.putExtra("workoutDate", positionArray.get(position).startTime);
+		        
 
 		        // 3. or you can add data to a bundle
 		        Bundle extras = new Bundle();
@@ -269,14 +269,6 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 			private static final String DEBUG_TAG = "Debug";
 			
 			  public class AsyncServiceCall extends AsyncTask<String, Void, ArrayList<Results>> {
-				  
-				  @Override
-				  protected void onPreExecute(){
-					  Log.d("On Pre Execute", "Calendar Activity");
-					 //mLoginStatusView.setVisibility(View.VISIBLE);
-					  //swipeLayout.setRefreshing(true);
-					  
-				  }
 				  
 					@Override
 					protected ArrayList<Results> doInBackground(String... params) {
@@ -334,11 +326,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 							    fakedTotalItemCount = 16;
 							}
 							else{
-								//Log.d("Add","Second...Work?");
-								//positionArray.addAll(result);
 								((CalendarAdapter)getListAdapter()).add(result);
-								//((CalendarAdapter)getListAdapter()).getCount();
-								//((CalendarAdapter)getListAdapter()).notifyDataSetChanged();
 							
 						}
 						

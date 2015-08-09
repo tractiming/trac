@@ -112,6 +112,8 @@ public class GroupFragment extends ListFragment {
 		
         // 2. get message value from intent
         message = intent.getStringExtra("message");
+        title = intent.getStringExtra("workoutName");
+        date = intent.getStringExtra("workoutDate");
         Log.d("The passed Variable in frag baby", message);
         
 
@@ -269,10 +271,8 @@ public class GroupFragment extends ListFragment {
 				groupList = new GroupAdapter(result, getActivity());
 			    setListAdapter(groupList);	
 			    
-			    mTextView.setText("Workout Name: " +"");
-			    //title = result.id;
-			    //date = result.date;
-			    mTextView1.setText("Date: " + "");
+			    mTextView.setText("Workout Name: " + title);
+			    mTextView1.setText("Date: " + date.substring(0,10));
 			    delegate.processFinish(groupList);
 			    lview.onRestoreInstanceState(state);
 				}
