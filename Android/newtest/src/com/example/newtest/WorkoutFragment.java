@@ -4,6 +4,7 @@ package com.example.newtest;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -19,6 +20,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -47,7 +50,12 @@ public class WorkoutFragment extends ListFragment {
 	private  SwipeRefreshLayout swipeLayout;
 	private static AsyncWorkoutCall asyncTask;
 	public WorkoutAdapter workoutAdapter;
+	public ExpandableWorkoutAdapter expandableAdapter;
 	public WorkoutAsyncResponse delegate;
+	ExpandableListView expListView;
+	List<String> dataHeader;
+	HashMap<String, List<String>> listDataChild;
+	
 	
 	public static void backButtonWasPressed() {
 		
@@ -64,8 +72,8 @@ public class WorkoutFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.d("Created","Workout Fragment");
-		View rootView = inflater.inflate(R.layout.fragment_workout_view, container,
-				false);
+		View rootView = inflater.inflate(R.layout.fragment_workout_view, null);
+		expListView = (ExpandableListView) rootView.findViewById(android.R.id.list);
     //Alert Box if no connectivity
     alertDialog = new AlertDialog.Builder(getActivity()).create();
 	alertDialog.setTitle("No Internet Connectivity");
@@ -116,30 +124,30 @@ public class WorkoutFragment extends ListFragment {
 
   @Override
   public void onListItemClick(ListView l, View v, int position, long id) {
-	  View toolbar = v.findViewById(R.id.expanded_bar);
-	 
-      // Creating the expand animation for the item
-      ExpandAnimation expandAni = new ExpandAnimation(toolbar, 500);
-
-      // Start the animation on the toolbar
-     toolbar.startAnimation(expandAni);
-     
-     TextView mLayout = (TextView) v.findViewById(R.id.expand_button);
-     TextView collapse = (TextView) v.findViewById(R.id.collapse_button);
-     
-     //mLayout.setVisibility(v.GONE);
-     
-     //For directional arrows up and down, when clicked, change direction
-     if (mLayout.isShown()){
-    	 mLayout.setVisibility(v.INVISIBLE);
-     	 collapse.setVisibility(v.VISIBLE);
-     }
-     else
-     {
-    	 mLayout.setVisibility(v.VISIBLE);
-    	 collapse.setVisibility(v.INVISIBLE);
- 
-     }
+//	  View toolbar = v.findViewById(R.id.expanded_bar);
+//	 
+//      // Creating the expand animation for the item
+//      ExpandAnimation expandAni = new ExpandAnimation(toolbar, 500);
+//
+//      // Start the animation on the toolbar
+//     toolbar.startAnimation(expandAni);
+//     
+//     TextView mLayout = (TextView) v.findViewById(R.id.expand_button);
+//     TextView collapse = (TextView) v.findViewById(R.id.collapse_button);
+//     
+//     //mLayout.setVisibility(v.GONE);
+//     
+//     //For directional arrows up and down, when clicked, change direction
+//     if (mLayout.isShown()){
+//    	 mLayout.setVisibility(v.INVISIBLE);
+//     	 collapse.setVisibility(v.VISIBLE);
+//     }
+//     else
+//     {
+//    	 mLayout.setVisibility(v.VISIBLE);
+//    	 collapse.setVisibility(v.INVISIBLE);
+// 
+//     }
    
   }
 
@@ -185,11 +193,25 @@ public class WorkoutFragment extends ListFragment {
 				}
 				else
 				{
+					dataHeader = new ArrayList<String>();
+					listDataChild = new HashMap<String, List<String>>();
+					for (int i = 0; i < result.size(); i++){
+						List<String> tempArray = new ArrayList<String>();
+						dataHeader.add(result.get(i).name);
+						for (int j = 0; j < result.get(i).interval.size(); j++){
+							tempArray.add(result.get(i).interval.get(j)[0].toString());
+							Log.d("Interval to String", result.get(i).interval.get(j)[0].toString());
+						}
+						listDataChild.put(dataHeader.get(i), tempArray);
+						
+					}
 				//set result to show on screen
-				
 				workoutAdapter = new WorkoutAdapter(result, getActivity());
-			    setListAdapter(workoutAdapter);		
-			    delegate.processFinish(workoutAdapter);
+				expandableAdapter = new ExpandableWorkoutAdapter(result, getActivity(), dataHeader, listDataChild);
+				//setListAdapter((ExpandableListAdapter) expandableAdapter);		
+				expListView.setAdapter(expandableAdapter);
+				
+				//delegate.processFinish(workoutAdapter);
 				}
 			    
 			}

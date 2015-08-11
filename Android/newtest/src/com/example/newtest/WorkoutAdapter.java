@@ -57,8 +57,8 @@ public class WorkoutAdapter extends BaseAdapter{
 		
 		
 		//Show the athletes name
-		TextView textView =(TextView) convertView.findViewById(R.id.list_text_workout);
-		textView.setText(parsedJson.get(position).name);
+		//TextView textView =(TextView) convertView.findViewById(R.id.list_text_workout);
+		//textView.setText(parsedJson.get(position).name);
 		Log.d("Debug",parsedJson.get(position).name);
 		
 		//TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
@@ -75,8 +75,8 @@ public class WorkoutAdapter extends BaseAdapter{
 		for (int i = 0; i < intervals.size(); i++)
 		{	
 			jj = i+1;
-				builder.append("Interval: " + jj + " ");
-				builder.append("Splits:" );
+				builder.append(jj);
+				builder.append("                                          ");
 				
 			for (String splits: parsedJson.get(position).interval.get(i))
 			{
