@@ -65,7 +65,7 @@ public class MainActivity extends ActionBarActivity implements
 	GroupFragment groupFrag;
 	private GroupAdapter groupAdapter;
 	WorkoutFragment workoutFrag;
-	private WorkoutAdapter workoutAdapter;
+	private ExpandableWorkoutAdapter workoutAdapter;
 	
     public void onBackPressed() {
     	fragment = new Fragment();
@@ -375,9 +375,9 @@ public class MainActivity extends ActionBarActivity implements
 		}
 
 		@Override
-		public void processFinish(WorkoutAdapter groupList) {
+		public void processFinish(ExpandableWorkoutAdapter expandableAdapter) {
 			// TODO Auto-generated method stub
-			workoutAdapter = groupList;
+			workoutAdapter = expandableAdapter;
 			
 		}
 	}

@@ -211,7 +211,7 @@ public class WorkoutFragment extends ListFragment {
 				//setListAdapter((ExpandableListAdapter) expandableAdapter);		
 				expListView.setAdapter(expandableAdapter);
 				
-				//delegate.processFinish(workoutAdapter);
+				delegate.processFinish(expandableAdapter);
 				}
 			    
 			}

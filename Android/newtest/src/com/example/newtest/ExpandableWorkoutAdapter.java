@@ -3,6 +3,7 @@ package com.example.newtest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -18,17 +19,17 @@ public class ExpandableWorkoutAdapter extends BaseExpandableListAdapter{
 	private List<String> dataHeader;
 	private HashMap<String, List<String>> listDataChild;
 	private List<Runners> parsedJson;
-	private ArrayList<Runners> runnersList;
+	private ArrayList<String> runnersList;
 	
 	
 	public ExpandableWorkoutAdapter(List<Runners> workout, Context context, List<String> dataHeader,
             HashMap<String, List<String>> listDataChild) {
-		 runnersList = new ArrayList<Runners>();
+		 runnersList = new ArrayList<String>();
 		 this.parsedJson = workout;
 		 this.context = context;
 		 this.listDataChild = listDataChild;
 		 this.dataHeader = dataHeader;
-		 runnersList.addAll(parsedJson);
+		 runnersList.addAll(dataHeader);
 		}
 	
 	@Override
@@ -122,5 +123,25 @@ public class ExpandableWorkoutAdapter extends BaseExpandableListAdapter{
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
+	public void getFilter(String charText) {
+		charText = charText.toLowerCase(Locale.getDefault());
+		dataHeader.clear();
+				if (charText.length() == 0) {
+					dataHeader.addAll(runnersList);
+		} 
+		else 
+		{
+			for (String wp : runnersList) 
+			{
+				if (wp.toLowerCase(Locale.getDefault()).contains(charText)) 
+				{
+					dataHeader.add(wp);
+				}
+			}
+		}
+		notifyDataSetChanged();
+	}
+	
 
 }

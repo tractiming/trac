@@ -1,5 +1,5 @@
 package com.example.newtest;
 
 public interface WorkoutAsyncResponse {
-	void processFinish(WorkoutAdapter groupList);
+	void processFinish(ExpandableWorkoutAdapter expandableAdapter);
 }
