@@ -33,7 +33,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 
-        NSLog(@"Pressed Back");
+       // NSLog(@"Pressed Back");
     [timer invalidate];
 
 }
@@ -53,7 +53,7 @@ NSLog(@"Reappear");
             [spinner removeFromSuperview];
         });});
     
-    NSLog(@"Fires Every? 10");
+   // NSLog(@"Fires Every? 10");
     
     // call timer on launch and call sendRequest every 5 seconds
     timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(sendRequest) userInfo:nil repeats:YES];
@@ -63,9 +63,9 @@ NSLog(@"Reappear");
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"URL: %@", self.urlName);
-    NSLog(@"URL ID: %@", self.urlID);
-   
+    //NSLog(@"URL: %@", self.urlName);
+   // NSLog(@"URL ID: %@", self.urlID);
+    [self.tabBarController.navigationItem setTitle:self.workoutName];
     //initilize spinner
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     //spinner.color = [UIColor grayColor];
@@ -84,7 +84,7 @@ NSLog(@"Reappear");
     svc.urlName_VC2 = self.urlName;
     
     ThirdViewController *tvc = [self.tabBarController.viewControllers objectAtIndex:2];
-    NSLog(@"ID: %@",self.urlID);
+   // NSLog(@"ID: %@",self.urlID);
     tvc.urlID = self.urlID;
     
 
@@ -209,7 +209,7 @@ NSLog(@"Reappear");
             [spinner removeFromSuperview];
         });});
     
-    NSLog(@"Firest every? 10");
+    //NSLog(@"Firest every? 10");
     
     SecondViewController *svc = [self.tabBarController.viewControllers objectAtIndex:1];
     svc.urlName_VC2 = self.urlName;
@@ -220,7 +220,7 @@ NSLog(@"Reappear");
     
    @try {
         NSError* error;
-        NSLog(@"Feteched Data: %@",responseData);
+       // NSLog(@"Feteched Data: %@",responseData);
         NSDictionary* json= [NSJSONSerialization
                              JSONObjectWithData:responseData //1
                              
@@ -233,7 +233,7 @@ NSLog(@"Reappear");
         NSString* num_results = [json valueForKey:@"num_results"];
         //NSData* results_data = [results dataUsingEncoding:NSUTF8StringEncoding];
         
-        NSLog(@"#Results: %@",results);
+       // NSLog(@"#Results: %@",results);
         
         //parse json
 //        NSDictionary* resultsParsed= [NSJSONSerialization
@@ -255,7 +255,7 @@ NSLog(@"Reappear");
         for (NSArray *personalinterval in interval ) {
             
             if(!personalinterval || !personalinterval.count){
-            NSLog(@"ITS EMPTY");
+            //NSLog(@"ITS EMPTY");
             self.lasttimearray = [self.lasttimearray arrayByAddingObject:@"NT"];
             self.summationTimeArray = [self.summationTimeArray arrayByAddingObject:@"NT"];
             }
@@ -271,31 +271,31 @@ NSLog(@"Reappear");
                 NSNumber *sum = [finaltimeArray valueForKeyPath:@"@sum.floatValue"];
                 
                 
-                NSLog(@"Personal Interval: %@", personalinterval);
+               // NSLog(@"Personal Interval: %@", personalinterval);
                 NSArray* lastsettime=[personalinterval lastObject];
-                NSLog(@"Loop Data time: %@", lastsettime);
+               // NSLog(@"Loop Data time: %@", lastsettime);
                 NSArray* lasttime=[lastsettime lastObject];
-                NSLog(@"Last Rep: %@", lasttime);
+               // NSLog(@"Last Rep: %@", lasttime);
             //arraycounter = [lasttimearray count];
             // NSLog(@"the coutn: %@", arraycounter);
             
             //determine minute and seconds
             //NSNumber *sum = [lastsettime valueForKeyPath:@"@sum.self"];
-            NSLog(@"Sum: %@", sum);
+            //NSLog(@"Sum: %@", sum);
             NSNumber *minutes = @([sum integerValue] / 60);
             NSNumber *seconds = @([sum integerValue] % 60);
-            NSLog(@"SEconds: %@", seconds);
+            //NSLog(@"SEconds: %@", seconds);
             
             //format total time in minute second format
             if ([seconds intValue]<10) {
                 NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@",minutes,seconds];
-                NSLog(@"TIME? %@",elapsedtime);
+                //NSLog(@"TIME? %@",elapsedtime);
                 self.summationTimeArray = [self.summationTimeArray arrayByAddingObject:elapsedtime];
                 
             }
             else{
                 NSString* elapsedtime = [NSString stringWithFormat:@"%@:%@",minutes,seconds];
-                NSLog(@"TIME? %@",elapsedtime);
+                //NSLog(@"TIME? %@",elapsedtime);
                 self.summationTimeArray = [self.summationTimeArray arrayByAddingObject:elapsedtime];
                 
             }
@@ -310,13 +310,13 @@ NSLog(@"Reappear");
             self.lasttimearray = [self.lasttimearray arrayByAddingObject:lasttime];
             }
         }
-        NSLog(@"TimeArrays %@",self.lasttimearray);
+        //NSLog(@"TimeArrays %@",self.lasttimearray);
         
         //    // Initialize Labels
     
         //TODO: Fix these so they return name and date.
-        //self.humanReadble.text = [NSString stringWithFormat:@"Date: %@", date];
-        //self.jsonSummary.text = [NSString stringWithFormat:@"Workout Name: %@", workoutid];
+        self.humanReadble.text = [NSString stringWithFormat:@"Date: %@", self.workoutDate];
+        //self.jsonSummary.text = [NSString stringWithFormat:@"Workout Name: %@", self.workoutName];
         return self.runners;
   }
     @catch (NSException *exception) {
@@ -330,7 +330,7 @@ NSLog(@"Reappear");
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-     NSLog(@"Names tableview: %@", self.runners);
+     //NSLog(@"Names tableview: %@", self.runners);
     return [self.runners count];
 }
 
@@ -351,12 +351,12 @@ NSLog(@"Reappear");
         cell.Name.text = self.runners[indexPath.row][@"name"];
         cell.Split.text= [NSString stringWithFormat:@"%@",self.lasttimearray[indexPath.row]];
         cell.Total.text= [NSString stringWithFormat:@"%@",self.summationTimeArray[indexPath.row]];
-        NSLog(@"Does THIS APPEAR: %@", self.lasttimearray);
+        //NSLog(@"Does THIS APPEAR: %@", self.lasttimearray);
         return cell;
     }
     else{
         static NSString *simpleTableIdentifier = @"myCell";
-    CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+        CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
     if (cell == nil) {
         

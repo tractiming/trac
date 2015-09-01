@@ -10,19 +10,30 @@
 //#define workoutURL [NSURL URLWithString:url3] //2
 //http://76.12.155.219/trac/splits/w1000.json
 #import "SecondViewController.h"
+#import "DetailViewController.h"
+#import "WorkoutViewController.h"
 
 @interface SecondViewController ()
+
+@property (nonatomic, strong) UIView *refreshLoadingView;
+@property (nonatomic, strong) UIView *refreshColorView;
+@property (nonatomic, strong) UIImageView *compass_background;
+@property (nonatomic, strong) UIImageView *compass_spinner;
+@property (assign) BOOL isRefreshIconsOverlap;
+@property (assign) BOOL isRefreshAnimating;
+
+@end
+
+
+@implementation SecondViewController
 {
     //NSArray *name;
     NSArray *name;
-     UIRefreshControl *refreshControl;
+    UIRefreshControl *refreshControl;
     NSArray* interval;
+    NSString *runnersName;
 }
-//@property (strong, nonatomic) NSArray *runners;
-//@property (strong, nonatomic) IBOutlet UITableView *tableData;
-@end
 
-@implementation SecondViewController
 
 - (void)viewDidLoad
 {
@@ -61,18 +72,192 @@
 //    });
     
     //Pull to Refresh Setup
-    refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(doLoad) forControlEvents:UIControlEventValueChanged];
-    [self.tableData addSubview:refreshControl];
-    
-    
+    //refreshControl = [[UIRefreshControl alloc] init];
+    //[refreshControl addTarget:self action:@selector(doLoad) forControlEvents:UIControlEventValueChanged];
+    //[self.tableData addSubview:refreshControl];
+    [self setupRefreshControl];
     
     }
+
+
+
+
+
+- (void)setupRefreshControl
+{
+    // TODO: Programmatically inserting a UIRefreshControl
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.tableData addSubview:self.refreshControl];
+    // Setup the loading view, which will hold the moving graphics
+    self.refreshLoadingView = [[UIView alloc] initWithFrame:self.refreshControl.bounds];
+    self.refreshLoadingView.backgroundColor = [UIColor clearColor];
+    
+    // Setup the color view, which will display the rainbowed background
+    self.refreshColorView = [[UIView alloc] initWithFrame:self.refreshControl.bounds];
+    self.refreshColorView.backgroundColor = [UIColor clearColor];
+    self.refreshColorView.alpha = 0.30;
+    
+    // Create the graphic image views
+    self.compass_background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ticks.png"]];
+    self.compass_spinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"clock_hand.png"]];
+    
+    // Add the graphics to the loading view
+    [self.refreshLoadingView addSubview:self.compass_background];
+    [self.refreshLoadingView addSubview:self.compass_spinner];
+    
+    // Clip so the graphics don't stick out
+    self.refreshLoadingView.clipsToBounds = YES;
+    
+    // Hide the original spinner icon
+    self.refreshControl.tintColor = [UIColor clearColor];
+    
+    // Add the loading and colors views to our refresh control
+    [self.refreshControl addSubview:self.refreshColorView];
+    [self.refreshControl addSubview:self.refreshLoadingView];
+    
+    // Initalize flags
+    self.isRefreshIconsOverlap = NO;
+    self.isRefreshAnimating = NO;
+    
+    // When activated, invoke our refresh function
+    [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+}
+
+- (void)refresh:(id)sender{
+    
+    
+    // -- DO SOMETHING AWESOME (... or just wait 3 seconds) --
+    // This is where you'll make requests to an API, reload data, or process information
+    double delayInSeconds = 3.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        
+        [self doLoad];
+        // When done requesting/reloading/processing invoke endRefreshing, to close the control
+        [self.refreshControl endRefreshing];
+    });
+    // -- FINISHED SOMETHING AWESOME, WOO! --
+}
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    // Get the current size of the refresh controller
+    CGRect refreshBounds = self.refreshControl.bounds;
+    
+    // Distance the table has been pulled >= 0
+    CGFloat pullDistance = MAX(0.0, -self.refreshControl.frame.origin.y);
+    //NSLog(@"pullDistnace2: %f",self.refreshControl.frame.origin.y);
+    // Half the width of the table
+    CGFloat midX = self.tableData.frame.size.width / 2.0;
+    
+    // Calculate the width and height of our graphics
+    CGFloat compassHeight = self.compass_background.bounds.size.height;
+    CGFloat compassHeightHalf = compassHeight / 2.0;
+    
+    CGFloat compassWidth = self.compass_background.bounds.size.width;
+    CGFloat compassWidthHalf = compassWidth / 2.0;
+    
+    CGFloat spinnerHeight = self.compass_spinner.bounds.size.height;
+    CGFloat spinnerHeightHalf = spinnerHeight / 2.0;
+    
+    CGFloat spinnerWidth = self.compass_spinner.bounds.size.width;
+    CGFloat spinnerWidthHalf = spinnerWidth / 2.0;
+    
+    // Calculate the pull ratio, between 0.0-1.0
+    CGFloat pullRatio = MIN( MAX(pullDistance, 0.0), 100.0) / 100.0;
+    
+    // Set the Y coord of the graphics, based on pull distance
+    CGFloat compassY = pullDistance / 2.0 - compassHeightHalf;
+    CGFloat spinnerY = pullDistance / 2.0 - spinnerHeightHalf;
+    
+    // Calculate the X coord of the graphics, adjust based on pull ratio
+    CGFloat compassX = (midX + compassWidthHalf) - (compassWidth * pullRatio);
+    CGFloat spinnerX = (midX - spinnerWidth - spinnerWidthHalf) + (spinnerWidth * pullRatio);
+    
+    // When the compass and spinner overlap, keep them together
+    if (fabsf(compassX - spinnerX) < 1.0) {
+        self.isRefreshIconsOverlap = YES;
+    }
+    
+    // If the graphics have overlapped or we are refreshing, keep them together
+    if (self.isRefreshIconsOverlap || self.refreshControl.isRefreshing) {
+        compassX = midX - compassWidthHalf;
+        spinnerX = midX - spinnerWidthHalf;
+    }
+    
+    // Set the graphic's frames
+    CGRect compassFrame = self.compass_background.frame;
+    compassFrame.origin.x = compassX;
+    compassFrame.origin.y = compassY;
+    
+    CGRect spinnerFrame = self.compass_spinner.frame;
+    spinnerFrame.origin.x = spinnerX;
+    spinnerFrame.origin.y = spinnerY;
+    
+    self.compass_background.frame = compassFrame;
+    self.compass_spinner.frame = spinnerFrame;
+    
+    // Set the encompassing view's frames
+    refreshBounds.size.height = pullDistance;
+    
+    self.refreshColorView.frame = refreshBounds;
+    self.refreshLoadingView.frame = refreshBounds;
+    
+    // If we're refreshing and the animation is not playing, then play the animation
+    if (self.refreshControl.isRefreshing && !self.isRefreshAnimating) {
+        // NSLog(@"Pull Distance ENTERS: %f",pullDistance);
+        [self animateRefreshView];
+    }
+    
+    
+}
+
+- (void)animateRefreshView
+{
+    // Background color to loop through for our color view
+    NSArray *colorArray = @[[UIColor redColor],[UIColor blueColor],[UIColor purpleColor],[UIColor cyanColor],[UIColor orangeColor],[UIColor magentaColor]];
+    static int colorIndex = 0;
+    
+    // Flag that we are animating
+    self.isRefreshAnimating = YES;
+    
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^{
+                         // Rotate the spinner by M_PI_2 = PI/2 = 90 degrees
+                         [self.compass_spinner setTransform:CGAffineTransformRotate(self.compass_spinner.transform, M_PI_2)];
+                         
+                         // Change the background color
+                         self.refreshColorView.backgroundColor = [colorArray objectAtIndex:colorIndex];
+                         colorIndex = (colorIndex + 1) % colorArray.count;
+                     }
+                     completion:^(BOOL finished) {
+                         // If still refreshing, keep spinning, else reset
+                         if (self.refreshControl.isRefreshing) {
+                             [self animateRefreshView];
+                         }else{
+                             [self resetAnimation];
+                         }
+                     }];
+}
+
+- (void)resetAnimation
+{
+    // Reset our flags and background color
+    self.isRefreshAnimating = NO;
+    self.isRefreshIconsOverlap = NO;
+    self.refreshColorView.backgroundColor = [UIColor clearColor];
+}
+
+
+
 
 //Pull to refresh class called when pulled
 - (void) doLoad
 {
-    NSLog(@"Pull to Refresh");
     dispatch_async(TRACQueue, ^{
         NSData* data = [NSData dataWithContentsOfURL:
                         [NSURL URLWithString:self.urlName_VC2]];
@@ -134,16 +319,7 @@
             self.lasttimearray=[self.lasttimearray arrayByAddingObject:lasttime];
             
             
-            
-            
-            NSLog(@"Adding Reps: %@", self.lasttimearray);
-            
-            
         }
-        
-        
-        
-        
         
         // NSLog(@"Names fetcheddata: %@", self.runners);
         return self.runners;
@@ -151,7 +327,6 @@
 
     }
     @catch (NSException *exception) {
-        NSLog(@"Exception %s","Except!");
         return self.runners;
     }
     
@@ -192,12 +367,16 @@
    //                             initWithTitle:@"Row Selected" message:@"You've selected a row" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     
     self.personalSplits=[[NSMutableArray alloc] init];
+    self.counterArray = [NSMutableArray array];
     self.splitString= self.runners[indexPath.row];
     NSInteger ii=0;
     //on click, display every repeat done. iterate through all splits per individual selected
     for (NSArray *personalRepeats in interval[indexPath.row] ) {
         ii=ii+1;
-        NSLog(@"Loop Data: %@", personalRepeats);
+       
+        NSString *counter = [[NSNumber numberWithInt:ii] stringValue];
+        [self.counterArray addObject:counter];
+        
         
         self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@"\r\rInterval Number: %ld \r      Splits: ", (long)ii]];
         
@@ -206,11 +385,9 @@
             NSLog(@" Subinterval count %ld", (long)jj);
             //if the first interval create array
             if (jj==0) {
-                NSLog(@"Subinterval %@",subInterval);
                 NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
                 f.numberStyle = NSNumberFormatterDecimalStyle;
                 NSNumber *sum = [f numberFromString:subInterval];
-                NSLog(@"SUM VALUE%@",sum);
                 NSNumber *sumInt =@([sum integerValue]);
                 NSNumber*decimal =[NSNumber numberWithFloat:(([sum floatValue]-[sumInt floatValue])*1000)];
                 NSNumber *decimalInt = @([decimal integerValue]);
@@ -219,11 +396,9 @@
                 //to do add decimal to string, round to 3 digits
                 NSNumber *minutes = @([sum integerValue] / 60);
                 NSNumber *seconds = @([sum integerValue] % 60);
-                NSLog(@"SEconds: %@", seconds);
                 NSNumber *ninty = [NSNumber numberWithInt:90];
                 if ([sumInt intValue]<[ninty intValue]){
                     //if less than 90 display in seconds
-                    NSLog(@"YES %@, %@",sumInt, subInterval);
                     self.personalSplits=[self.personalSplits arrayByAddingObject:subInterval];
                     self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@"%@",subInterval]];
                     jj=jj+1;
@@ -251,7 +426,6 @@
             //else add to the already created array
             else
             {
-            NSLog(@"LKAJSLKJLSKJlk %@",subInterval);
             self.personalSplits=[self.personalSplits arrayByAddingObject:subInterval];
             self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@", %@ ",subInterval]];
             jj=jj+1;
@@ -259,15 +433,28 @@
         }
     }
     
-    
-    
+    runnersName = self.runners[indexPath.row];
+    //NSLog(@"Array or String? %@", self.personalSplits);
     
     //set text to see splits
-     self.splitViewer.text = [NSString stringWithFormat:@"Name: %@", self.splitString];
+     //self.splitViewer.text = [NSString stringWithFormat:@"Name: %@", self.splitString];
     // Display Alert Message
     //[messageAlert show];
+    [self performSegueWithIdentifier:@"workoutDetail" sender:tableView];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    //on view controller change, move to next page, and pass url to next view
+   
+            //detailVC.urlName = [url objectAtIndex:indexPath.row];
+    DetailViewController *detailViewController = segue.destinationViewController;
+    detailViewController.workoutDetail = self.personalSplits;
+    detailViewController.runnersName = runnersName;
+    detailViewController.counterArray = self.counterArray;
+    detailViewController.urlString = self.urlName_VC2;
     
 }
+
 
 - (void)didReceiveMemoryWarning
 {

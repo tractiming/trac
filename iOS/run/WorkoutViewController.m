@@ -52,6 +52,8 @@
     int searchIndexPath;
     BOOL pullToRefresh;
     NSMutableArray *workoutArray;
+    NSString *workoutName;
+    NSString *workoutDate;
  
 }
 
@@ -475,7 +477,7 @@
             //NSDictionary* workoutid = [json valueForKey:@"workoutID"]; //2
             
             //Uncover number of sessions, and nested dictionary for sessions
-            numSessions = [json valueForKey:@"numSessions"];
+            numSessions = [json valueForKey:@"num_sessions"];
             totalSessions = [numSessions intValue];
           //  NSLog(@"Results: %@",numSessions);
             
@@ -598,7 +600,7 @@
         //NSDictionary* workoutid = [json valueForKey:@"workoutID"]; //2
         
         //Uncover number of sessions, and nested dictionary for sessions
-        numSessions = [json valueForKey:@"numSessions"];
+        numSessions = [json valueForKey:@"num_sessions"];
         totalSessions = [numSessions intValue];
             NSLog(@"Total Sessions %d",totalSessions);
        // NSLog(@"Results: %@",numSessions);
@@ -789,6 +791,8 @@
 
             firstVC.urlID = workout.urlID;
             firstVC.urlName = workout.url;
+            firstVC.workoutDate = workout.date;
+            firstVC.workoutName = workout.name;
           
         }
         else{
@@ -797,6 +801,8 @@
             NSIndexPath *indexPath = [self.tableData indexPathForSelectedRow];
             firstVC.urlID = [idNumberSelector objectAtIndex:indexPath.row];
             firstVC.urlName = [url objectAtIndex:indexPath.row];
+            firstVC.workoutDate = [date objectAtIndex:indexPath.row];
+            firstVC.workoutName = [title objectAtIndex:indexPath.row];
         }
         
     }
@@ -814,80 +820,106 @@
 
 - (IBAction)createWorkout:(id)sender{
     //if plus button clicked, create workout "On-the-run"
-    NSInteger success = 0;
-    @try {
+    UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:@"Create Workout?"
+                                                       message:@"Are you sure you want to create a workout?"
+                                                      delegate:self
+                             
+                                             cancelButtonTitle:@"OK"
+                                             otherButtonTitles:@"Cancel",nil];
+    [theAlert show];
+    
+}
 
-        NSString *post =[[NSString alloc] initWithFormat:@"name=On-The-Run Workout"];
-        NSLog(@"Post: %@",post);
+- (void)alertView:(UIAlertView *)theAlert clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"The %@ button was tapped.", [theAlert buttonTitleAtIndex:buttonIndex]);
+    if (buttonIndex == 0)
+    {
+        NSLog(@"Discard");
         
-        NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
-        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/?access_token=%@", savedToken];
-        
-        NSURL *url=[NSURL URLWithString:idurl2];
-        
-        NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        NSLog(@"Post Data:%@", postData);
-        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:url];
-        [request setHTTPMethod:@"POST"];
-        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-        [request setHTTPBody:postData];
+        //if signin button clicked query server with credentials
         
         
-        //[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
-        
-        NSError *error = [[NSError alloc] init];
-        NSHTTPURLResponse *response = nil;
-        NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-        
-        NSLog(@"Response code: %ld", (long)[response statusCode]);
-        // NSLog(@"Error Code: %@", [error localizedDescription]);
-        
-        if ([response statusCode] >= 200 && [response statusCode] < 300)
-        {
-            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            NSLog(@"Response ==> %@", responseData);
+        NSInteger success = 0;
+        @try {
             
-            NSError *error = nil;
-            NSDictionary *jsonData = [NSJSONSerialization
-                                      JSONObjectWithData:urlData
-                                      options:NSJSONReadingMutableContainers
-                                      error:&error];
+            NSString *post =[[NSString alloc] initWithFormat:@"name=On-The-Run Workout"];
+            NSLog(@"Post: %@",post);
             
-            success = [jsonData[@"success"] integerValue];
-            NSLog(@"Success: %ld",(long)success);
+            NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+            NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/?access_token=%@", savedToken];
             
-            if(success == 0)
+            NSURL *url=[NSURL URLWithString:idurl2];
+            
+            NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+            NSLog(@"Post Data:%@", postData);
+            NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+            [request setURL:url];
+            [request setHTTPMethod:@"POST"];
+            [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+            [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+            [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+            [request setHTTPBody:postData];
+            
+            
+            //[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
+            
+            NSError *error = [[NSError alloc] init];
+            NSHTTPURLResponse *response = nil;
+            NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            
+            NSLog(@"Response code: %ld", (long)[response statusCode]);
+            // NSLog(@"Error Code: %@", [error localizedDescription]);
+            
+            if ([response statusCode] >= 200 && [response statusCode] < 300)
             {
-                NSLog(@"SUCCESS");
-                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully created workout!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
+                NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+                NSLog(@"Response ==> %@", responseData);
                 
-                //return self.access_token;
+                NSError *error = nil;
+                NSDictionary *jsonData = [NSJSONSerialization
+                                          JSONObjectWithData:urlData
+                                          options:NSJSONReadingMutableContainers
+                                          error:&error];
+                
+                success = [jsonData[@"success"] integerValue];
+                NSLog(@"Success: %ld",(long)success);
+                
+                if(success == 0)
+                {
+                    NSLog(@"SUCCESS");
+                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully created workout!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [self doLoad];
+                    //return self.access_token;
+                } else {
+                    
+                    NSLog(@"Failed");
+                    
+                }
+                
             } else {
-                
+                //if (error) NSLog(@"Error: %@", error);
                 NSLog(@"Failed");
-                
+                NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+                NSLog(@"Response ==> %@", responseData);
             }
             
-        } else {
-            //if (error) NSLog(@"Error: %@", error);
-            NSLog(@"Failed");
-            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            NSLog(@"Response ==> %@", responseData);
+        }
+        @catch (NSException * e) {
+            NSLog(@"Exception: %@", e);
+            
         }
         
-    }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
+        
         
     }
-
+    
+    
 }
+
 
 //For Searching Table Content
 #pragma mark Content Filtering

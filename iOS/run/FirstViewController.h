@@ -20,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet UILabel* jsonSummary;
 @property (nonatomic, strong) NSString *urlID;
 @property (nonatomic, strong) NSString *urlName;
+@property (nonatomic, strong) NSString *workoutName;
+@property (nonatomic, strong) NSString *workoutDate;
 
 
 

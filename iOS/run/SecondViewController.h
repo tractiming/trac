@@ -14,7 +14,9 @@
 @property (strong, nonatomic) NSMutableArray *lasttimearray;
 @property (strong, nonatomic) NSMutableArray *personalSplits;
 @property (strong, nonatomic) NSMutableString *splitString;
-//@property (strong, nonatomic) NSArray *name;
+@property (strong, nonatomic) NSMutableArray *counterArray;
+@property (nonatomic,retain) UIRefreshControl *refreshControl NS_AVAILABLE_IOS(6_0);
+
 @property (weak, nonatomic) IBOutlet UITableView *tableData;
 @property (weak, nonatomic) IBOutlet UITextView *splitViewer;
 @property (nonatomic, strong) NSString *urlName_VC2;

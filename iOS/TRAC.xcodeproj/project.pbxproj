@@ -17,6 +17,7 @@
 		90A0698A1A360C79008CAA75 /* CustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90A069891A360C79008CAA75 /* CustomCell.xib */; };
 		90A0698D1A360D05008CAA75 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90A0698C1A360D05008CAA75 /* CustomCell.m */; };
 		90E1FC7B1AE09AB4001C24F2 /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E1FC7A1AE09AB4001C24F2 /* ThirdViewController.m */; };
+		90E5F4C01B72A3AE002B9276 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E5F4BF1B72A3AE002B9276 /* DetailViewController.m */; };
 		90E6879E1915C48B0060B20B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E6879D1915C48B0060B20B /* Foundation.framework */; };
 		90E687A01915C48B0060B20B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E6879F1915C48B0060B20B /* CoreGraphics.framework */; };
 		90E687A21915C48B0060B20B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E687A11915C48B0060B20B /* UIKit.framework */; };
@@ -64,6 +65,8 @@
 		90AFFE741A04620E00193190 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
 		90E1FC791AE09AB4001C24F2 /* ThirdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdViewController.h; sourceTree = "<group>"; };
 		90E1FC7A1AE09AB4001C24F2 /* ThirdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdViewController.m; sourceTree = "<group>"; };
+		90E5F4BE1B72A3AE002B9276 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		90E5F4BF1B72A3AE002B9276 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		90E6879A1915C48B0060B20B /* trac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = trac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90E6879D1915C48B0060B20B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		90E6879F1915C48B0060B20B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -172,6 +175,8 @@
 				90E687B61915C48B0060B20B /* FirstViewController.m */,
 				90E687B81915C48B0060B20B /* SecondViewController.h */,
 				90E687B91915C48B0060B20B /* SecondViewController.m */,
+				90E5F4BE1B72A3AE002B9276 /* DetailViewController.h */,
+				90E5F4BF1B72A3AE002B9276 /* DetailViewController.m */,
 				90E1FC791AE09AB4001C24F2 /* ThirdViewController.h */,
 				90E1FC7A1AE09AB4001C24F2 /* ThirdViewController.m */,
 				90E687BB1915C48B0060B20B /* Images.xcassets */,
@@ -375,6 +380,7 @@
 				902104AF1A40AF3100FCC771 /* Reachability.m in Sources */,
 				90E687AA1915C48B0060B20B /* main.m in Sources */,
 				90862F7D1B6B205100DB9E4B /* Workout.m in Sources */,
+				90E5F4C01B72A3AE002B9276 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
