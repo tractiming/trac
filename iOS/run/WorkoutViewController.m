@@ -118,13 +118,8 @@
     UIView* titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120, 120)];
     imageView.frame = titleView.bounds;
     [titleView addSubview:imageView];
-    //UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"traclogo_small.png"]];
     self.navigationItem.titleView = titleView;
     
-    //pull to refresh set up
-    //self.refreshControl = [[UIRefreshControl alloc] init];
-    //[self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    //[self.tableData addSubview:self.refreshControl];
     [self setupRefreshControl];
     
 

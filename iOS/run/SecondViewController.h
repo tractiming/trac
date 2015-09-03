@@ -10,7 +10,7 @@
 
 @interface SecondViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
-@property (strong, nonatomic) NSArray *runners;
+@property (strong, nonatomic) NSMutableArray *runners;
 @property (strong, nonatomic) NSMutableArray *lasttimearray;
 @property (strong, nonatomic) NSMutableArray *personalSplits;
 @property (strong, nonatomic) NSMutableString *splitString;
@@ -20,5 +20,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableData;
 @property (weak, nonatomic) IBOutlet UITextView *splitViewer;
 @property (nonatomic, strong) NSString *urlName_VC2;
-
+@property IBOutlet UISearchBar *workoutSearchBar;
+@property (strong,nonatomic) NSMutableArray *filteredRunnersArray;
 @end

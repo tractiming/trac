@@ -32,14 +32,23 @@
     UIRefreshControl *refreshControl;
     NSArray* interval;
     NSString *runnersName;
+    NSMutableArray *runnersArray;
 }
 
+@synthesize workoutSearchBar;
+@synthesize filteredRunnersArray;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Initialize table data
-    NSLog(@"URL TEST/TESt:%@",self.urlName_VC2);
+    
+    //initialize array for search
+    self.filteredRunnersArray = [NSMutableArray arrayWithCapacity:[self.runners count]];
+    
+    // Hide the search bar until user scrolls up
+    CGRect newBounds = self.tableData.bounds;
+    newBounds.origin.y = newBounds.origin.y + workoutSearchBar.bounds.size.height;
+    self.tableData.bounds = newBounds;
     
     //Initialize the spinner
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -284,44 +293,14 @@
                               options:kNilOptions
                               error:&error];
         
-        //NSArray* workoutid = [json valueForKey:@"workoutID"]; //2
-        // NSArray* date = [json valueForKey:@"date"];
         
         NSString* results = [json valueForKey:@"results"];
-        //NSData* results_data = [results dataUsingEncoding:NSUTF8StringEncoding];
-        
-//        NSLog(@"Results: %@",results_data);
-//        
-//        
-//        NSDictionary* resultsParsed= [NSJSONSerialization
-//                                      JSONObjectWithData:results_data //1
-//                                      
-//                                      options:kNilOptions
-//                                      error:&error];
-
         
         self.runners= [results valueForKey:@"name"];
         
         interval = [results valueForKey:@"splits"];
-        self.lasttimearray=[[NSMutableArray alloc] init];;
+        self.lasttimearray=[[NSMutableArray alloc] init];
         
-        //to display last relevant interval--not being displayed currently
-        for (NSArray *personalinterval in interval ) {
-            
-            // NSLog(@"Loop Data: %@", personalinterval);
-            NSArray* lastsettime=[personalinterval lastObject];
-            // NSLog(@"Loop Data time: %@", lastsettime);
-            NSArray* lasttime=[lastsettime lastObject];
-            // NSLog(@"Last Rep: %@", lasttime);
-            //arraycounter = [lasttimearray count];
-            // NSLog(@"the coutn: %@", arraycounter);
-            
-            self.lasttimearray=[self.lasttimearray arrayByAddingObject:lasttime];
-            
-            
-        }
-        
-        // NSLog(@"Names fetcheddata: %@", self.runners);
         return self.runners;
         
 
@@ -336,7 +315,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-   // NSLog(@"Names tableview: %@", self.runners);
     //number of rows in tableview
     return [self.runners count];
 }
@@ -353,9 +331,6 @@
     //set data into cells, name and icon
     cell.textLabel.text = self.runners[indexPath.row];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  
-    //cell.detailTextLabel.text= [NSString stringWithFormat:@"%@",self.lasttimearray[indexPath.row]];
-    //NSLog(@"Does THIS APPEAR: %@", self.lasttimearray);
     
     return cell;
 }
@@ -363,9 +338,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //UIAlertView *messageAlert = [[UIAlertView alloc]
-   //                             initWithTitle:@"Row Selected" message:@"You've selected a row" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    
+
     self.personalSplits=[[NSMutableArray alloc] init];
     self.counterArray = [NSMutableArray array];
     self.splitString= self.runners[indexPath.row];
@@ -377,14 +350,10 @@
         NSString *counter = [[NSNumber numberWithInt:ii] stringValue];
         [self.counterArray addObject:counter];
         
-        
-        self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@"\r\rInterval Number: %ld \r      Splits: ", (long)ii]];
-        
-        NSInteger jj=0;
         for(NSArray *subInterval in personalRepeats){
-            NSLog(@" Subinterval count %ld", (long)jj);
-            //if the first interval create array
-            if (jj==0) {
+
+                //Initalize Array in loop?
+                
                 NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
                 f.numberStyle = NSNumberFormatterDecimalStyle;
                 NSNumber *sum = [f numberFromString:subInterval];
@@ -397,49 +366,32 @@
                 NSNumber *minutes = @([sum integerValue] / 60);
                 NSNumber *seconds = @([sum integerValue] % 60);
                 NSNumber *ninty = [NSNumber numberWithInt:90];
+               
                 if ([sumInt intValue]<[ninty intValue]){
                     //if less than 90 display in seconds
                     self.personalSplits=[self.personalSplits arrayByAddingObject:subInterval];
-                    self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@"%@",subInterval]];
-                    jj=jj+1;
-                }
+                                   }
                 else{
-                    //if greater than 90 seconds display in minute format
-                    //format total time in minute second format
+                    //If greater than 90 seconds display in minute format
+                    //If less than 10 format with additional 0
                     if ([seconds intValue]<10) {
                         NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@.%@",minutes,seconds,decimalInt];
                         self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
-                        self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@"%@",elapsedtime]];
-                        jj=jj+1;
-                        
+
                     }
+                    //If greater than 10 seconds, dont use the preceding 0
                     else{
                         NSString* elapsedtime = [NSString stringWithFormat:@"%@:%@.%@",minutes,seconds,decimalInt];
                         self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
-                        self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@"%@",elapsedtime]];
-                        jj=jj+1;
+                       
                     }
                 }
-                
-                
-            }
-            //else add to the already created array
-            else
-            {
-            self.personalSplits=[self.personalSplits arrayByAddingObject:subInterval];
-            self.splitString=[self.splitString stringByAppendingString:[NSString stringWithFormat:@", %@ ",subInterval]];
-            jj=jj+1;
-            }
+
         }
     }
     
     runnersName = self.runners[indexPath.row];
-    //NSLog(@"Array or String? %@", self.personalSplits);
-    
-    //set text to see splits
-     //self.splitViewer.text = [NSString stringWithFormat:@"Name: %@", self.splitString];
-    // Display Alert Message
-    //[messageAlert show];
+
     [self performSegueWithIdentifier:@"workoutDetail" sender:tableView];
 }
 
@@ -462,5 +414,37 @@
     
     // Dispose of any resources that can be recreated.
 }
+
+
+//For Searching Table Content
+#pragma mark Content Filtering
+-(void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
+    // Update the filtered array based on the search text and scope.
+    // Remove all objects from the filtered search array
+    [self.filteredRunnersArray removeAllObjects];
+    // Filter the array using NSPredicate
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",searchText];
+    self.filteredRunnersArray = [NSMutableArray arrayWithArray:[self.runners filteredArrayUsingPredicate:predicate]];
+    
+}
+
+#pragma mark - UISearchDisplayController Delegate Methods
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+    // Tells the table data source to reload when text changes
+    [self filterContentForSearchText:searchString scope:
+     [[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:[self.searchDisplayController.searchBar selectedScopeButtonIndex]]];
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption {
+    // Tells the table data source to reload when scope bar selection changes
+    [self filterContentForSearchText:self.searchDisplayController.searchBar.text scope:
+     [[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:searchOption]];
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
+}
+
+
 
 @end

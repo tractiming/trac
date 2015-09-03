@@ -19,6 +19,9 @@
 @property (strong, nonatomic) NSArray *runners;
 @property (strong, nonatomic) NSMutableArray *lasttimearray;
 @property (strong, nonatomic) NSMutableArray *personalSplits;
+@property (strong, nonatomic) NSMutableData *data;
+@property (weak, nonatomic) NSMutableDictionary *json;
+
 //@property(nonatomic,assign) SecondViewController *second;
 
 @end
