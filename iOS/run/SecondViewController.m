@@ -12,6 +12,7 @@
 #import "SecondViewController.h"
 #import "DetailViewController.h"
 #import "WorkoutViewController.h"
+#import "RunnerDetail.h"
 
 @interface SecondViewController ()
 
@@ -33,6 +34,7 @@
     NSArray* interval;
     NSString *runnersName;
     NSMutableArray *runnersArray;
+    int searchIndexPath;
 }
 
 @synthesize workoutSearchBar;
@@ -41,6 +43,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //Create a light gray background behind datatable
+    CGRect frame = self.tableData.bounds;
+    frame.origin.y = -frame.size.height;
+    UIView* grayView = [[UIView alloc] initWithFrame:frame];
+    grayView.backgroundColor = [UIColor lightGrayColor];
+    [self.tableData addSubview:grayView];
+
     
     //initialize array for search
     self.filteredRunnersArray = [NSMutableArray arrayWithCapacity:[self.runners count]];
@@ -71,19 +81,7 @@
         
     
     });
-    //NSLog(@"Names view load: %@", self.runners);
-    
-//    dispatch_async(kBgQueue, ^{
-//        NSData* data = [NSData dataWithContentsOfURL:
-//                        kLatestKivaLoansURL];
-//        [self performSelectorOnMainThread:@selector(fetchedData:)
-//                               withObject:data waitUntilDone:YES];
-//    });
-    
-    //Pull to Refresh Setup
-    //refreshControl = [[UIRefreshControl alloc] init];
-    //[refreshControl addTarget:self action:@selector(doLoad) forControlEvents:UIControlEventValueChanged];
-    //[self.tableData addSubview:refreshControl];
+
     [self setupRefreshControl];
     
     }
@@ -295,13 +293,20 @@
         
         
         NSString* results = [json valueForKey:@"results"];
-        
         self.runners= [results valueForKey:@"name"];
-        
         interval = [results valueForKey:@"splits"];
-        self.lasttimearray=[[NSMutableArray alloc] init];
+        int array_length = [self.runners count];
+        runnersArray = [NSMutableArray array];
+        for (int kk=0;kk<array_length;kk++)
+        {
+            RunnerDetail *initialArray = [RunnerDetail new];
+            initialArray.runnerName = self.runners[kk];
+            initialArray.splitArray = interval[kk];
+            [runnersArray addObject:initialArray];
+        }
+
         
-        return self.runners;
+        return runnersArray;
         
 
     }
@@ -315,8 +320,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //number of rows in tableview
-    return [self.runners count];
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return [self.filteredRunnersArray count];
+    } else {
+        //number of rows in tableview
+        return [self.runners count];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -328,9 +337,18 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:simpleTableIdentifier];
     }
-    //set data into cells, name and icon
-    cell.textLabel.text = self.runners[indexPath.row];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        RunnerDetail *runnerDetail = nil;
+        runnerDetail = [self.filteredRunnersArray objectAtIndex:indexPath.row];
+        cell.textLabel.text = runnerDetail.runnerName;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    else {
+        //set data into cells, name and icon
+        cell.textLabel.text = self.runners[indexPath.row];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
     
     return cell;
 }
@@ -338,7 +356,67 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    searchIndexPath = indexPath.row;
+    if (self.searchDisplayController.active) {
+        NSLog(@"It used the search thing");
+        RunnerDetail *runnerDetail = nil;
+        runnerDetail = [self.filteredRunnersArray objectAtIndex:indexPath.row];
+        self.personalSplits=[[NSMutableArray alloc] init];
+        self.counterArray = [NSMutableArray array];
+        self.splitString= self.runners[indexPath.row];
+        NSInteger ii=0;
 
+        //on click, display every repeat done. iterate through all splits per individual selected
+        for (NSArray *personalRepeats in runnerDetail.splitArray ) {
+            ii=ii+1;
+            
+            NSString *counter = [[NSNumber numberWithInt:ii] stringValue];
+            [self.counterArray addObject:counter];
+            
+            for(NSArray *subInterval in personalRepeats){
+                
+                //Initalize Array in loop?
+                
+                NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+                f.numberStyle = NSNumberFormatterDecimalStyle;
+                NSNumber *sum = [f numberFromString:subInterval];
+                NSNumber *sumInt =@([sum integerValue]);
+                NSNumber*decimal =[NSNumber numberWithFloat:(([sum floatValue]-[sumInt floatValue])*1000)];
+                NSNumber *decimalInt = @([decimal integerValue]);
+                
+                
+                //to do add decimal to string, round to 3 digits
+                NSNumber *minutes = @([sum integerValue] / 60);
+                NSNumber *seconds = @([sum integerValue] % 60);
+                NSNumber *ninty = [NSNumber numberWithInt:90];
+                
+                if ([sumInt intValue]<[ninty intValue]){
+                    //if less than 90 display in seconds
+                    self.personalSplits=[self.personalSplits arrayByAddingObject:subInterval];
+                }
+                else{
+                    //If greater than 90 seconds display in minute format
+                    //If less than 10 format with additional 0
+                    if ([seconds intValue]<10) {
+                        NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@.%@",minutes,seconds,decimalInt];
+                        self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
+                        
+                    }
+                    //If greater than 10 seconds, dont use the preceding 0
+                    else{
+                        NSString* elapsedtime = [NSString stringWithFormat:@"%@:%@.%@",minutes,seconds,decimalInt];
+                        self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
+                        
+                    }
+                }
+                
+            }
+        }
+
+    
+    }
+    else{
+    NSLog(@"Non active search?");
     self.personalSplits=[[NSMutableArray alloc] init];
     self.counterArray = [NSMutableArray array];
     self.splitString= self.runners[indexPath.row];
@@ -391,20 +469,33 @@
     }
     
     runnersName = self.runners[indexPath.row];
-
+        
+    }
     [self performSegueWithIdentifier:@"workoutDetail" sender:tableView];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     //on view controller change, move to next page, and pass url to next view
-   
-            //detailVC.urlName = [url objectAtIndex:indexPath.row];
-    DetailViewController *detailViewController = segue.destinationViewController;
-    detailViewController.workoutDetail = self.personalSplits;
-    detailViewController.runnersName = runnersName;
-    detailViewController.counterArray = self.counterArray;
-    detailViewController.urlString = self.urlName_VC2;
-    
+
+    if ([segue.identifier isEqualToString:@"workoutDetail"]) {
+        DetailViewController *detailViewController = segue.destinationViewController;
+        if (self.searchDisplayController.active) {
+            RunnerDetail *runnerDetail = nil;
+            runnerDetail = [self.filteredRunnersArray objectAtIndex:searchIndexPath];
+            detailViewController.runnersName = runnerDetail.runnerName;
+            detailViewController.urlString = self.urlName_VC2;
+
+            detailViewController.workoutDetail = self.personalSplits;
+            detailViewController.counterArray = self.counterArray;
+
+        }
+        else{
+            detailViewController.workoutDetail = self.personalSplits;
+            detailViewController.runnersName = runnersName;
+            detailViewController.counterArray = self.counterArray;
+            detailViewController.urlString = self.urlName_VC2;
+        }
+    }
 }
 
 
@@ -423,8 +514,9 @@
     // Remove all objects from the filtered search array
     [self.filteredRunnersArray removeAllObjects];
     // Filter the array using NSPredicate
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",searchText];
-    self.filteredRunnersArray = [NSMutableArray arrayWithArray:[self.runners filteredArrayUsingPredicate:predicate]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"runnerName contains[c] %@",searchText];
+    self.filteredRunnersArray = [NSMutableArray arrayWithArray:[runnersArray filteredArrayUsingPredicate:predicate]];
+    NSLog(@"DOes this work? %@", self.filteredRunnersArray);
     
 }
 

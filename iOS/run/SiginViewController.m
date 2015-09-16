@@ -50,22 +50,32 @@
             
         } else {
             //if success
-            NSString *post =[[NSString alloc] initWithFormat:@"username=%@&password=%@&grant_type=password&client_id=%@",[self.txtUsername text],[self.txtPassword text],[self.txtUsername text]];
-            NSLog(@"Post: %@",post);
+            //NSString *post =[[NSString alloc] initWithFormat:@"username=%@&password=%@&grant_type=password&client_id=%@",[self.txtUsername text],[self.txtPassword text],[self.txtUsername text]];
+            //NSLog(@"Post: %@",post);
             
-            NSURL *url=[NSURL URLWithString:@"https://trac-us.appspot.com/oauth2/access_token"];
+
+            NSString *userpass = [NSString stringWithFormat:@"%@:%@", [self.txtUsername text],[self.txtPassword text]];
+            NSData *nsdata = [userpass dataUsingEncoding:NSUTF8StringEncoding];
             
-            NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-            NSLog(@"Post Data:%@", postData);
-            NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+            // Get NSString from NSData object in Base64
+            NSString *base64Encoded = [nsdata base64EncodedStringWithOptions:0];
+            NSString *basicencoding = [NSString stringWithFormat:@"Basic %@", base64Encoded];
+            // Print the Base64 encoded string
+            NSLog(@"Encoded: %@", basicencoding);
+            
+            NSURL *url=[NSURL URLWithString:@"https://trac-us.appspot.com/api/login/"];
+            
+            //NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+            //NSLog(@"Post Data:%@", postData);
+           // NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
             
             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
             [request setURL:url];
             [request setHTTPMethod:@"POST"];
-            [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-            [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+            [request setValue:basicencoding forHTTPHeaderField:@"Authorization"];
+            //[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
             [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-            [request setHTTPBody:postData];
+            //[request setHTTPBody:postData];
             
             
             //[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
@@ -75,12 +85,12 @@
             NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
             
             NSLog(@"Response code: %ld", (long)[response statusCode]);
-          // NSLog(@"Error Code: %@", [error localizedDescription]);
+            //NSLog(@"Error Code: %@", [error localizedDescription]);
             
             if ([response statusCode] >= 200 && [response statusCode] < 300)
             {
-                NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-                NSLog(@"Response ==> %@", responseData);
+                //NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+                //NSLog(@"Response ==> %@", responseData);
                 
                 NSError *error = nil;
                 NSDictionary *jsonData = [NSJSONSerialization
@@ -89,22 +99,76 @@
                                           error:&error];
                 
                 success = [jsonData[@"success"] integerValue];
-                NSLog(@"Success: %ld",(long)success);
+               // NSLog(@"Success: %ld",(long)success);
                 
                 if(success == 0)
                 {
-                    NSLog(@"Login SUCCESS");
+                    //Parse Tokens
+                    self.client_id = [jsonData objectForKey:@"client_id"];
+                    self.client_secret = [jsonData objectForKey:@"client_secret"];
+                    NSString *post =[[NSString alloc] initWithFormat:@"username=%@&password=%@&client_id=%@&client_secret=%@&grant_type=password",[self.txtUsername text],[self.txtPassword text],self.client_id, self.client_secret];
+
                     
-                    //parse security token 
-                    NSLog(@"SecToken: %@", [jsonData objectForKey:@"access_token"]);
-                    self.access_token = [jsonData objectForKey:@"access_token"];
+                    NSURL *url=[NSURL URLWithString:@"https://trac-us.appspot.com/oauth2/token/"];
                     
-                    //store sequrity token in NSuserdefaults
-                    NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
-                    [defaults setObject:self.access_token forKey:@"token"];
-                    [defaults synchronize];
-                    [self performSegueWithIdentifier:@"login_success" sender:self];
-                    //return self.access_token;
+                    NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+                    NSLog(@"Post Data:%@", postData);
+                    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+                    
+                    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+                    [request setURL:url];
+                    [request setHTTPMethod:@"POST"];
+                    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+                    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+                    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+                    [request setHTTPBody:postData];
+                    
+                    
+                    //[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
+                    
+                    NSError *error = [[NSError alloc] init];
+                    NSHTTPURLResponse *response = nil;
+                    NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+                    
+                    NSLog(@"Response code: %ld", (long)[response statusCode]);
+                    // NSLog(@"Error Code: %@", [error localizedDescription]);
+                    
+                    if ([response statusCode] >= 200 && [response statusCode] < 300)
+                    {
+                        NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+                        NSLog(@"Response ==> %@", responseData);
+                        
+                        NSError *error = nil;
+                        NSDictionary *jsonData = [NSJSONSerialization
+                                                  JSONObjectWithData:urlData
+                                                  options:NSJSONReadingMutableContainers
+                                                  error:&error];
+                        
+                        success = [jsonData[@"success"] integerValue];
+                        NSLog(@"Success: %ld",(long)success);
+                        
+                        if(success == 0)
+                        {
+                            NSLog(@"Login SUCCESS");
+
+                            //NSLog(@"SecToken: %@", [jsonData objectForKey:@"access_token"]);
+                            self.access_token = [jsonData objectForKey:@"access_token"];
+                            
+                            //store sequrity token in NSuserdefaults
+                            NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
+                            [defaults setObject:self.access_token forKey:@"token"];
+                            [defaults synchronize];
+                            [self performSegueWithIdentifier:@"login_success" sender:self];
+                            //return self.access_token;
+                            
+                            
+                            
+                        }
+                    }
+                    else{
+                        NSString *error_msg = (NSString *) jsonData[@"error_message"];
+                        [self alertStatus:error_msg :@"Sign in Failed!" :0];
+                    }
                 } else {
                     
                     NSString *error_msg = (NSString *) jsonData[@"error_message"];

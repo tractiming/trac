@@ -18,11 +18,7 @@ public class RaceStop extends AsyncTask<String, Void, Boolean> {
 		// Attempt authentication against a network service.
 		final String DEBUG_TAG = "Token Check";
 		//String pre_json = "id=1";
-		Log.d(DEBUG_TAG, "Pre JSON Data: "+ params[1]);
-		 final MediaType JSON = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
-		
-		RequestBody body = RequestBody.create(JSON, params[1]);
-		Log.d(DEBUG_TAG, "Request Body "+ body);
+		RequestBody body = RequestBody.create(null, new byte[0]);
 		
 		OkHttpClient client = new OkHttpClient();
 		
@@ -44,7 +40,7 @@ public class RaceStop extends AsyncTask<String, Void, Boolean> {
 		    
 		    Log.d(DEBUG_TAG, "VAR: "+ var);
 		    
-		    if (codevar == 200) {
+		    if (codevar == 202) {
 		    return true;
 		    }
 		    else {

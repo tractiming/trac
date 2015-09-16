@@ -14,6 +14,8 @@
 - (IBAction)signinClicked:(id)sender;
 - (IBAction)backgroundTap:(id)sender;
 @property (nonatomic, strong) NSString *access_token;
+@property (nonatomic, strong) NSString *client_id;
+@property (nonatomic, strong) NSString *client_secret;
 
 
 @end

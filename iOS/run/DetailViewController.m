@@ -44,6 +44,7 @@
 
 - (void) doLoad
 {
+    
        dispatch_async(TRACQueue, ^{
         
         dispatch_async(dispatch_get_main_queue() ,^{
@@ -55,8 +56,8 @@
         
         
     });
-
     [refreshControl endRefreshing];
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

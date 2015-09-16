@@ -598,11 +598,9 @@
         numSessions = [json valueForKey:@"num_sessions"];
         totalSessions = [numSessions intValue];
             NSLog(@"Total Sessions %d",totalSessions);
-       // NSLog(@"Results: %@",numSessions);
-        
+
         NSDictionary* results = [json valueForKey:@"results"];
-        // NSLog(@"Results2: %@",results);
-        //NSLog(@"Results (Dictionary): %@", results);
+
 
         title= [results valueForKey:@"name"];
         date = [results valueForKey:@"start_time"];
@@ -658,25 +656,13 @@
                 
                 [workoutArray addObject:initialArray];
                 
-                
-                //[temparray addObject:tempvar];
-                //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
-                //[temparray replaceObjectAtIndex:i+1 withObject:tempvar];
-                
-              //  NSLog(@"IDArray %@", idarray);
+
             }
         }
-        //NSLog(@"IdNumSelector%@",url);//Null
-        //NSLog(@"ID Num Selector%@",idarray);//array
         idNumberSelector = idNumber;
         date = temparray;
         url = idarray;
-        
-        //idNumberSelector = [[idNumberSelector reverseObjectEnumerator] allObjects];
-        //flip orientation of arrays
-        //date = [[date reverseObjectEnumerator] allObjects];
-        //title = [[title reverseObjectEnumerator] allObjects];
-        //url = [[url reverseObjectEnumerator] allObjects];
+
         //    // Initialize Labels
         Workout *obj = [workoutArray objectAtIndex:13];
         NSLog(@"worwkout number 3 : %@",obj.name);
@@ -698,8 +684,6 @@
 
     }
     
-    //cellDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSArray arrayWithArray:title], @"title",[NSArray arrayWithArray:date], @"date",[NSArray arrayWithArray:url], @"url",nil];
-    //NSLog(@"Dictionary %@",cellDict);
 }
 
 - (void)viewDidUnload

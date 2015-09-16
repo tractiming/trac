@@ -21,14 +21,8 @@ public class WorkoutReset extends AsyncTask<String, Void, Boolean> {
 	protected Boolean doInBackground(String... params) {
 		// Attempt authentication against a network service.
 
-		String pre_json = "id="+params[1];
-		Log.d(DEBUG_TAG, "Pre JSON Data: "+ pre_json);
-		
-		
-		RequestBody body = RequestBody.create(JSON, pre_json);
-		Log.d(DEBUG_TAG, "Request Body "+ body);
-		
-		
+		RequestBody body = RequestBody.create(null, new byte[0]);
+
 		
 		Request request = new Request.Builder()
         .url(params[0])
@@ -48,7 +42,7 @@ public class WorkoutReset extends AsyncTask<String, Void, Boolean> {
 		    
 		    Log.d(DEBUG_TAG, "VAR: "+ var);
 		    
-		    if (codevar == 200) {
+		    if (codevar == 202) {
 		    return true;
 		    }
 		    else {

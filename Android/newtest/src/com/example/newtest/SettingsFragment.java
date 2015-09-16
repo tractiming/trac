@@ -90,9 +90,9 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         	//Calibrate start, start:now, finish:today+1day
         	raceAuth = new RaceCalibration();
         	raceAuth.delegate = this;
-			String url = "https://trac-us.appspot.com/api/open_session/?access_token=" + access_token;
-			String pre_json = "id="+positionID;
-			 raceAuth.execute(url,pre_json);
+			String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/open/?access_token=" + access_token;
+
+			 raceAuth.execute(url);
 			 
 
         }
@@ -110,9 +110,8 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         	
 			raceStop = new RaceStop();
 			raceStop.delegate = this;
-			String url = "https://trac-us.appspot.com/api/close_session/?access_token=" + access_token;
-			String pre_json = "id="+positionID;
-			raceStop.execute(url,pre_json);
+			String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/close/?access_token=" + access_token;
+			raceStop.execute(url);
 
         	
         }
@@ -124,9 +123,9 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 		        public void onClick(DialogInterface dialog, int which) { 
         	WorkoutReset raceReset = new WorkoutReset();
-        	String url = "https://trac-us.appspot.com/api/TimingSessionReset/?access_token=" + access_token;
-        	String id_number = positionID;
-        	raceReset.execute(url,id_number);
+        	String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/reset/?access_token=" + access_token;
+        	
+        	raceReset.execute(url);
 		        }
 		    })
 		    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
