@@ -227,7 +227,7 @@
         NSLog(@"Post: %@",post);
         
         NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
-        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/start_timer/?access_token=%@", savedToken];
+        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/start_timer/?access_token=%@", self.urlID ,savedToken];
         
         NSURL *url=[NSURL URLWithString:idurl2];
         
