@@ -63,36 +63,28 @@
 }
 - (IBAction)endWorkout:(id)sender{
    
-    
     NSInteger success = 0;
     
     @try {
-        
-        
-
-        //if success
-
         
         NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
         NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/close/?access_token=%@", self.urlID ,savedToken];
         
         NSURL *url=[NSURL URLWithString:idurl2];
-
+        
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
         [request setURL:url];
         [request setHTTPMethod:@"POST"];
         
-        //[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
         
         NSError *error = [[NSError alloc] init];
         NSHTTPURLResponse *response = nil;
         NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-       
         
         if ([response statusCode] >= 200 && [response statusCode] < 300)
         {
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-           
+            NSLog(@"Response ==> %@", responseData);
             
             NSError *error = nil;
             NSDictionary *jsonData = [NSJSONSerialization
@@ -101,13 +93,14 @@
                                       error:&error];
             
             success = [jsonData[@"success"] integerValue];
-            
+            NSLog(@"Success: %ld",(long)success);
             
             if(success == 0)
             {
-                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully changed end time of workout" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                NSLog(@"SUCCESS");
+                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully changed start time of workout" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
-               
+                //return self.access_token;
             } else {
                 
                 NSLog(@"Failed");
@@ -115,9 +108,10 @@
             }
             
         } else {
-            
+            //if (error) NSLog(@"Error: %@", error);
+            NSLog(@"Failed");
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-           
+            NSLog(@"Response ==> %@", responseData);
         }
         
     }
@@ -125,7 +119,6 @@
         NSLog(@"Exception: %@", e);
         
     }
-
 
 
 }

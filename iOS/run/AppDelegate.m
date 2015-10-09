@@ -57,7 +57,11 @@
             NSError *error = [[NSError alloc] init];
             NSHTTPURLResponse *response = nil;
             NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-            
+        
+            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+            NSLog(@"Response ==> %@", responseData);
+
+        
             NSLog(@"Response code: %ld", (long)[response statusCode]);
             // NSLog(@"Error Code: %@", [error localizedDescription]);
             

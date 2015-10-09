@@ -141,8 +141,43 @@ NSLog(@"Reappear");
                 NSNumber *sum = [finaltimeArray valueForKeyPath:@"@sum.floatValue"];
                 
                 NSArray* lastsettime=[personalinterval lastObject];
-
-                NSArray* lasttime=[lastsettime lastObject];
+                NSNumber *lastsplit = [lastsettime valueForKeyPath:@"@sum.floatValue"];
+                NSNumber *sumInt =@([lastsplit integerValue]);
+                NSNumber *ninty = [NSNumber numberWithInt:90];
+                NSNumber*decimal =[NSNumber numberWithFloat:(([lastsplit floatValue]-[sumInt floatValue])*1000)];
+                NSNumber *decimalInt = @([decimal integerValue]);
+                
+                
+                //to do add decimal to string, round to 3 digits
+                NSNumber *lastsplitminutes = @([lastsplit integerValue] / 60);
+                NSNumber *lastsplitseconds = @([lastsplit integerValue] % 60);
+                NSMutableArray *lasttime = [[NSMutableArray alloc] init];
+                if ([lastsplit intValue]<[ninty intValue]){
+                    //if less than 90 display in seconds
+                    lasttime=[personalinterval lastObject];
+                    NSLog(@"Last Time %@",lasttime);
+                }
+                else{
+                    //If greater than 90 seconds display in minute format
+                    //If less than 10 format with additional 0
+                    if ([lastsplitseconds intValue]<10) {
+                        NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@.%@",lastsplitminutes,lastsplitseconds,decimalInt];
+                        [lasttime addObject:elapsedtime];
+                        NSLog(@"Last Time %@",lasttime);
+                        //self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
+                        
+                    }
+                    //If greater than 10 seconds, dont use the preceding 0
+                    else{
+                        NSString* elapsedtime = [NSString stringWithFormat:@"%@:%@.%@",lastsplitminutes,lastsplitseconds,decimalInt];
+                        [lasttime addObject:elapsedtime];
+                        NSLog(@"Last Time %@",lasttime);
+                    }
+                }
+                
+                
+                //NSArray* lasttime=[lastsettime lastObject];
+                NSArray *superlasttime = [lasttime lastObject];
 
             NSNumber *minutes = @([sum integerValue] / 60);
             NSNumber *seconds = @([sum integerValue] % 60);
@@ -159,7 +194,8 @@ NSLog(@"Reappear");
                 
             }
             
-            [self.lasttimearray addObject:lasttime];
+            [self.lasttimearray addObject:superlasttime];
+                NSLog(@"Array, %@",self.lasttimearray);
             }
         }
 
