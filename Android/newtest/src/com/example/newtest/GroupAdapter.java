@@ -66,7 +66,28 @@ public class GroupAdapter extends BaseAdapter{
 		List<String[]> intervals = parsedJson.get(position).interval;
 		if (intervals != null && !intervals.isEmpty()){
 		int ii = parsedJson.get(position).interval.get(intervals.size() - 1).length - 1;
-		textView2.setText(parsedJson.get(position).interval.get(intervals.size() - 1)[ii]);
+		
+		float firstsplitfloat = Float.parseFloat(parsedJson.get(position).interval.get(intervals.size() - 1)[ii]);
+		if (firstsplitfloat>90){
+			int min = (int) Math.floor(firstsplitfloat/60);
+			int sec = (int) (((firstsplitfloat*60)-Math.floor(firstsplitfloat/60)*3600)/60);
+			int mili = (int) (firstsplitfloat*100-Math.floor(firstsplitfloat)*100);
+			StringBuilder sb = new StringBuilder();
+			if (sec < 10)
+			{
+				sb.append(min + ":0" + sec +"." + mili );
+			}
+			else
+			{
+				sb.append(min + ":" +sec +"."+ mili);		
+			}
+			textView2.setText(sb.toString());
+		}
+		else{
+			textView2.setText(parsedJson.get(position).interval.get(intervals.size() - 1)[ii]);
+		}
+		
+		
 		
 		//Log.d("HEYHEY ","YELLO");
 		

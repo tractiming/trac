@@ -199,7 +199,30 @@ public class WorkoutFragment extends ListFragment {
 						List<String> tempArray = new ArrayList<String>();
 						dataHeader.add(result.get(i).name);
 						for (int j = 0; j < result.get(i).interval.size(); j++){
-							tempArray.add(result.get(i).interval.get(j)[0].toString());
+							float temp = Float.parseFloat(result.get(i).interval.get(j)[0]);
+							if (temp>90){
+								int min = (int) Math.floor(temp/60);
+								int sec = (int) (((temp*60)-Math.floor(temp/60)*3600)/60);
+								int mili = (int) (temp*100-Math.floor(temp)*100);
+								StringBuilder sb = new StringBuilder();
+								if (sec < 10)
+								{
+									
+									sb.append(min + ":0" + sec +"." + mili );
+								}
+								else
+								{
+									
+									sb.append(min + ":" +sec +"."+ mili);
+								}
+								tempArray.add(sb.toString());
+							}
+							else{
+								tempArray.add(result.get(i).interval.get(j)[0].toString());
+							}
+							
+							
+							
 							Log.d("Interval to String", result.get(i).interval.get(j)[0].toString());
 						}
 						listDataChild.put(dataHeader.get(i), tempArray);
