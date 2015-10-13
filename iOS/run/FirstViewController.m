@@ -21,7 +21,7 @@
 #define UITableViewCellEditingStyleMultiSelect (3)
 
 
-@interface FirstViewController()
+@interface FirstViewController() <UIActionSheetDelegate>
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *editButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
@@ -39,7 +39,9 @@
     UIToolbar *actionToolbar;
     NSString* elapsedtime;
     BOOL Executed;
-    
+    NSUInteger universalIndex;
+    NSArray *superlasttime;
+    UIBarButtonItem *splitButton;
 }
 
 - (IBAction)editAction:(id)sender
@@ -54,6 +56,25 @@
     [self updateButtonsToMatchTableState];
 }
 
+- (void)updateSplitButtonTitle
+{
+    // Update the delete button's title, based on how many items are selected
+    NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
+    
+    BOOL allItemsAreSelected = selectedRows.count == self.athleteDictionaryArray.count;
+    BOOL noItemsAreSelected = selectedRows.count == 0;
+    
+    if (allItemsAreSelected || noItemsAreSelected)
+    {
+        splitButton.title = NSLocalizedString(@"Split All", @"");
+    }
+    else
+    {
+        NSString *titleFormatString =
+        NSLocalizedString(@"Split (%d)", @"Title for delete button with placeholder for number");
+        splitButton.title = [NSString stringWithFormat:titleFormatString, selectedRows.count];
+    }
+}
 - (void)updateButtonsToMatchTableState
 {
     if (self.tableData.editing)
@@ -61,6 +82,7 @@
         // Show the option to cancel the edit.
         self.parentViewController.navigationItem.rightBarButtonItem = self.cancelButton;
         [self showActionToolbar:YES];
+        [self updateSplitButtonTitle];
        
     }
     else
@@ -77,6 +99,144 @@
         }
         self.parentViewController.navigationItem.rightBarButtonItem = self.editButton;
     }
+}
+
+- (void)splitAction:(id)sender
+{
+    // Open a dialog with just an OK button.
+	NSString *actionTitle;
+    if (([[self.tableData indexPathsForSelectedRows] count] == 1)) {
+        actionTitle = NSLocalizedString(@"Are you sure you want to split this individual?", @"");
+    }
+    else
+    {
+        actionTitle = NSLocalizedString(@"Are you sure you want to create a split for these people?", @"");
+    }
+    
+    NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Cancel title for item removal action");
+    NSString *okTitle = NSLocalizedString(@"OK", @"OK title for item removal action");
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:actionTitle
+                                                             delegate:self
+                                                    cancelButtonTitle:cancelTitle
+                                               destructiveButtonTitle:okTitle
+                                                    otherButtonTitles:nil];
+    
+	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+    
+    // Show from our table view (pops up in the middle of the table).
+	[actionSheet showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	// The user tapped one of the OK/Cancel buttons.
+	if (buttonIndex == 0)
+	{
+		// Delete what the user selected.
+        NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
+        NSLog(@"Selected Rows, %@",selectedRows);
+        BOOL splitSpecificRows = selectedRows.count > 0;
+        
+        //Get current time in UTC
+        NSDate *currentDate = [[NSDate alloc] init];
+        NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy/MM/dd HH:mm:ss.SSS"];
+        [dateFormatter setTimeZone:timeZone];
+        NSString *localDateString = [dateFormatter stringFromDate:currentDate];
+        NSLog(@"Date time %@", localDateString);
+        id sendThis;
+        if (splitSpecificRows)
+        {
+            // Build an NSIndexSet of all the objects to delete, so they can all be removed at once.
+            NSMutableArray * s = [NSMutableArray new];
+            for (NSIndexPath *selectionIndex in selectedRows)
+            {
+                NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
+                [s addObject:@[[tempDict valueForKey:@"name"],localDateString]];
+            }
+            sendThis = @{@"s": s};
+            NSLog(@"JSON %@",sendThis);
+        }
+        else
+        {
+            // Delete everything, delete the objects from our data model.
+            //Take every row and put into json. Then Send it
+        }
+        
+        // Exit editing mode after the deletion.
+        //async task now.
+        
+        
+        
+        NSInteger success = 0;
+        
+        @try {
+            
+            NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+            NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/individual_splits/?access_token=%@",savedToken];
+            
+            NSURL *url=[NSURL URLWithString:idurl2];
+            
+            NSMutableData *data = [NSMutableData data];
+            [data appendData:sendThis];
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+            [request setURL:url];
+            [request setHTTPMethod:@"POST"];
+            [request setHTTPBody:data];
+            
+            NSLog(@"Here>?");
+            NSError *error = [[NSError alloc] init];
+            NSHTTPURLResponse *response = nil;
+            NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            
+            if ([response statusCode] >= 200 && [response statusCode] < 300)
+            {
+                NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+                NSLog(@"Response ==> %@", responseData);
+                
+                NSError *error = nil;
+                NSDictionary *jsonData = [NSJSONSerialization
+                                          JSONObjectWithData:urlData
+                                          options:NSJSONReadingMutableContainers
+                                          error:&error];
+                
+                success = [jsonData[@"success"] integerValue];
+                NSLog(@"Success: %ld",(long)success);
+                
+                if(success == 0)
+                {
+                    NSLog(@"SUCCESS");
+                    
+                } else {
+                    
+                    NSLog(@"Failed");
+                    
+                }
+                
+            } else {
+                //if (error) NSLog(@"Error: %@", error);
+                NSLog(@"Failed");
+                NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+                NSLog(@"Response ==> %@", responseData);
+            }
+            
+        }
+        @catch (NSException * e) {
+            NSLog(@"Exception: %@", e);
+            
+        }
+
+        
+       
+        
+        
+        
+        [self.tableData setEditing:NO animated:YES];
+        [self updateButtonsToMatchTableState];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -133,8 +293,10 @@ NSLog(@"Reappear");
     tvc.urlID = self.urlID;
     
     actionToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 416, 320, 44)];
-    UIBarButtonItem *splitButton =[[UIBarButtonItem alloc]initWithTitle:@"Split" style:UIBarButtonItemStyleDone target:self action:@selector(splitAction)];
-    [actionToolbar setItems:[NSArray arrayWithObject:splitButton]];
+    splitButton =[[UIBarButtonItem alloc]initWithTitle:@"Split All" style:UIBarButtonItemStyleDone target:self action:@selector(splitAction:)];
+    UIBarButtonItem *resetButton = [[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStylePlain target:self action:@selector(resetAction:)];
+    splitButton.width = [[UIScreen mainScreen] bounds].size.width/2;
+    [actionToolbar setItems:@[splitButton,resetButton]];
     //UIBarButtonItem *resetButton =[[UIBarButtonItem alloc]initWithTitle:@"Reset" style:UIBarButtonItemStyleDone target:self action:@selector(resetAction)];
     //[actionToolbar setItems:[NSArray :resetButton]];
     [self updateButtonsToMatchTableState];
@@ -196,8 +358,9 @@ NSLog(@"Reappear");
             
             if(Executed ==TRUE){
                 if(!personalinterval || !personalinterval.count){
-                    [self.lasttimearray addObject:@"NT"];
-                    [self.summationTimeArray addObject:@"NT"];
+                    elapsedtime = [NSString stringWithFormat:@"NT"];
+                    superlasttime = [NSString stringWithFormat:@"NT"];
+                    universalIndex = 0;
                 }
                 else{
                     //adds all intervals together to give cumulative time
@@ -208,6 +371,7 @@ NSLog(@"Reappear");
                         finaltimeArray =[finaltimeArray arrayByAddingObject:subs];
                         subindex++;
                     }
+                    universalIndex = subindex;
                     
                     NSNumber *sum = [finaltimeArray valueForKeyPath:@"@sum.floatValue"];
                     
@@ -248,7 +412,7 @@ NSLog(@"Reappear");
                     
                     
                     //NSArray* lasttime=[lastsettime lastObject];
-                    NSArray *superlasttime = [lasttime lastObject];
+                    superlasttime = [lasttime lastObject];
                     
                     NSNumber *minutes = @([sum integerValue] / 60);
                     NSNumber *seconds = @([sum integerValue] % 60);
@@ -268,59 +432,215 @@ NSLog(@"Reappear");
                     [self.lasttimearray addObject:superlasttime];
                     NSLog(@"Array, %@",self.lasttimearray);
                     
-                    NSMutableDictionary *athleteDictionary = [NSMutableDictionary new];
-                    [athleteDictionary setObject:[self.runners objectAtIndex:index] forKey:@"name"];
-                    [athleteDictionary setObject:[self.runnerID objectAtIndex:index] forKey:@"athleteID"];
-                    [athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
-                    [athleteDictionary setObject:[NSNumber numberWithInt:subindex] forKey:@"numberSplits"];
-                    [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
-                    [self.athleteDictionaryArray addObject:athleteDictionary];
+                    
                     
                 }
-                
+                NSMutableDictionary *athleteDictionary = [NSMutableDictionary new];
+                [athleteDictionary setObject:[self.runners objectAtIndex:index] forKey:@"name"];
+                [athleteDictionary setObject:[self.runnerID objectAtIndex:index] forKey:@"athleteID"];
+                [athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
+                [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
+                [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
+                [self.athleteDictionaryArray addObject:athleteDictionary];
             }
             
             else{
                 
                 //Does the row exist from a previous polling. Check Athlete IDs versus stored dictionary.
                 NSMutableArray *tempArray = [self.athleteDictionaryArray valueForKey:@"athleteID"];
+                BOOL found = CFArrayContainsValue ( (__bridge CFArrayRef)tempArray, CFRangeMake(0, tempArray.count), (CFNumberRef) [self.runnerID objectAtIndex:index]);
                 NSUInteger closestIndex = [tempArray indexOfObject:[self.runnerID objectAtIndex:index]];
                 NSLog(@"Index %lu", (unsigned long)closestIndex);
                 //If the new index is in the dictionary, and if it hasnt loaded all the splits update them and reload.
-                if (closestIndex){
-                    if ([personalinterval count] > [[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"numberSplits"]) {
+                if (found){
+                   
+                    
+                    NSNumber *jsonCount = [NSNumber numberWithInt:[personalinterval count]];
+                    NSNumber *oldCount = [[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"numberSplits"];
+                    
+                    if (jsonCount > oldCount) {
                         NSLog(@"Append IF Statement");
                         NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:closestIndex inSection:0];
                         NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
+                        NSArray *tempArray= [self.interval objectAtIndex:index];
+                        
+                        
+                        
+                        //adds all intervals together to give cumulative time
+                        NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
+                        NSUInteger subindex = 0;
+                        for (NSArray *subinterval in tempArray){
+                            NSArray* subs=[subinterval lastObject];
+                            finaltimeArray =[finaltimeArray arrayByAddingObject:subs];
+                            subindex++;
+                        }
+                        universalIndex = subindex;
+                        
+                        NSNumber *sum = [finaltimeArray valueForKeyPath:@"@sum.floatValue"];
+                        
+                        NSArray* lastsettime=[tempArray lastObject];
+                        NSNumber *lastsplit = [lastsettime valueForKeyPath:@"@sum.floatValue"];
+                        NSNumber *sumInt =@([lastsplit integerValue]);
+                        NSNumber *ninty = [NSNumber numberWithInt:90];
+                        NSNumber*decimal =[NSNumber numberWithFloat:(([lastsplit floatValue]-[sumInt floatValue])*1000)];
+                        NSNumber *decimalInt = @([decimal integerValue]);
+                        
+                        
+                        //to do add decimal to string, round to 3 digits
+                        NSNumber *lastsplitminutes = @([lastsplit integerValue] / 60);
+                        NSNumber *lastsplitseconds = @([lastsplit integerValue] % 60);
+                        NSMutableArray *lasttime = [[NSMutableArray alloc] init];
+                        if ([lastsplit intValue]<[ninty intValue]){
+                            //if less than 90 display in seconds
+                            lasttime=[tempArray lastObject];
+                            NSLog(@"Last Time %@",lasttime);
+                        }
+                        else{
+                            //If greater than 90 seconds display in minute format
+                            //If less than 10 format with additional 0
+                            if ([lastsplitseconds intValue]<10) {
+                                NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@.%@",lastsplitminutes,lastsplitseconds,decimalInt];
+                                [lasttime addObject:elapsedtime];
+                                NSLog(@"Last Time %@",lasttime);
+                                //self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
+                                
+                            }
+                            //If greater than 10 seconds, dont use the preceding 0
+                            else{
+                                NSString* elapsedtime = [NSString stringWithFormat:@"%@:%@.%@",lastsplitminutes,lastsplitseconds,decimalInt];
+                                [lasttime addObject:elapsedtime];
+                                NSLog(@"Last Time %@",lasttime);
+                            }
+                        }
+                        
+                        
+                        //NSArray* lasttime=[lastsettime lastObject];
+                        superlasttime = [lasttime lastObject];
+                        
+                        NSNumber *minutes = @([sum integerValue] / 60);
+                        NSNumber *seconds = @([sum integerValue] % 60);
+                        
+                        //format total time in minute second format
+                        if ([seconds intValue]<10) {
+                            elapsedtime = [NSString stringWithFormat:@"%@:0%@",minutes,seconds];
+
+                        }
+                        else{
+                            elapsedtime = [NSString stringWithFormat:@"%@:%@",minutes,seconds];
+
+                        }
+
+
                         
                         //update the dictionary here for that index
                         NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:closestIndex];
                         [tempDict removeObjectForKey:@"lastSplit"];
                         [tempDict removeObjectForKey:@"numberSplits"];
                         [tempDict removeObjectForKey:@"totalTime"];
-                      //  [tempDict setObject:superlasttime forKey:@"lastSplit"];
-                        //[tempDict setObject:[NSNumber numberWithInt:subindex] forKey:@"numberSplits"];
+                        [tempDict setObject:superlasttime forKey:@"lastSplit"];
+                        [tempDict setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
                         [tempDict setObject:elapsedtime forKey:@"totalTime"];
                         
                         [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
                     }
                 }
                 //Otherwise load and append to bottom.
-                else if (!closestIndex){
-                    NSLog(@"Append Else Statement");
-                    NSIndexPath* rowToAdd = [NSIndexPath indexPathForRow:[tempArray count]+1 inSection:0];
+                else{
+                    
+                    
+                    NSIndexPath* rowToAdd = [NSIndexPath indexPathForRow:[tempArray count] inSection:0];
                     NSArray* rowsToAdd = [NSArray arrayWithObjects:rowToAdd, nil];
+                    NSArray *tempArray= [self.interval objectAtIndex:index];
+                    
+                    
+                    if(!tempArray || !tempArray.count){
+                        
+                        elapsedtime = [NSString stringWithFormat:@"NT"];
+                        superlasttime = [NSString stringWithFormat:@"NT"];
+                        universalIndex = 0;
+                    }
+                    else{
+                        //adds all intervals together to give cumulative time
+                        NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
+                        NSUInteger subindex = 0;
+                        for (NSArray *subinterval in tempArray){
+                            NSArray* subs=[subinterval lastObject];
+                            finaltimeArray =[finaltimeArray arrayByAddingObject:subs];
+                            subindex++;
+                        }
+                        universalIndex = subindex;
+                        
+                        NSNumber *sum = [finaltimeArray valueForKeyPath:@"@sum.floatValue"];
+                        
+                        NSArray* lastsettime=[tempArray lastObject];
+                        NSNumber *lastsplit = [lastsettime valueForKeyPath:@"@sum.floatValue"];
+                        NSNumber *sumInt =@([lastsplit integerValue]);
+                        NSNumber *ninty = [NSNumber numberWithInt:90];
+                        NSNumber*decimal =[NSNumber numberWithFloat:(([lastsplit floatValue]-[sumInt floatValue])*1000)];
+                        NSNumber *decimalInt = @([decimal integerValue]);
+                        
+                        
+                        //to do add decimal to string, round to 3 digits
+                        NSNumber *lastsplitminutes = @([lastsplit integerValue] / 60);
+                        NSNumber *lastsplitseconds = @([lastsplit integerValue] % 60);
+                        NSMutableArray *lasttime = [[NSMutableArray alloc] init];
+                        if ([lastsplit intValue]<[ninty intValue]){
+                            //if less than 90 display in seconds
+                            lasttime=[tempArray lastObject];
+                            NSLog(@"Last Time %@",lasttime);
+                        }
+                        else{
+                            //If greater than 90 seconds display in minute format
+                            //If less than 10 format with additional 0
+                            if ([lastsplitseconds intValue]<10) {
+                                NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@.%@",lastsplitminutes,lastsplitseconds,decimalInt];
+                                [lasttime addObject:elapsedtime];
+                                NSLog(@"Last Time %@",lasttime);
+                                //self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
+                                
+                            }
+                            //If greater than 10 seconds, dont use the preceding 0
+                            else{
+                                NSString* elapsedtime = [NSString stringWithFormat:@"%@:%@.%@",lastsplitminutes,lastsplitseconds,decimalInt];
+                                [lasttime addObject:elapsedtime];
+                                NSLog(@"Last Time %@",lasttime);
+                            }
+                        }
+                        
+                        
+                        //NSArray* lasttime=[lastsettime lastObject];
+                        NSArray *superlasttime = [lasttime lastObject];
+                        
+                        NSNumber *minutes = @([sum integerValue] / 60);
+                        NSNumber *seconds = @([sum integerValue] % 60);
+                        
+                        //format total time in minute second format
+                        if ([seconds intValue]<10) {
+                            elapsedtime = [NSString stringWithFormat:@"%@:0%@",minutes,seconds];
+                            
+                        }
+                        else{
+                            elapsedtime = [NSString stringWithFormat:@"%@:%@",minutes,seconds];
+                            
+                        }
+                    }
+
+                    
+                    
+                    
+                    
                     
                     NSMutableDictionary *athleteDictionary = [NSMutableDictionary new];
                     [athleteDictionary setObject:[self.runners objectAtIndex:index] forKey:@"name"];
                     [athleteDictionary setObject:[self.runnerID objectAtIndex:index] forKey:@"athleteID"];
-                    //[athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
-                    //[athleteDictionary setObject:[NSNumber numberWithInt:subindex] forKey:@"numberSplits"];
+                    [athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
+                    [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
                     [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
                     [self.athleteDictionaryArray addObject:athleteDictionary];
-                    
+                    NSLog(@"Athlete Dict %@", self.athleteDictionaryArray);
+                    [self.tableData beginUpdates];
                     [self.tableData insertRowsAtIndexPaths:rowsToAdd withRowAnimation:UITableViewRowAnimationBottom];
-                    
+                    [self.tableData endUpdates];
                     
                 }
 
@@ -350,7 +670,17 @@ NSLog(@"Reappear");
 
 
 
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Update the delete button's title based on how many items are selected.
+    [self updateSplitButtonTitle];
+}
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Update the delete button's title based on how many items are selected.
+    [self updateButtonsToMatchTableState];
+}
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
