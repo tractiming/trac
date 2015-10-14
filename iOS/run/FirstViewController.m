@@ -146,15 +146,16 @@
         [dateFormatter setTimeZone:timeZone];
         NSString *localDateString = [dateFormatter stringFromDate:currentDate];
         NSLog(@"Date time %@", localDateString);
-        id sendThis;
+        NSDictionary *sendThis;
+        NSMutableArray * s = [NSMutableArray new];
         if (splitSpecificRows)
         {
             // Build an NSIndexSet of all the objects to delete, so they can all be removed at once.
-            NSMutableArray * s = [NSMutableArray new];
+            
             for (NSIndexPath *selectionIndex in selectedRows)
             {
                 NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
-                [s addObject:@[[tempDict valueForKey:@"name"],localDateString]];
+                [s addObject:@[[tempDict valueForKey:@"athleteID"],localDateString]];
             }
             sendThis = @{@"s": s};
             NSLog(@"JSON %@",sendThis);
@@ -178,16 +179,26 @@
             NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/individual_splits/?access_token=%@",savedToken];
             
             NSURL *url=[NSURL URLWithString:idurl2];
+            NSError *error2 = nil;
             
-            NSMutableData *data = [NSMutableData data];
-            [data appendData:sendThis];
+            NSArray *array = [s copy];
+            NSString *post =[[NSString alloc] initWithFormat:@"s=%@",array];
+            NSData *jsonData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+            //NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:0 error:&error2];
+            NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[jsonData length]];
+            //NSMutableData *data = [NSMutableData data];
+            //[data appendData:[sendThis dataUsingEncoding:NSUTF8StringEncoding]];
             
             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
             [request setURL:url];
             [request setHTTPMethod:@"POST"];
-            [request setHTTPBody:data];
             
-            NSLog(@"Here>?");
+            [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+            [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+            [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+            [request setHTTPBody:jsonData];
+            
+            
             NSError *error = [[NSError alloc] init];
             NSHTTPURLResponse *response = nil;
             NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
@@ -450,7 +461,7 @@ NSLog(@"Reappear");
                 NSMutableArray *tempArray = [self.athleteDictionaryArray valueForKey:@"athleteID"];
                 BOOL found = CFArrayContainsValue ( (__bridge CFArrayRef)tempArray, CFRangeMake(0, tempArray.count), (CFNumberRef) [self.runnerID objectAtIndex:index]);
                 NSUInteger closestIndex = [tempArray indexOfObject:[self.runnerID objectAtIndex:index]];
-                NSLog(@"Index %lu", (unsigned long)closestIndex);
+                //NSLog(@"Index %lu", (unsigned long)closestIndex);
                 //If the new index is in the dictionary, and if it hasnt loaded all the splits update them and reload.
                 if (found){
                    
