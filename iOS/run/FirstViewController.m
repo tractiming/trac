@@ -48,12 +48,14 @@
 {
     [self.tableData setEditing:YES animated:YES];
     [self updateButtonsToMatchTableState];
+    [self showActionToolbar:YES];
 }
 
 - (IBAction)cancelAction:(id)sender
 {
     [self.tableData setEditing:NO animated:YES];
     [self updateButtonsToMatchTableState];
+    [self showActionToolbar:NO];
 }
 
 - (void)updateSplitButtonTitle
@@ -81,13 +83,12 @@
     {
         // Show the option to cancel the edit.
         self.parentViewController.navigationItem.rightBarButtonItem = self.cancelButton;
-        [self showActionToolbar:YES];
+        
         [self updateSplitButtonTitle];
        
     }
     else
     {
-        [self showActionToolbar:YES];
         // Show the edit button, but disable the edit button if there's nothing to edit.
         if (self.runners.count > 0)
         {
@@ -127,6 +128,8 @@
 	[actionSheet showInView:self.view];
 }
 
+
+- (void)resetAction:(id)sender{}
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	// The user tapped one of the OK/Cancel buttons.
@@ -162,6 +165,14 @@
         }
         else
         {
+            NSArray *selectedRows = [self.tableData indexPathsForVisibleRows];
+            for (NSIndexPath *selectionIndex in selectedRows)
+            {
+                NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
+                [s addObject:@[[tempDict valueForKey:@"athleteID"],localDateString]];
+            }
+            sendThis = @{@"s": s};
+            NSLog(@"JSON %@",sendThis);
             // Delete everything, delete the objects from our data model.
             //Take every row and put into json. Then Send it
         }
@@ -254,10 +265,11 @@
 
     [timer invalidate];
     [actionToolbar removeFromSuperview];
+    self.parentViewController.navigationItem.rightBarButtonItem = nil;
 
 }
 - (void)viewWillAppear:(BOOL)animated{
-    
+    self.parentViewController.navigationItem.rightBarButtonItem = self.editButton;
     
 NSLog(@"Reappear");
     dispatch_async(kBgQueue, ^{
@@ -308,8 +320,6 @@ NSLog(@"Reappear");
     UIBarButtonItem *resetButton = [[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStylePlain target:self action:@selector(resetAction:)];
     splitButton.width = [[UIScreen mainScreen] bounds].size.width/2;
     [actionToolbar setItems:@[splitButton,resetButton]];
-    //UIBarButtonItem *resetButton =[[UIBarButtonItem alloc]initWithTitle:@"Reset" style:UIBarButtonItemStyleDone target:self action:@selector(resetAction)];
-    //[actionToolbar setItems:[NSArray :resetButton]];
     [self updateButtonsToMatchTableState];
         
 }
@@ -321,7 +331,28 @@ NSLog(@"Reappear");
 
 - (void)showActionToolbar:(BOOL)show
 {
-
+    CGRect toolbarFrame = actionToolbar.frame;
+	CGRect tableViewFrame = self.tableData.frame;
+    UITabBarController *tabBarController = [UITabBarController new];
+    CGFloat tabBarHeight = tabBarController.tabBar.frame.size.height;
+	if (show)
+	{
+		toolbarFrame.origin.y = actionToolbar.superview.frame.size.height - toolbarFrame.size.height-tabBarHeight;
+		tableViewFrame.size.height -= toolbarFrame.size.height;
+	}
+	else
+	{
+		toolbarFrame.origin.y = actionToolbar.superview.frame.size.height-tabBarHeight;
+		tableViewFrame.size.height += toolbarFrame.size.height;
+	}
+	
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+    NSLog(@"Toolbar Frame, TableView Frame %f,%f",toolbarFrame.origin.y,tableViewFrame.size.height);
+	actionToolbar.frame = toolbarFrame;
+	self.tableData.frame = tableViewFrame;
+	
+	[UIView commitAnimations];
 }
 
 - (void) sendRequest
