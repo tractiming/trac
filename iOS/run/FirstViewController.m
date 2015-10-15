@@ -129,7 +129,43 @@
 }
 
 
-- (void)resetAction:(id)sender{}
+- (void)resetAction:(id)sender{
+    // Delete what the user selected.
+    NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
+    NSLog(@"Selected Rows, %@",selectedRows);
+    BOOL resetSpecificRows = selectedRows.count > 0;
+
+    if (resetSpecificRows)
+    {
+        // Build an NSIndexSet of all the objects to delete, so they can all be removed at once.
+        
+        for (NSIndexPath *selectionIndex in selectedRows)
+        {
+            NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
+            [tempDict removeObjectForKey:@"countStart"];
+            [tempDict setObject:[tempDict valueForKey:@"numberSplits"] forKey:@"countStart"];
+            NSLog(@"Updated Reset");
+        }
+
+    }
+    else
+    {
+        NSArray *selectedRows = [self.tableData indexPathsForVisibleRows];
+        for (NSIndexPath *selectionIndex in selectedRows)
+        {
+            NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
+            [tempDict removeObjectForKey:@"countStart"];
+            [tempDict setObject:[tempDict valueForKey:@"numberSplits"] forKey:@"countStart"];
+            NSLog(@"Updated Reset");
+            
+        }
+       
+    }
+
+
+
+    
+}
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	// The user tapped one of the OK/Cancel buttons.
@@ -321,6 +357,7 @@ NSLog(@"Reappear");
     splitButton.width = [[UIScreen mainScreen] bounds].size.width/2;
     [actionToolbar setItems:@[splitButton,resetButton]];
     [self updateButtonsToMatchTableState];
+    [self showActionToolbar:NO];
         
 }
 
@@ -482,6 +519,7 @@ NSLog(@"Reappear");
                 [athleteDictionary setObject:[self.runnerID objectAtIndex:index] forKey:@"athleteID"];
                 [athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
                 [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
+                [athleteDictionary setObject:[NSNumber numberWithInt:0] forKey:@"countStart"];
                 [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
                 [self.athleteDictionaryArray addObject:athleteDictionary];
             }
@@ -501,7 +539,7 @@ NSLog(@"Reappear");
                     NSNumber *oldCount = [[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"numberSplits"];
                     
                     if (jsonCount > oldCount) {
-                        NSLog(@"Append IF Statement");
+                        //NSLog(@"Append IF Statement");
                         NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:closestIndex inSection:0];
                         NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
                         NSArray *tempArray= [self.interval objectAtIndex:index];
@@ -510,13 +548,18 @@ NSLog(@"Reappear");
                         
                         //adds all intervals together to give cumulative time
                         NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
-                        NSUInteger subindex = 0;
-                        for (NSArray *subinterval in tempArray){
+                        NSMutableDictionary *tempDictIndex = [self.athleteDictionaryArray objectAtIndex:closestIndex];
+                        NSInteger rangeVar = [[tempDictIndex valueForKey:@"countStart"] integerValue];
+                        NSLog(@"Errors Here? %ld", (long)rangeVar);
+                        NSArray *resetViewCount = [tempArray subarrayWithRange: NSMakeRange(rangeVar, [tempArray count]-rangeVar)];
+                       
+
+                        for (NSArray *subinterval in resetViewCount){
                             NSArray* subs=[subinterval lastObject];
                             finaltimeArray =[finaltimeArray arrayByAddingObject:subs];
-                            subindex++;
+                            
                         }
-                        universalIndex = subindex;
+                        universalIndex = [tempArray count];
                         
                         NSNumber *sum = [finaltimeArray valueForKeyPath:@"@sum.floatValue"];
                         
@@ -604,13 +647,16 @@ NSLog(@"Reappear");
                     else{
                         //adds all intervals together to give cumulative time
                         NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
-                        NSUInteger subindex = 0;
-                        for (NSArray *subinterval in tempArray){
+                        NSMutableDictionary *tempDictIndex = [self.athleteDictionaryArray objectAtIndex:closestIndex];
+                        NSInteger rangeVar = [[tempDictIndex valueForKey:@"countStart"] integerValue];
+                        NSLog(@"Errors Here? %ld", (long)rangeVar);
+                        NSArray *resetViewCount = [tempArray subarrayWithRange: NSMakeRange(rangeVar, [tempArray count]-rangeVar)];
+                        for (NSArray *subinterval in resetViewCount){
                             NSArray* subs=[subinterval lastObject];
                             finaltimeArray =[finaltimeArray arrayByAddingObject:subs];
-                            subindex++;
+                            
                         }
-                        universalIndex = subindex;
+                        universalIndex = [tempArray count];
                         
                         NSNumber *sum = [finaltimeArray valueForKeyPath:@"@sum.floatValue"];
                         
