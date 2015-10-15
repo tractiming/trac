@@ -134,7 +134,12 @@
     NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
     NSLog(@"Selected Rows, %@",selectedRows);
     BOOL resetSpecificRows = selectedRows.count > 0;
-
+    //reset counter index and on click of reset button refresh rows to start at 0.
+    NSNumber *minutes = @(0);
+    NSNumber *seconds = @(0);
+    elapsedtime = [NSString stringWithFormat:@"%@:0%@",minutes,seconds];
+    
+    
     if (resetSpecificRows)
     {
         // Build an NSIndexSet of all the objects to delete, so they can all be removed at once.
@@ -145,6 +150,11 @@
             [tempDict removeObjectForKey:@"countStart"];
             [tempDict setObject:[tempDict valueForKey:@"numberSplits"] forKey:@"countStart"];
             NSLog(@"Updated Reset");
+            [tempDict removeObjectForKey:@"totalTime"];
+            [tempDict setObject:elapsedtime forKey:@"totalTime"];
+            NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:selectionIndex.row inSection:0];
+            NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
+            [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
         }
 
     }
@@ -157,12 +167,15 @@
             [tempDict removeObjectForKey:@"countStart"];
             [tempDict setObject:[tempDict valueForKey:@"numberSplits"] forKey:@"countStart"];
             NSLog(@"Updated Reset");
+            [tempDict removeObjectForKey:@"totalTime"];
+            [tempDict setObject:elapsedtime forKey:@"totalTime"];
+            NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:selectionIndex.row inSection:0];
+            NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
+            [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
             
         }
        
     }
-
-
 
     
 }
