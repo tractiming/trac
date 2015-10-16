@@ -242,7 +242,14 @@
             NSError *error2 = nil;
             
             NSArray *array = [s copy];
-            NSString *post =[[NSString alloc] initWithFormat:@"s=%@",array];
+            NSString *post;
+            if (selectedRows.count == 1){
+                post =[[NSString alloc] initWithFormat:@"s=[%@]",array];
+            }
+            else {
+            post =[[NSString alloc] initWithFormat:@"s=%@",array];
+            }
+            
             NSData *jsonData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
             //NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:0 error:&error2];
             NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[jsonData length]];
@@ -304,7 +311,7 @@
        
         
         
-        
+        [self showActionToolbar:NO];
         [self.tableData setEditing:NO animated:YES];
         [self updateButtonsToMatchTableState];
 	}
@@ -381,6 +388,7 @@ NSLog(@"Reappear");
 
 - (void)showActionToolbar:(BOOL)show
 {
+    NSLog(@"Entered it again");
     CGRect toolbarFrame = actionToolbar.frame;
 	CGRect tableViewFrame = self.tableData.frame;
     UITabBarController *tabBarController = [UITabBarController new];
