@@ -20,6 +20,9 @@ import android.os.Parcelable;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -80,7 +83,7 @@ public class GroupFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+		setHasOptionsMenu(true);
 		//Log.d("Instance State in Group on Create",savedInstanceState.toString());
 		View rootView = inflater.inflate(R.layout.fragment_group_view, container,
 				false);
@@ -140,6 +143,24 @@ public class GroupFragment extends ListFragment {
 
 		return rootView;
 	}	
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	    inflater.inflate(R.menu.group_view, menu);
+	    super.onCreateOptionsMenu(menu, inflater);
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+	    switch (item.getItemId()) {
+	        case R.id.action_edit:                
+	              //do something
+	        	Log.d("hello","hello!!");
+	        	  
+	            return true;
+	    }
+	    return super.onOptionsItemSelected(item);
+	} 
 	
 	public void onResume(){
 		super.onResume();
