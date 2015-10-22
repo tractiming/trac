@@ -42,6 +42,7 @@
     NSUInteger universalIndex;
     NSArray *superlasttime;
     UIBarButtonItem *splitButton;
+    UIBarButtonItem *resetButton;
 }
 
 - (IBAction)editAction:(id)sender
@@ -69,12 +70,16 @@
     if (allItemsAreSelected || noItemsAreSelected)
     {
         splitButton.title = NSLocalizedString(@"Split All", @"");
+        resetButton.title = NSLocalizedString(@"Reset All", @"");
     }
     else
     {
         NSString *titleFormatString =
         NSLocalizedString(@"Split (%d)", @"Title for delete button with placeholder for number");
         splitButton.title = [NSString stringWithFormat:titleFormatString, selectedRows.count];
+        NSString *titleFormatString2 =
+        NSLocalizedString(@"Reset (%d)", @"Title for delete button with placeholder for number");
+        resetButton.title = [NSString stringWithFormat:titleFormatString2, selectedRows.count];
     }
 }
 - (void)updateButtonsToMatchTableState
@@ -288,6 +293,7 @@
                 {
                     NSLog(@"SUCCESS");
                     
+                    
                 } else {
                     
                     NSLog(@"Failed");
@@ -314,6 +320,8 @@
         [self showActionToolbar:NO];
         [self.tableData setEditing:NO animated:YES];
         [self updateButtonsToMatchTableState];
+        NSLog(@"Hits Again?");
+        [self sendRequest];
 	}
 }
 
@@ -373,7 +381,7 @@ NSLog(@"Reappear");
     
     actionToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 416, 320, 44)];
     splitButton =[[UIBarButtonItem alloc]initWithTitle:@"Split All" style:UIBarButtonItemStyleDone target:self action:@selector(splitAction:)];
-    UIBarButtonItem *resetButton = [[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStylePlain target:self action:@selector(resetAction:)];
+    resetButton = [[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStylePlain target:self action:@selector(resetAction:)];
     splitButton.width = [[UIScreen mainScreen] bounds].size.width/2;
     [actionToolbar setItems:@[splitButton,resetButton]];
     [self updateButtonsToMatchTableState];
@@ -415,6 +423,7 @@ NSLog(@"Reappear");
 
 - (void) sendRequest
 {
+    NSLog(@"This is Null??");
     //Async Task Called
     dispatch_async(kBgQueue, ^{
         
@@ -434,7 +443,7 @@ NSLog(@"Reappear");
 
 - (NSArray *)fetchedData:(NSData *)responseData {
     //parse out the json data
-    
+    NSLog(@"Enters Fetched Data Again");
    @try {
         NSError* error;
         NSDictionary* json= [NSJSONSerialization
@@ -546,7 +555,7 @@ NSLog(@"Reappear");
             }
             
             else{
-                
+                NSLog(@"Index: %lu", (unsigned long)index);
                 //Does the row exist from a previous polling. Check Athlete IDs versus stored dictionary.
                 NSMutableArray *tempArray = [self.athleteDictionaryArray valueForKey:@"athleteID"];
                 BOOL found = CFArrayContainsValue ( (__bridge CFArrayRef)tempArray, CFRangeMake(0, tempArray.count), (CFNumberRef) [self.runnerID objectAtIndex:index]);
@@ -556,11 +565,8 @@ NSLog(@"Reappear");
                 if (found){
                    
                     
-                    NSNumber *jsonCount = [NSNumber numberWithInt:[personalinterval count]];
-                    NSNumber *oldCount = [[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"numberSplits"];
-                    
-                    if (jsonCount > oldCount) {
-                        //NSLog(@"Append IF Statement");
+                    if ((unsigned long)[personalinterval count] > (long)[[[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"numberSplits"] integerValue]) {
+                        NSLog(@"Append IF Statement");
                         NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:closestIndex inSection:0];
                         NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
                         NSArray *tempArray= [self.interval objectAtIndex:index];
@@ -652,6 +658,7 @@ NSLog(@"Reappear");
                 }
                 //Otherwise load and append to bottom.
                 else{
+                    NSLog(@"Hits Else statement");
                     
                     
                     NSIndexPath* rowToAdd = [NSIndexPath indexPathForRow:[tempArray count] inSection:0];
