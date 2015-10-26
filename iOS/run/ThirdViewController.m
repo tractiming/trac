@@ -7,6 +7,7 @@
 //
 
 #import "ThirdViewController.h"
+#import "FirstViewController.h"
 #define TRACQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
 
 @interface ThirdViewController ()
@@ -14,6 +15,8 @@
 @end
 
 @implementation ThirdViewController
+
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -184,7 +187,9 @@
                 if(success == 0)
                 {
                     NSLog(@"SUCCESS");
-                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"myNotification" object:@"Pass this variable!!"];
+
+
                     //return self.access_token;
                 } else {
                     

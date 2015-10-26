@@ -357,6 +357,12 @@ NSLog(@"Reappear");
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receiveNotification:)
+                                                 name:@"myNotification"
+                                               object:nil];
+    
     self.athleteDictionaryArray = [[NSMutableArray alloc] init];
     Executed = TRUE;
     self.tableData.allowsMultipleSelectionDuringEditing = YES;
@@ -387,6 +393,15 @@ NSLog(@"Reappear");
     [self updateButtonsToMatchTableState];
     [self showActionToolbar:NO];
         
+}
+
+- (void)receiveNotification:(NSNotification *)notification
+{
+    if ([[notification name] isEqualToString:@"myNotification"]) {
+        //NSLog(@"Hello its me : %@",notification.object);
+        self.storeDelete = notification.object;
+        //doSomething here.
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -442,6 +457,14 @@ NSLog(@"Reappear");
 }
 
 - (NSArray *)fetchedData:(NSData *)responseData {
+    NSLog(@"Delete? %@",self.storeDelete);
+    if (self.storeDelete)
+    {
+        Executed = TRUE;
+        [self.athleteDictionaryArray removeAllObjects];
+        [self.tableData reloadData];
+        self.storeDelete = NULL;
+    }
     //parse out the json data
     NSLog(@"Enters Fetched Data Again");
    @try {
@@ -555,7 +578,7 @@ NSLog(@"Reappear");
             }
             
             else{
-                NSLog(@"Index: %lu", (unsigned long)index);
+                
                 //Does the row exist from a previous polling. Check Athlete IDs versus stored dictionary.
                 NSMutableArray *tempArray = [self.athleteDictionaryArray valueForKey:@"athleteID"];
                 BOOL found = CFArrayContainsValue ( (__bridge CFArrayRef)tempArray, CFRangeMake(0, tempArray.count), (CFNumberRef) [self.runnerID objectAtIndex:index]);
@@ -658,9 +681,7 @@ NSLog(@"Reappear");
                 }
                 //Otherwise load and append to bottom.
                 else{
-                    NSLog(@"Hits Else statement");
-                    
-                    
+
                     NSIndexPath* rowToAdd = [NSIndexPath indexPathForRow:[tempArray count] inSection:0];
                     NSArray* rowsToAdd = [NSArray arrayWithObjects:rowToAdd, nil];
                     NSArray *tempArray= [self.interval objectAtIndex:index];
@@ -677,7 +698,6 @@ NSLog(@"Reappear");
                         NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
                         NSMutableDictionary *tempDictIndex = [self.athleteDictionaryArray objectAtIndex:closestIndex];
                         NSInteger rangeVar = [[tempDictIndex valueForKey:@"countStart"] integerValue];
-                        NSLog(@"Errors Here? %ld", (long)rangeVar);
                         NSArray *resetViewCount = [tempArray subarrayWithRange: NSMakeRange(rangeVar, [tempArray count]-rangeVar)];
                         for (NSArray *subinterval in resetViewCount){
                             NSArray* subs=[subinterval lastObject];
@@ -753,7 +773,6 @@ NSLog(@"Reappear");
                     [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
                     [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
                     [self.athleteDictionaryArray addObject:athleteDictionary];
-                    NSLog(@"Athlete Dict %@", self.athleteDictionaryArray);
                     [self.tableData beginUpdates];
                     [self.tableData insertRowsAtIndexPaths:rowsToAdd withRowAnimation:UITableViewRowAnimationBottom];
                     [self.tableData endUpdates];
@@ -801,7 +820,7 @@ NSLog(@"Reappear");
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.runners count];
+    return [self.athleteDictionaryArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -818,9 +837,11 @@ NSLog(@"Reappear");
             cell = [tableView dequeueReusableCellWithIdentifier:@"myCelliPad"];
         }
         
-        cell.Name.text = self.runners[indexPath.row][@"name"];
-        cell.Split.text= [NSString stringWithFormat:@"%@",self.lasttimearray[indexPath.row]];
-        cell.Total.text= [NSString stringWithFormat:@"%@",self.summationTimeArray[indexPath.row]];
+        NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:indexPath.row];
+        
+        cell.Name.text = [tempDict valueForKey:@"name"];
+        cell.Split.text= [tempDict valueForKey:@"lastSplit"];
+        cell.Total.text= [tempDict valueForKey:@"totalTime"];
         return cell;
     }
     else{
@@ -828,7 +849,7 @@ NSLog(@"Reappear");
         CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
     if (cell == nil) {
-        
+        NSLog(@"Fails nil?");
         [tableView registerNib:[UINib nibWithNibName:@"CustomCell" bundle:nil] forCellReuseIdentifier:@"myCell"];
         cell = [tableView dequeueReusableCellWithIdentifier:@"myCell"];
     }

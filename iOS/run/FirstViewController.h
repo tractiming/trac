@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSMutableArray *summationTimeArray;
 @property (strong, nonatomic) NSMutableArray *interval;
 
+@property (strong, nonatomic) NSString *storeDelete;
 @property (strong, nonatomic) NSMutableArray *athleteDictionaryArray;
 //@property (strong, nonatomic) NSArray *name;
 @property (weak, nonatomic) IBOutlet UITableView *tableData;
