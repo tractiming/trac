@@ -30,7 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        NSLog(@"URL ID: %@", self.urlID);
+        //NSLog(@"URL ID: %@", self.urlID);
      NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
      NSString *url = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/?access_token=%@", self.urlID,savedToken];
     dispatch_async(TRACQueue, ^{
@@ -41,7 +41,7 @@
             [self fetchedData:data];
            // [self.tableData reloadData];
             NSDictionary* id_num = [self.jsonData valueForKey:@"id"];
-             NSLog(@"URL ID IN VIew did load: %@", id_num);
+             //NSLog(@"URL ID IN VIew did load: %@", id_num);
         });
         
         
@@ -60,7 +60,7 @@
     [[NSUserDefaults standardUserDefaults] setPersistentDomain:[NSDictionary dictionary] forName:[[NSBundle mainBundle] bundleIdentifier]];
     NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
     
-    NSLog(@"Secutiy Token: %@",savedToken);
+    //NSLog(@"Secutiy Token: %@",savedToken);
     [self performSegueWithIdentifier:@"logout" sender:self];
 
 }
@@ -87,7 +87,7 @@
         if ([response statusCode] >= 200 && [response statusCode] < 300)
         {
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            NSLog(@"Response ==> %@", responseData);
+           // NSLog(@"Response ==> %@", responseData);
             
             NSError *error = nil;
             NSDictionary *jsonData = [NSJSONSerialization
@@ -96,37 +96,37 @@
                                       error:&error];
             
             success = [jsonData[@"success"] integerValue];
-            NSLog(@"Success: %ld",(long)success);
+            //NSLog(@"Success: %ld",(long)success);
             
             if(success == 0)
             {
-                NSLog(@"SUCCESS");
+                //NSLog(@"SUCCESS");
                 UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully changed start time of workout" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
                 //return self.access_token;
             } else {
                 
-                NSLog(@"Failed");
+                //NSLog(@"Failed");
                 
             }
             
         } else {
             //if (error) NSLog(@"Error: %@", error);
-            NSLog(@"Failed");
+            //NSLog(@"Failed");
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            NSLog(@"Response ==> %@", responseData);
+           // NSLog(@"Response ==> %@", responseData);
         }
         
     }
     @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
+        //NSLog(@"Exception: %@", e);
         
     }
 
 
 }
 - (IBAction)resetWorkout:(id)sender{
-    NSLog(@"ID Number, %@",self.urlID);
+    //NSLog(@"ID Number, %@",self.urlID);
     UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:@"Reset Workout?"
                                                        message:@"These results will be permanently deleted."
                                                       delegate:self
@@ -139,10 +139,10 @@
 
 - (void)alertView:(UIAlertView *)theAlert clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"The %@ button was tapped.", [theAlert buttonTitleAtIndex:buttonIndex]);
+    //NSLog(@"The %@ button was tapped.", [theAlert buttonTitleAtIndex:buttonIndex]);
     if (buttonIndex == 0)
     {
-        NSLog(@"Discard");
+        //NSLog(@"Discard");
         
         //if signin button clicked query server with credentials
         NSInteger success = 0;
@@ -167,13 +167,13 @@
             NSHTTPURLResponse *response = nil;
             NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
             
-            NSLog(@"Response code: %ld", (long)[response statusCode]);
+            //NSLog(@"Response code: %ld", (long)[response statusCode]);
             // NSLog(@"Error Code: %@", [error localizedDescription]);
             
             if ([response statusCode] >= 200 && [response statusCode] < 300)
             {
                 NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-                NSLog(@"Response ==> %@", responseData);
+                //NSLog(@"Response ==> %@", responseData);
                 
                 NSError *error = nil;
                 NSDictionary *jsonData = [NSJSONSerialization
@@ -182,30 +182,30 @@
                                           error:&error];
                 
                 success = [jsonData[@"success"] integerValue];
-                NSLog(@"Success: %ld",(long)success);
+                //NSLog(@"Success: %ld",(long)success);
                 
                 if(success == 0)
                 {
-                    NSLog(@"SUCCESS");
+                    //NSLog(@"SUCCESS");
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"myNotification" object:@"Pass this variable!!"];
 
 
                     //return self.access_token;
                 } else {
                     
-                    NSLog(@"Failed");
+                    //NSLog(@"Failed");
                     
                 }
                 
             } else {
                 //if (error) NSLog(@"Error: %@", error);
-                NSLog(@"Failed");
+                //NSLog(@"Failed");
                 
             }
             
         }
         @catch (NSException * e) {
-            NSLog(@"Exception: %@", e);
+            //NSLog(@"Exception: %@", e);
             
         }
         
@@ -222,7 +222,7 @@
     
         //if success
         NSString *post =[[NSString alloc] initWithFormat:@"id=%@",self.urlID];
-        NSLog(@"Post: %@",post);
+        //NSLog(@"Post: %@",post);
         
         NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
         NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/start_timer/?access_token=%@", self.urlID ,savedToken];
@@ -230,7 +230,7 @@
         NSURL *url=[NSURL URLWithString:idurl2];
         
         NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        NSLog(@"Post Data:%@", postData);
+        //NSLog(@"Post Data:%@", postData);
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
         
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -248,13 +248,13 @@
         NSHTTPURLResponse *response = nil;
         NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
         
-        NSLog(@"Response code: %ld", (long)[response statusCode]);
+        //NSLog(@"Response code: %ld", (long)[response statusCode]);
         // NSLog(@"Error Code: %@", [error localizedDescription]);
         
         if ([response statusCode] >= 200 && [response statusCode] < 300)
         {
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            NSLog(@"Response ==> %@", responseData);
+            //NSLog(@"Response ==> %@", responseData);
             
             NSError *error = nil;
             NSDictionary *jsonData = [NSJSONSerialization
@@ -263,31 +263,31 @@
                                       error:&error];
             
             success = [jsonData[@"success"] integerValue];
-            NSLog(@"Success: %ld",(long)success);
+            //NSLog(@"Success: %ld",(long)success);
             
             if(success == 0)
             {
-                NSLog(@"SUCCESS");
+                //NSLog(@"SUCCESS");
                 UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully started race!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
                 
                 //return self.access_token;
             } else {
                 
-                NSLog(@"Failed");
+                //NSLog(@"Failed");
                 
             }
             
         } else {
             //if (error) NSLog(@"Error: %@", error);
-            NSLog(@"Failed");
+            //NSLog(@"Failed");
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            NSLog(@"Response ==> %@", responseData);
+            //NSLog(@"Response ==> %@", responseData);
         }
         
     }
     @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
+        //NSLog(@"Exception: %@", e);
         
     }
 
@@ -297,7 +297,7 @@
 - (IBAction)importRunners:(id)sender {
     
     NSInteger success = 0;
-    NSLog(@"Import Runners");
+    //NSLog(@"Import Runners");
     @try {
         
         NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
@@ -317,7 +317,7 @@
         if ([response statusCode] >= 200 && [response statusCode] < 300)
         {
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            NSLog(@"Response ==> %@", responseData);
+            //NSLog(@"Response ==> %@", responseData);
             
             NSError *error = nil;
             NSDictionary *jsonData = [NSJSONSerialization
@@ -326,30 +326,30 @@
                                       error:&error];
             
             success = [jsonData[@"success"] integerValue];
-            NSLog(@"Success: %ld",(long)success);
+            //NSLog(@"Success: %ld",(long)success);
             
             if(success == 0)
             {
-                NSLog(@"SUCCESS");
+               // NSLog(@"SUCCESS");
                 UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully imported registered runners!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
                 //return self.access_token;
             } else {
                 
-                NSLog(@"Failed");
+                //NSLog(@"Failed");
                 
             }
             
         } else {
             //if (error) NSLog(@"Error: %@", error);
-            NSLog(@"Failed");
+            //NSLog(@"Failed");
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            NSLog(@"Response ==> %@", responseData);
+            //NSLog(@"Response ==> %@", responseData);
         }
         
     }
     @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
+        //NSLog(@"Exception: %@", e);
         
     }
     
@@ -380,7 +380,7 @@
         if ([response statusCode] >= 200 && [response statusCode] < 300)
         {
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            NSLog(@"Response ==> %@", responseData);
+            //NSLog(@"Response ==> %@", responseData);
             
             NSError *error = nil;
             NSDictionary *jsonData = [NSJSONSerialization
@@ -389,30 +389,30 @@
                                       error:&error];
             
             success = [jsonData[@"success"] integerValue];
-            NSLog(@"Success: %ld",(long)success);
+            //NSLog(@"Success: %ld",(long)success);
             
             if(success == 0)
             {
-                NSLog(@"SUCCESS");
+                //NSLog(@"SUCCESS");
                 UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully changed start time of workout" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
                 //return self.access_token;
             } else {
                 
-                NSLog(@"Failed");
+                //NSLog(@"Failed");
                 
             }
             
         } else {
             //if (error) NSLog(@"Error: %@", error);
-            NSLog(@"Failed");
+            //NSLog(@"Failed");
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            NSLog(@"Response ==> %@", responseData);
+            //NSLog(@"Response ==> %@", responseData);
         }
         
     }
     @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
+       // NSLog(@"Exception: %@", e);
         
     }
 
@@ -451,8 +451,8 @@
 //        NSDictionary* interval_distance = [json valueForKey:@"interval_distance"];
 //        NSDictionary* interval_number = [json valueForKey:@"interval_number"];
         NSDictionary* filter_choice = [self.jsonData valueForKey:@"filter_choice"];
-        NSLog(@"URL ID: %@", name);
-        NSLog(@"URL ID: %@", filter_choice);
+        //NSLog(@"URL ID: %@", name);
+        //NSLog(@"URL ID: %@", filter_choice);
         //self.jsonData = [NSString stringWithFormat:@"Date: %@", id_num];
 
         
@@ -462,7 +462,7 @@
         
     }
     @catch (NSException *exception) {
-        NSLog(@"Exception %s","Except!");
+       // NSLog(@"Exception %s","Except!");
 
         return self.jsonData;
     }

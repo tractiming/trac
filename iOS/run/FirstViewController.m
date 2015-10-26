@@ -137,7 +137,7 @@
 - (void)resetAction:(id)sender{
     // Delete what the user selected.
     NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
-    NSLog(@"Selected Rows, %@",selectedRows);
+    //NSLog(@"Selected Rows, %@",selectedRows);
     BOOL resetSpecificRows = selectedRows.count > 0;
     //reset counter index and on click of reset button refresh rows to start at 0.
     NSNumber *minutes = @(0);
@@ -154,7 +154,7 @@
             NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
             [tempDict removeObjectForKey:@"countStart"];
             [tempDict setObject:[tempDict valueForKey:@"numberSplits"] forKey:@"countStart"];
-            NSLog(@"Updated Reset");
+            //NSLog(@"Updated Reset");
             [tempDict removeObjectForKey:@"totalTime"];
             [tempDict setObject:elapsedtime forKey:@"totalTime"];
             NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:selectionIndex.row inSection:0];
@@ -171,7 +171,7 @@
             NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
             [tempDict removeObjectForKey:@"countStart"];
             [tempDict setObject:[tempDict valueForKey:@"numberSplits"] forKey:@"countStart"];
-            NSLog(@"Updated Reset");
+            //NSLog(@"Updated Reset");
             [tempDict removeObjectForKey:@"totalTime"];
             [tempDict setObject:elapsedtime forKey:@"totalTime"];
             NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:selectionIndex.row inSection:0];
@@ -191,7 +191,7 @@
 	{
 		// Delete what the user selected.
         NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
-        NSLog(@"Selected Rows, %@",selectedRows);
+        //NSLog(@"Selected Rows, %@",selectedRows);
         BOOL splitSpecificRows = selectedRows.count > 0;
         
         //Get current time in UTC
@@ -202,7 +202,7 @@
         [dateFormatter setDateFormat:@"yyyy/MM/dd HH:mm:ss.SSS"];
         [dateFormatter setTimeZone:timeZone];
         NSString *localDateString = [dateFormatter stringFromDate:currentDate];
-        NSLog(@"Date time %@", localDateString);
+        //NSLog(@"Date time %@", localDateString);
         NSDictionary *sendThis;
         NSMutableArray * s = [NSMutableArray new];
         if (splitSpecificRows)
@@ -215,7 +215,7 @@
                 [s addObject:@[[tempDict valueForKey:@"athleteID"],localDateString]];
             }
             sendThis = @{@"s": s};
-            NSLog(@"JSON %@",sendThis);
+            //NSLog(@"JSON %@",sendThis);
         }
         else
         {
@@ -226,7 +226,7 @@
                 [s addObject:@[[tempDict valueForKey:@"athleteID"],localDateString]];
             }
             sendThis = @{@"s": s};
-            NSLog(@"JSON %@",sendThis);
+           // NSLog(@"JSON %@",sendThis);
             // Delete everything, delete the objects from our data model.
             //Take every row and put into json. Then Send it
         }
@@ -278,7 +278,7 @@
             if ([response statusCode] >= 200 && [response statusCode] < 300)
             {
                 NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-                NSLog(@"Response ==> %@", responseData);
+                //NSLog(@"Response ==> %@", responseData);
                 
                 NSError *error = nil;
                 NSDictionary *jsonData = [NSJSONSerialization
@@ -287,29 +287,29 @@
                                           error:&error];
                 
                 success = [jsonData[@"success"] integerValue];
-                NSLog(@"Success: %ld",(long)success);
+                //NSLog(@"Success: %ld",(long)success);
                 
                 if(success == 0)
                 {
-                    NSLog(@"SUCCESS");
+                    //NSLog(@"SUCCESS");
                     
                     
                 } else {
                     
-                    NSLog(@"Failed");
+                    //NSLog(@"Failed");
                     
                 }
                 
             } else {
                 //if (error) NSLog(@"Error: %@", error);
-                NSLog(@"Failed");
+                //NSLog(@"Failed");
                 NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-                NSLog(@"Response ==> %@", responseData);
+                //NSLog(@"Response ==> %@", responseData);
             }
             
         }
         @catch (NSException * e) {
-            NSLog(@"Exception: %@", e);
+           // NSLog(@"Exception: %@", e);
             
         }
 
@@ -320,7 +320,7 @@
         [self showActionToolbar:NO];
         [self.tableData setEditing:NO animated:YES];
         [self updateButtonsToMatchTableState];
-        NSLog(@"Hits Again?");
+        //NSLog(@"Hits Again?");
         [self sendRequest];
 	}
 }
@@ -335,7 +335,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     self.parentViewController.navigationItem.rightBarButtonItem = self.editButton;
     
-NSLog(@"Reappear");
+//NSLog(@"Reappear");
     dispatch_async(kBgQueue, ^{
         
         NSData* data = [NSData dataWithContentsOfURL:
@@ -438,7 +438,7 @@ NSLog(@"Reappear");
 
 - (void) sendRequest
 {
-    NSLog(@"This is Null??");
+    //NSLog(@"This is Null??");
     //Async Task Called
     dispatch_async(kBgQueue, ^{
         
@@ -457,7 +457,7 @@ NSLog(@"Reappear");
 }
 
 - (NSArray *)fetchedData:(NSData *)responseData {
-    NSLog(@"Delete? %@",self.storeDelete);
+    //NSLog(@"Delete? %@",self.storeDelete);
     if (self.storeDelete)
     {
         NSLog(@"Enters the if");
@@ -467,7 +467,7 @@ NSLog(@"Reappear");
         self.storeDelete = NULL;
     }
     //parse out the json data
-    NSLog(@"Enters Fetched Data Again");
+    //NSLog(@"Enters Fetched Data Again");
    @try {
         NSError* error;
         NSDictionary* json= [NSJSONSerialization
@@ -528,7 +528,7 @@ NSLog(@"Reappear");
                     if ([lastsplit intValue]<[ninty intValue]){
                         //if less than 90 display in seconds
                         lasttime=[personalinterval lastObject];
-                        NSLog(@"Last Time %@",lasttime);
+                        //NSLog(@"Last Time %@",lasttime);
                     }
                     else{
                         //If greater than 90 seconds display in minute format
@@ -536,7 +536,7 @@ NSLog(@"Reappear");
                         if ([lastsplitseconds intValue]<10) {
                             NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@.%@",lastsplitminutes,lastsplitseconds,decimalInt];
                             [lasttime addObject:elapsedtime];
-                            NSLog(@"Last Time %@",lasttime);
+                            //NSLog(@"Last Time %@",lasttime);
                             //self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
                             
                         }
@@ -544,7 +544,7 @@ NSLog(@"Reappear");
                         else{
                             NSString* elapsedtime = [NSString stringWithFormat:@"%@:%@.%@",lastsplitminutes,lastsplitseconds,decimalInt];
                             [lasttime addObject:elapsedtime];
-                            NSLog(@"Last Time %@",lasttime);
+                            //NSLog(@"Last Time %@",lasttime);
                         }
                     }
                     
@@ -577,7 +577,7 @@ NSLog(@"Reappear");
                 [athleteDictionary setObject:[self.runners objectAtIndex:index] forKey:@"name"];
                 [athleteDictionary setObject:[self.runnerID objectAtIndex:index] forKey:@"athleteID"];
                 [athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
-                NSLog(@"Error here?");
+                //NSLog(@"Error here?");
                 [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
                 [athleteDictionary setObject:[NSNumber numberWithInt:0] forKey:@"countStart"];
                 [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
@@ -595,7 +595,7 @@ NSLog(@"Reappear");
                     
                     if (![personalinterval isEqual:[NSNull null]]) {
 
-                        if ( [personalinterval  count] == 0)
+                        if ( [personalinterval  count] == 0 && [[[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"numberSplits"] isEqual:[NSNull null]])
                         {
                             elapsedtime = [NSString stringWithFormat:@"NT"];
                             superlasttime = [NSString stringWithFormat:@"NT"];
@@ -625,7 +625,7 @@ NSLog(@"Reappear");
                         NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
                         NSMutableDictionary *tempDictIndex = [self.athleteDictionaryArray objectAtIndex:closestIndex];
                         NSInteger rangeVar = [[tempDictIndex valueForKey:@"countStart"] integerValue];
-                        NSLog(@"Errors Here? %ld", (long)rangeVar);
+                        //NSLog(@"Errors Here? %ld", (long)rangeVar);
                         NSArray *resetViewCount = [tempArray subarrayWithRange: NSMakeRange(rangeVar, [tempArray count]-rangeVar)];
                        
 
@@ -706,7 +706,7 @@ NSLog(@"Reappear");
                 }
                 //Otherwise load and append to bottom.
                 else{
-                    NSLog(@"In Else Statement2 ");
+                    //NSLog(@"In Else Statement2 ");
                     NSIndexPath* rowToAdd = [NSIndexPath indexPathForRow:[tempArray count] inSection:0];
                     NSArray* rowsToAdd = [NSArray arrayWithObjects:rowToAdd, nil];
                     NSArray *tempArray= [self.interval objectAtIndex:index];
@@ -753,7 +753,7 @@ NSLog(@"Reappear");
                         if ([lastsplit intValue]<[ninty intValue]){
                             //if less than 90 display in seconds
                             lasttime=[tempArray lastObject];
-                            NSLog(@"Last Time %@",lasttime);
+                            //NSLog(@"Last Time %@",lasttime);
                         }
                         else{
                             //If greater than 90 seconds display in minute format
@@ -761,7 +761,7 @@ NSLog(@"Reappear");
                             if ([lastsplitseconds intValue]<10) {
                                 NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@.%@",lastsplitminutes,lastsplitseconds,decimalInt];
                                 [lasttime addObject:elapsedtime];
-                                NSLog(@"Last Time %@",lasttime);
+                               // NSLog(@"Last Time %@",lasttime);
                                 //self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
                                 
                             }
@@ -769,7 +769,7 @@ NSLog(@"Reappear");
                             else{
                                 NSString* elapsedtime = [NSString stringWithFormat:@"%@:%@.%@",lastsplitminutes,lastsplitseconds,decimalInt];
                                 [lasttime addObject:elapsedtime];
-                                NSLog(@"Last Time %@",lasttime);
+                               // NSLog(@"Last Time %@",lasttime);
                             }
                         }
                         
@@ -822,7 +822,7 @@ NSLog(@"Reappear");
         return self.runners;
   }
     @catch (NSException *exception) {
-        NSLog(@"Exception.......... %s","Except!");
+        //NSLog(@"Exception.......... %s","Except!");
         return self.runners;
     }
 
@@ -875,7 +875,7 @@ NSLog(@"Reappear");
         CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
     if (cell == nil) {
-        NSLog(@"Fails nil?");
+        //NSLog(@"Fails nil?");
         [tableView registerNib:[UINib nibWithNibName:@"CustomCell" bundle:nil] forCellReuseIdentifier:@"myCell"];
         cell = [tableView dequeueReusableCellWithIdentifier:@"myCell"];
     }

@@ -36,6 +36,11 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+-(IBAction)createAccountClicked:(id)sender{
+    NSURL *url = [ [ NSURL alloc ] initWithString: @"https://www.tracchicago.com/register/" ];
+    [[UIApplication sharedApplication] openURL:url];
+    
+}
 
 
 - (IBAction)signinClicked:(id)sender {
@@ -61,7 +66,7 @@
             NSString *base64Encoded = [nsdata base64EncodedStringWithOptions:0];
             NSString *basicencoding = [NSString stringWithFormat:@"Basic %@", base64Encoded];
             // Print the Base64 encoded string
-            NSLog(@"Encoded: %@", basicencoding);
+            //NSLog(@"Encoded: %@", basicencoding);
             
             NSURL *url=[NSURL URLWithString:@"https://trac-us.appspot.com/api/login/"];
             
@@ -84,7 +89,7 @@
             NSHTTPURLResponse *response = nil;
             NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
             
-            NSLog(@"Response code: %ld", (long)[response statusCode]);
+            //NSLog(@"Response code: %ld", (long)[response statusCode]);
             //NSLog(@"Error Code: %@", [error localizedDescription]);
             
             if ([response statusCode] >= 200 && [response statusCode] < 300)
@@ -112,7 +117,7 @@
                     NSURL *url=[NSURL URLWithString:@"https://trac-us.appspot.com/oauth2/token/"];
                     
                     NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-                    NSLog(@"Post Data:%@", postData);
+                    //NSLog(@"Post Data:%@", postData);
                     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
                     
                     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -130,13 +135,13 @@
                     NSHTTPURLResponse *response = nil;
                     NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
                     
-                    NSLog(@"Response code: %ld", (long)[response statusCode]);
+                    //NSLog(@"Response code: %ld", (long)[response statusCode]);
                     // NSLog(@"Error Code: %@", [error localizedDescription]);
                     
                     if ([response statusCode] >= 200 && [response statusCode] < 300)
                     {
                         NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-                        NSLog(@"Response ==> %@", responseData);
+                        //NSLog(@"Response ==> %@", responseData);
                         
                         NSError *error = nil;
                         NSDictionary *jsonData = [NSJSONSerialization
@@ -145,11 +150,11 @@
                                                   error:&error];
                         
                         success = [jsonData[@"success"] integerValue];
-                        NSLog(@"Success: %ld",(long)success);
+                        //NSLog(@"Success: %ld",(long)success);
                         
                         if(success == 0)
                         {
-                            NSLog(@"Login SUCCESS");
+                            //NSLog(@"Login SUCCESS");
 
                             //NSLog(@"SecToken: %@", [jsonData objectForKey:@"access_token"]);
                             self.access_token = [jsonData objectForKey:@"access_token"];
@@ -182,7 +187,7 @@
         }
     }
     @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
+        //NSLog(@"Exception: %@", e);
         [self alertStatus:@"Sign in Failed." :@"Error!" :0];
     }
    // if (success) {

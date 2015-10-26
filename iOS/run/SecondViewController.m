@@ -358,7 +358,7 @@
 {
     searchIndexPath = indexPath.row;
     if (self.searchDisplayController.active) {
-        NSLog(@"It used the search thing");
+        //NSLog(@"It used the search thing");
         RunnerDetail *runnerDetail = nil;
         runnerDetail = [self.filteredRunnersArray objectAtIndex:indexPath.row];
         self.personalSplits=[[NSMutableArray alloc] init];
@@ -416,7 +416,7 @@
     
     }
     else{
-    NSLog(@"Non active search?");
+    //NSLog(@"Non active search?");
     self.personalSplits=[[NSMutableArray alloc] init];
     self.counterArray = [NSMutableArray array];
     self.splitString= self.runners[indexPath.row];
@@ -516,7 +516,7 @@
     // Filter the array using NSPredicate
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"runnerName contains[c] %@",searchText];
     self.filteredRunnersArray = [NSMutableArray arrayWithArray:[runnersArray filteredArrayUsingPredicate:predicate]];
-    NSLog(@"DOes this work? %@", self.filteredRunnersArray);
+    //NSLog(@"DOes this work? %@", self.filteredRunnersArray);
     
 }
 
