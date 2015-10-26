@@ -460,6 +460,7 @@ NSLog(@"Reappear");
     NSLog(@"Delete? %@",self.storeDelete);
     if (self.storeDelete)
     {
+        NSLog(@"Enters the if");
         Executed = TRUE;
         [self.athleteDictionaryArray removeAllObjects];
         [self.tableData reloadData];
@@ -488,8 +489,13 @@ NSLog(@"Reappear");
        
         for (NSArray *personalinterval in self.interval) {
             
-            if(Executed ==TRUE){
-                if(!personalinterval || !personalinterval.count){
+            if(Executed == TRUE){
+                if([personalinterval isEqual:[NSNull null]]){
+                    elapsedtime = [NSString stringWithFormat:@"DNS"];
+                    superlasttime = [NSString stringWithFormat:@"DNS"];
+                    universalIndex = NULL;
+                }
+                else if(!personalinterval || !personalinterval.count){
                     elapsedtime = [NSString stringWithFormat:@"NT"];
                     superlasttime = [NSString stringWithFormat:@"NT"];
                     universalIndex = 0;
@@ -571,6 +577,7 @@ NSLog(@"Reappear");
                 [athleteDictionary setObject:[self.runners objectAtIndex:index] forKey:@"name"];
                 [athleteDictionary setObject:[self.runnerID objectAtIndex:index] forKey:@"athleteID"];
                 [athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
+                NSLog(@"Error here?");
                 [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
                 [athleteDictionary setObject:[NSNumber numberWithInt:0] forKey:@"countStart"];
                 [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
@@ -578,7 +585,6 @@ NSLog(@"Reappear");
             }
             
             else{
-                
                 //Does the row exist from a previous polling. Check Athlete IDs versus stored dictionary.
                 NSMutableArray *tempArray = [self.athleteDictionaryArray valueForKey:@"athleteID"];
                 BOOL found = CFArrayContainsValue ( (__bridge CFArrayRef)tempArray, CFRangeMake(0, tempArray.count), (CFNumberRef) [self.runnerID objectAtIndex:index]);
@@ -586,15 +592,34 @@ NSLog(@"Reappear");
                 //NSLog(@"Index %lu", (unsigned long)closestIndex);
                 //If the new index is in the dictionary, and if it hasnt loaded all the splits update them and reload.
                 if (found){
-                   
                     
-                    if ((unsigned long)[personalinterval count] > (long)[[[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"numberSplits"] integerValue]) {
-                        NSLog(@"Append IF Statement");
-                        NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:closestIndex inSection:0];
-                        NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
-                        NSArray *tempArray= [self.interval objectAtIndex:index];
-                        
-                        
+                    if (![personalinterval isEqual:[NSNull null]]) {
+
+                        if ( [personalinterval  count] == 0)
+                        {
+                            elapsedtime = [NSString stringWithFormat:@"NT"];
+                            superlasttime = [NSString stringWithFormat:@"NT"];
+                            universalIndex = 0;
+                            
+                            NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:closestIndex inSection:0];
+                            NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
+                            NSArray *tempArray= [self.interval objectAtIndex:index];
+                            //update the dictionary here for that index
+                            NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:closestIndex];
+                            [tempDict removeObjectForKey:@"lastSplit"];
+                            [tempDict removeObjectForKey:@"numberSplits"];
+                            [tempDict removeObjectForKey:@"totalTime"];
+                            [tempDict setObject:superlasttime forKey:@"lastSplit"];
+                            [tempDict setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
+                            [tempDict setObject:elapsedtime forKey:@"totalTime"];
+                            
+                            [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
+                        }
+                        else if ((unsigned long)[personalinterval count] > (long)[[[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"numberSplits"] integerValue]) {
+                            
+                            NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:closestIndex inSection:0];
+                            NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
+                            NSArray *tempArray= [self.interval objectAtIndex:index];
                         
                         //adds all intervals together to give cumulative time
                         NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
@@ -628,7 +653,6 @@ NSLog(@"Reappear");
                         if ([lastsplit intValue]<[ninty intValue]){
                             //if less than 90 display in seconds
                             lasttime=[tempArray lastObject];
-                            NSLog(@"Last Time %@",lasttime);
                         }
                         else{
                             //If greater than 90 seconds display in minute format
@@ -636,7 +660,7 @@ NSLog(@"Reappear");
                             if ([lastsplitseconds intValue]<10) {
                                 NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@.%@",lastsplitminutes,lastsplitseconds,decimalInt];
                                 [lasttime addObject:elapsedtime];
-                                NSLog(@"Last Time %@",lasttime);
+                                
                                 //self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
                                 
                             }
@@ -644,7 +668,7 @@ NSLog(@"Reappear");
                             else{
                                 NSString* elapsedtime = [NSString stringWithFormat:@"%@:%@.%@",lastsplitminutes,lastsplitseconds,decimalInt];
                                 [lasttime addObject:elapsedtime];
-                                NSLog(@"Last Time %@",lasttime);
+                               
                             }
                         }
                         
@@ -665,7 +689,7 @@ NSLog(@"Reappear");
 
                         }
 
-
+                        
                         
                         //update the dictionary here for that index
                         NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:closestIndex];
@@ -677,17 +701,23 @@ NSLog(@"Reappear");
                         [tempDict setObject:elapsedtime forKey:@"totalTime"];
                         
                         [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
+                        }
                     }
                 }
                 //Otherwise load and append to bottom.
                 else{
-
+                    NSLog(@"In Else Statement2 ");
                     NSIndexPath* rowToAdd = [NSIndexPath indexPathForRow:[tempArray count] inSection:0];
                     NSArray* rowsToAdd = [NSArray arrayWithObjects:rowToAdd, nil];
                     NSArray *tempArray= [self.interval objectAtIndex:index];
                     
-                    
-                    if(!tempArray || !tempArray.count){
+                    if([tempArray isEqual:[NSNull null]]){
+                        elapsedtime = [NSString stringWithFormat:@"DNS"];
+                        superlasttime = [NSString stringWithFormat:@"DNS"];
+                        universalIndex = NULL;
+                        
+                    }
+                    else if(!tempArray || !tempArray.count){
                         
                         elapsedtime = [NSString stringWithFormat:@"NT"];
                         superlasttime = [NSString stringWithFormat:@"NT"];
@@ -761,10 +791,6 @@ NSLog(@"Reappear");
                         }
                     }
 
-                    
-                    
-                    
-                    
                     
                     NSMutableDictionary *athleteDictionary = [NSMutableDictionary new];
                     [athleteDictionary setObject:[self.runners objectAtIndex:index] forKey:@"name"];
