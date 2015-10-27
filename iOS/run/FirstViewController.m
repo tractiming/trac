@@ -109,28 +109,138 @@
 
 - (void)splitAction:(id)sender
 {
-    // Open a dialog with just an OK button.
-	NSString *actionTitle;
-    if (([[self.tableData indexPathsForSelectedRows] count] == 1)) {
-        actionTitle = NSLocalizedString(@"Are you sure you want to split this individual?", @"");
+
+    // Delete what the user selected.
+    NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
+    //NSLog(@"Selected Rows, %@",selectedRows);
+    BOOL splitSpecificRows = selectedRows.count > 0;
+    
+    //Get current time in UTC
+    NSDate *currentDate = [[NSDate alloc] init];
+    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy/MM/dd HH:mm:ss.SSS"];
+    [dateFormatter setTimeZone:timeZone];
+    NSString *localDateString = [dateFormatter stringFromDate:currentDate];
+    //NSLog(@"Date time %@", localDateString);
+    NSDictionary *sendThis;
+    NSMutableArray * s = [NSMutableArray new];
+    if (splitSpecificRows)
+    {
+        // Build an NSIndexSet of all the objects to delete, so they can all be removed at once.
+        
+        for (NSIndexPath *selectionIndex in selectedRows)
+        {
+            NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
+            [s addObject:@[[tempDict valueForKey:@"athleteID"],localDateString]];
+        }
+        sendThis = @{@"s": s};
+        //NSLog(@"JSON %@",sendThis);
     }
     else
     {
-        actionTitle = NSLocalizedString(@"Are you sure you want to create a split for these people?", @"");
+        NSArray *selectedRows = [self.tableData indexPathsForVisibleRows];
+        for (NSIndexPath *selectionIndex in selectedRows)
+        {
+            NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
+            [s addObject:@[[tempDict valueForKey:@"athleteID"],localDateString]];
+        }
+        sendThis = @{@"s": s};
+        // NSLog(@"JSON %@",sendThis);
+        // Delete everything, delete the objects from our data model.
+        //Take every row and put into json. Then Send it
     }
     
-    NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Cancel title for item removal action");
-    NSString *okTitle = NSLocalizedString(@"OK", @"OK title for item removal action");
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:actionTitle
-                                                             delegate:self
-                                                    cancelButtonTitle:cancelTitle
-                                               destructiveButtonTitle:okTitle
-                                                    otherButtonTitles:nil];
+    // Exit editing mode after the deletion.
+    //async task now.
     
-	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
     
-    // Show from our table view (pops up in the middle of the table).
-	[actionSheet showInView:self.view];
+    
+    NSInteger success = 0;
+    
+    @try {
+        
+        NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/individual_splits/?access_token=%@",savedToken];
+        
+        NSURL *url=[NSURL URLWithString:idurl2];
+        NSError *error2 = nil;
+        
+        NSArray *array = [s copy];
+        NSString *post;
+        if (selectedRows.count == 1){
+            post =[[NSString alloc] initWithFormat:@"s=[%@]",array];
+        }
+        else {
+            post =[[NSString alloc] initWithFormat:@"s=%@",array];
+        }
+        
+        NSData *jsonData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        //NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:0 error:&error2];
+        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[jsonData length]];
+        //NSMutableData *data = [NSMutableData data];
+        //[data appendData:[sendThis dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setURL:url];
+        [request setHTTPMethod:@"POST"];
+        
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:jsonData];
+        
+        
+        NSError *error = [[NSError alloc] init];
+        NSHTTPURLResponse *response = nil;
+        NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        
+        if ([response statusCode] >= 200 && [response statusCode] < 300)
+        {
+            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+            //NSLog(@"Response ==> %@", responseData);
+            
+            NSError *error = nil;
+            NSDictionary *jsonData = [NSJSONSerialization
+                                      JSONObjectWithData:urlData
+                                      options:NSJSONReadingMutableContainers
+                                      error:&error];
+            
+            success = [jsonData[@"success"] integerValue];
+            //NSLog(@"Success: %ld",(long)success);
+            
+            if(success == 0)
+            {
+                //NSLog(@"SUCCESS");
+                
+                
+            } else {
+                
+                //NSLog(@"Failed");
+                
+            }
+            
+        } else {
+            //if (error) NSLog(@"Error: %@", error);
+            //NSLog(@"Failed");
+            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+            //NSLog(@"Response ==> %@", responseData);
+        }
+        
+    }
+    @catch (NSException * e) {
+        // NSLog(@"Exception: %@", e);
+        
+    }
+    
+
+    //[self showActionToolbar:NO];
+    //[self.tableData setEditing:NO animated:YES];
+    //[self updateButtonsToMatchTableState];
+    //NSLog(@"Hits Again?");
+    [self sendRequest];
+    
 }
 
 
@@ -183,146 +293,6 @@
     }
 
     
-}
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	// The user tapped one of the OK/Cancel buttons.
-	if (buttonIndex == 0)
-	{
-		// Delete what the user selected.
-        NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
-        //NSLog(@"Selected Rows, %@",selectedRows);
-        BOOL splitSpecificRows = selectedRows.count > 0;
-        
-        //Get current time in UTC
-        NSDate *currentDate = [[NSDate alloc] init];
-        NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
-        
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy/MM/dd HH:mm:ss.SSS"];
-        [dateFormatter setTimeZone:timeZone];
-        NSString *localDateString = [dateFormatter stringFromDate:currentDate];
-        //NSLog(@"Date time %@", localDateString);
-        NSDictionary *sendThis;
-        NSMutableArray * s = [NSMutableArray new];
-        if (splitSpecificRows)
-        {
-            // Build an NSIndexSet of all the objects to delete, so they can all be removed at once.
-            
-            for (NSIndexPath *selectionIndex in selectedRows)
-            {
-                NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
-                [s addObject:@[[tempDict valueForKey:@"athleteID"],localDateString]];
-            }
-            sendThis = @{@"s": s};
-            //NSLog(@"JSON %@",sendThis);
-        }
-        else
-        {
-            NSArray *selectedRows = [self.tableData indexPathsForVisibleRows];
-            for (NSIndexPath *selectionIndex in selectedRows)
-            {
-                NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
-                [s addObject:@[[tempDict valueForKey:@"athleteID"],localDateString]];
-            }
-            sendThis = @{@"s": s};
-           // NSLog(@"JSON %@",sendThis);
-            // Delete everything, delete the objects from our data model.
-            //Take every row and put into json. Then Send it
-        }
-        
-        // Exit editing mode after the deletion.
-        //async task now.
-        
-        
-        
-        NSInteger success = 0;
-        
-        @try {
-            
-            NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
-            NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/individual_splits/?access_token=%@",savedToken];
-            
-            NSURL *url=[NSURL URLWithString:idurl2];
-            NSError *error2 = nil;
-            
-            NSArray *array = [s copy];
-            NSString *post;
-            if (selectedRows.count == 1){
-                post =[[NSString alloc] initWithFormat:@"s=[%@]",array];
-            }
-            else {
-            post =[[NSString alloc] initWithFormat:@"s=%@",array];
-            }
-            
-            NSData *jsonData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-            //NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:0 error:&error2];
-            NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[jsonData length]];
-            //NSMutableData *data = [NSMutableData data];
-            //[data appendData:[sendThis dataUsingEncoding:NSUTF8StringEncoding]];
-            
-            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-            [request setURL:url];
-            [request setHTTPMethod:@"POST"];
-            
-            [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-            [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-            [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-            [request setHTTPBody:jsonData];
-            
-            
-            NSError *error = [[NSError alloc] init];
-            NSHTTPURLResponse *response = nil;
-            NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-            
-            if ([response statusCode] >= 200 && [response statusCode] < 300)
-            {
-                NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-                //NSLog(@"Response ==> %@", responseData);
-                
-                NSError *error = nil;
-                NSDictionary *jsonData = [NSJSONSerialization
-                                          JSONObjectWithData:urlData
-                                          options:NSJSONReadingMutableContainers
-                                          error:&error];
-                
-                success = [jsonData[@"success"] integerValue];
-                //NSLog(@"Success: %ld",(long)success);
-                
-                if(success == 0)
-                {
-                    //NSLog(@"SUCCESS");
-                    
-                    
-                } else {
-                    
-                    //NSLog(@"Failed");
-                    
-                }
-                
-            } else {
-                //if (error) NSLog(@"Error: %@", error);
-                //NSLog(@"Failed");
-                NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-                //NSLog(@"Response ==> %@", responseData);
-            }
-            
-        }
-        @catch (NSException * e) {
-           // NSLog(@"Exception: %@", e);
-            
-        }
-
-        
-       
-        
-        
-        [self showActionToolbar:NO];
-        [self.tableData setEditing:NO animated:YES];
-        [self updateButtonsToMatchTableState];
-        //NSLog(@"Hits Again?");
-        [self sendRequest];
-	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -385,7 +355,12 @@
     ThirdViewController *tvc = [self.tabBarController.viewControllers objectAtIndex:2];
     tvc.urlID = self.urlID;
     
-    actionToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 416, 320, 44)];
+    if (IDIOM ==IPAD) {
+        actionToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 416, self.view.frame.size.width, 44)];
+    }
+    else{
+        actionToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 416, 320, 44)];
+    }
     splitButton =[[UIBarButtonItem alloc]initWithTitle:@"Split All" style:UIBarButtonItemStyleDone target:self action:@selector(splitAction:)];
     resetButton = [[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStylePlain target:self action:@selector(resetAction:)];
     splitButton.width = [[UIScreen mainScreen] bounds].size.width/2;
