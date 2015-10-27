@@ -156,7 +156,7 @@ public class GroupFragment extends ListFragment {
 	        case R.id.action_edit:                
 	              //do something
 	        	Log.d("hello","hello!!");
-	        	  
+	        	//LayoutInflater.from(context).inflate(R.layout., null);
 	            return true;
 	    }
 	    return super.onOptionsItemSelected(item);

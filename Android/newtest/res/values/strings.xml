@@ -29,4 +29,6 @@
 	<string name="stop_description">Finalize results, accept no additional athletes</string>
 	<string name="reset_description">Clear results of all athletes</string>
 	<string name="logout_description">Return to login screen</string>
+	<string name="download">Import Roster</string>
+	<string name="download_description">Pull registered runners into workout</string>
 </resources>
