@@ -245,6 +245,7 @@
 
 
 - (void)resetAction:(id)sender{
+    //[self splitAction:nil];
     // Delete what the user selected.
     NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
     //NSLog(@"Selected Rows, %@",selectedRows);
@@ -386,7 +387,7 @@
 
 - (void)showActionToolbar:(BOOL)show
 {
-    NSLog(@"Entered it again");
+    //NSLog(@"Entered it again");
     CGRect toolbarFrame = actionToolbar.frame;
 	CGRect tableViewFrame = self.tableData.frame;
     UITabBarController *tabBarController = [UITabBarController new];
@@ -404,7 +405,7 @@
 	
 	[UIView beginAnimations:nil context:nil];
 	[UIView setAnimationBeginsFromCurrentState:YES];
-    NSLog(@"Toolbar Frame, TableView Frame %f,%f",toolbarFrame.origin.y,tableViewFrame.size.height);
+    //NSLog(@"Toolbar Frame, TableView Frame %f,%f",toolbarFrame.origin.y,tableViewFrame.size.height);
 	actionToolbar.frame = toolbarFrame;
 	self.tableData.frame = tableViewFrame;
 	
@@ -599,7 +600,7 @@
                         //adds all intervals together to give cumulative time
                         NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
                         NSMutableDictionary *tempDictIndex = [self.athleteDictionaryArray objectAtIndex:closestIndex];
-                        NSInteger rangeVar = [[tempDictIndex valueForKey:@"countStart"] integerValue];
+                        NSInteger rangeVar = [[tempDictIndex valueForKey:@"countStart"] integerValue]+1;
                         //NSLog(@"Errors Here? %ld", (long)rangeVar);
                         NSArray *resetViewCount = [tempArray subarrayWithRange: NSMakeRange(rangeVar, [tempArray count]-rangeVar)];
                        
@@ -702,7 +703,7 @@
                         //adds all intervals together to give cumulative time
                         NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
                         NSMutableDictionary *tempDictIndex = [self.athleteDictionaryArray objectAtIndex:closestIndex];
-                        NSInteger rangeVar = [[tempDictIndex valueForKey:@"countStart"] integerValue];
+                        NSInteger rangeVar = [[tempDictIndex valueForKey:@"countStart"] integerValue]+1;
                         NSArray *resetViewCount = [tempArray subarrayWithRange: NSMakeRange(rangeVar, [tempArray count]-rangeVar)];
                         for (NSArray *subinterval in resetViewCount){
                             NSArray* subs=[subinterval lastObject];
