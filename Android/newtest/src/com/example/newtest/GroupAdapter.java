@@ -1,6 +1,7 @@
 package com.example.newtest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,6 +18,9 @@ public class GroupAdapter extends BaseAdapter{
 	private List<Runners> parsedJson; 
 	private Context context;
 	private ArrayList<Runners> runnersList;
+	List<String> resultData;
+	HashMap<String, List<String>> athelteDictionary;
+	List<String> subAthelteDictionary;
 	
 	public GroupAdapter(List<Runners> workout, Context context) {
 	 runnersList = new ArrayList<Runners>();
@@ -86,11 +90,6 @@ public class GroupAdapter extends BaseAdapter{
 		else{
 			textView2.setText(parsedJson.get(position).interval.get(intervals.size() - 1)[ii]);
 		}
-		
-		
-		
-		//Log.d("HEYHEY ","YELLO");
-		
 		//Add times together and display elapsed time for split
 				
 			    float temp_var = 0; 
@@ -132,29 +131,18 @@ public class GroupAdapter extends BaseAdapter{
 			textView4.setText("NT");
 		}
 				
-				
-		//This is for the popup window, when opened, display all splits from the session
-		//removed from GroupFragment.java document so will not show
-//		StringBuilder builder_group = new StringBuilder();
-		//List<String[]> interval = parsedJson.runners.get(position).interval;
-//		TextView textView3 = (TextView) convertView.findViewById(R.id.dropdown);
-//		
-//				builder_group.append("Session Splits: ");
-//			for (int i = 0; i < parsedJson.runners.get(position).interval.get(intervals.size() - 1).length; i++)			
-//			{
-//				builder_group.append(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[i] + " ");
-//				
-//			}
-//		textView3.setText(builder_group.toString());
-//		
-//	
-		
 		//Fill that view with data
 		//Return that view
 		return convertView;
 	}
 
-
+	public void updateResults(List<Runners> result) {
+        
+        //Triggers the list update
+        notifyDataSetChanged();
+    }
+	
+	
 	public void getFilter(String charText) {
 		charText = charText.toLowerCase(Locale.getDefault());
 		parsedJson.clear();

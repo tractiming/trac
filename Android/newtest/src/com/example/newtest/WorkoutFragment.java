@@ -66,6 +66,7 @@ public class WorkoutFragment extends ListFragment {
 	public void onPause(){
 		super.onPause();
 		asyncTask.cancel(true);
+		
 	}
 	
 	@Override

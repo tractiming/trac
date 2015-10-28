@@ -25,6 +25,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -65,6 +66,7 @@ public class GroupFragment extends ListFragment {
 	public static String date;
 	public GroupAdapter groupList;
 	public GroupAsyncResponse delegate; 
+	public boolean executed; 
 	
 	
 	public static void backButtonWasPressed() {
@@ -90,7 +92,7 @@ public class GroupFragment extends ListFragment {
         //Inflate ID and Workout Numbers
 		mTextView = (TextView) rootView.findViewById(R.id.workout_date_view);
 		mTextView1 = (TextView) rootView.findViewById(R.id.workout_id_view);
-		
+		executed = false;
 		
 		if(testvar != null){
 			timer.cancel();
@@ -155,8 +157,14 @@ public class GroupFragment extends ListFragment {
 	    switch (item.getItemId()) {
 	        case R.id.action_edit:                
 	              //do something
-	        	Log.d("hello","hello!!");
-	        	//LayoutInflater.from(context).inflate(R.layout., null);
+	        	//only does for one right now...
+	        	lview.findViewById(R.id.checkBox).setVisibility(View.VISIBLE);
+	        	TextView tv = (TextView) lview.findViewById(R.id.list_text);
+	        	 //LayoutParams params = tv.getLayoutParams();
+	        	 //params.setMargins(0,0,10,0);
+	        	 //tv.setLayoutParams(params);
+	        	 Log.d("hello","hello!!");
+	        	
 	            return true;
 	    }
 	    return super.onOptionsItemSelected(item);
@@ -218,18 +226,6 @@ public class GroupFragment extends ListFragment {
   
 
  
-/*
-  @Override
-  public void onListItemClick(ListView l, View v, int position, long id) {
-    //Toast.makeText(getActivity(), ((Runners)l.getItemAtPosition(position)).name + "", Toast.LENGTH_SHORT).show();
-	  View toolbar = v.findViewById(R.id.expanded_bar_group);
-		 
-      // Creating the expand animation for the item
-      ExpandAnimation expandAni = new ExpandAnimation(toolbar, 500);
-
-      // Start the animation on the toolbar
-     toolbar.startAnimation(expandAni);
-  }*/
   private TextView mTextView;
   private TextView mTextView1;
 
@@ -251,19 +247,12 @@ public class GroupFragment extends ListFragment {
 		        .url(params[0])
 		        .build();
 				try {
-					//Log.d(DEBUG_TAG, "Pre Response");
 				    Response response = client.newCall(request).execute();
-				    //Log.d(DEBUG_TAG, "Post Response");
+
 				    IndividualResults preFullyParsed = gson.fromJson(response.body().charStream(), IndividualResults.class);
-				    //Log.d(DEBUG_TAG, "Post First Parse");
+
 				    List<Runners> text = preFullyParsed.results;
-				    //Log.d(DEBUG_TAG, "Post First Parse");
-				   // Log.d(DEBUG_TAG, preFullyParsed.results.toString());
-				    
-					//Log.d("TEXT",text);
-				   // Runners variable = text.toArray()
-				   // Runners parsedjWorkout = gson.fromJson(text, Runners.class);
-				    
+
 				    Workout test = null;
 				    	
 				    //Log.d(DEBUG_TAG, parsedjWorkout[1].toString());
@@ -278,7 +267,7 @@ public class GroupFragment extends ListFragment {
 			@Override
 			protected void onPostExecute(List<Runners> result) {
 				Log.d(DEBUG_TAG,"execute");
-				//String resultstring = result.toString();
+
 				 mLoginStatusView.setVisibility(View.GONE);
 				//did not have popup appear if null due to async every 2 seconds being called. Popup will continuously popup then
 				if(result==null){
@@ -289,11 +278,19 @@ public class GroupFragment extends ListFragment {
 				//set result to show on screen
 				
 				Parcelable state = lview.onSaveInstanceState();
-				groupList = new GroupAdapter(result, getActivity());
-			    setListAdapter(groupList);	
-			    
-			    mTextView.setText("Workout Name: " + title);
-			    mTextView1.setText("Date: " + date.substring(0,10));
+				if (executed == false){
+					groupList = new GroupAdapter(result, getActivity());
+				    setListAdapter(groupList);	
+				    //Set Headers
+				    mTextView.setText("Workout Name: " + title);
+				    mTextView1.setText("Date: " + date.substring(0,10));
+				    executed = true;
+				}
+				else{
+					groupList.updateResults(result);
+					
+					
+				}
 			    delegate.processFinish(groupList);
 			    lview.onRestoreInstanceState(state);
 				}
