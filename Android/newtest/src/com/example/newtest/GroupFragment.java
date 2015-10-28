@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -66,7 +67,10 @@ public class GroupFragment extends ListFragment {
 	public static String date;
 	public GroupAdapter groupList;
 	public GroupAsyncResponse delegate; 
-	public boolean executed; 
+	public boolean executed;
+	List<HashMap> resultData;
+	HashMap<String, List<String>> athleteDictionary;
+	List<String> subAthelteDictionary;
 	
 	
 	public static void backButtonWasPressed() {
@@ -275,24 +279,65 @@ public class GroupFragment extends ListFragment {
 				}
 				else
 				{
-				//set result to show on screen
-				
-				Parcelable state = lview.onSaveInstanceState();
-				if (executed == false){
-					groupList = new GroupAdapter(result, getActivity());
-				    setListAdapter(groupList);	
-				    //Set Headers
-				    mTextView.setText("Workout Name: " + title);
-				    mTextView1.setText("Date: " + date.substring(0,10));
-				    executed = true;
-				}
-				else{
-					groupList.updateResults(result);
+					//store result into dictionary
+					resultData = new ArrayList<HashMap>();
+					athleteDictionary = new HashMap<String, List<String>>();
+					//subAthelteDictionary = new ArrayList<String>();
+					for (int i = 0; i < result.size(); i++){
+						List<String> tempArray = new ArrayList<String>();
+						//resultData.add(result.get(i).name);
+						for (int j = 0; j < result.get(i).interval.size(); j++){
+							float temp = Float.parseFloat(result.get(i).interval.get(j)[0]);
+							if (temp>90){
+								int min = (int) Math.floor(temp/60);
+								int sec = (int) (((temp*60)-Math.floor(temp/60)*3600)/60);
+								int mili = (int) (temp*100-Math.floor(temp)*100);
+								StringBuilder sb = new StringBuilder();
+								if (sec < 10)
+								{
+									
+									sb.append(min + ":0" + sec +"." + mili );
+								}
+								else
+								{
+									
+									sb.append(min + ":" +sec +"."+ mili);
+								}
+								//tempArray.add(sb.toString());
+							}
+							else{
+								//tempArray.add(result.get(i).interval.get(j)[0].toString());
+							}				
+							Log.d("Interval to String", result.get(i).interval.get(j)[0].toString());
+							
+						}
+						tempArray.add(Integer.toString(result.get(i).interval.size()));
+						tempArray.add(Integer.toString(0));
+						athleteDictionary.put(result.get(i).name, tempArray);
+						resultData.add(athleteDictionary);
+						//store name, [last time, total time, total count, last counted]
+						//athleteDictionary.put(resultData.get(i), tempArray);
+					}
+					Log.d("Dictionary",athleteDictionary.toString());
 					
 					
-				}
-			    delegate.processFinish(groupList);
-			    lview.onRestoreInstanceState(state);
+					//set result to show on screen
+					Parcelable state = lview.onSaveInstanceState();
+					if (executed == false){
+						groupList = new GroupAdapter(result, getActivity(),resultData);
+					    setListAdapter(groupList);	
+					    //Set Headers
+					    mTextView.setText("Workout Name: " + title);
+					    mTextView1.setText("Date: " + date.substring(0,10));
+					    executed = true;
+					}
+					else{
+						groupList.updateResults(result);
+						
+						
+					}
+				    delegate.processFinish(groupList);
+				    lview.onRestoreInstanceState(state);
 				}
 			}
 			  

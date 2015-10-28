@@ -18,14 +18,13 @@ public class GroupAdapter extends BaseAdapter{
 	private List<Runners> parsedJson; 
 	private Context context;
 	private ArrayList<Runners> runnersList;
-	List<String> resultData;
-	HashMap<String, List<String>> athelteDictionary;
-	List<String> subAthelteDictionary;
+	private List<HashMap> resultData;
 	
-	public GroupAdapter(List<Runners> workout, Context context) {
+	public GroupAdapter(List<Runners> workout, Context context, List<HashMap> resultData) {
 	 runnersList = new ArrayList<Runners>();
 	 this.parsedJson = workout;
 	 this.context = context;
+	 this.resultData = resultData;
 	 runnersList.addAll(parsedJson);
 	}
 	
@@ -137,6 +136,8 @@ public class GroupAdapter extends BaseAdapter{
 	}
 
 	public void updateResults(List<Runners> result) {
+        Log.d("Log",resultData.toString());
+        //update specific arrays as necessary.
         
         //Triggers the list update
         notifyDataSetChanged();
