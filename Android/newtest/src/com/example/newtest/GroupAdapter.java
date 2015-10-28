@@ -143,10 +143,31 @@ public class GroupAdapter extends BaseAdapter{
         //update specific arrays as necessary.
         for (int i = 0; i < result.size(); i++){
         	//Does athelte id exist? check recently polled json from stored dictionary
+        	//If doesnt exist add to end
         	
+        	//Log.d("Works?",resultData.get(result.get(i).id).get(1).toString());
+        
         	Boolean tempBool = tempDict.contains(result.get(i).id);
         	if (!tempBool){
+        		Log.d("In Boolean Again","Boolean Check");
         		parsedJson.add(result.get(i));
+        		notifyDataSetChanged();
+        		List<String> tempArray = new ArrayList<String>();
+        		tempArray.add(result.get(i).name);
+				tempArray.add(Integer.toString(result.get(i).interval.size()));
+				tempArray.add(Integer.toString(0));
+        		resultData.put(result.get(i).id, tempArray);
+        		
+        	}
+        	else if (tempBool & result.get(i).interval.size() > Integer.parseInt(resultData.get(result.get(i).id).get(1))) {
+        		//If new json has more entries than old json, update
+        		//Find the relevant index in java; find result.get(i).id
+        		List<String> tempArray = new ArrayList<String>();
+        		for(int jj = 0; jj < parsedJson.size();jj++){
+        			tempArray.add(parsedJson.get(jj).id);
+        		}
+        		//Log.d("Does this worK?",Integer.toString(parsedJson..indexOf(result.get(i).id)));
+        		parsedJson.set(tempArray.indexOf(result.get(i).id),result.get(i));
         		notifyDataSetChanged();
         	}
         }
