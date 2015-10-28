@@ -18,9 +18,9 @@ public class GroupAdapter extends BaseAdapter{
 	private List<Runners> parsedJson; 
 	private Context context;
 	private ArrayList<Runners> runnersList;
-	private List<HashMap> resultData;
+	private HashMap<String, List<String>> resultData;
 	
-	public GroupAdapter(List<Runners> workout, Context context, List<HashMap> resultData) {
+	public GroupAdapter(List<Runners> workout, Context context, HashMap<String, List<String>> resultData) {
 	 runnersList = new ArrayList<Runners>();
 	 this.parsedJson = workout;
 	 this.context = context;
@@ -55,7 +55,7 @@ public class GroupAdapter extends BaseAdapter{
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_group, null);
 		}
-		
+		//Log.d("Array Position",resultData.get(position).toString());
 		
 		//this finds the name and displays it
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
@@ -136,11 +136,22 @@ public class GroupAdapter extends BaseAdapter{
 	}
 
 	public void updateResults(List<Runners> result) {
-        Log.d("Log",resultData.toString());
-        //update specific arrays as necessary.
+        //Log.d("Log",resultData.toString());
+        List<String> tempDict = new ArrayList<String>(resultData.keySet());
+        Log.d("Dict Values Extracted",tempDict.toString());
         
+        //update specific arrays as necessary.
+        for (int i = 0; i < result.size(); i++){
+        	//Does athelte id exist? check recently polled json from stored dictionary
+        	
+        	Boolean tempBool = tempDict.contains(result.get(i).id);
+        	if (!tempBool){
+        		parsedJson.add(result.get(i));
+        		notifyDataSetChanged();
+        	}
+        }
         //Triggers the list update
-        notifyDataSetChanged();
+        
     }
 	
 	

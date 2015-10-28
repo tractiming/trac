@@ -68,7 +68,7 @@ public class GroupFragment extends ListFragment {
 	public GroupAdapter groupList;
 	public GroupAsyncResponse delegate; 
 	public boolean executed;
-	List<HashMap> resultData;
+	List<String> resultData;
 	HashMap<String, List<String>> athleteDictionary;
 	List<String> subAthelteDictionary;
 	
@@ -157,7 +157,7 @@ public class GroupFragment extends ListFragment {
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
+		
 	    switch (item.getItemId()) {
 	        case R.id.action_edit:                
 	              //do something
@@ -280,13 +280,14 @@ public class GroupFragment extends ListFragment {
 				else
 				{
 					//store result into dictionary
-					resultData = new ArrayList<HashMap>();
+					resultData = new ArrayList<String>();
 					athleteDictionary = new HashMap<String, List<String>>();
 					//subAthelteDictionary = new ArrayList<String>();
 					for (int i = 0; i < result.size(); i++){
 						List<String> tempArray = new ArrayList<String>();
-						//resultData.add(result.get(i).name);
+						resultData.add(result.get(i).id);
 						for (int j = 0; j < result.get(i).interval.size(); j++){
+							
 							float temp = Float.parseFloat(result.get(i).interval.get(j)[0]);
 							if (temp>90){
 								int min = (int) Math.floor(temp/60);
@@ -308,15 +309,15 @@ public class GroupFragment extends ListFragment {
 							else{
 								//tempArray.add(result.get(i).interval.get(j)[0].toString());
 							}				
-							Log.d("Interval to String", result.get(i).interval.get(j)[0].toString());
-							
+							//Log.d("Interval to String", result.get(i).interval.get(j)[0].toString());
 						}
+						tempArray.add(result.get(i).name);
 						tempArray.add(Integer.toString(result.get(i).interval.size()));
 						tempArray.add(Integer.toString(0));
-						athleteDictionary.put(result.get(i).name, tempArray);
-						resultData.add(athleteDictionary);
+						//athleteDictionary.put(result.get(i).id, tempArray);
+						//resultData.add(athleteDictionary);
 						//store name, [last time, total time, total count, last counted]
-						//athleteDictionary.put(resultData.get(i), tempArray);
+						athleteDictionary.put(resultData.get(i), tempArray);
 					}
 					Log.d("Dictionary",athleteDictionary.toString());
 					
@@ -324,7 +325,7 @@ public class GroupFragment extends ListFragment {
 					//set result to show on screen
 					Parcelable state = lview.onSaveInstanceState();
 					if (executed == false){
-						groupList = new GroupAdapter(result, getActivity(),resultData);
+						groupList = new GroupAdapter(result, getActivity(),athleteDictionary);
 					    setListAdapter(groupList);	
 					    //Set Headers
 					    mTextView.setText("Workout Name: " + title);
@@ -337,7 +338,7 @@ public class GroupFragment extends ListFragment {
 						
 					}
 				    delegate.processFinish(groupList);
-				    lview.onRestoreInstanceState(state);
+				   //lview.onRestoreInstanceState(state);
 				}
 			}
 			  
