@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +25,8 @@ public class GroupAdapter extends BaseAdapter{
 	private ArrayList<Runners> runnersList;
 	private HashMap<String, List<String>> resultData;
 	private boolean checkStatus;
+	ArrayList<Boolean> positionArray;
+	
 	
 	public GroupAdapter(List<Runners> workout, Context context, HashMap<String, List<String>> resultData) {
 	 runnersList = new ArrayList<Runners>();
@@ -30,6 +34,12 @@ public class GroupAdapter extends BaseAdapter{
 	 this.context = context;
 	 this.resultData = resultData;
 	 runnersList.addAll(parsedJson);
+	 
+	 //iterate through array and put false in for every entry--checkboxes
+	 positionArray = new ArrayList<Boolean>(parsedJson.size());
+	    for(int i =0;i<parsedJson.size();i++){
+	        positionArray.add(false);
+	    }
 	}
 	
 	
@@ -53,13 +63,36 @@ public class GroupAdapter extends BaseAdapter{
 
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		//Inflate a view to show peoples names
+		View row = convertView;
+	    Holder holder = null;
+		
 		if (convertView == null) {
+			holder = new Holder();
 			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_group, null);
+			holder.ckbox = (CheckBox) convertView.findViewById(R.id.checkBox);
+			convertView.setTag(holder);
 		}
-		//Log.d("Array Position",resultData.get(position).toString());
+		else {
+			holder = (Holder) convertView.getTag();
+		}
+		holder.ckbox.setFocusable(false);
+	    holder.ckbox.setChecked(positionArray.get(position));
+	    holder.ckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+	    	
+	        @Override
+	        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+	            if(isChecked ){
+	            	Log.d("Array Position","he????re??");
+	            System.out.println(positionArray.toString()+"--- :)");
+	                positionArray.add(position, true);
+	            }else
+	                positionArray.add(position, false);
+	        }
+		
+	    });
 		
 		//this finds the name and displays it
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
@@ -68,17 +101,17 @@ public class GroupAdapter extends BaseAdapter{
 		
 		TextView textView4 =(TextView) convertView.findViewById(R.id.list_text3);
 		
-		CheckBox checkbx = (CheckBox) convertView.findViewById(R.id.checkBox);
+		
 		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)textView.getLayoutParams();
 		if (checkStatus){
 			params.setMargins(50, 0, 0, 0); //substitute parameters for left, top, right, bottom
 			textView.setLayoutParams(params);
-			checkbx.setVisibility(View.VISIBLE);
+			holder.ckbox.setVisibility(View.VISIBLE);
 		}
 		else{
 			params.setMargins(0, 0, 0, 0); //substitute parameters for left, top, right, bottom
 			textView.setLayoutParams(params);
-			checkbx.setVisibility(View.GONE);
+			holder.ckbox.setVisibility(View.GONE);
 		}
 		//This determines the what is the most recent split, and display it
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
@@ -216,6 +249,11 @@ public class GroupAdapter extends BaseAdapter{
 		notifyDataSetChanged();
 	}
 
+	static class Holder
+	{
+	   
+	    CheckBox ckbox;
 
+	}
 	
 }

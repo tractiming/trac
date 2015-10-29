@@ -145,28 +145,38 @@
         android:headerDividersEnabled="true" >
     </ListView>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/footer"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="39dp"
         android:background="#3577A8"
         android:orientation="horizontal"
-        android:weightSum="6"
-        android:visibility="gone" >
-
+        android:weightSum="2"
+        android:visibility="visible">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="50dp"
-            android:text="@string/split" />
-
+            
+            android:text="@string/split" 
+            android:textColor="@color/White"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_weight="1"
+           />
+		<View 
+      android:id="@+id/View01"
+      android:layout_width="2dip"
+      android:layout_height="wrap_content"
+      android:background="#2B497B"
+/>
+        
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="50dp"
-            android:text="@string/reset" />
-    </RelativeLayout>
+            
+            android:text="@string/reset"
+            android:textColor="@color/White" 
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
 </LinearLayout>
