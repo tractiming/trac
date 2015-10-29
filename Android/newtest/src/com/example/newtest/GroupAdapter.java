@@ -11,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class GroupAdapter extends BaseAdapter{
@@ -19,6 +22,7 @@ public class GroupAdapter extends BaseAdapter{
 	private Context context;
 	private ArrayList<Runners> runnersList;
 	private HashMap<String, List<String>> resultData;
+	private boolean checkStatus;
 	
 	public GroupAdapter(List<Runners> workout, Context context, HashMap<String, List<String>> resultData) {
 	 runnersList = new ArrayList<Runners>();
@@ -64,6 +68,18 @@ public class GroupAdapter extends BaseAdapter{
 		
 		TextView textView4 =(TextView) convertView.findViewById(R.id.list_text3);
 		
+		CheckBox checkbx = (CheckBox) convertView.findViewById(R.id.checkBox);
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)textView.getLayoutParams();
+		if (checkStatus){
+			params.setMargins(50, 0, 0, 0); //substitute parameters for left, top, right, bottom
+			textView.setLayoutParams(params);
+			checkbx.setVisibility(View.VISIBLE);
+		}
+		else{
+			params.setMargins(0, 0, 0, 0); //substitute parameters for left, top, right, bottom
+			textView.setLayoutParams(params);
+			checkbx.setVisibility(View.GONE);
+		}
 		//This determines the what is the most recent split, and display it
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
 		List<String[]> intervals = parsedJson.get(position).interval;
@@ -135,6 +151,11 @@ public class GroupAdapter extends BaseAdapter{
 		return convertView;
 	}
 
+	public void changeCheck(Boolean checkstats){
+		checkStatus = checkstats;
+		notifyDataSetChanged();
+		
+	}
 	public void updateResults(List<Runners> result) {
         //Log.d("Log",resultData.toString());
         List<String> tempDict = new ArrayList<String>(resultData.keySet());

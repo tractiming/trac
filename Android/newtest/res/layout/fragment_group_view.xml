@@ -3,110 +3,115 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="top"
-    android:orientation="vertical">
+    android:orientation="vertical" >
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
         android:id="@+id/workout_date_view"
-        android:layout_gravity="left"
-        />
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:layout_gravity="left"
+        android:textSize="16sp" />
+
+    <TextView
         android:id="@+id/workout_id_view"
-        android:layout_gravity="left"/>
-    
-<!--     <LinearLayout -->
-<!--     android:layout_width="fill_parent" -->
-<!--     android:layout_height="wrap_content" -->
-<!--     android:orientation="horizontal" -->
-<!--     android:gravity="center"> -->
-<!--      <com.example.newtest.ChronometerSubs -->
-<!--         android:id="@+id/chronometer" -->
-<!--         android:gravity="center" -->
-<!--         android:layout_width="wrap_content" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:textSize="80sp"/> -->
-<!--      </LinearLayout> -->
-    
-<!-- <LinearLayout -->
-<!--     android:layout_width="fill_parent" -->
-<!--     android:layout_height="wrap_content" -->
-<!--     android:orientation="horizontal" -->
-<!--     android:gravity="center" -->
-<!--     > -->
-<!--             <Button -->
-<!--               style="?android:attr/borderlessButtonStyle" -->
-<!--                android:text="@string/start" -->
-<!--                android:id="@+id/start_button" -->
-<!--                android:layout_width="wrap_content" -->
-<!--                android:layout_height="wrap_content" -->
-<!--                android:textSize="25sp" /> -->
-<!--                android:background="@drawable/ic_launcher"  allows you to substitute an image for a button -->
-                         
-<!--               <Button -->
-<!--                   style="?android:attr/borderlessButtonStyle" -->
-<!--                 android:text="@string/stop" -->
-<!--                 android:id="@+id/stop_button" -->
-<!--                 android:layout_width="wrap_content" -->
-<!--                            android:layout_height="wrap_content" -->
-<!--                            android:textSize="25sp"/> -->
-<!--  </LinearLayout> -->
-      
-   
-    <!--  <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:textSize="16sp" />
+
+    <!-- <LinearLayout -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:orientation="horizontal" -->
+    <!-- android:gravity="center"> -->
+    <!-- <com.example.newtest.ChronometerSubs -->
+    <!-- android:id="@+id/chronometer" -->
+    <!-- android:gravity="center" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:textSize="80sp"/> -->
+    <!-- </LinearLayout> -->
+
+
+    <!-- <LinearLayout -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:orientation="horizontal" -->
+    <!-- android:gravity="center" -->
+    <!-- > -->
+    <!-- <Button -->
+    <!-- style="?android:attr/borderlessButtonStyle" -->
+    <!-- android:text="@string/start" -->
+    <!-- android:id="@+id/start_button" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:textSize="25sp" /> -->
+    <!-- android:background="@drawable/ic_launcher"  allows you to substitute an image for a button -->
+
+
+    <!-- <Button -->
+    <!-- style="?android:attr/borderlessButtonStyle" -->
+    <!-- android:text="@string/stop" -->
+    <!-- android:id="@+id/stop_button" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:textSize="25sp"/> -->
+    <!-- </LinearLayout> -->
+
+
+    <!--
+  <ListView
   android:id="@+id/list_titles"
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
-	</ListView> -->
-	
+	</ListView>
+    -->
+
     <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="#3577A8"
-    android:weightSum="4">
-    <TextView
-    android:id="@+id/header"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Name" 
-    android:background="#3577A8"
-    android:textSize="18sp"
-    android:textColor="#FFFFFF"
-    android:layout_alignParentStart="true"
-    />
-    <TextView
-    android:id="@+id/header2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Split Time" 
-    android:background="#3577A8"
-    android:textSize="18sp"
-    android:textColor="#FFFFFF"
-    android:layout_centerHorizontal="true"
-    />
-    <TextView
-    android:id="@+id/header3"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Total Time" 
-    android:background="#3577A8"
-    android:textSize="18sp"
-    android:textColor="#FFFFFF"
-    android:layout_marginLeft="40dp"
-    android:layout_alignParentEnd="true"
-    />
-    
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3577A8"
+        android:orientation="horizontal"
+        android:weightSum="4" >
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:background="#3577A8"
+            android:text="Name"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/header2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="#3577A8"
+            android:text="Split Time"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/header3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="40dp"
+            android:background="#3577A8"
+            android:text="Total Time"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
     </RelativeLayout>
-    
+
     <LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="2dp"
-    android:orientation="horizontal"
-    android:background="#F0B922" />
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#F0B922"
+        android:orientation="horizontal" />
+
     <LinearLayout
         android:id="@+id/login_status"
         android:layout_width="wrap_content"
@@ -114,9 +119,9 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="gone" 
-        >
-    <ProgressBar
+        android:visibility="gone" >
+
+        <ProgressBar
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,12 +136,37 @@
             android:text="Loading..."
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
-    
+
     <ListView
-  android:id="@android:id/list"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:headerDividersEnabled="true"
-  >
-	</ListView> 
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="356dp"
+        android:layout_weight="1.50"
+        android:headerDividersEnabled="true" >
+    </ListView>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:background="#3577A8"
+        android:orientation="horizontal"
+        android:weightSum="6"
+        android:visibility="gone" >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="50dp"
+            android:text="@string/split" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="50dp"
+            android:text="@string/reset" />
+    </RelativeLayout>
+
 </LinearLayout>

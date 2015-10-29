@@ -71,6 +71,7 @@ public class GroupFragment extends ListFragment {
 	List<String> resultData;
 	HashMap<String, List<String>> athleteDictionary;
 	List<String> subAthelteDictionary;
+	private boolean editStatus;
 	
 	
 	public static void backButtonWasPressed() {
@@ -96,6 +97,8 @@ public class GroupFragment extends ListFragment {
         //Inflate ID and Workout Numbers
 		mTextView = (TextView) rootView.findViewById(R.id.workout_date_view);
 		mTextView1 = (TextView) rootView.findViewById(R.id.workout_id_view);
+		//boolean values for checkmark and async task
+		editStatus = false;
 		executed = false;
 		
 		if(testvar != null){
@@ -161,9 +164,13 @@ public class GroupFragment extends ListFragment {
 	    switch (item.getItemId()) {
 	        case R.id.action_edit:                
 	              //do something
-	        	//only does for one right now...
-	        	lview.findViewById(R.id.checkBox).setVisibility(View.VISIBLE);
-	        	TextView tv = (TextView) lview.findViewById(R.id.list_text);
+	        	//only does for one right now..
+	        	groupList.changeCheck(editStatus);
+	        	if(editStatus)
+	        		editStatus = false;
+	        	else
+	        		editStatus = true;
+	        	
 	        	 //LayoutParams params = tv.getLayoutParams();
 	        	 //params.setMargins(0,0,10,0);
 	        	 //tv.setLayoutParams(params);
