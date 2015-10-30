@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -153,8 +154,11 @@ public class GroupFragment extends ListFragment {
 	    b2.setOnClickListener( new View.OnClickListener() {
 		    public void onClick(View v) {
 		      Log.d("Button Clicked", "Split");
-		      ArrayList<Boolean> checkArray = groupList.getCheckArray();
+		      ArrayList<String> checkArray = groupList.getCheckArrayID();
 		      Log.d("Arraycheck",checkArray.toString());
+		      groupList.resetCheckArray();
+		      groupList.clearCheckboxes();
+		      //groupList.changeBool();
 		    }
 		  });
 	    
@@ -162,14 +166,30 @@ public class GroupFragment extends ListFragment {
 	    b1.setOnClickListener( new View.OnClickListener() {
 		    public void onClick(View v) {
 		      Log.d("Button Clicked", "Reset");
-		      ArrayList<Boolean> checkArray = groupList.getCheckArray();
+		      ArrayList<String> checkArray = groupList.getCheckArrayID();
 		      Log.d("Arraycheck",checkArray.toString());
+		      groupList.resetCheckArray();
+		      groupList.clearCheckboxes();
+		      //groupList.changeBool();
 		    }
 		  });
 		
 
 		return rootView;
 	}	
+	
+	@Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Log.i("List Clicked:", "******");
+
+        //Toggle CheckBox from not selected to selected and vice versa.
+        if (v != null) {
+            CheckBox checkBox = (CheckBox)v.findViewById(R.id.checkBox);
+            checkBox.setChecked(!checkBox.isChecked());
+        }
+    }
+	
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

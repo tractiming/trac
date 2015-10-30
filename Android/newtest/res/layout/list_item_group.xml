@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:focusable="false"
-        android:focusableInTouchMode="false"
+		android:clickable="false"    
         android:visibility="invisible"
         android:padding= "10dp"
          />

@@ -26,6 +26,8 @@ public class GroupAdapter extends BaseAdapter{
 	private HashMap<String, List<String>> resultData;
 	private boolean checkStatus;
 	ArrayList<Boolean> positionArray;
+	ArrayList<String> athleteIDArray;
+	private boolean clearCheckboxes;
 	
 	
 	public GroupAdapter(List<Runners> workout, Context context, HashMap<String, List<String>> resultData) {
@@ -35,6 +37,7 @@ public class GroupAdapter extends BaseAdapter{
 	 this.resultData = resultData;
 	 runnersList.addAll(parsedJson);
 	 checkStatus = false;
+	 athleteIDArray = new ArrayList<String>();
 	 //iterate through array and put false in for every entry--checkboxes
 	 positionArray = new ArrayList<Boolean>(parsedJson.size());
 	    for(int k=0; k < parsedJson.size(); k++){
@@ -78,6 +81,12 @@ public class GroupAdapter extends BaseAdapter{
 		else {
 			holder = (Holder) convertView.getTag();
 		}
+		 System.out.println(position+"    "+clearCheckboxes);
+		if (clearCheckboxes)
+		{
+			holder.ckbox.setChecked(false);
+			Log.d("Switch???!","Ckbox");
+		}
 		holder.ckbox.setFocusable(false);
 	    holder.ckbox.setChecked(positionArray.get(position));
 	    holder.ckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -86,6 +95,7 @@ public class GroupAdapter extends BaseAdapter{
 	        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 	            if(isChecked){
 	                positionArray.set(position, true);
+	                athleteIDArray.add(parsedJson.get(position).id);
 	            }
 	            else
 	                positionArray.set(position, false);
@@ -93,7 +103,7 @@ public class GroupAdapter extends BaseAdapter{
 	        }
 	        
 	    });
-	    System.out.println(position+"    "+positionArray.toString()+"--- :)");
+	   
 		//this finds the name and displays it
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
 		textView.setText(parsedJson.get(position).name);
@@ -186,6 +196,19 @@ public class GroupAdapter extends BaseAdapter{
 	
 	public ArrayList<Boolean> getCheckArray(){
 		return positionArray;
+	}
+	public ArrayList<String> getCheckArrayID(){
+		return athleteIDArray;
+	}
+	public void resetCheckArray(){
+		athleteIDArray.clear();
+	}
+	public void clearCheckboxes(){
+		clearCheckboxes = true;
+		notifyDataSetChanged();	
+	}
+	public void changeBool(){
+		clearCheckboxes = false;
 	}
 	
 	public void changeCheck(Boolean checkstats){
