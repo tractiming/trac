@@ -34,7 +34,7 @@ public class GroupAdapter extends BaseAdapter{
 	 this.context = context;
 	 this.resultData = resultData;
 	 runnersList.addAll(parsedJson);
-	 
+	 checkStatus = false;
 	 //iterate through array and put false in for every entry--checkboxes
 	 positionArray = new ArrayList<Boolean>(parsedJson.size());
 	    for(int k=0; k < parsedJson.size(); k++){
@@ -183,9 +183,15 @@ public class GroupAdapter extends BaseAdapter{
 		//Return that view
 		return convertView;
 	}
-
+	
+	public ArrayList<Boolean> getCheckArray(){
+		return positionArray;
+	}
+	
 	public void changeCheck(Boolean checkstats){
+		System.out.println("CheckStatus    "+checkstats);
 		checkStatus = checkstats;
+		System.out.println("CheckStatus   After "+checkstats);
 		notifyDataSetChanged();
 		
 	}

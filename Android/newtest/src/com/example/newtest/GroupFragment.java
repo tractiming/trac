@@ -98,7 +98,7 @@ public class GroupFragment extends ListFragment {
 		mTextView = (TextView) rootView.findViewById(R.id.workout_date_view);
 		mTextView1 = (TextView) rootView.findViewById(R.id.workout_id_view);
 		//boolean values for checkmark and async task
-		editStatus = false;
+		editStatus = true;
 		executed = false;
 		
 		if(testvar != null){
@@ -148,7 +148,25 @@ public class GroupFragment extends ListFragment {
 		detailListHeader = rootView.findViewById(R.id.header);
 		detailListHeader2 = rootView.findViewById(R.id.header2);
 		detailListHeader3 = rootView.findViewById(R.id.header3);
+		
+		final Button b2 = (Button) rootView.findViewById(R.id.split);
+	    b2.setOnClickListener( new View.OnClickListener() {
+		    public void onClick(View v) {
+		      Log.d("Button Clicked", "Split");
+		      ArrayList<Boolean> checkArray = groupList.getCheckArray();
+		      Log.d("Arraycheck",checkArray.toString());
+		    }
+		  });
 	    
+	    final Button b1 = (Button) rootView.findViewById(R.id.reset);
+	    b1.setOnClickListener( new View.OnClickListener() {
+		    public void onClick(View v) {
+		      Log.d("Button Clicked", "Reset");
+		      ArrayList<Boolean> checkArray = groupList.getCheckArray();
+		      Log.d("Arraycheck",checkArray.toString());
+		    }
+		  });
+		
 
 		return rootView;
 	}	
