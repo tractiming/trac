@@ -154,9 +154,9 @@
         android:weightSum="2"
         android:visibility="visible">
         <Button
+            android:id="@+id/split"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
             android:text="@string/split" 
             android:textColor="@color/White"
             android:background="?android:attr/selectableItemBackground"
@@ -166,13 +166,12 @@
       android:id="@+id/View01"
       android:layout_width="2dip"
       android:layout_height="wrap_content"
-      android:background="#2B497B"
-/>
+      android:background="#2B497B"/>
         
         <Button
+            android:id="@+id/reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
             android:text="@string/reset"
             android:textColor="@color/White" 
             android:background="?android:attr/selectableItemBackground"

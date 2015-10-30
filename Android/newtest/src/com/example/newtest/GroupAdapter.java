@@ -37,7 +37,7 @@ public class GroupAdapter extends BaseAdapter{
 	 
 	 //iterate through array and put false in for every entry--checkboxes
 	 positionArray = new ArrayList<Boolean>(parsedJson.size());
-	    for(int i =0;i<parsedJson.size();i++){
+	    for(int k=0; k < parsedJson.size(); k++){
 	        positionArray.add(false);
 	    }
 	}
@@ -84,16 +84,16 @@ public class GroupAdapter extends BaseAdapter{
 	    	
 	        @Override
 	        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-	            if(isChecked ){
-	            	Log.d("Array Position","he????re??");
-	            System.out.println(positionArray.toString()+"--- :)");
-	                positionArray.add(position, true);
-	            }else
-	                positionArray.add(position, false);
+	            if(isChecked){
+	                positionArray.set(position, true);
+	            }
+	            else
+	                positionArray.set(position, false);
+	            
 	        }
-		
+	        
 	    });
-		
+	    System.out.println(position+"    "+positionArray.toString()+"--- :)");
 		//this finds the name and displays it
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
 		textView.setText(parsedJson.get(position).name);
