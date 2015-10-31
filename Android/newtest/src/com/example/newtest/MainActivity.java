@@ -329,6 +329,9 @@ public class MainActivity extends ActionBarActivity implements
 			case 0:
 				groupFrag = new GroupFragment();
 				groupFrag.delegate = this;
+				Bundle args = new Bundle();
+			    args.putString("AccessToken",access_token);
+			    groupFrag.setArguments(args);
 				return groupFrag;
 			case 1:
 				 workoutFrag = new WorkoutFragment();

@@ -212,12 +212,10 @@ public class GroupAdapter extends BaseAdapter{
 	}
 	
 	public void changeCheck(Boolean checkstats){
-		System.out.println("CheckStatus    "+checkstats);
 		checkStatus = checkstats;
-		System.out.println("CheckStatus   After "+checkstats);
 		notifyDataSetChanged();
-		
 	}
+	
 	public void updateResults(List<Runners> result) {
         //Log.d("Log",resultData.toString());
         List<String> tempDict = new ArrayList<String>(resultData.keySet());

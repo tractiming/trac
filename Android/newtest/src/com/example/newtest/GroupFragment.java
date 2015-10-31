@@ -14,6 +14,7 @@ import java.util.TimerTask;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -73,7 +74,7 @@ public class GroupFragment extends ListFragment {
 	HashMap<String, List<String>> athleteDictionary;
 	List<String> subAthelteDictionary;
 	private boolean editStatus;
-	
+	private String access_token;
 	
 	public static void backButtonWasPressed() {
 		timer.cancel();
@@ -91,6 +92,9 @@ public class GroupFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Bundle args = getArguments();
+		access_token = args.getString("AccessToken","");
+		
 		setHasOptionsMenu(true);
 		//Log.d("Instance State in Group on Create",savedInstanceState.toString());
 		View rootView = inflater.inflate(R.layout.fragment_group_view, container,
@@ -153,21 +157,24 @@ public class GroupFragment extends ListFragment {
 		final Button b2 = (Button) rootView.findViewById(R.id.split);
 	    b2.setOnClickListener( new View.OnClickListener() {
 		    public void onClick(View v) {
-		      Log.d("Button Clicked", "Split");
-		      ArrayList<String> checkArray = groupList.getCheckArrayID();
-		      Log.d("Arraycheck",checkArray.toString());
-		      groupList.resetCheckArray();
-		      groupList.clearCheckboxes();
-		      //groupList.changeBool();
+		    	
+		    	ArrayList<String> checkArray = groupList.getCheckArrayID();
+		    	
+		    	Log.d("Array has data?2 ??",checkArray.toString());
+		    	
+	        	String url = "https://trac-us.appspot.com/api/individual_splits/?id=80&access_token=" + access_token;
+	        	SplitAsyncCall splitCall = new SplitAsyncCall(checkArray,url);
+	        	splitCall.execute();
+	        	Log.d("Array has data? 3?",checkArray.toString());
+	        	//groupList.resetCheckArray();
+	        	//groupList.clearCheckboxes();
 		    }
 		  });
 	    
 	    final Button b1 = (Button) rootView.findViewById(R.id.reset);
 	    b1.setOnClickListener( new View.OnClickListener() {
 		    public void onClick(View v) {
-		      Log.d("Button Clicked", "Reset");
 		      ArrayList<String> checkArray = groupList.getCheckArrayID();
-		      Log.d("Arraycheck",checkArray.toString());
 		      groupList.resetCheckArray();
 		      groupList.clearCheckboxes();
 		      //groupList.changeBool();
@@ -181,8 +188,6 @@ public class GroupFragment extends ListFragment {
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Log.i("List Clicked:", "******");
-
         //Toggle CheckBox from not selected to selected and vice versa.
         if (v != null) {
             CheckBox checkBox = (CheckBox)v.findViewById(R.id.checkBox);
