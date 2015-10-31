@@ -1,18 +1,27 @@
 package com.example.newtest;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
-	public BooleanAsyncResponse delegate = null; 
+	//public BooleanAsyncResponse delegate = null; 
 	
     String url;
     ArrayList<String> checkArray;
@@ -28,18 +37,43 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 	protected Boolean doInBackground(Void... params) {
 		// Attempt authentication against a network service.
 		final String DEBUG_TAG = "Token Check";
+		final MediaType MEDIA_TYPE_MARKDOWN
+	      = MediaType.parse("text/x-markdown; charset=utf-8");
+		
 		//String pre_json = "id=1";
 		Log.d(DEBUG_TAG, "data in here??? "+ checkArray);
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy/MMM/dd HH:mm:ss.SSS");
+		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+		final String utcTime = dateFormatGmt.format(new Date());
 		
-		RequestBody body = RequestBody.create(null, url);
+		JSONObject parent = new JSONObject();
+		JSONArray masterArray = new JSONArray();
+		for (int i=0; i< checkArray.size();i++){
+			JSONArray jsonArray = new JSONArray();
+			jsonArray.put(checkArray.get(i));
+			jsonArray.put(utcTime);
+			masterArray.put(jsonArray);
+		}
+		try {
+			parent.put("s",masterArray);
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Log.d("JSON",parent.toString());
+		
+		RequestBody body = RequestBody.create(MEDIA_TYPE_MARKDOWN, parent.toString());
 		Log.d(DEBUG_TAG, "Request Body "+ body);
 			
 		OkHttpClient client = new OkHttpClient();
 		
-		Request request = new Request.Builder()
-        .url(url)
-        .post(body)
-        .build();
+		 RequestBody formBody = new FormEncodingBuilder()
+	        .add("s", masterArray.toString())
+	        .build();
+	    Request request = new Request.Builder()
+	        .url(url)
+	        .post(formBody)
+	        .build();
 		
 		Log.d(DEBUG_TAG, "Request Data: "+ request);
 		try {
@@ -70,7 +104,7 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 
 	@Override
 	protected void onPostExecute(final Boolean success) {
-		delegate.processFinish(success);
+		//delegate.processFinish(success);
 
 		if (success == null){
 			Log.d("NULL","WORK");
