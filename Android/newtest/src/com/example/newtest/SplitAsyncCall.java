@@ -42,7 +42,7 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 		
 		//String pre_json = "id=1";
 		Log.d(DEBUG_TAG, "data in here??? "+ checkArray);
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy/MMM/dd HH:mm:ss.SSS");
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
 		final String utcTime = dateFormatGmt.format(new Date());
 		
@@ -60,15 +60,18 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		Log.d("JSON",parent.toString());
+		
 		
 		RequestBody body = RequestBody.create(MEDIA_TYPE_MARKDOWN, parent.toString());
 		Log.d(DEBUG_TAG, "Request Body "+ body);
-			
+		String tempArray = masterArray.toString();
+		tempArray = tempArray.replace("\\/", "/");
+		Log.d("JSON",tempArray);
+		
 		OkHttpClient client = new OkHttpClient();
 		
 		 RequestBody formBody = new FormEncodingBuilder()
-	        .add("s", masterArray.toString())
+	        .add("s", tempArray)
 	        .build();
 	    Request request = new Request.Builder()
 	        .url(url)

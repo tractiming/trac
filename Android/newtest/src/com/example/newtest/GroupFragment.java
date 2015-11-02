@@ -162,7 +162,8 @@ public class GroupFragment extends ListFragment {
 		    	
 		    	Log.d("Array has data?2 ??",checkArray.toString());
 		    	
-	        	String url = "http://10.0.2.2:8000/api/individual_splits/?access_token=e4qRp09ODxIakdVpn8HuR1Ub2TpdMA";
+	        	String url = "https://trac-us.appspot.com/api/individual_splits/?access_token=" + access_token;;
+	        	//http://10.0.2.2:8000/api/individual_splits/?access_token=TIqT4duj7LnkyE5YwDO3qV2a7AJET8
 	        	SplitAsyncCall splitCall = new SplitAsyncCall(checkArray,url);
 	        	splitCall.execute();
 	        	Log.d("Array has data? 3?",checkArray.toString());
