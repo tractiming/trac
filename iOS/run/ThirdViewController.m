@@ -8,6 +8,7 @@
 
 #import "ThirdViewController.h"
 #import "FirstViewController.h"
+#import "RosterTableViewController.h"
 #define TRACQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
 
 @interface ThirdViewController ()
@@ -468,6 +469,17 @@
     }
     
     
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    //on view controller change, move to next page, and pass url to next view
+    if ([segue.identifier isEqualToString:@"rosterSegue"]) {
+        
+        RosterTableViewController *rosterController = segue.destinationViewController;
+        rosterController.urlID = self.urlID;
+
+        
+    }
 }
 
 

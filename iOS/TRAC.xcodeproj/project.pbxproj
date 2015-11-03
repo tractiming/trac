@@ -18,6 +18,7 @@
 		90A0698D1A360D05008CAA75 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90A0698C1A360D05008CAA75 /* CustomCell.m */; };
 		90C54F081BDEFFB6000FFDB0 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90C54F061BDEFFB6000FFDB0 /* Main_iPad.storyboard */; };
 		90E1FC7B1AE09AB4001C24F2 /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E1FC7A1AE09AB4001C24F2 /* ThirdViewController.m */; };
+		90E215331BE86E4500E617EC /* RosterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E215321BE86E4500E617EC /* RosterTableViewController.m */; };
 		90E5F4C01B72A3AE002B9276 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E5F4BF1B72A3AE002B9276 /* DetailViewController.m */; };
 		90E6879E1915C48B0060B20B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E6879D1915C48B0060B20B /* Foundation.framework */; };
 		90E687A01915C48B0060B20B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E6879F1915C48B0060B20B /* CoreGraphics.framework */; };
@@ -68,6 +69,8 @@
 		90C54F071BDEFFB6000FFDB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		90E1FC791AE09AB4001C24F2 /* ThirdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdViewController.h; sourceTree = "<group>"; };
 		90E1FC7A1AE09AB4001C24F2 /* ThirdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdViewController.m; sourceTree = "<group>"; };
+		90E215311BE86E4500E617EC /* RosterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RosterTableViewController.h; sourceTree = "<group>"; };
+		90E215321BE86E4500E617EC /* RosterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RosterTableViewController.m; sourceTree = "<group>"; };
 		90E5F4BE1B72A3AE002B9276 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		90E5F4BF1B72A3AE002B9276 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		90E6879A1915C48B0060B20B /* trac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = trac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -164,6 +167,8 @@
 		90E687A31915C48B0060B20B /* run */ = {
 			isa = PBXGroup;
 			children = (
+				90E215311BE86E4500E617EC /* RosterTableViewController.h */,
+				90E215321BE86E4500E617EC /* RosterTableViewController.m */,
 				902104AD1A40AF3100FCC771 /* Reachability.h */,
 				902104AE1A40AF3100FCC771 /* Reachability.m */,
 				90A069891A360C79008CAA75 /* CustomCell.xib */,
@@ -392,6 +397,7 @@
 				90E1FC7B1AE09AB4001C24F2 /* ThirdViewController.m in Sources */,
 				90E687B71915C48B0060B20B /* FirstViewController.m in Sources */,
 				902104AF1A40AF3100FCC771 /* Reachability.m in Sources */,
+				90E215331BE86E4500E617EC /* RosterTableViewController.m in Sources */,
 				90E687AA1915C48B0060B20B /* main.m in Sources */,
 				90862F7D1B6B205100DB9E4B /* Workout.m in Sources */,
 				90E5F4C01B72A3AE002B9276 /* DetailViewController.m in Sources */,
@@ -535,7 +541,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Griffin Kelly (8GZGC5RAVP)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "run/TRAC-Prefix.pch";
@@ -555,7 +561,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Griffin Kelly (8GZGC5RAVP)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "run/TRAC-Prefix.pch";
