@@ -102,7 +102,7 @@
             if(success == 0)
             {
                 //NSLog(@"SUCCESS");
-                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully changed start time of workout" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully changed end time of workout" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
                 //return self.access_token;
             } else {
