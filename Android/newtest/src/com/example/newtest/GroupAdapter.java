@@ -292,6 +292,7 @@ public class GroupAdapter extends BaseAdapter{
         		totalSizeArray.add(Integer.toString(0));
         		totalAthleteID.add(result.get(i).id);
         		parsedJson.add(result.get(i));
+        		positionArray.add(false);
         		
         		
         		notifyDataSetChanged();
