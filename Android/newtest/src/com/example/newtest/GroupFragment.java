@@ -113,8 +113,8 @@ public class GroupFragment extends ListFragment {
 			asyncServiceCall.cancel(true);
 			mLoginStatusView = rootView.findViewById(R.id.login_status);
 		    mLoginStatusView.setVisibility(View.GONE);
-		    mTextView.setText("Date: " + date);
-		    mTextView1.setText("Workout ID: " + title);
+		    mTextView1.setText("Date: " + date.substring(0,10));
+		    mTextView.setText("Workout Name: " + title);
 		    Log.d("Log","Not NULL");
 
 		}
