@@ -81,7 +81,7 @@ public class GroupAdapter extends BaseAdapter{
 		else {
 			holder = (Holder) convertView.getTag();
 		}
-		
+		System.out.println(clearCheckboxes);
 		if (clearCheckboxes)
 		{
 			holder.ckbox.setChecked(false);
@@ -94,6 +94,7 @@ public class GroupAdapter extends BaseAdapter{
 	        @Override
 	        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 	            if(isChecked){
+	            	changeBool();
 	                positionArray.set(position, true);
 	                athleteIDArray.add(parsedJson.get(position).id);
 	                Log.d("Adding it","adding it");
@@ -213,8 +214,7 @@ public class GroupAdapter extends BaseAdapter{
 	}
 	public void clearCheckboxes(){
 		clearCheckboxes = true;
-		Log.d("Fired","Clear");
-		notifyDataSetChanged();	
+		Log.d("Fired","Clear");	
 	}
 	public void changeBool(){
 		clearCheckboxes = false;

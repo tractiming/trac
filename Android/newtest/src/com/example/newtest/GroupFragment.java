@@ -253,11 +253,6 @@ public class GroupFragment extends ListFragment {
 	        	else
 	        		editStatus = true;
 	        	
-	        	 //LayoutParams params = tv.getLayoutParams();
-	        	 //params.setMargins(0,0,10,0);
-	        	 //tv.setLayoutParams(params);
-	        	 Log.d("hello","hello!!");
-	        	
 	            return true;
 	    }
 	    return super.onOptionsItemSelected(item);
