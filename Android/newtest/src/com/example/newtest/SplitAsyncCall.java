@@ -91,7 +91,7 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 		    
 		    Log.d(DEBUG_TAG, "VAR: "+ var);
 		    
-		    if (codevar == 200) {
+		    if (codevar == 201) {
 		    return true;
 		    }
 		    else {

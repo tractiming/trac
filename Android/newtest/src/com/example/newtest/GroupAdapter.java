@@ -81,7 +81,7 @@ public class GroupAdapter extends BaseAdapter{
 		else {
 			holder = (Holder) convertView.getTag();
 		}
-		 System.out.println(position+"    "+clearCheckboxes);
+		
 		if (clearCheckboxes)
 		{
 			holder.ckbox.setChecked(false);
@@ -96,14 +96,22 @@ public class GroupAdapter extends BaseAdapter{
 	            if(isChecked){
 	                positionArray.set(position, true);
 	                athleteIDArray.add(parsedJson.get(position).id);
+	                Log.d("Adding it","adding it");
 	            }
-	            else
+	            else if(!isChecked){
 	                positionArray.set(position, false);
-	            
+	            //if its in there and its unchecked...
+		            if(athleteIDArray.contains(parsedJson.get(position).id)){
+		            	int athleteindex = athleteIDArray.indexOf(parsedJson.get(position).id);
+		            	athleteIDArray.remove(athleteindex);
+		            	Log.d("Removing it","removing it");
+		            }
+	            }
+	            System.out.println(athleteIDArray);
 	        }
 	        
 	    });
-	   
+	    
 		//this finds the name and displays it
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
 		textView.setText(parsedJson.get(position).name);
@@ -205,10 +213,12 @@ public class GroupAdapter extends BaseAdapter{
 	}
 	public void clearCheckboxes(){
 		clearCheckboxes = true;
+		Log.d("Fired","Clear");
 		notifyDataSetChanged();	
 	}
 	public void changeBool(){
 		clearCheckboxes = false;
+		
 	}
 	
 	public void changeCheck(Boolean checkstats){
@@ -219,7 +229,7 @@ public class GroupAdapter extends BaseAdapter{
 	public void updateResults(List<Runners> result) {
         //Log.d("Log",resultData.toString());
         List<String> tempDict = new ArrayList<String>(resultData.keySet());
-        Log.d("Dict Values Extracted",tempDict.toString());
+        //Log.d("Dict Values Extracted",tempDict.toString());
         
         //update specific arrays as necessary.
         for (int i = 0; i < result.size(); i++){
@@ -230,7 +240,7 @@ public class GroupAdapter extends BaseAdapter{
         
         	Boolean tempBool = tempDict.contains(result.get(i).id);
         	if (!tempBool){
-        		Log.d("In Boolean Again","Boolean Check");
+        		//Log.d("In Boolean Again","Boolean Check");
         		parsedJson.add(result.get(i));
         		notifyDataSetChanged();
         		List<String> tempArray = new ArrayList<String>();

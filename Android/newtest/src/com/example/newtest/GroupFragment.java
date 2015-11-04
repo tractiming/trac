@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -75,11 +76,12 @@ public class GroupFragment extends ListFragment {
 	List<String> subAthelteDictionary;
 	private boolean editStatus;
 	private String access_token;
-	
+	public Boolean asyncStatus;
+	public List<Runners> tempRunVar;
 	public static void backButtonWasPressed() {
 		timer.cancel();
 		asyncServiceCall.cancel(true);
-        Log.d("HI","Passed");
+        //Log.d("HI","Passed");
         testvar = null;
     }
 
@@ -160,13 +162,49 @@ public class GroupFragment extends ListFragment {
 		    	
 		    	ArrayList<String> checkArray = groupList.getCheckArrayID();
 		    	
-		    	Log.d("Array has data?2 ??",checkArray.toString());
+		    	//Log.d("Array has data?2 ??",checkArray.toString());
 		    	
 	        	String url = "https://trac-us.appspot.com/api/individual_splits/?access_token=" + access_token;;
 	        	//http://10.0.2.2:8000/api/individual_splits/?access_token=TIqT4duj7LnkyE5YwDO3qV2a7AJET8
 	        	SplitAsyncCall splitCall = new SplitAsyncCall(checkArray,url);
 	        	splitCall.execute();
-	        	Log.d("Array has data? 3?",checkArray.toString());
+	        	groupList.clearCheckboxes();
+	        	try {
+					asyncStatus = splitCall.get();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        	if(asyncStatus){
+	        		Log.d("Lets clear stuff","OKay?");
+	        		
+	        		
+	        		asyncServiceCall = new AsyncServiceCall();
+                	asyncServiceCall.execute(message);
+                	try {
+						tempRunVar = asyncServiceCall.get();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        		if(tempRunVar != null){
+	        			Log.d("","We got results");
+	        			groupList.resetCheckArray();
+	        			//groupList.changeBool();
+	        		}
+	        	
+	        	}
+	        	else{
+	        		Log.d("","Nope");
+	        		
+	        	}
+	        	//Log.d("Array has data? 3?",checkArray.toString());
 	        	//groupList.resetCheckArray();
 	        	//groupList.clearCheckboxes();
 		    }
@@ -234,7 +272,7 @@ public class GroupFragment extends ListFragment {
 		                    	asyncServiceCall.cancel(true);
 		                    	asyncServiceCall = new AsyncServiceCall();
 		                        // PerformBackgroundTask this class is the class that extends AsynchTask 
-		                    	Log.d("URL:", message);
+		                    	//Log.d("URL:", message);
 		                    	//performs async service call on the message--url--passed
 		                    	asyncServiceCall.execute(message);
 		                    	Log.i(DEBUG_TAG, "counter");
@@ -370,7 +408,7 @@ public class GroupFragment extends ListFragment {
 						//store name, [last time, total time, total count, last counted]
 						athleteDictionary.put(resultData.get(i), tempArray);
 					}
-					Log.d("Dictionary",athleteDictionary.toString());
+					//Log.d("Dictionary",athleteDictionary.toString());
 					
 					
 					//set result to show on screen
@@ -389,6 +427,7 @@ public class GroupFragment extends ListFragment {
 						
 					}
 				    delegate.processFinish(groupList);
+				 
 				   //lview.onRestoreInstanceState(state);
 				}
 			}
