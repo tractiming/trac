@@ -216,9 +216,9 @@ public class GroupFragment extends ListFragment {
 		      ArrayList<String> checkArray = groupList.getCheckArrayID();
 		      Log.d("Check Array", checkArray.toString());
 		      groupList.resetButtonPressed(checkArray);
-		      //groupList.resetCheckArray();
-		      //groupList.clearCheckboxes();
-		      //groupList.changeBool();
+		      groupList.resetCheckArray();
+		      groupList.clearCheckboxes();
+		      
 		    }
 		  });
 		

@@ -262,6 +262,7 @@ public class GroupAdapter extends BaseAdapter{
         	}
 
 		}
+		changeBool();
 		notifyDataSetChanged();
 		
 	}
