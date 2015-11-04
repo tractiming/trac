@@ -214,8 +214,10 @@ public class GroupFragment extends ListFragment {
 	    b1.setOnClickListener( new View.OnClickListener() {
 		    public void onClick(View v) {
 		      ArrayList<String> checkArray = groupList.getCheckArrayID();
-		      groupList.resetCheckArray();
-		      groupList.clearCheckboxes();
+		      Log.d("Check Array", checkArray.toString());
+		      groupList.resetButtonPressed(checkArray);
+		      //groupList.resetCheckArray();
+		      //groupList.clearCheckboxes();
 		      //groupList.changeBool();
 		    }
 		  });
@@ -231,6 +233,8 @@ public class GroupFragment extends ListFragment {
         if (v != null) {
             CheckBox checkBox = (CheckBox)v.findViewById(R.id.checkBox);
             checkBox.setChecked(!checkBox.isChecked());
+            //LinearLayout footer = (LinearLayout)v.findViewById(R.id.footer);
+            //footer.setVisibility(LinearLayout.VISIBLE);
         }
     }
 	
@@ -328,6 +332,10 @@ public class GroupFragment extends ListFragment {
 			  Log.d("Async", "PreExcute");
 		  }
 		  
+		    @Override
+		    protected void onCancelled() {
+		        Log.d("Canceled", "canceld");
+		    }
 		  
 			@Override
 			protected List<Runners> doInBackground(String... params) {

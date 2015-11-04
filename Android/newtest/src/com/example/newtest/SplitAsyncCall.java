@@ -25,7 +25,10 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 	
     String url;
     ArrayList<String> checkArray;
-
+    @Override
+    protected void onCancelled() {
+        Log.d("Canceled", "canceld");
+    }
 
     SplitAsyncCall(ArrayList<String> checkArray, String url) {
         this.url = url;

@@ -28,6 +28,10 @@ public class GroupAdapter extends BaseAdapter{
 	ArrayList<Boolean> positionArray;
 	ArrayList<String> athleteIDArray;
 	private boolean clearCheckboxes;
+	ArrayList<String> totalCountArray;
+	ArrayList<String> totalSizeArray;
+	ArrayList<String> totalAthleteID;
+	public boolean addingRow;
 	
 	
 	public GroupAdapter(List<Runners> workout, Context context, HashMap<String, List<String>> resultData) {
@@ -42,6 +46,20 @@ public class GroupAdapter extends BaseAdapter{
 	 positionArray = new ArrayList<Boolean>(parsedJson.size());
 	    for(int k=0; k < parsedJson.size(); k++){
 	        positionArray.add(false);
+	    }
+	    
+	totalCountArray = new ArrayList<String>(parsedJson.size());
+		for(int k=0; k < parsedJson.size(); k++){
+	        totalCountArray.add(resultData.get(parsedJson.get(k).id).get(2).toString());
+	    }
+		
+	totalSizeArray = new ArrayList<String>(parsedJson.size());
+		for(int k=0; k < parsedJson.size(); k++){
+			totalSizeArray.add(resultData.get(parsedJson.get(k).id).get(1).toString());
+	    }
+	totalAthleteID = new ArrayList<String>(parsedJson.size());
+		for(int k=0; k < parsedJson.size(); k++){
+			totalAthleteID.add(parsedJson.get(k).id);
 	    }
 	}
 	
@@ -69,6 +87,8 @@ public class GroupAdapter extends BaseAdapter{
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		//Inflate a view to show peoples names
+		//constantly update totalsize array
+		totalSizeArray.set(position,Integer.toString(parsedJson.get(position).interval.size()));
 		View row = convertView;
 	    Holder holder = null;
 		
@@ -81,18 +101,22 @@ public class GroupAdapter extends BaseAdapter{
 		else {
 			holder = (Holder) convertView.getTag();
 		}
-		System.out.println(clearCheckboxes);
+		
 		if (clearCheckboxes)
 		{
 			holder.ckbox.setChecked(false);
-			Log.d("Switch???!","Ckbox");
 		}
+	
 		holder.ckbox.setFocusable(false);
-	    holder.ckbox.setChecked(positionArray.get(position));
-	    holder.ckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+	   if(!addingRow){ 
+		   holder.ckbox.setChecked(positionArray.get(position));
+		   addingRow = false;
+	   }
+		   holder.ckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 	    	
 	        @Override
 	        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+	        	
 	            if(isChecked){
 	            	changeBool();
 	                positionArray.set(position, true);
@@ -108,11 +132,11 @@ public class GroupAdapter extends BaseAdapter{
 		            	Log.d("Removing it","removing it");
 		            }
 	            }
-	            System.out.println(athleteIDArray);
+	            //System.out.println(positionArray);
 	        }
 	        
 	    });
-	    
+	  
 		//this finds the name and displays it
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
 		textView.setText(parsedJson.get(position).name);
@@ -136,60 +160,59 @@ public class GroupAdapter extends BaseAdapter{
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
 		List<String[]> intervals = parsedJson.get(position).interval;
 		if (intervals != null && !intervals.isEmpty()){
-		int ii = parsedJson.get(position).interval.get(intervals.size() - 1).length - 1;
-		
-		float firstsplitfloat = Float.parseFloat(parsedJson.get(position).interval.get(intervals.size() - 1)[ii]);
-		if (firstsplitfloat>90){
-			int min = (int) Math.floor(firstsplitfloat/60);
-			int sec = (int) (((firstsplitfloat*60)-Math.floor(firstsplitfloat/60)*3600)/60);
-			int mili = (int) (firstsplitfloat*100-Math.floor(firstsplitfloat)*100);
-			StringBuilder sb = new StringBuilder();
-			if (sec < 10)
-			{
-				sb.append(min + ":0" + sec +"." + mili );
-			}
-			else
-			{
-				sb.append(min + ":" +sec +"."+ mili);		
-			}
-			textView2.setText(sb.toString());
-		}
-		else{
-			textView2.setText(parsedJson.get(position).interval.get(intervals.size() - 1)[ii]);
-		}
-		//Add times together and display elapsed time for split
-				
-			    float temp_var = 0; 
-				for (int i = 0; i < parsedJson.get(position).interval.size();i++)	
-					
-				{
-					
-					//float foo = Float.parseFloat(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[1]);
-					//Log.d("Loop Variable in Adapter",parsedJson.runners.get(position).interval.get(i).toString());
-					
-					for (String splits: parsedJson.get(position).interval.get(i)){
-						float temp = Float.parseFloat(splits);
-						String f1Str = Float.toString(temp);   
-						//Log.d("Splits??!?!?!",f1Str);
-						temp_var=temp_var + temp;
-					}
-				}
+			int ii = parsedJson.get(position).interval.get(intervals.size() - 1).length - 1;
+			
+			float firstsplitfloat = Float.parseFloat(parsedJson.get(position).interval.get(intervals.size() - 1)[ii]);
+			if (firstsplitfloat>90){
+				int min = (int) Math.floor(firstsplitfloat/60);
+				int sec = (int) (((firstsplitfloat*60)-Math.floor(firstsplitfloat/60)*3600)/60);
+				int mili = (int) (firstsplitfloat*100-Math.floor(firstsplitfloat)*100);
 				StringBuilder sb = new StringBuilder();
-				int min = (int) Math.floor(temp_var/60);
-				int sec = (int) (((temp_var*60)-Math.floor(temp_var/60)*3600)/60);
-				int mili = (int) (temp_var*100-Math.floor(temp_var)*100);
 				if (sec < 10)
 				{
 					sb.append(min + ":0" + sec +"." + mili );
 				}
 				else
 				{
-					sb.append(min + ":" +sec +"."+ mili);
+					sb.append(min + ":" +sec +"."+ mili);		
 				}
-				
-				String strI = sb.toString();
-				
-				textView4.setText(strI);
+				textView2.setText(sb.toString());
+			}
+			else{
+				textView2.setText(parsedJson.get(position).interval.get(intervals.size() - 1)[ii]);
+			}
+			//Add times together and display elapsed time for split
+				    float temp_var = 0; 
+					for (int i = Integer.parseInt(totalCountArray.get(position)); i < parsedJson.get(position).interval.size();i++)	
+						
+					{
+						
+						//float foo = Float.parseFloat(parsedJson.runners.get(position).interval.get(intervals.size() - 1)[1]);
+						//Log.d("Loop Variable in Adapter",parsedJson.runners.get(position).interval.get(i).toString());
+						
+						for (String splits: parsedJson.get(position).interval.get(i)){
+							float temp = Float.parseFloat(splits);
+							String f1Str = Float.toString(temp);   
+							//Log.d("Splits??!?!?!",f1Str);
+							temp_var=temp_var + temp;
+						}
+					}
+					StringBuilder sb = new StringBuilder();
+					int min = (int) Math.floor(temp_var/60);
+					int sec = (int) (((temp_var*60)-Math.floor(temp_var/60)*3600)/60);
+					int mili = (int) (temp_var*100-Math.floor(temp_var)*100);
+					if (sec < 10)
+					{
+						sb.append(min + ":0" + sec +"." + mili );
+					}
+					else
+					{
+						sb.append(min + ":" +sec +"."+ mili);
+					}
+					
+					String strI = sb.toString();
+					
+					textView4.setText(strI);
 			    
 		}
 		else{
@@ -203,9 +226,6 @@ public class GroupAdapter extends BaseAdapter{
 		return convertView;
 	}
 	
-	public ArrayList<Boolean> getCheckArray(){
-		return positionArray;
-	}
 	public ArrayList<String> getCheckArrayID(){
 		return athleteIDArray;
 	}
@@ -220,6 +240,32 @@ public class GroupAdapter extends BaseAdapter{
 		clearCheckboxes = false;
 		
 	}
+	public void resetButtonPressed(ArrayList<String> resetArray){
+		//1. replace dictionary values.
+		//2. re-run everything
+
+		List<String> tempDict = new ArrayList<String>(resultData.keySet());
+		//System.out.print(tempDict.toString() + totalAthleteID.toString());
+		for (int i = 0; i < resetArray.size(); i++){
+			//iterate through fed array and see if it matches id to any temp dict
+			Boolean tempBool = totalAthleteID.contains(resetArray.get(i));		
+
+			//If its in there, replace the values, refresh the reset view
+
+			if (tempBool) {
+        		//If new json has more entries than old json, update
+        		//Find the relevant index in java; find result.get(i).id
+				int tempIndex = totalAthleteID.indexOf(resetArray.get(i));
+				int tempCount = Integer.parseInt(totalSizeArray.get(tempIndex)) + 1;
+				totalCountArray.set(tempIndex, Integer.toString(tempCount));
+				
+        	}
+
+		}
+		notifyDataSetChanged();
+		
+	}
+	
 	
 	public void changeCheck(Boolean checkstats){
 		checkStatus = checkstats;
@@ -239,15 +285,23 @@ public class GroupAdapter extends BaseAdapter{
         	//Log.d("Works?",resultData.get(result.get(i).id).get(1).toString());
         
         	Boolean tempBool = tempDict.contains(result.get(i).id);
+        	//if its not in the array add it
         	if (!tempBool){
-        		//Log.d("In Boolean Again","Boolean Check");
+        		Log.d("In Boolean Again","Boolean Check");
+        		totalCountArray.add(Integer.toString(0));
+        		totalSizeArray.add(Integer.toString(0));
+        		totalAthleteID.add(result.get(i).id);
         		parsedJson.add(result.get(i));
+        		
+        		
         		notifyDataSetChanged();
         		List<String> tempArray = new ArrayList<String>();
         		tempArray.add(result.get(i).name);
 				tempArray.add(Integer.toString(result.get(i).interval.size()));
 				tempArray.add(Integer.toString(0));
         		resultData.put(result.get(i).id, tempArray);
+        		addingRow = true;
+        		
         		
         	}
         	else if (tempBool & result.get(i).interval.size() > Integer.parseInt(resultData.get(result.get(i).id).get(1))) {
