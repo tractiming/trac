@@ -88,7 +88,12 @@ public class GroupAdapter extends BaseAdapter{
 		// TODO Auto-generated method stub
 		//Inflate a view to show peoples names
 		//constantly update totalsize array
-		totalSizeArray.set(position,Integer.toString(parsedJson.get(position).interval.size()));
+		Log.d("Dictionary","Hallo");
+		if(parsedJson.get(position).interval != null)
+			totalSizeArray.set(position,Integer.toString(parsedJson.get(position).interval.size()));
+		else 
+			totalSizeArray.set(position,Integer.toString(0));
+
 		View row = convertView;
 	    Holder holder = null;
 		
@@ -121,7 +126,7 @@ public class GroupAdapter extends BaseAdapter{
 	            	changeBool();
 	                positionArray.set(position, true);
 	                athleteIDArray.add(parsedJson.get(position).id);
-	                Log.d("Adding it","adding it");
+	                
 	            }
 	            else if(!isChecked){
 	                positionArray.set(position, false);
@@ -129,7 +134,7 @@ public class GroupAdapter extends BaseAdapter{
 		            if(athleteIDArray.contains(parsedJson.get(position).id)){
 		            	int athleteindex = athleteIDArray.indexOf(parsedJson.get(position).id);
 		            	athleteIDArray.remove(athleteindex);
-		            	Log.d("Removing it","removing it");
+		            	
 		            }
 	            }
 	            //System.out.println(positionArray);
@@ -156,9 +161,11 @@ public class GroupAdapter extends BaseAdapter{
 			textView.setLayoutParams(params);
 			holder.ckbox.setVisibility(View.GONE);
 		}
+
 		//This determines the what is the most recent split, and display it
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
 		List<String[]> intervals = parsedJson.get(position).interval;
+
 		if (intervals != null && !intervals.isEmpty()){
 			int ii = parsedJson.get(position).interval.get(intervals.size() - 1).length - 1;
 			
@@ -215,10 +222,16 @@ public class GroupAdapter extends BaseAdapter{
 					textView4.setText(strI);
 			    
 		}
-		else{
+		else if (intervals != null){
 			Log.d("Throwing the ","Exception");
 			textView2.setText("NT");
 			textView4.setText("NT");
+		}
+		else {
+			Log.d("Throwing the ","Final");
+			textView2.setText("DNS");
+			textView4.setText("DNS");
+			
 		}
 				
 		//Fill that view with data
@@ -282,13 +295,11 @@ public class GroupAdapter extends BaseAdapter{
         for (int i = 0; i < result.size(); i++){
         	//Does athelte id exist? check recently polled json from stored dictionary
         	//If doesnt exist add to end
-        	
-        	//Log.d("Works?",resultData.get(result.get(i).id).get(1).toString());
         
         	Boolean tempBool = tempDict.contains(result.get(i).id);
         	//if its not in the array add it
         	if (!tempBool){
-        		Log.d("In Boolean Again","Boolean Check");
+
         		totalCountArray.add(Integer.toString(0));
         		totalSizeArray.add(Integer.toString(0));
         		totalAthleteID.add(result.get(i).id);
@@ -306,16 +317,25 @@ public class GroupAdapter extends BaseAdapter{
         		
         		
         	}
-        	else if (tempBool & result.get(i).interval.size() > Integer.parseInt(resultData.get(result.get(i).id).get(1))) {
-        		//If new json has more entries than old json, update
-        		//Find the relevant index in java; find result.get(i).id
-        		List<String> tempArray = new ArrayList<String>();
-        		for(int jj = 0; jj < parsedJson.size();jj++){
-        			tempArray.add(parsedJson.get(jj).id);
+        	else if(tempBool) {
+        		Log.d("Entered Boolean","Boolean");
+        		if(result.get(i).interval == null){
+        			Log.d("Entered Boolean","Null");
+        			continue;
         		}
-        		//Log.d("Does this worK?",Integer.toString(parsedJson..indexOf(result.get(i).id)));
-        		parsedJson.set(tempArray.indexOf(result.get(i).id),result.get(i));
-        		notifyDataSetChanged();
+        		else if (result.get(i).interval != null & result.get(i).interval.size() > Integer.parseInt(resultData.get(result.get(i).id).get(1))){
+	        		//If new json has more entries than old json, update
+	        		//Find the relevant index in java; find result.get(i).id
+	        		List<String> tempArray = new ArrayList<String>();
+	        		if(parsedJson != null){
+		        		for(int jj = 0; jj < parsedJson.size();jj++){
+		        			tempArray.add(parsedJson.get(jj).id);
+		        		}
+		        		//Log.d("Does this worK?",Integer.toString(parsedJson..indexOf(result.get(i).id)));
+		        		parsedJson.set(tempArray.indexOf(result.get(i).id),result.get(i));
+		        		notifyDataSetChanged();
+	        		}
+        		}
         	}
         }
         //Triggers the list update

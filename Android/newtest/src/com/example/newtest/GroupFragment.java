@@ -130,7 +130,8 @@ public class GroupFragment extends ListFragment {
 		Intent intent = getActivity().getIntent();
 		
         // 2. get message value from intent
-        message = intent.getStringExtra("message");
+        //message = intent.getStringExtra("message");
+		message = "http://10.0.2.2:8000/api/sessions/17/individual_results/?access_token=LiuG7SFs8nU7fY0GtryR6PPqjbeMAW";
         title = intent.getStringExtra("workoutName");
         date = intent.getStringExtra("workoutDate");
         Log.d("The passed Variable in frag baby", message);
@@ -350,12 +351,12 @@ public class GroupFragment extends ListFragment {
 				    Response response = client.newCall(request).execute();
 
 				    IndividualResults preFullyParsed = gson.fromJson(response.body().charStream(), IndividualResults.class);
-
+				    Log.d(DEBUG_TAG, preFullyParsed.toString());
 				    List<Runners> text = preFullyParsed.results;
-
+				    
 				    Workout test = null;
 				    	
-				    //Log.d(DEBUG_TAG, parsedjWorkout[1].toString());
+				    Log.d(DEBUG_TAG, text.toString());
 				    return text;
 				    
 				} catch (IOException e) {
@@ -379,9 +380,18 @@ public class GroupFragment extends ListFragment {
 					resultData = new ArrayList<String>();
 					athleteDictionary = new HashMap<String, List<String>>();
 					//subAthelteDictionary = new ArrayList<String>();
+					Log.d(DEBUG_TAG,"HeLLO");
 					for (int i = 0; i < result.size(); i++){
 						List<String> tempArray = new ArrayList<String>();
 						resultData.add(result.get(i).id);
+						Log.d(DEBUG_TAG,"HeLLO");
+						if(result.get(i).interval == null){
+							tempArray.add(result.get(i).name);
+							tempArray.add(Integer.toString(-1));
+							tempArray.add(Integer.toString(0));
+							athleteDictionary.put(resultData.get(i), tempArray);	
+							continue; 
+						}
 						for (int j = 0; j < result.get(i).interval.size(); j++){
 							
 							float temp = Float.parseFloat(result.get(i).interval.get(j)[0]);
@@ -421,11 +431,15 @@ public class GroupFragment extends ListFragment {
 					//set result to show on screen
 					Parcelable state = lview.onSaveInstanceState();
 					if (executed == false){
+						Log.d(DEBUG_TAG,result.toString());
+						Log.d(DEBUG_TAG,athleteDictionary.toString());
 						groupList = new GroupAdapter(result, getActivity(),athleteDictionary);
 					    setListAdapter(groupList);	
+					    Log.d(DEBUG_TAG,"HeLLO22");
 					    //Set Headers
 					    mTextView.setText("Workout Name: " + title);
 					    mTextView1.setText("Date: " + date.substring(0,10));
+					    Log.d(DEBUG_TAG,"HeLLO66");
 					    executed = true;
 					}
 					else{
