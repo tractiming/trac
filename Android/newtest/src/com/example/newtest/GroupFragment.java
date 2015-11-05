@@ -237,11 +237,7 @@ public class GroupFragment extends ListFragment {
         }
     }
 	
-	public boolean onItemLongClick(ListView l, View view, int position, long id) {
-		Log.d("Long","Click");
-	    return false; // let the system show the context menu
-	  }
-	
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 	    inflater.inflate(R.menu.group_view, menu);
