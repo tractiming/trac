@@ -233,8 +233,6 @@ public class GroupFragment extends ListFragment {
         if (v != null) {
             CheckBox checkBox = (CheckBox)v.findViewById(R.id.checkBox);
             checkBox.setChecked(!checkBox.isChecked());
-            //LinearLayout footer = (LinearLayout)v.findViewById(R.id.footer);
-            //footer.setVisibility(LinearLayout.VISIBLE);
         }
     }
 	
@@ -252,10 +250,16 @@ public class GroupFragment extends ListFragment {
 	              //do something
 	        	//only does for one right now..
 	        	groupList.changeCheck(editStatus);
-	        	if(editStatus)
+	        	if(editStatus){
 	        		editStatus = false;
-	        	else
+	        		LinearLayout footer = (LinearLayout) getActivity().findViewById(R.id.footer);
+		            footer.setVisibility(LinearLayout.VISIBLE);
+	        	}
+	        	else{
 	        		editStatus = true;
+	        		LinearLayout footer = (LinearLayout) getActivity().findViewById(R.id.footer);
+		            footer.setVisibility(LinearLayout.GONE);
+	        	}
 	        	
 	            return true;
 	    }
