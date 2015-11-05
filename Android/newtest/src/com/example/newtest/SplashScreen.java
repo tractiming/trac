@@ -106,18 +106,18 @@ public class SplashScreen extends Activity {
 	        .get()
 	        .build();
 			
-			Log.d(DEBUG_TAG, "Request Data: "+ request);
+			//Log.d(DEBUG_TAG, "Request Data: "+ request);
 			try {
 			    Response response = client.newCall(request).execute();
-			    Log.d(DEBUG_TAG, "Response Data: "+ response);
+			   // Log.d(DEBUG_TAG, "Response Data: "+ response);
 			    
 			    int codevar = response.code();
-			    Log.d(DEBUG_TAG, "Response Code: "+ codevar);
+			   // Log.d(DEBUG_TAG, "Response Code: "+ codevar);
 			    
-			    Log.d(DEBUG_TAG, "Request Data: "+ request);
+			   // Log.d(DEBUG_TAG, "Request Data: "+ request);
 			    var = response.body().string();
 			    
-			    Log.d(DEBUG_TAG, "VAR: "+ var);
+			   // Log.d(DEBUG_TAG, "VAR: "+ var);
 			    
 			    if (codevar == 200) {
 			    return true;
@@ -127,7 +127,7 @@ public class SplashScreen extends Activity {
 			    }
 			    
 			} catch (IOException e) {
-				Log.d(DEBUG_TAG, "IoException" + e.getMessage());
+				//Log.d(DEBUG_TAG, "IoException" + e.getMessage());
 				return null;
 			}
 
@@ -142,12 +142,12 @@ public class SplashScreen extends Activity {
 			}
 			else if (success) {
 				//go to calendar page
-				Log.d("HE","WORK");
+				//Log.d("HE","WORK");
 				 Intent intent = new Intent(SplashScreen.this, CalendarActivity.class);
 				 startActivity(intent);
 			} else {
 				//It it doesnt work segue to login page
-				Log.d("NOPE","NO WORK");
+				//Log.d("NOPE","NO WORK");
 				Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
 				 startActivity(intent);
 				 

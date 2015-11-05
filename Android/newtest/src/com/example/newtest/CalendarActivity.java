@@ -102,11 +102,11 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
             {
                 try{// this is your adapter that will be filtered
                 	((CalendarAdapter)getListAdapter()).getFilter(newText);
-                System.out.println("on text chnge text: "+newText);
+                //System.out.println("on text chnge text: "+newText);
                 return true;
                 }
                 finally{
-                	Log.d("early","finally");
+                	//Log.d("early","finally");
                 	return true;
                 	}
             }
@@ -115,10 +115,10 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
             {
                 try{// this is your adapter that will be filtered
                 	((CalendarAdapter)getListAdapter()).getFilter(query);
-                	System.out.println("on query submit: "+query);
+                	//System.out.println("on query submit: "+query);
                 	return true;
                 }
-                finally{Log.d("early","finally");
+                finally{//Log.d("early","finally");
                 	return true;}
             }
         };
@@ -184,12 +184,6 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    //Get token from Shared Preferences and create url endpoint with token inserted
 		    SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 			   access_token = userDetails.getString("token","");
-			   Log.d("Access_token, CalendarActivity:", access_token);
-			   
-			   
-			   
-			  
-			   
 			
 			   
 		    //Initialize swipe to refresh layout, what happens when swiped: async task called again
@@ -288,10 +282,10 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 
 							    for(JsonElement obj : jArray )
 							    {
-							    	Log.d("Enters?","Array");
+							    	
 							        Results cse = gson.fromJson( obj , Results.class);
 							        lcs.add(cse);
-							        Log.d("LCS?",lcs.toString());
+							       
 							        //Log.d("ID NUMBA!",cse.id);
 							    }
 
@@ -343,17 +337,17 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				Log.d("State Change","StateChange");
+				//Log.d("State Change","StateChange");
 				int totalItemCount = view.getCount();
 				
 				
-				Log.d("Total Item Count",Integer.toString(fakedTotalItemCount));
+				//Log.d("Total Item Count",Integer.toString(fakedTotalItemCount));
 				nextFifteen = fakedTotalItemCount + 15; 
-				Log.d("Next 15",Integer.toString(nextFifteen));
+				//Log.d("Next 15",Integer.toString(nextFifteen));
 				if (fakedTotalItemCount >= maxTotalSessions){
 					return; 
 				}
-				System.out.println("onScroll");
+				//System.out.println("onScroll");
 				//Log.d("State Change","on Scroll");
 				if (executing == false){
 					executing = true;
@@ -366,7 +360,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 					
 				}
 				else if (executing == true){
-					Log.d("Dont fire again","Don't fire again");
+					//Log.d("Dont fire again","Don't fire again");
 					
 				}
 				

@@ -78,6 +78,8 @@ public class GroupFragment extends ListFragment {
 	private String access_token;
 	public Boolean asyncStatus;
 	public List<Runners> tempRunVar;
+	public long runningTime;
+	
 	public static void backButtonWasPressed() {
 		timer.cancel();
 		asyncServiceCall.cancel(true);
@@ -94,6 +96,7 @@ public class GroupFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
 		Bundle args = getArguments();
 		access_token = args.getString("AccessToken","");
 		
@@ -115,12 +118,10 @@ public class GroupFragment extends ListFragment {
 		    mLoginStatusView.setVisibility(View.GONE);
 		    mTextView1.setText("Date: " + date.substring(0,10));
 		    mTextView.setText("Workout Name: " + title);
-		    Log.d("Log","Not NULL");
 
 		}
 		else{
 			testvar = "FragmentCheckCreation";
-			Log.d("Test","NONNULL?");
 			mLoginStatusView = rootView.findViewById(R.id.login_status);
 		    mLoginStatusView.setVisibility(View.VISIBLE);
 		}
@@ -134,7 +135,7 @@ public class GroupFragment extends ListFragment {
 		//message = "http://10.0.2.2:8000/api/sessions/17/individual_results/?access_token=LiuG7SFs8nU7fY0GtryR6PPqjbeMAW";
         title = intent.getStringExtra("workoutName");
         date = intent.getStringExtra("workoutDate");
-        Log.d("The passed Variable in frag baby", message);
+        //Log.d("The passed Variable in frag baby", message);
         
 
         asyncServiceCall = new AsyncServiceCall();
@@ -180,9 +181,7 @@ public class GroupFragment extends ListFragment {
 					e.printStackTrace();
 				}
 	        	if(asyncStatus){
-	        		Log.d("Lets clear stuff","OKay?");
-	        		
-	        		
+	        	
 	        		asyncServiceCall = new AsyncServiceCall();
                 	asyncServiceCall.execute(message);
                 	try {
@@ -195,14 +194,13 @@ public class GroupFragment extends ListFragment {
 						e.printStackTrace();
 					}
 	        		if(tempRunVar != null){
-	        			Log.d("","We got results");
 	        			groupList.resetCheckArray();
 	        			//groupList.changeBool();
 	        		}
 	        	
 	        	}
 	        	else{
-	        		Log.d("","Nope");
+	        		
 	        		
 	        	}
 	        	//Log.d("Array has data? 3?",checkArray.toString());
@@ -215,7 +213,6 @@ public class GroupFragment extends ListFragment {
 	    b1.setOnClickListener( new View.OnClickListener() {
 		    public void onClick(View v) {
 		      ArrayList<String> checkArray = groupList.getCheckArrayID();
-		      Log.d("Check Array", checkArray.toString());
 		      groupList.resetButtonPressed(checkArray);
 		      groupList.resetCheckArray();
 		      groupList.clearCheckboxes();
@@ -227,6 +224,9 @@ public class GroupFragment extends ListFragment {
 		return rootView;
 	}	
 	
+	
+
+	
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
@@ -237,6 +237,10 @@ public class GroupFragment extends ListFragment {
         }
     }
 	
+	public boolean onItemLongClick(ListView l, View view, int position, long id) {
+		Log.d("Long","Click");
+	    return false; // let the system show the context menu
+	  }
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -248,7 +252,9 @@ public class GroupFragment extends ListFragment {
 		
 	    switch (item.getItemId()) {
 	        case R.id.action_edit:                
-	              //do something
+	        	System.out.println(runningTime);
+	        	
+	        	//do something
 	        	//only does for one right now..
 	        	groupList.changeCheck(editStatus);
 	        	if(editStatus){
@@ -334,12 +340,12 @@ public class GroupFragment extends ListFragment {
 	
 	  private class AsyncServiceCall extends AsyncTask<String, Void, List<Runners>> {
 		  protected void onPreExecute(){
-			  Log.d("Async", "PreExcute");
+			  //Log.d("Async", "PreExcute");
 		  }
 		  
 		    @Override
 		    protected void onCancelled() {
-		        Log.d("Canceled", "canceld");
+		        //Log.d("Canceled", "canceld");
 		    }
 		  
 			@Override
@@ -351,23 +357,21 @@ public class GroupFragment extends ListFragment {
 				    Response response = client.newCall(request).execute();
 
 				    IndividualResults preFullyParsed = gson.fromJson(response.body().charStream(), IndividualResults.class);
-				    Log.d(DEBUG_TAG, preFullyParsed.toString());
+				    
 				    List<Runners> text = preFullyParsed.results;
 				    
 				    Workout test = null;
-				    	
-				    Log.d(DEBUG_TAG, text.toString());
+
 				    return text;
 				    
 				} catch (IOException e) {
-					Log.d(DEBUG_TAG, "this is griffins fault now" + e.getMessage());
+					
 					return null;
 				}
 			}
 			
 			@Override
 			protected void onPostExecute(List<Runners> result) {
-				Log.d(DEBUG_TAG,"execute");
 
 				 mLoginStatusView.setVisibility(View.GONE);
 				//did not have popup appear if null due to async every 2 seconds being called. Popup will continuously popup then
@@ -380,11 +384,9 @@ public class GroupFragment extends ListFragment {
 					resultData = new ArrayList<String>();
 					athleteDictionary = new HashMap<String, List<String>>();
 					//subAthelteDictionary = new ArrayList<String>();
-					Log.d(DEBUG_TAG,"HeLLO");
 					for (int i = 0; i < result.size(); i++){
 						List<String> tempArray = new ArrayList<String>();
 						resultData.add(result.get(i).id);
-						Log.d(DEBUG_TAG,"HeLLO");
 						if(result.get(i).interval == null){
 							tempArray.add(result.get(i).name);
 							tempArray.add(Integer.toString(-1));
@@ -431,20 +433,18 @@ public class GroupFragment extends ListFragment {
 					//set result to show on screen
 					Parcelable state = lview.onSaveInstanceState();
 					if (executed == false){
-						Log.d(DEBUG_TAG,result.toString());
-						Log.d(DEBUG_TAG,athleteDictionary.toString());
+						//Log.d(DEBUG_TAG,result.toString());
+						//Log.d(DEBUG_TAG,athleteDictionary.toString());
 						groupList = new GroupAdapter(result, getActivity(),athleteDictionary);
 					    setListAdapter(groupList);	
-					    Log.d(DEBUG_TAG,"HeLLO22");
+					    
 					    //Set Headers
 					    mTextView.setText("Workout Name: " + title);
 					    mTextView1.setText("Date: " + date.substring(0,10));
-					    Log.d(DEBUG_TAG,"HeLLO66");
 					    executed = true;
 					}
 					else{
 						groupList.updateResults(result);
-						
 						
 					}
 				    delegate.processFinish(groupList);

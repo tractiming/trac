@@ -88,7 +88,6 @@ public class GroupAdapter extends BaseAdapter{
 		// TODO Auto-generated method stub
 		//Inflate a view to show peoples names
 		//constantly update totalsize array
-		Log.d("Dictionary","Hallo");
 		if(parsedJson.get(position).interval != null)
 			totalSizeArray.set(position,Integer.toString(parsedJson.get(position).interval.size()));
 		else 
@@ -223,12 +222,10 @@ public class GroupAdapter extends BaseAdapter{
 			    
 		}
 		else if (intervals != null){
-			Log.d("Throwing the ","Exception");
 			textView2.setText("NT");
 			textView4.setText("NT");
 		}
 		else {
-			Log.d("Throwing the ","Final");
 			textView2.setText("DNS");
 			textView4.setText("DNS");
 			
@@ -318,9 +315,7 @@ public class GroupAdapter extends BaseAdapter{
         		
         	}
         	else if(tempBool) {
-        		Log.d("Entered Boolean","Boolean");
         		if(result.get(i).interval == null){
-        			Log.d("Entered Boolean","Null");
         			continue;
         		}
         		else if (result.get(i).interval != null & result.get(i).interval.size() > Integer.parseInt(resultData.get(result.get(i).id).get(1))){
