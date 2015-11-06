@@ -55,8 +55,6 @@ import android.widget.Chronometer;
 
 public class GroupFragment extends ListFragment {
 	
-	
-	private ChronometerSubs mChronometer;
 	private ListView labels;
 	View detailListHeader;
 	View detailListHeader2;
@@ -156,17 +154,7 @@ public class GroupFragment extends ListFragment {
         asyncServiceCall = new AsyncServiceCall();
     	asyncServiceCall.execute(message);
         
-		   
-		
-//Commented out the stopwatch features with buttons to start/stop
-//		
-//		mChronometer = (ChronometerSubs) rootView.findViewById(R.id.chronometer);
-//        //mChronometer.start();        
-//		//chronometer = (Chronometer) rootView.findViewById(R.id.chronometer);
-//		((Button) rootView.findViewById(R.id.start_button)).setOnClickListener(this);
-//        ((Button) rootView.findViewById(R.id.stop_button)).setOnClickListener(this);
-//        
-//        
+		    
 
 		//Inflate Header--gives titles above names and splits
 		detailListHeader = rootView.findViewById(R.id.header);
@@ -305,27 +293,6 @@ public class GroupFragment extends ListFragment {
 		
 	}
 	
-
-/*	@Override
-    public void onClick(View v) {
-        switch(v.getId()) {
-        case R.id.start_button:
-        	SimpleDateFormat s = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        	String starttime = s.format(new Date());
-               mChronometer.setBase(SystemClock.elapsedRealtime());
-               mChronometer.start();
-               Log.i(DEBUG_TAG, "start"+ starttime);
-               //new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
-               break;
-       case R.id.stop_button:
-              mChronometer.stop();
-              SimpleDateFormat st = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-          	String stoptime = st.format(new Date());
-              Log.i(DEBUG_TAG, "stop" + stoptime );
-              //new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
-              break;
-       }
-}*/
 
 	 Runnable updateTimerThread = new Runnable() {
 		public void run(){

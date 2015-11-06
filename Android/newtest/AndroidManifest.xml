@@ -74,6 +74,18 @@
             android:label="@string/title_fragment_settings" 
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="com.example.newtest.RosterActivity"
+            android:label="@string/title_rosterActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible" 
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@layout/searchable" />
+        </activity>
     </application>
 
 </manifest>

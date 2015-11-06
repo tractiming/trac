@@ -10,6 +10,7 @@
     <string name="action_signout">Log Out</string>
     <string name="title_activity_group_view">GroupView</string>
     <string name="title_fragment_settings">SettingsView</string>
+    <string name="title_rosterActivity">Roster</string>
     <string name="hello_world">Hello world!</string>
     <string name="search">Search</string>
     <string name="title_splash_screen">TRAC</string>
@@ -33,4 +34,7 @@
 	<string name="download_description">Pull registered runners into workout</string>
 	<string name="split">Split</string>
 	<string name="reset">Reset</string>
+	<string name="view_roster">View Roster</string>
+	<string name="view_roster_description">See roster before importing</string>
+	
 </resources>
