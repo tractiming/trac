@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public class GroupAdapter extends BaseAdapter{
 	ArrayList<String> totalCountArray;
 	ArrayList<String> totalSizeArray;
 	ArrayList<String> totalAthleteID;
+	ArrayList<String> timeArray;
 	public boolean addingRow;
 	
 	
@@ -43,9 +45,11 @@ public class GroupAdapter extends BaseAdapter{
 	 checkStatus = false;
 	 athleteIDArray = new ArrayList<String>();
 	 //iterate through array and put false in for every entry--checkboxes
+	 timeArray = new ArrayList<String>(parsedJson.size());
 	 positionArray = new ArrayList<Boolean>(parsedJson.size());
 	    for(int k=0; k < parsedJson.size(); k++){
 	        positionArray.add(false);
+	        timeArray.add(Integer.toString(0));
 	    }
 	    
 	totalCountArray = new ArrayList<String>(parsedJson.size());
@@ -268,6 +272,7 @@ public class GroupAdapter extends BaseAdapter{
 				int tempIndex = totalAthleteID.indexOf(resetArray.get(i));
 				int tempCount = Integer.parseInt(totalSizeArray.get(tempIndex)) + 1;
 				totalCountArray.set(tempIndex, Integer.toString(tempCount));
+				timeArray.set(tempIndex, Long.toString(SystemClock.elapsedRealtime()));
 				
         	}
 
@@ -281,6 +286,11 @@ public class GroupAdapter extends BaseAdapter{
 	public void changeCheck(Boolean checkstats){
 		checkStatus = checkstats;
 		notifyDataSetChanged();
+	}
+	
+	public ArrayList<String> getTimes(){
+
+		return timeArray;
 	}
 	
 	public void updateResults(List<Runners> result) {
@@ -298,6 +308,7 @@ public class GroupAdapter extends BaseAdapter{
         	if (!tempBool){
 
         		totalCountArray.add(Integer.toString(0));
+        		timeArray.add(Integer.toString(0));
         		totalSizeArray.add(Integer.toString(0));
         		totalAthleteID.add(result.get(i).id);
         		parsedJson.add(result.get(i));

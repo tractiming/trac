@@ -3,6 +3,7 @@ package com.example.newtest;
 
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +20,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -29,6 +31,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -78,7 +82,16 @@ public class GroupFragment extends ListFragment {
 	private String access_token;
 	public Boolean asyncStatus;
 	public List<Runners> tempRunVar;
-	public long runningTime;
+	private Handler customHandler = new Handler();
+	public Handler mHandler;
+	long updatedTime = 0L;
+	long startTime = 0L;
+	long timeSwapBuff = 0L;
+	long timeInMilliseconds =0L;
+	long storedTime = 0L;
+	public volatile boolean shutdown;
+	int counter;
+
 	
 	public static void backButtonWasPressed() {
 		timer.cancel();
@@ -96,6 +109,8 @@ public class GroupFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		startTime = SystemClock.elapsedRealtime();
+		
 		
 		Bundle args = getArguments();
 		access_token = args.getString("AccessToken","");
@@ -237,7 +252,7 @@ public class GroupFragment extends ListFragment {
         }
     }
 	
-
+	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 	    inflater.inflate(R.menu.group_view, menu);
@@ -247,9 +262,7 @@ public class GroupFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
 	    switch (item.getItemId()) {
-	        case R.id.action_edit:                
-	        	System.out.println(runningTime);
-	        	
+	        case R.id.action_edit: 
 	        	//do something
 	        	//only does for one right now..
 	        	groupList.changeCheck(editStatus);
@@ -313,16 +326,96 @@ public class GroupFragment extends ListFragment {
               break;
        }
 }*/
-	
+
+	 Runnable updateTimerThread = new Runnable() {
+		public void run(){
+
+			if(!shutdown){
+	            timeInMilliseconds = SystemClock.elapsedRealtime() - startTime;
+	            updatedTime = timeSwapBuff + timeInMilliseconds;
+	            
+	            if (storedTime !=0)
+	            {
+	            	updatedTime = SystemClock.elapsedRealtime() - storedTime;
+	            }
+	            int hours = (int)(updatedTime / (3600 * 1000));
+	            int remaining = (int)(updatedTime % (3600 * 1000));
+	            
+	            int mins = (int)(remaining / (60 * 1000));
+	            remaining = (int)(remaining % (60 * 1000));
+	            
+	            int secs = (int)(remaining / 1000);
+	            remaining = (int)(remaining % (1000));
+	            
+	            int milliseconds = (int)(((int)updatedTime % 1000) / 100);
+	            String text = "";
+	            DecimalFormat df = new DecimalFormat("00");
+	            
+	            if (hours > 0) {
+	            	text += df.format(hours) + ":";
+	            }
+
+	            text += df.format(mins) + ":";
+	           	text += df.format(secs) + ":";
+	           	text += Integer.toString(milliseconds);
+	            
+				Message msg=new Message();
+	            msg.obj=text;
+	            mHandler.sendMessage(msg);
+	            customHandler.post(this);
+	            counter++;
+	            //Log.d("Run",Integer.toString(counter));
+	            if (counter>1000){
+	            	shutdown = true;
+	            	counter = 0;
+	            }
+			}
+            
+
+
+			
+		}
+		
+	};
+
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
     lview = getListView();
     
+    lview.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+
+		public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                int arg2, long arg3) {
+			counter = 0;
+			shutdown = false;
+		
+         ArrayList<String> tempList = groupList.getTimes();
+        
+       	//final String timeVar = time.updateText(SystemClock.elapsedRealtime(),Long.parseLong(tempList.get(arg2)));
+         storedTime = Long.parseLong(tempList.get(arg2));
+         customHandler.post(updateTimerThread);
+       	
+       	final Toast toast = Toast.makeText(getActivity(), "", Toast.LENGTH_LONG);
+       	toast.show();
+       	 mHandler = new Handler() { 
+             @Override public void handleMessage(Message msg) { 
+                String mString=(String)msg.obj;
+                toast.setText(mString);
+              
+             }
+         };
+         // Toast...
+         Log.d("Hello","Helo");
+            return true;
+        }
+    });
     //new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
     
   }
   
+
 
  
   private TextView mTextView;

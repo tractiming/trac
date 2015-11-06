@@ -126,7 +126,7 @@ public class ChronometerSubs extends TextView {
        	text += df.format(seconds) + ":";
        	text += Integer.toString(milliseconds);
         
-        setText(text);
+        //setText(text);
     }
 
     private void updateRunning() {
