@@ -58,15 +58,7 @@ public class RosterActivity extends ListActivity{
 	private String urlID;
 	
 
-	 public void onBackPressed() {
-		   asyncCall.cancel(true);
-		   Intent intent = new Intent(this,MainActivity.class);
-		   intent.putExtra("positionID", urlID);
-		   intent.putExtra("access_token", access_token);
-		   startActivity(intent);
-		   finish();
 
-		 }
 	public void onPause(){
 		super.onPause();
 		   asyncCall.cancel(true);
@@ -77,11 +69,11 @@ public class RosterActivity extends ListActivity{
 		//This controls the OnText Change Listener and Inflates it
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.rostermenu, menu);
 
 	    // Get the SearchView and set the searchable configuration
 	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-	    SearchView searchView = (SearchView) menu.findItem(R.id.action_search2).getActionView();
+	    SearchView searchView = (SearchView) menu.findItem(R.id.action_searchroster).getActionView();
 	    // Assumes current activity is the searchable activity
 	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 	    searchView.setIconifiedByDefault(false);
@@ -95,7 +87,7 @@ public class RosterActivity extends ListActivity{
             {
                 try{// this is your adapter that will be filtered
                 	System.out.println("on text chnge text: "+newText);
-                	var.getFilter(newText);
+                	((RosterAdapter) getListAdapter()).getFilter(newText);
                 
                 return true;
                 }
@@ -109,7 +101,7 @@ public class RosterActivity extends ListActivity{
             public boolean onQueryTextSubmit(String query)
             {
                 try{// this is your adapter that will be filtered
-                	var.getFilter(query);
+                	((RosterAdapter) getListAdapter()).getFilter(query);
                 	System.out.println("on query submit: "+query);
                 	return true;
                 }
@@ -205,7 +197,6 @@ public class RosterActivity extends ListActivity{
 				}});
 			
 			 url = "https://trac-us.appspot.com/api/reg_tag/?id="+urlID+"&access_token=" + access_token;
-			  Log.d("URL ! : ", url);
 			//OnCreate Async Task Called, see below for async task class
 			asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
 		    
@@ -229,15 +220,9 @@ public class RosterActivity extends ListActivity{
 				        .url(params[0])
 				        .build();
 						try {
-							Log.d("Enters?","Enters?");
 							   Response response = client.newCall(request).execute();
-							   Log.d("Response?",response.toString());
 							   RosterJson[] preFullyParsed = gson.fromJson(response.body().charStream(), RosterJson[].class);
-							   Log.d("Full Count",preFullyParsed.toString());
-							   
 							   List<RosterJson> list = Arrays.asList(preFullyParsed);
-							   Log.d("List",list.toString());
-							    
 
 						    return list;
 						    
@@ -262,16 +247,11 @@ public class RosterActivity extends ListActivity{
 						else{
 							//else parse the result and put in adapter, hide spinner
 							var = new RosterAdapter(result, getApplicationContext());
+							setListAdapter(var);
 
-								setListAdapter(var);
-
-
-						
-
-						
-						mLoginStatusView.setVisibility(View.GONE);
-						executing = false;
-						// swipeLayout.setRefreshing(false);
+							mLoginStatusView.setVisibility(View.GONE);
+							executing = false;
+							// swipeLayout.setRefreshing(false);
 						}
 					}
 			  }

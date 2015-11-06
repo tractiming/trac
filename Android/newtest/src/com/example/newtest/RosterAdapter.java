@@ -81,7 +81,7 @@ public class RosterAdapter extends BaseAdapter {
 		
 		//this finds the name and displays it
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
-		textView.setText(parsedJsonList.get(position).first + parsedJsonList.get(position).last);
+		textView.setText(parsedJsonList.get(position).first +" "+  parsedJsonList.get(position).last);
 		//find date adn display it, only show first 10 characters of the date--avoiding the timestamp
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text3);
 		textView2.setText(parsedJsonList.get(position).id_str);
