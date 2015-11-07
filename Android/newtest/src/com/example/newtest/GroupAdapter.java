@@ -254,6 +254,33 @@ public class GroupAdapter extends BaseAdapter{
 		clearCheckboxes = false;
 		
 	}
+	public void splitButtonPressed(ArrayList<String> splitArray){
+		
+		for (int i = 0; i < splitArray.size(); i++){
+			//iterate through fed array and see if it matches id to any temp dict
+			Boolean tempBool = totalAthleteID.contains(splitArray.get(i));		
+
+			//If its in there, replace the values, reset the timer array
+
+			if (tempBool) {
+        		//If new json has more entries than old json, update
+        		//Find the relevant index in java; find result.get(i).id
+				int tempIndex = totalAthleteID.indexOf(splitArray.get(i));
+				//If the current resetcount is within 1 of the total json count, reset the stopwatch time
+				Log.d(totalCountArray.get(tempIndex),totalSizeArray.get(tempIndex));
+				
+				int tempCount = Integer.parseInt(totalCountArray.get(tempIndex)) -1;
+				if(totalSizeArray.get(tempIndex) == Integer.toString(tempCount)){
+					timeArray.set(tempIndex, Long.toString(SystemClock.elapsedRealtime()));
+				}
+        	}
+
+		}
+		notifyDataSetChanged();
+		
+	
+	}
+	
 	public void resetButtonPressed(ArrayList<String> resetArray){
 		//1. replace dictionary values.
 		//2. re-run everything

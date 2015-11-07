@@ -173,6 +173,7 @@ public class GroupFragment extends ListFragment {
 	        	//http://10.0.2.2:8000/api/individual_splits/?access_token=TIqT4duj7LnkyE5YwDO3qV2a7AJET8
 	        	SplitAsyncCall splitCall = new SplitAsyncCall(checkArray,url);
 	        	splitCall.execute();
+	        	groupList.splitButtonPressed(checkArray);
 	        	groupList.clearCheckboxes();
 	        	try {
 					asyncStatus = splitCall.get();
