@@ -101,7 +101,7 @@ public class RosterActivity extends ListActivity{
             public boolean onQueryTextSubmit(String query)
             {
                 try{// this is your adapter that will be filtered
-                	((RosterAdapter) getListAdapter()).getFilter(query);
+                	((CalendarAdapter)getListAdapter()).getFilter(query);
                 	System.out.println("on query submit: "+query);
                 	return true;
                 }
@@ -212,19 +212,20 @@ public class RosterActivity extends ListActivity{
 			Gson gson = new Gson();
 			private static final String DEBUG_TAG = "Debug";
 			
-			  public class AsyncServiceCall extends AsyncTask<String, Void, List<RosterJson>> {
+			  public class AsyncServiceCall extends AsyncTask<String, Void, ArrayList<RosterJson>> {
 				  
 					@Override
-					protected List<RosterJson> doInBackground(String... params) {
+					protected ArrayList<RosterJson> doInBackground(String... params) {
 						Request request = new Request.Builder()
 				        .url(params[0])
 				        .build();
 						try {
 							   Response response = client.newCall(request).execute();
 							   RosterJson[] preFullyParsed = gson.fromJson(response.body().charStream(), RosterJson[].class);
-							   List<RosterJson> list = Arrays.asList(preFullyParsed);
 
-						    return list;
+							   ArrayList<RosterJson> dataList = new ArrayList<RosterJson>(Arrays.asList(preFullyParsed));
+
+						    return dataList;
 						    
 						} catch (IOException e) {
 							//Log.d(DEBUG_TAG, "this is griffins fault now" + e.getMessage());
@@ -233,7 +234,7 @@ public class RosterActivity extends ListActivity{
 					}
 					
 					@Override
-					protected void onPostExecute(List<RosterJson> result) {
+					protected void onPostExecute(ArrayList<RosterJson> result) {
 						//Log.d("Finished", "Calendar Activity");
 						
 						//If the array/string doesnt come through alert will popup, hide spinner

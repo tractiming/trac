@@ -95,12 +95,15 @@ public class RosterAdapter extends BaseAdapter {
 
 
 	public void getFilter(String charText) {
+		Log.d("Get Filter",charText);
 		charText = charText.toLowerCase(Locale.getDefault());
-		Log.d("Hello","");
+		Log.d("Hello",parsedJsonList.toString());
 		parsedJsonList.clear();
+		 
 		if (charText.length() == 0) {
-			Log.d("Hello","");
+			Log.d("Hello",parsedJsonList.toString());
 			parsedJsonList.addAll(parsedJson);
+			Log.d("Hello",parsedJsonList.toString());
 		} 
 		else 
 		{
