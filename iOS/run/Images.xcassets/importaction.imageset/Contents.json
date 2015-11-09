@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "ic_action_download-1.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "compass_background@2x copy.png"
+      "filename" : "ic_action_download.png"
     }
   ],
   "info" : {

@@ -12,6 +12,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtUsername;
 @property (weak, nonatomic) IBOutlet UITextField *txtPassword;
 - (IBAction)signinClicked:(id)sender;
+- (IBAction)createAccountClicked:(id)sender;
 - (IBAction)backgroundTap:(id)sender;
 @property (nonatomic, strong) NSString *access_token;
 @property (nonatomic, strong) NSString *client_id;

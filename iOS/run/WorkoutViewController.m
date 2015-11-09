@@ -13,6 +13,8 @@
 
 
 #define TRACQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
+#define IDIOM    UI_USER_INTERFACE_IDIOM()
+#define IPAD     UIUserInterfaceIdiomPad
 //#define workoutURL [NSURL URLWithString:@"http://localhost:8888/workoutTestList.json"] //2
 //change url as necessary
 
@@ -100,8 +102,12 @@
     savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
     //add token to url to find session data
     NSLog(@"Secutiy Token: %@",savedToken);
-    url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=%@", savedToken];
-    
+    if (IDIOM ==IPAD) {
+        url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=25&access_token=%@", savedToken];
+    }
+    else{
+        url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=%@", savedToken];
+    }
     //initialize spinner for data load
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     float navigationBarHeight = [[self.navigationController navigationBar] frame].size.height;
@@ -302,7 +308,13 @@
 {
     NSLog(@"Pull to Refresh");
     pullToRefresh = YES;
-    fakedTotalItemCount = 16;
+    if (IDIOM ==IPAD) {
+        fakedTotalItemCount = 26;
+    }
+    else{
+        fakedTotalItemCount = 16;
+    }
+    
     dispatch_async(TRACQueue, ^{
         NSData* data = [NSData dataWithContentsOfURL:
                         [NSURL URLWithString:url_token]];
@@ -410,6 +422,7 @@
     CGFloat height = tableView.contentSize.height;
     CGFloat scrolledPercentage = yOffset / height;
     nextFifteen = fakedTotalItemCount + 15;
+    
     if (totalSessions>fakedTotalItemCount)
         self.hasNextPage = YES;
     else

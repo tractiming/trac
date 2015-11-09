@@ -1,21 +1,31 @@
 //
-//  SecondViewController.m
+//  WorkoutViewController.m
 //  run
 //
-//  Created by Griffin Kelly on 5/3/14.
+//  Created by Griffin Kelly on 10/20/14.
 //  Copyright (c) 2014 Griffin Kelly. All rights reserved.
 //
-//NSString *url3=@"http://76.12.155.219/trac/splits/w1000.json";
-#define TRACQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
-//#define workoutURL [NSURL URLWithString:url3] //2
-//http://76.12.155.219/trac/splits/w1000.json
+#import <UIKit/UITabBarController.h>
+#import "FirstViewController.h"
 #import "SecondViewController.h"
-#import "DetailViewController.h"
-#import "WorkoutViewController.h"
-#import "RunnerDetail.h"
+#import "SiginViewController.h"
+#import "Workout.h"
 
-@interface SecondViewController ()
 
+#define TRACQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
+#define IDIOM    UI_USER_INTERFACE_IDIOM()
+#define IPAD     UIUserInterfaceIdiomPad
+//#define workoutURL [NSURL URLWithString:@"http://localhost:8888/workoutTestList.json"] //2
+//change url as necessary
+
+#import "RosterTableViewController.h"
+#import "Reachability.h"
+
+@interface RosterTableViewController ()
+
+@property (nonatomic) Reachability *hostReachability;
+@property (nonatomic) Reachability *internetReachability;
+@property (nonatomic) Reachability *wifiReachability;
 @property (nonatomic, strong) UIView *refreshLoadingView;
 @property (nonatomic, strong) UIView *refreshColorView;
 @property (nonatomic, strong) UIImageView *compass_background;
@@ -23,22 +33,35 @@
 @property (assign) BOOL isRefreshIconsOverlap;
 @property (assign) BOOL isRefreshAnimating;
 
+
 @end
 
-
-@implementation SecondViewController
+@implementation RosterTableViewController
 {
-    //NSArray *name;
-    NSArray *name;
-    UIRefreshControl *refreshControl;
-    NSArray* interval;
-    NSString *runnersName;
-    NSMutableArray *runnersArray;
+    NSMutableArray *title;
+    NSMutableArray *date;
+    NSMutableArray *url;
+    NSString *numSessions;
+    NSMutableArray *idNumberSelector;
+    NSString *url_token;
+    NSString *pagination_url;
+    UIActivityIndicatorView *spinner;
+    
+    int fakedTotalItemCount;
+    int nextFifteen;
+    NSString *savedToken;
+    int totalSessions;
     int searchIndexPath;
+    BOOL pullToRefresh;
+    NSMutableArray *workoutArray;
+    NSString *workoutName;
+    NSString *workoutDate;
+    
 }
 
+@synthesize tableData;
 @synthesize workoutSearchBar;
-@synthesize filteredRunnersArray;
+@synthesize filteredTitleArray;
 
 - (void)viewDidLoad
 {
@@ -50,43 +73,54 @@
     UIView* grayView = [[UIView alloc] initWithFrame:frame];
     grayView.backgroundColor = [UIColor lightGrayColor];
     [self.tableData addSubview:grayView];
-
     
+    self.navigationItem.title = @"Roster";
+    
+
     //initialize array for search
-    self.filteredRunnersArray = [NSMutableArray arrayWithCapacity:[self.runners count]];
+    self.filteredTitleArray = [NSMutableArray arrayWithCapacity:[title count]];
     
     // Hide the search bar until user scrolls up
     CGRect newBounds = self.tableData.bounds;
     newBounds.origin.y = newBounds.origin.y + workoutSearchBar.bounds.size.height;
     self.tableData.bounds = newBounds;
     
-    //Initialize the spinner
-    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    /*
+     Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the method reachabilityHasChanged will be called.
+     */
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityHasChanged:) name:kReachabilityChangedNotification object:nil];
+    
+    //Change the host name here to change the server you want to monitor. Apple.com as its never down... should probably switch to our site at some point
+    NSString *remoteHostName = @"www.apple.com";
+    
+	self.hostReachability = [Reachability reachabilityWithHostName:remoteHostName];
+	[self.hostReachability startNotifier];
+    
+    
+	
+    // Initialize table data
+    //get token from nsuserdefaults
+    savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+    //add token to url to find session data
+    NSLog(@"Secutiy Token: %@",savedToken);
+    
+    url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/reg_tag/?id=%@&access_token=%@", self.urlID, savedToken];
+    
+    //initialize spinner for data load
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     float navigationBarHeight = [[self.navigationController navigationBar] frame].size.height;
     float tabBarHeight = [[[super tabBarController] tabBar] frame].size.height;
     spinner.center = CGPointMake(self.view.frame.size.width / 2.0, (self.view.frame.size.height  - navigationBarHeight - tabBarHeight) / 4.0);
     [spinner startAnimating];
     [self.view addSubview:spinner];
     
-    dispatch_async(TRACQueue, ^{
-        NSData* data = [NSData dataWithContentsOfURL:
-                        [NSURL URLWithString:self.urlName_VC2]];
-        
-        dispatch_async(dispatch_get_main_queue() ,^{
-            [self fetchedData:data];
-            [self.tableData reloadData];
-            [spinner removeFromSuperview];
-
-        });
-        
     
-    });
-
+    
     [self setupRefreshControl];
     
-    }
-
-
+    
+    
+}
 
 
 
@@ -157,7 +191,7 @@
     CGFloat pullDistance = MAX(0.0, -self.refreshControl.frame.origin.y);
     //NSLog(@"pullDistnace2: %f",self.refreshControl.frame.origin.y);
     // Half the width of the table
-    CGFloat midX = self.tableData.frame.size.width / 2.0;
+    CGFloat midX = tableData.frame.size.width / 2.0;
     
     // Calculate the width and height of our graphics
     CGFloat compassHeight = self.compass_background.bounds.size.height;
@@ -259,15 +293,16 @@
     self.refreshColorView.backgroundColor = [UIColor clearColor];
 }
 
-
-
-
-//Pull to refresh class called when pulled
+//pull to refresh--async task
 - (void) doLoad
 {
+    NSLog(@"Pull to Refresh");
+    pullToRefresh = YES;
+
+    
     dispatch_async(TRACQueue, ^{
         NSData* data = [NSData dataWithContentsOfURL:
-                        [NSURL URLWithString:self.urlName_VC2]];
+                        [NSURL URLWithString:url_token]];
         
         dispatch_async(dispatch_get_main_queue() ,^{
             [self fetchedData:data];
@@ -278,233 +313,246 @@
         
         
     });
-    [refreshControl endRefreshing];
+    [self.refreshControl endRefreshing];
 }
+
+
+
+/*!
+ * Called by Reachability whenever status changes.
+ */
+-(void) reachabilityHasChanged:(NSNotification *)notice
+{
+    // called after network status changes
+    
+    NetworkStatus hostStatus = [self.hostReachability currentReachabilityStatus];
+    BOOL hostActive;
+    
+    //if network changes try async task again
+    switch (hostStatus)
+    {
+        case ReachableViaWWAN:
+        {
+            NSLog(@"3G");
+            
+            hostActive=YES;
+            
+            dispatch_async(TRACQueue, ^{
+                NSData* data = [NSData dataWithContentsOfURL:
+                                [NSURL URLWithString:url_token]];
+                
+                dispatch_async(dispatch_get_main_queue() ,^{
+                    [self doLoad];
+                    [self.tableData reloadData];
+                    [spinner removeFromSuperview];
+                });
+                
+                
+            });
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            
+            NSLog(@"WIFI");
+            dispatch_async(TRACQueue, ^{
+                NSData* data = [NSData dataWithContentsOfURL:
+                                [NSURL URLWithString:url_token]];
+                
+                dispatch_async(dispatch_get_main_queue() ,^{
+                    [self doLoad];
+                    [self.tableData reloadData];
+                    [spinner removeFromSuperview];
+                });
+                
+                
+            });
+            
+            hostActive=YES;
+            break;
+        }
+        case NotReachable:
+        {
+            //if no internet conenction, have popup appear
+            hostActive=NO;
+            UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"No Internet Connection" message:@"You currently do not have internet connectivity." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            break;
+        }
+            
+    }
+    
+    
+}
+
+
+
+
+-(void)awakeFromNib{
+    [super awakeFromNib];
+    //set colors for navigation bar and text
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:53/255.0f green:119/255.0f blue:168/255.0f alpha:1.0f]];
+    NSDictionary *navbarTitleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                               [UIColor whiteColor],UITextAttributeTextColor, nil];
+    [[UINavigationBar appearance] setTitleTextAttributes:navbarTitleTextAttributes];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // Check scrolled percentage
+    //
+    CGFloat yOffset = tableView.contentOffset.y;
+    CGFloat height = tableView.contentSize.height;
+    CGFloat scrolledPercentage = yOffset / height;
+
+}
+
+
+
 
 - (NSArray *)fetchedData:(NSData *)responseData {
     @try {
-        //parse out the json data
-        NSError* error;
-        NSDictionary* json = [NSJSONSerialization
-                              JSONObjectWithData:responseData //1
-                              
-                              options:kNilOptions
-                              error:&error];
         
+
+            //parse out the json data
         
-        NSString* results = [json valueForKey:@"results"];
-        self.runners= [results valueForKey:@"name"];
-        interval = [results valueForKey:@"splits"];
-        int array_length = [self.runners count];
-        runnersArray = [NSMutableArray array];
-        for (int kk=0;kk<array_length;kk++)
-        {
-            RunnerDetail *initialArray = [RunnerDetail new];
-            initialArray.runnerName = self.runners[kk];
-            initialArray.splitArray = interval[kk];
-            [runnersArray addObject:initialArray];
+            NSError* error;
+            NSDictionary* json = [NSJSONSerialization
+                                  JSONObjectWithData:responseData //1
+                                  
+                                  options:kNilOptions
+                                  error:&error];
+        
+        NSMutableArray* firstname= [json valueForKey:@"first"];
+        NSMutableArray* lastname= [json valueForKey:@"last"];
+        NSMutableArray* id_str = [json valueForKey:@"id_str"];
+        NSLog(@"%@, %@", firstname, lastname);
+        title=[[NSMutableArray alloc] init];
+
+        for (int i=0; i<[firstname count];i++){
+            NSString *combined = [NSString stringWithFormat:@"%@ %@", [firstname objectAtIndex:i], [lastname objectAtIndex:i]];
+            [title addObject:combined];
+      
+            
+            if(i==0){
+                
+                //Attempt to make workout a dictionary
+                Workout *initialArray = [Workout new];
+                initialArray.name = combined;
+                initialArray.date = [id_str objectAtIndex:i];
+               
+                
+                workoutArray = [NSMutableArray arrayWithObjects:initialArray, nil];
+                
+            }
+            else{
+                
+                //Attempt to make workout a dictionary
+                Workout *initialArray = [Workout new];
+                initialArray.name = combined;
+                initialArray.date = [id_str objectAtIndex:i];
+         
+                [workoutArray addObject:initialArray];
+                
+                
+            }
+
+            
+            
+            
+            
         }
+        date = id_str;
 
         
-        return runnersArray;
-        
+            return title;
+            return date;
 
+        
+        
+        
+        
     }
     @catch (NSException *exception) {
-        return self.runners;
+        NSLog(@"Exception %s","Except!");
+        return title;
+        return date;
+
+        
     }
-    
     
 }
 
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        return [self.filteredRunnersArray count];
+        NSLog(@"Filtered Count %lu", (unsigned long)self.filteredTitleArray.count);
+        return [self.filteredTitleArray count];
     } else {
-        //number of rows in tableview
-        return [self.runners count];
+        NSLog(@"Regular Count Array");
+        return [title count];
     }
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //put data into cells for tableView
     static NSString *simpleTableIdentifier = @"SimpleTableCell";
+    
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:simpleTableIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:simpleTableIdentifier];
     }
     
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        RunnerDetail *runnerDetail = nil;
-        runnerDetail = [self.filteredRunnersArray objectAtIndex:indexPath.row];
-        cell.textLabel.text = runnerDetail.runnerName;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        Workout *workout = nil;
+        workout = [self.filteredTitleArray objectAtIndex:indexPath.row];
+        cell.textLabel.text = workout.name;
+        cell.detailTextLabel.text= workout.date;
+
+        //TODO: Fix this so date is correct
+        //cell.detailTextLabel.text= date[indexPath.row];
+    } else {
+        cell.textLabel.text = title[indexPath.row];
+        cell.detailTextLabel.text = date[indexPath.row];
+
     }
-    else {
-        //set data into cells, name and icon
-        cell.textLabel.text = self.runners[indexPath.row];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
+    
+    
+    //NSLog(@"Date: %@", date);
     
     return cell;
 }
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    searchIndexPath = indexPath.row;
-    if (self.searchDisplayController.active) {
-        //NSLog(@"It used the search thing");
-        RunnerDetail *runnerDetail = nil;
-        runnerDetail = [self.filteredRunnersArray objectAtIndex:indexPath.row];
-        self.personalSplits=[[NSMutableArray alloc] init];
-        self.counterArray = [NSMutableArray array];
-        self.splitString= self.runners[indexPath.row];
-        NSInteger ii=0;
-
-        //on click, display every repeat done. iterate through all splits per individual selected
-        for (NSArray *personalRepeats in runnerDetail.splitArray ) {
-            ii=ii+1;
-            
-            NSString *counter = [[NSNumber numberWithInt:ii] stringValue];
-            [self.counterArray addObject:counter];
-            
-            for(NSArray *subInterval in personalRepeats){
-                
-                //Initalize Array in loop?
-                
-                NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
-                f.numberStyle = NSNumberFormatterDecimalStyle;
-                NSNumber *sum = [f numberFromString:subInterval];
-                NSNumber *sumInt =@([sum integerValue]);
-                NSNumber*decimal =[NSNumber numberWithFloat:(([sum floatValue]-[sumInt floatValue])*1000)];
-                NSNumber *decimalInt = @([decimal integerValue]);
-                
-                
-                //to do add decimal to string, round to 3 digits
-                NSNumber *minutes = @([sum integerValue] / 60);
-                NSNumber *seconds = @([sum integerValue] % 60);
-                NSNumber *ninty = [NSNumber numberWithInt:90];
-                
-                if ([sumInt intValue]<[ninty intValue]){
-                    //if less than 90 display in seconds
-                    self.personalSplits=[self.personalSplits arrayByAddingObject:subInterval];
-                }
-                else{
-                    //If greater than 90 seconds display in minute format
-                    //If less than 10 format with additional 0
-                    if ([seconds intValue]<10) {
-                        NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@.%@",minutes,seconds,decimalInt];
-                        self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
-                        
-                    }
-                    //If greater than 10 seconds, dont use the preceding 0
-                    else{
-                        NSString* elapsedtime = [NSString stringWithFormat:@"%@:%@.%@",minutes,seconds,decimalInt];
-                        self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
-                        
-                    }
-                }
-                
-            }
-        }
-
-    
-    }
-    else{
-    //NSLog(@"Non active search?");
-    self.personalSplits=[[NSMutableArray alloc] init];
-    self.counterArray = [NSMutableArray array];
-    self.splitString= self.runners[indexPath.row];
-    NSInteger ii=0;
-    //on click, display every repeat done. iterate through all splits per individual selected
-    for (NSArray *personalRepeats in interval[indexPath.row] ) {
-        ii=ii+1;
-       
-        NSString *counter = [[NSNumber numberWithInt:ii] stringValue];
-        [self.counterArray addObject:counter];
-        
-        for(NSArray *subInterval in personalRepeats){
-
-                //Initalize Array in loop?
-                
-                NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
-                f.numberStyle = NSNumberFormatterDecimalStyle;
-                NSNumber *sum = [f numberFromString:subInterval];
-                NSNumber *sumInt =@([sum integerValue]);
-                NSNumber*decimal =[NSNumber numberWithFloat:(([sum floatValue]-[sumInt floatValue])*1000)];
-                NSNumber *decimalInt = @([decimal integerValue]);
-                
-               
-                //to do add decimal to string, round to 3 digits
-                NSNumber *minutes = @([sum integerValue] / 60);
-                NSNumber *seconds = @([sum integerValue] % 60);
-                NSNumber *ninty = [NSNumber numberWithInt:90];
-               
-                if ([sumInt intValue]<[ninty intValue]){
-                    //if less than 90 display in seconds
-                    self.personalSplits=[self.personalSplits arrayByAddingObject:subInterval];
-                                   }
-                else{
-                    //If greater than 90 seconds display in minute format
-                    //If less than 10 format with additional 0
-                    if ([seconds intValue]<10) {
-                        NSString* elapsedtime = [NSString stringWithFormat:@"%@:0%@.%@",minutes,seconds,decimalInt];
-                        self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
-
-                    }
-                    //If greater than 10 seconds, dont use the preceding 0
-                    else{
-                        NSString* elapsedtime = [NSString stringWithFormat:@"%@:%@.%@",minutes,seconds,decimalInt];
-                        self.personalSplits=[self.personalSplits arrayByAddingObject:elapsedtime];
-                       
-                    }
-                }
-
-        }
-    }
-    
-    runnersName = self.runners[indexPath.row];
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        NSLog(@"Selected in search view controler");
+        NSLog(@"Index Path %ld", (long)indexPath.row);
+        searchIndexPath = indexPath.row;
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self performSegueWithIdentifier:@"showWorkoutDetail" sender:self];
         
     }
-    [self performSegueWithIdentifier:@"workoutDetail" sender:tableView];
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    //on view controller change, move to next page, and pass url to next view
-
-    if ([segue.identifier isEqualToString:@"workoutDetail"]) {
-        DetailViewController *detailViewController = segue.destinationViewController;
-        if (self.searchDisplayController.active) {
-            RunnerDetail *runnerDetail = nil;
-            runnerDetail = [self.filteredRunnersArray objectAtIndex:searchIndexPath];
-            detailViewController.runnersName = runnerDetail.runnerName;
-            detailViewController.urlString = self.urlName_VC2;
-
-            detailViewController.workoutDetail = self.personalSplits;
-            detailViewController.counterArray = self.counterArray;
-
-        }
-        else{
-            detailViewController.workoutDetail = self.personalSplits;
-            detailViewController.runnersName = runnersName;
-            detailViewController.counterArray = self.counterArray;
-            detailViewController.urlString = self.urlName_VC2;
-        }
-    }
-}
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
     
-    // Dispose of any resources that can be recreated.
 }
+
 
 
 //For Searching Table Content
@@ -512,11 +560,10 @@
 -(void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
     // Update the filtered array based on the search text and scope.
     // Remove all objects from the filtered search array
-    [self.filteredRunnersArray removeAllObjects];
+    [self.filteredTitleArray removeAllObjects];
     // Filter the array using NSPredicate
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"runnerName contains[c] %@",searchText];
-    self.filteredRunnersArray = [NSMutableArray arrayWithArray:[runnersArray filteredArrayUsingPredicate:predicate]];
-    //NSLog(@"DOes this work? %@", self.filteredRunnersArray);
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[c] %@",searchText];
+    self.filteredTitleArray = [NSMutableArray arrayWithArray:[workoutArray filteredArrayUsingPredicate:predicate]];
     
 }
 
@@ -536,6 +583,7 @@
     // Return YES to cause the search result table view to be reloaded.
     return YES;
 }
+
 
 
 
