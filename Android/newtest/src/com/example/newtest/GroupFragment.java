@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import android.app.AlertDialog;
@@ -180,10 +181,13 @@ public class GroupFragment extends ListFragment {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (CancellationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				} catch (ExecutionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				} 
 	        	if(asyncStatus){
 	        	
 	        		asyncServiceCall = new AsyncServiceCall();
@@ -195,6 +199,8 @@ public class GroupFragment extends ListFragment {
 						e.printStackTrace();
 					} catch (ExecutionException e) {
 						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch(CancellationException e){
 						e.printStackTrace();
 					}
 	        		if(tempRunVar != null){
