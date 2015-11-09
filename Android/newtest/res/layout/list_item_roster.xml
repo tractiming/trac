@@ -24,6 +24,7 @@
         android:textSize="14sp"
         android:layout_marginLeft="65dp"
       	android:layout_alignParentEnd="true"
+      	android:textColor="#000000"
         />
     
 
