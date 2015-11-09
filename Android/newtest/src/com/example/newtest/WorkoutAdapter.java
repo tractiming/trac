@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.trac.trac.R;
+
 import android.content.Context;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;

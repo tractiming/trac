@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import com.trac.trac.R;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;

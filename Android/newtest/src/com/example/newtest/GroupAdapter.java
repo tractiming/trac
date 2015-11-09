@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import com.trac.trac.R;
+
 import android.content.Context;
 import android.os.SystemClock;
 import android.util.Log;

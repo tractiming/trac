@@ -69,13 +69,24 @@
 
             <Button
                 android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginTop="16dp"
                 android:paddingLeft="60dp"
                 android:paddingRight="60dp"
                 android:text="@string/action_sign_in_register" />
+            <Button
+                android:id="@+id/create_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="16dp"
+                android:paddingLeft="60dp"
+                android:paddingRight="60dp"
+                android:text="@string/create_account" 
+                android:background="@layout/button_layout"
+               />
         </LinearLayout>
     </ScrollView>
 

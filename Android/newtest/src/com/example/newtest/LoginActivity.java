@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpResponse;
 
+import com.trac.trac.R;
 import com.google.gson.Gson;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
@@ -22,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -139,6 +141,18 @@ public class LoginActivity extends Activity {
 						//on click of signin, attemptLogin function called
 				        attemptLogin();
 				       // startActivity(new Intent(LoginActivity.this, CalendarActivity.class));
+					}
+				});
+		
+		findViewById(R.id.create_button).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						//on click of signin, attemptLogin function called
+						Uri uriUrl = Uri.parse("https://trac-us.appspot.com/register");
+				        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+				        startActivity(launchBrowser);
+				    
 					}
 				});
 	}

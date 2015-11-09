@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
+import com.trac.trac.R;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
