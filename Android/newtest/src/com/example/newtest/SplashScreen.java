@@ -2,6 +2,7 @@ package com.example.newtest;
  
 import java.io.IOException;
 
+import com.trac.trac.R;
 import com.example.newtest.LoginActivity.UserLoginTask;
 import com.google.gson.Gson;
 import com.squareup.okhttp.MediaType;
@@ -76,7 +77,8 @@ public class SplashScreen extends Activity {
       			   //Check if token is actually valid.If it is go to 
       			   //startActivity(new Intent(SplashScreen.this,CalendarActivity.class));
       			 mAuthTask = new TokenValidation();
-     			 mAuthTask.execute("https://trac-us.appspot.com/api/verifyLogin/");
+      			 
+     			 mAuthTask.execute("https://trac-us.appspot.com/api/verifyLogin/?token="+access_token);
       		   }
  
                 // close this activity
@@ -97,34 +99,26 @@ public class SplashScreen extends Activity {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			// Attempt authentication against a network service.
-			Log.d("Token:",access_token);
-			//inserts text into string
-			String pre_json = "token="+access_token;
-			Log.d(DEBUG_TAG, "Pre JSON Data: "+ pre_json);
-			
-			
-			RequestBody body = RequestBody.create(JSON, pre_json);
-			Log.d(DEBUG_TAG, "Request Body "+ body);
 			
 			
 			
 			Request request = new Request.Builder()
 	        .url(params[0])
-	        .post(body)
+	        .get()
 	        .build();
 			
-			Log.d(DEBUG_TAG, "Request Data: "+ request);
+			//Log.d(DEBUG_TAG, "Request Data: "+ request);
 			try {
 			    Response response = client.newCall(request).execute();
-			    Log.d(DEBUG_TAG, "Response Data: "+ response);
+			   // Log.d(DEBUG_TAG, "Response Data: "+ response);
 			    
 			    int codevar = response.code();
-			    Log.d(DEBUG_TAG, "Response Code: "+ codevar);
+			   // Log.d(DEBUG_TAG, "Response Code: "+ codevar);
 			    
-			    Log.d(DEBUG_TAG, "Request Data: "+ request);
+			   // Log.d(DEBUG_TAG, "Request Data: "+ request);
 			    var = response.body().string();
 			    
-			    Log.d(DEBUG_TAG, "VAR: "+ var);
+			   // Log.d(DEBUG_TAG, "VAR: "+ var);
 			    
 			    if (codevar == 200) {
 			    return true;
@@ -134,7 +128,7 @@ public class SplashScreen extends Activity {
 			    }
 			    
 			} catch (IOException e) {
-				Log.d(DEBUG_TAG, "IoException" + e.getMessage());
+				//Log.d(DEBUG_TAG, "IoException" + e.getMessage());
 				return null;
 			}
 
@@ -149,12 +143,12 @@ public class SplashScreen extends Activity {
 			}
 			else if (success) {
 				//go to calendar page
-				Log.d("HE","WORK");
+				//Log.d("HE","WORK");
 				 Intent intent = new Intent(SplashScreen.this, CalendarActivity.class);
 				 startActivity(intent);
 			} else {
 				//It it doesnt work segue to login page
-				Log.d("NOPE","NO WORK");
+				//Log.d("NOPE","NO WORK");
 				Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
 				 startActivity(intent);
 				 

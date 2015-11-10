@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.trac.trac.R;
 import com.example.newtest.CalendarActivity.AsyncServiceCall;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -59,19 +60,20 @@ public class WorkoutFragment extends ListFragment {
 	
 	public static void backButtonWasPressed() {
 		
-        Log.d("HI","Passed");
+        //Log.d("HI","Passed");
         asyncTask.cancel(true);
     }
 
 	public void onPause(){
 		super.onPause();
 		asyncTask.cancel(true);
+		
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		Log.d("Created","Workout Fragment");
+		//Log.d("Created","Workout Fragment");
 		View rootView = inflater.inflate(R.layout.fragment_workout_view, null);
 		expListView = (ExpandableListView) rootView.findViewById(android.R.id.list);
     //Alert Box if no connectivity
@@ -91,7 +93,7 @@ public class WorkoutFragment extends ListFragment {
 		
      // 2. get message value from intent
      final String message = intent.getStringExtra("message");
-     Log.d("The passed Variable Workout Fragment", message);
+     //("The passed Variable Workout Fragment", message);
    
      //pull to refresh initialized and async called when pulled
      swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
@@ -100,13 +102,13 @@ public class WorkoutFragment extends ListFragment {
             @Override
             public void onRefresh() {
                 swipeLayout.setRefreshing(true);
-                Log.d("Swipe", "Refreshing Number");
+                //("Swipe", "Refreshing Number");
                 asyncTask = (AsyncWorkoutCall) new AsyncWorkoutCall().execute(message);
                 ( new Handler()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         swipeLayout.setRefreshing(false);
-                        Log.d("Refresh","REfresh");
+                        //Log.d("Refresh","REfresh");
                         //new AsyncServiceCall().execute(url);
                     }
                 }, 3000);
@@ -179,14 +181,14 @@ public class WorkoutFragment extends ListFragment {
 				    return text;
 				    
 				} catch (IOException e) {
-					Log.d(DEBUG_TAG, "this is griffins fault now" + e.getMessage());
+					//Log.d(DEBUG_TAG, "this is griffins fault now" + e.getMessage());
 					return null;
 				}
 			}
 			
 			@Override
 			protected void onPostExecute(List<Runners> result) {
-				Log.d(DEBUG_TAG,"execute");
+				//Log.d(DEBUG_TAG,"execute");
 				
 				if(result==null){
 					alertDialog.show();
@@ -223,7 +225,7 @@ public class WorkoutFragment extends ListFragment {
 							
 							
 							
-							Log.d("Interval to String", result.get(i).interval.get(j)[0].toString());
+							//Log.d("Interval to String", result.get(i).interval.get(j)[0].toString());
 						}
 						listDataChild.put(dataHeader.get(i), tempArray);
 						

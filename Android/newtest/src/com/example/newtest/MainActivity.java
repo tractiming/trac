@@ -3,6 +3,7 @@ package com.example.newtest;
 import java.io.IOException;
 import java.util.Locale;
 
+import com.trac.trac.R;
 import com.example.newtest.SplashScreen.TokenValidation;
 import com.google.gson.Gson;
 import com.squareup.okhttp.MediaType;
@@ -31,6 +32,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,18 +73,18 @@ public class MainActivity extends ActionBarActivity implements
     	fragment = new Fragment();
     	super.onBackPressed();
 			GroupFragment.backButtonWasPressed();
-			Log.d("Back","PRESSED");
+			//Log.d("Back","PRESSED");
 			WorkoutFragment.backButtonWasPressed();
-			Log.d("Back","PRESSED FROM WORKOUT");
+			//Log.d("Back","PRESSED FROM WORKOUT");
     }
     
     public void onPause(){
     	fragment = new Fragment();
     	super.onPause();
 			GroupFragment.backButtonWasPressed();
-			Log.d("Back","PRESSED");
+			//Log.d("Back","PRESSED");
 			WorkoutFragment.backButtonWasPressed();
-			Log.d("Back","PRESSED FROM WORKOUT");
+			//Log.d("Back","PRESSED FROM WORKOUT");
     	
     }
 	
@@ -94,7 +96,7 @@ public class MainActivity extends ActionBarActivity implements
 		 SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 		   access_token = userDetails.getString("token","");
 		   userVariable = userDetails.getString("usertype", "");
-		   Log.d("Access_token, MainActivity:", userVariable);
+		   //Log.d("Access_token, MainActivity:", userVariable);
 		  
 		   resultOfComparison=userVariable.equals("coach");
 		// 1. get passed intent 
@@ -102,10 +104,10 @@ public class MainActivity extends ActionBarActivity implements
  
         // 2. get message--token-- value from intent
         String message = intent.getStringExtra("message");
-        Log.d("The passed Variable", message);
+       // Log.d("The passed Variable", message);
         
         numID = intent.getStringExtra("positionID");
-        Log.d("The ID Number", numID);
+       // Log.d("The ID Number", numID);
         
         
 		// Set up the action bar.
@@ -150,9 +152,10 @@ public class MainActivity extends ActionBarActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
+		
+		// TODO Auto-generated method stub
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.group_view, menu);
+		getMenuInflater().inflate(R.menu.shared_view, menu);
 		// Get the SearchView and set the searchable configuration
 	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 	    SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
@@ -171,11 +174,11 @@ public class MainActivity extends ActionBarActivity implements
                 try{// this is your adapter that will be filtered
                 groupAdapter.getFilter(newText);
                 workoutAdapter.getFilter(newText);
-                System.out.println("on text chnge text: "+newText);
+                //System.out.println("on text chnge text: "+newText);
                 return true;
                 }
                 finally{
-                	Log.d("early","finally");
+                	//Log.d("early","finally");
                 	return true;
                 	}
             }
@@ -186,7 +189,7 @@ public class MainActivity extends ActionBarActivity implements
                 //filter the adapter
                 groupAdapter.getFilter(query);
                 workoutAdapter.getFilter(query);
-                System.out.println("on query submit: "+query);
+                //System.out.println("on query submit: "+query);
                 return true;}
                 finally{Log.d("early","finally");
                 	return true;}
@@ -327,6 +330,9 @@ public class MainActivity extends ActionBarActivity implements
 			case 0:
 				groupFrag = new GroupFragment();
 				groupFrag.delegate = this;
+				Bundle args = new Bundle();
+			    args.putString("AccessToken",access_token);
+			    groupFrag.setArguments(args);
 				return groupFrag;
 			case 1:
 				 workoutFrag = new WorkoutFragment();

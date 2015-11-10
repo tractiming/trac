@@ -1,7 +1,6 @@
 package com.example.newtest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,27 +11,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class CalendarAdapter extends BaseAdapter {
+public class RosterAdapter extends BaseAdapter {
 	//Adapter specifically for CalendarActivity.class
-	private ArrayList<Results> parsedJson; 
-	private List<Results> parsedJsonList = null;
+	private ArrayList<RosterJson> parsedJson; 
+	private List<RosterJson> parsedJsonList = null;
 	private Context context;
 
 
 	
-	public CalendarAdapter(List<Results> parsedJsonList, Context context) {
+	public RosterAdapter(List<RosterJson> parsedJsonList, Context context) {
 	 this.parsedJsonList = parsedJsonList;
-	 this.parsedJson = new ArrayList<Results>();
+	 this.parsedJson = new ArrayList<RosterJson>();
 	 this.parsedJson.addAll(parsedJsonList);
 	 this.context = context;
 	}
 	
 	
-	public void add(List<Results> result){
+	public void add(List<RosterJson> result){
         if (result.size() > 0) {
         	this.parsedJsonList.addAll(result);
         	//Log.d("Size of Array",Integer.toString(result.size()));
@@ -40,7 +38,7 @@ public class CalendarAdapter extends BaseAdapter {
         	this.getCount();
 		
         	notifyDataSetChanged();
-			this.parsedJson = new ArrayList<Results>();
+			this.parsedJson = new ArrayList<RosterJson>();
 			this.parsedJson.addAll(parsedJsonList);
 			//Log.d("Enters","Add SubClass");
         }
@@ -79,16 +77,16 @@ public class CalendarAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		//Inflate a view to show peoples names
 		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_calendar, null);
+			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_roster, null);
 		}
 		
 		
 		//this finds the name and displays it
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
-		textView.setText(parsedJsonList.get(position).name);
+		textView.setText(parsedJsonList.get(position).first +" "+  parsedJsonList.get(position).last);
 		//find date adn display it, only show first 10 characters of the date--avoiding the timestamp
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text3);
-		textView2.setText(parsedJsonList.get(position).startTime.substring(0,10));
+		textView2.setText(parsedJsonList.get(position).id_str);
 		
 
 		
@@ -99,17 +97,22 @@ public class CalendarAdapter extends BaseAdapter {
 
 
 	public void getFilter(String charText) {
+		Log.d("Get Filter",charText);
 		charText = charText.toLowerCase(Locale.getDefault());
-
+		Log.d("Hello",parsedJsonList.toString());
 		parsedJsonList.clear();
+		 
 		if (charText.length() == 0) {
+			Log.d("Hello",parsedJsonList.toString());
 			parsedJsonList.addAll(parsedJson);
+			Log.d("Hello",parsedJsonList.toString());
 		} 
 		else 
 		{
-			for (Results wp : parsedJson) 
+			Log.d("Hello","");
+			for (RosterJson wp : parsedJson) 
 			{
-				if (wp.name.toLowerCase(Locale.getDefault()).contains(charText)) 
+				if (wp.first.toLowerCase(Locale.getDefault()).contains(charText)) 
 				{
 					parsedJsonList.add(wp);
 				}
@@ -118,8 +121,8 @@ public class CalendarAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
-	//add viewholder for 
 	
 	
 	
 }
+

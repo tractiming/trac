@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.newtest"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    package="com.trac.trac"
+    android:versionCode="2"
+    android:versionName="1.01" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -73,6 +73,19 @@
             android:name="com.example.newtest.SettingsFragment"
             android:label="@string/title_fragment_settings" 
             android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.example.newtest.RosterActivity"
+            android:label="@string/title_rosterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@layout/searchable" />
+            
         </activity>
     </application>
 

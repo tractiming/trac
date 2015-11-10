@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:padding= "10dp"
         android:textSize="18sp"
-        
         android:gravity="left"
         android:textColor="#000000"
         />
@@ -22,10 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding= "5dp"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:layout_marginLeft="65dp"
       	android:layout_alignParentEnd="true"
-      	android:textColor="#747474"
+      	android:textColor="#000000"
         />
     
 
