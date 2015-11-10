@@ -10,6 +10,9 @@
 		8915A414D35530C0DD268DE2 /* libPods-run.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65025FA5AE833806EAFCD44D /* libPods-run.a */; };
 		902104AF1A40AF3100FCC771 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 902104AE1A40AF3100FCC771 /* Reachability.m */; };
 		90428CDE1B9897590011B346 /* RunnerDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 90428CDD1B9897590011B346 /* RunnerDetail.m */; };
+		9048ABDA1BF19C170062903B /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 9048ABD91BF19C170062903B /* UIView+Toast.m */; };
+		9048ABDC1BF1A3900062903B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9048ABDB1BF1A3900062903B /* QuartzCore.framework */; };
+		9048ABDD1BF1A7EF0062903B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9048ABDB1BF1A3900062903B /* QuartzCore.framework */; };
 		905456FA19E9B11F002CE03C /* SiginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 905456F919E9B11F002CE03C /* SiginViewController.m */; };
 		907377991A37912800F86C7C /* CustomCelliPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 907377981A37912800F86C7C /* CustomCelliPad.xib */; };
 		9073779C1A37917000F86C7C /* CustomCelliPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 9073779B1A37917000F86C7C /* CustomCelliPad.m */; };
@@ -55,6 +58,9 @@
 		902104AE1A40AF3100FCC771 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		90428CDC1B9897590011B346 /* RunnerDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunnerDetail.h; sourceTree = "<group>"; };
 		90428CDD1B9897590011B346 /* RunnerDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RunnerDetail.m; sourceTree = "<group>"; };
+		9048ABD81BF19C170062903B /* UIView+Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Toast.h"; sourceTree = "<group>"; };
+		9048ABD91BF19C170062903B /* UIView+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Toast.m"; sourceTree = "<group>"; };
+		9048ABDB1BF1A3900062903B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		905456F819E9B11F002CE03C /* SiginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiginViewController.h; sourceTree = "<group>"; };
 		905456F919E9B11F002CE03C /* SiginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiginViewController.m; sourceTree = "<group>"; };
 		907377981A37912800F86C7C /* CustomCelliPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCelliPad.xib; sourceTree = "<group>"; };
@@ -104,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9048ABDC1BF1A3900062903B /* QuartzCore.framework in Frameworks */,
 				90E687A01915C48B0060B20B /* CoreGraphics.framework in Frameworks */,
 				90E687A21915C48B0060B20B /* UIKit.framework in Frameworks */,
 				90E6879E1915C48B0060B20B /* Foundation.framework in Frameworks */,
@@ -115,6 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9048ABDD1BF1A7EF0062903B /* QuartzCore.framework in Frameworks */,
 				90E687C31915C48B0060B20B /* XCTest.framework in Frameworks */,
 				90E687C51915C48B0060B20B /* UIKit.framework in Frameworks */,
 				90E687C41915C48B0060B20B /* Foundation.framework in Frameworks */,
@@ -155,6 +163,7 @@
 		90E6879C1915C48B0060B20B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9048ABDB1BF1A3900062903B /* QuartzCore.framework */,
 				90E6879D1915C48B0060B20B /* Foundation.framework */,
 				90E6879F1915C48B0060B20B /* CoreGraphics.framework */,
 				90E687A11915C48B0060B20B /* UIKit.framework */,
@@ -169,6 +178,8 @@
 			children = (
 				90E215311BE86E4500E617EC /* RosterTableViewController.h */,
 				90E215321BE86E4500E617EC /* RosterTableViewController.m */,
+				9048ABD81BF19C170062903B /* UIView+Toast.h */,
+				9048ABD91BF19C170062903B /* UIView+Toast.m */,
 				902104AD1A40AF3100FCC771 /* Reachability.h */,
 				902104AE1A40AF3100FCC771 /* Reachability.m */,
 				90A069891A360C79008CAA75 /* CustomCell.xib */,
@@ -390,6 +401,7 @@
 				905456FA19E9B11F002CE03C /* SiginViewController.m in Sources */,
 				90E687BA1915C48B0060B20B /* SecondViewController.m in Sources */,
 				90FB8C9A19F5BAE7006F1210 /* WorkoutViewController.m in Sources */,
+				9048ABDA1BF19C170062903B /* UIView+Toast.m in Sources */,
 				90E687AE1915C48B0060B20B /* AppDelegate.m in Sources */,
 				9073779C1A37917000F86C7C /* CustomCelliPad.m in Sources */,
 				90428CDE1B9897590011B346 /* RunnerDetail.m in Sources */,

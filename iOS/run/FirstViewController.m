@@ -16,6 +16,7 @@
 #import "ThirdViewController.h"
 #import "CustomCell.h"
 #import "CustomCelliPad.h"
+#import "UIView+Toast.h"
 #define IDIOM    UI_USER_INTERFACE_IDIOM()
 #define IPAD     UIUserInterfaceIdiomPad
 #define UITableViewCellEditingStyleMultiSelect (3)
@@ -25,7 +26,7 @@
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *editButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
-
+@property (nonatomic, assign) CFTimeInterval ticks;
 @end
 
 
@@ -43,6 +44,14 @@
     NSArray *superlasttime;
     UIBarButtonItem *splitButton;
     UIBarButtonItem *resetButton;
+    NSMutableString *countedTime;
+    UILabel *toastText;
+    UIView *customView;
+    NSTimer *_timer;
+    double CurrentTime;
+    double tempTime;
+    double tempTimeMax;
+    
 }
 
 - (IBAction)editAction:(id)sender
@@ -134,6 +143,14 @@
         {
             NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
             [s addObject:@[[tempDict valueForKey:@"athleteID"],localDateString]];
+            
+            NSLog(@"%@, %@", [tempDict valueForKey:@"countStart"], [tempDict valueForKey:@"numberSplits"]);
+            double tempHolder =[[tempDict valueForKey:@"numberSplits"] doubleValue];
+            if ([[tempDict valueForKey:@"countStart"] doubleValue] == tempHolder){
+                [tempDict removeObjectForKey:@"dateTime"];
+                [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
+                NSLog(@"Executed");
+            }
         }
         sendThis = @{@"s": s};
         //NSLog(@"JSON %@",sendThis);
@@ -145,6 +162,13 @@
         {
             NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
             [s addObject:@[[tempDict valueForKey:@"athleteID"],localDateString]];
+            
+            NSLog(@"%@, %@", [tempDict valueForKey:@"countStart"], [tempDict valueForKey:@"numberSplits"]);
+            double tempHolder =[[tempDict valueForKey:@"numberSplits"] doubleValue] ;
+            if ([[tempDict valueForKey:@"countStart"] doubleValue] == tempHolder){
+                [tempDict removeObjectForKey:@"dateTime"];
+                [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
+            }
         }
         sendThis = @{@"s": s};
         // NSLog(@"JSON %@",sendThis);
@@ -268,6 +292,8 @@
             //NSLog(@"Updated Reset");
             [tempDict removeObjectForKey:@"totalTime"];
             [tempDict setObject:elapsedtime forKey:@"totalTime"];
+            [tempDict removeObjectForKey:@"dateTime"];
+            [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
             NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:selectionIndex.row inSection:0];
             NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
             [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
@@ -285,6 +311,8 @@
             //NSLog(@"Updated Reset");
             [tempDict removeObjectForKey:@"totalTime"];
             [tempDict setObject:elapsedtime forKey:@"totalTime"];
+            [tempDict removeObjectForKey:@"dateTime"];
+            [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
             NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:selectionIndex.row inSection:0];
             NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
             [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
@@ -328,6 +356,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    CurrentTime = CACurrentMediaTime();
+    
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 2.0; //seconds
+    [self.tableData addGestureRecognizer:lpgr];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receiveNotification:)
@@ -338,7 +373,7 @@
     Executed = TRUE;
     self.tableData.allowsMultipleSelectionDuringEditing = YES;
      self.navigationItem.rightBarButtonItem = self.editButton;
-
+    
     [self.tabBarController.navigationItem setTitle:self.workoutName];
     //initilize spinner
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -370,6 +405,74 @@
     [self showActionToolbar:NO];
         
 }
+
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    NSLog(@"Hello");
+     CGPoint location = [gestureRecognizer locationInView:self.tableData];
+    
+    NSIndexPath *indexPath = [self.tableData indexPathForRowAtPoint:location];
+    if (indexPath == nil) {
+        //NSLog(@"long press on table view but not on a row");
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        NSLog(@"long press on table view at row %ld", (long)indexPath.row);
+        _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(refreshTimeLabel:) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSDefaultRunLoopMode];
+        tempTime = [[[self.athleteDictionaryArray objectAtIndex:indexPath.row] valueForKey:@"dateTime"] doubleValue];
+        if (tempTime != 0){
+            tempTimeMax = CACurrentMediaTime() - tempTime + 3.5;
+            }
+        else{
+            tempTimeMax = CACurrentMediaTime() - CurrentTime +3.5;
+        }
+        
+        customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 40)];
+        [customView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin)]; // autoresizing masks are respected on custom views
+        toastText = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+        toastText.adjustsFontSizeToFitWidth = true;
+        toastText.textAlignment = NSTextAlignmentCenter;
+        [toastText setTextColor:[UIColor whiteColor]];
+        [toastText setCenter:customView.center];
+        [customView addSubview:toastText];
+        customView.layer.cornerRadius = 15;
+        customView.layer.masksToBounds = YES;
+        [customView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.8]];
+        [self.navigationController.view showToast:customView duration:3.0 position:CSToastPositionTop completion:nil];
+        
+       
+    } else {
+       // NSLog(@"gestureRecognizer.state = %ld", gestureRecognizer.state);
+    }
+    
+    // More coming soon...
+}
+
+-(void)refreshTimeLabel:(id)sender
+{
+    // Timers are not guaranteed to tick at the nominal rate specified, so this isn't technically accurate.
+    // However, this is just an example to demonstrate how to stop some ongoing activity, so we can live with that inaccuracy.
+    _ticks = 0.1;
+    double time = CACurrentMediaTime() - CurrentTime;
+    time += _ticks;
+    
+    if (tempTime != 0)
+    {
+         time = CACurrentMediaTime() - tempTime;
+    }
+    NSLog(@"%f",time);
+    //CFTimeInterval maxticks = _ticks + 3;
+    NSLog(@"%f, %f",time,tempTimeMax);
+    if (time < tempTimeMax){
+        double seconds = fmod(time, 60.0);
+        double minutes = fmod(trunc(time / 60.0), 60.0);
+        double hours = trunc(time / 3600.0);
+        toastText.text = [NSString stringWithFormat:@"%02.0f:%02.0f:%04.1f", hours, minutes, seconds];
+    }
+    else{
+        [_timer invalidate];
+    }
+}
+
 
 - (void)receiveNotification:(NSNotification *)notification
 {
@@ -556,6 +659,7 @@
                 //NSLog(@"Error here?");
                 [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
                 [athleteDictionary setObject:[NSNumber numberWithInt:0] forKey:@"countStart"];
+                [athleteDictionary setObject:[NSNumber numberWithDouble:0] forKey:@"dateTime"];
                 [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
                 [self.athleteDictionaryArray addObject:athleteDictionary];
             }
@@ -773,6 +877,7 @@
                     [athleteDictionary setObject:[self.runnerID objectAtIndex:index] forKey:@"athleteID"];
                     [athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
                     [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
+                    [athleteDictionary setObject:[NSNumber numberWithDouble:0] forKey:@"dateTime"];
                     [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
                     [self.athleteDictionaryArray addObject:athleteDictionary];
                     [self.tableData beginUpdates];
@@ -815,6 +920,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     // Update the delete button's title based on how many items are selected.
     [self updateButtonsToMatchTableState];
 }
