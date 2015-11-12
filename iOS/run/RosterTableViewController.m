@@ -104,7 +104,7 @@
     //add token to url to find session data
     NSLog(@"Secutiy Token: %@",savedToken);
     
-    url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/reg_tag/?id=%@&access_token=%@", self.urlID, savedToken];
+    url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/athletes/?access_token=%@", savedToken];
     
     //initialize spinner for data load
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -425,9 +425,10 @@
                                   options:kNilOptions
                                   error:&error];
         
-        NSMutableArray* firstname= [json valueForKey:@"first"];
-        NSMutableArray* lastname= [json valueForKey:@"last"];
-        NSMutableArray* id_str = [json valueForKey:@"id_str"];
+        NSDictionary* user= [json valueForKey:@"user"];
+        NSMutableArray* firstname= [user valueForKey:@"first_name"];
+        NSMutableArray* lastname= [user valueForKey:@"last_name"];
+        NSMutableArray* id_str = [json valueForKey:@"tag"];
         NSLog(@"%@, %@", firstname, lastname);
         title=[[NSMutableArray alloc] init];
 

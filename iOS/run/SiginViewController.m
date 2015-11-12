@@ -37,9 +37,11 @@
     // Dispose of any resources that can be recreated.
 }
 -(IBAction)createAccountClicked:(id)sender{
-    NSURL *url = [ [ NSURL alloc ] initWithString: @"https://www.tracchicago.com/register/" ];
-    [[UIApplication sharedApplication] openURL:url];
-    
+    [self performSegueWithIdentifier:@"create_account" sender:self];
+ //   [self presentModalViewController:@"create_account" animated:YES];
+    if (![[self modalViewController] isBeingPresented]) {
+        [self dismissModalViewControllerAnimated:YES];
+    }
 }
 
 
