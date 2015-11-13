@@ -15,4 +15,6 @@ public class Runners {
 	public String id;
 	@SerializedName ("total")
 	public String total;
+	@SerializedName ("has_split")
+	public String has_split;
 }

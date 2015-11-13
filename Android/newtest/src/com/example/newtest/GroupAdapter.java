@@ -94,7 +94,8 @@ public class GroupAdapter extends BaseAdapter{
 		// TODO Auto-generated method stub
 		//Inflate a view to show peoples names
 		//constantly update totalsize array
-		if(parsedJson.get(position).interval != null)
+		Log.d("has split","split");
+		if(parsedJson.get(position).has_split.equalsIgnoreCase("true"))
 			totalSizeArray.set(position,Integer.toString(parsedJson.get(position).interval.size()));
 		else 
 			totalSizeArray.set(position,Integer.toString(0));
@@ -103,6 +104,7 @@ public class GroupAdapter extends BaseAdapter{
 	    Holder holder = null;
 		
 		if (convertView == null) {
+			Log.d("null","null");
 			holder = new Holder();
 			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_group, null);
 			holder.ckbox = (CheckBox) convertView.findViewById(R.id.checkBox);
@@ -171,7 +173,7 @@ public class GroupAdapter extends BaseAdapter{
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
 		List<String[]> intervals = parsedJson.get(position).interval;
 
-		if (intervals != null && !intervals.isEmpty()){
+		if (parsedJson.get(position).has_split.equalsIgnoreCase("true") && !intervals.isEmpty()){
 			int ii = parsedJson.get(position).interval.get(intervals.size() - 1).length - 1;
 			
 			float firstsplitfloat = Float.parseFloat(parsedJson.get(position).interval.get(intervals.size() - 1)[ii]);
@@ -227,13 +229,15 @@ public class GroupAdapter extends BaseAdapter{
 					textView4.setText(strI);
 			    
 		}
-		else if (intervals != null){
+		else if (parsedJson.get(position).has_split.equalsIgnoreCase("true") && intervals != null){
 			textView2.setText("NT");
 			textView4.setText("NT");
+			Log.d("has split","NT");
 		}
 		else {
 			textView2.setText("DNS");
 			textView4.setText("DNS");
+			Log.d("has split","DNS");
 			
 		}
 				
