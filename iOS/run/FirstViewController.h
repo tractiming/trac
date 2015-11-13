@@ -11,6 +11,7 @@
 
 @interface FirstViewController :UIViewController <UITableViewDelegate,UITableViewDataSource>
 
+@property (strong, nonatomic) NSMutableArray *has_split;
 @property (strong, nonatomic) NSMutableArray *runners;
 @property (strong, nonatomic) NSMutableArray *runnerID;
 @property (strong, nonatomic) NSMutableArray *lasttimearray;

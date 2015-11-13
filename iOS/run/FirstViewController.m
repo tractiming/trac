@@ -560,16 +560,18 @@
         self.runners= [results valueForKey:@"name"];
         self.runnerID = [results valueForKey:@"id"];
         self.interval = [results valueForKey:@"splits"];
-        self.summationTimeArray=[[NSMutableArray alloc] init];
+        self.has_split = [results valueForKey:@"has_split"];
+
+       self.summationTimeArray=[[NSMutableArray alloc] init];
         self.lasttimearray=[[NSMutableArray alloc] init];
        
         //Iterate through most recent JSON request
         NSUInteger index = 0;
        
         for (NSArray *personalinterval in self.interval) {
-            
+           
             if(Executed == TRUE){
-                if([personalinterval isEqual:[NSNull null]]){
+                if(![[self.has_split objectAtIndex:index] boolValue]){
                     elapsedtime = [NSString stringWithFormat:@"DNS"];
                     superlasttime = [NSString stringWithFormat:@"DNS"];
                     universalIndex = NULL;
@@ -673,9 +675,9 @@
                 //If the new index is in the dictionary, and if it hasnt loaded all the splits update them and reload.
                 if (found){
                     
-                    if (![personalinterval isEqual:[NSNull null]]) {
+                    if ([[self.has_split objectAtIndex:index] boolValue]) {
 
-                        if ( [personalinterval  count] == 0 && [[[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"numberSplits"] isEqual:[NSNull null]])
+                        if ( [personalinterval  count] == 0)
                         {
                             elapsedtime = [NSString stringWithFormat:@"NT"];
                             superlasttime = [NSString stringWithFormat:@"NT"];
@@ -790,8 +792,8 @@
                     NSIndexPath* rowToAdd = [NSIndexPath indexPathForRow:[tempArray count] inSection:0];
                     NSArray* rowsToAdd = [NSArray arrayWithObjects:rowToAdd, nil];
                     NSArray *tempArray= [self.interval objectAtIndex:index];
-                    
-                    if([tempArray isEqual:[NSNull null]]){
+                    //NSLog(@" Has Split: %@",[self.has_split objectAtIndex:index]);
+                    if(![[self.has_split objectAtIndex:index] boolValue]){
                         elapsedtime = [NSString stringWithFormat:@"DNS"];
                         superlasttime = [NSString stringWithFormat:@"DNS"];
                         universalIndex = NULL;
