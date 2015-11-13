@@ -146,8 +146,8 @@ public class GroupFragment extends ListFragment {
 		Intent intent = getActivity().getIntent();
 		
         // 2. get message value from intent
-        //message = intent.getStringExtra("message");
-		message = "http://10.0.2.2:8000/api/sessions/3/individual_results/?all_athletes=true&access_token=GwbMwADpAddkDHaL6HT5YEBuEBzxwc";
+        message = intent.getStringExtra("message");
+		//message = "http://10.0.2.2:8000/api/sessions/3/individual_results/?all_athletes=true&access_token=GwbMwADpAddkDHaL6HT5YEBuEBzxwc";
         title = intent.getStringExtra("workoutName");
         date = intent.getStringExtra("workoutDate");
         //Log.d("The passed Variable in frag baby", message);
