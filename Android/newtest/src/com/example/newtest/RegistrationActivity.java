@@ -41,7 +41,7 @@ import android.widget.TextView;
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-public class LoginActivity extends Activity {
+public class RegistrationActivity extends Activity {
 	
 	// private static Context context;
 	
@@ -66,10 +66,16 @@ public class LoginActivity extends Activity {
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
+	private String mConfirm;
+	private String mUsername;
+	private String mOrganization;
 
 	// UI references.
 	private EditText mEmailView;
 	private EditText mPasswordView;
+	private EditText mConfirmView;
+	private EditText mUsernameView;
+	private EditText mOrganizationView;
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
@@ -78,36 +84,26 @@ public class LoginActivity extends Activity {
 	private static String userVariable;
 	private String client_secret;
 	private String client_id;
-	
-	
-	 public void onBackPressed() {
-		   Intent intent = new Intent(Intent.ACTION_MAIN);
-		   intent.addCategory(Intent.CATEGORY_HOME);
-		   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		   startActivity(intent);
-		 }
-	
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
+		setContentView(R.layout.activity_register);
 		
-		//create alert box if no internet
 		alertDialog = new AlertDialog.Builder(this).create();
-		alertDialog.setTitle("No Internet Connectivity");
-		alertDialog.setMessage("Please connect to the internet and try again.");
+		alertDialog.setTitle("Success!");
+		alertDialog.setMessage("Account created");
 		alertDialog.setIcon(R.drawable.trac_launcher);
 		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-			
+				//go to Login page
+				Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+				startActivity(intent);
 			}
 			});
 		
-		// Is there a token present?
-		SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
-		   access_token = userDetails.getString("token","");
-		   Log.d("Access_token, Login Activity:", access_token);
-		
+
 		//Set Context
 		//LoginActivity.context = getApplicationContext();
 
@@ -115,6 +111,10 @@ public class LoginActivity extends Activity {
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
+		
+		mOrganizationView = (EditText) findViewById(R.id.organization);
+		mUsernameView = (EditText) findViewById(R.id.username);
+		mConfirmView = (EditText) findViewById(R.id.confirm);
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
@@ -144,15 +144,14 @@ public class LoginActivity extends Activity {
 					}
 				});
 		
-		findViewById(R.id.create_button).setOnClickListener(
+		findViewById(R.id.cancel_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						//on click of signin, attemptLogin function called
-						//Uri uriUrl = Uri.parse("https://trac-us.appspot.com/register");
-				        //Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
-				        //startActivity(launchBrowser);
-						 startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
+					       startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
+
+				    
 					}
 				});
 	}
@@ -181,11 +180,17 @@ public class LoginActivity extends Activity {
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
+		mOrganizationView.setError(null);
+		mConfirmView.setError(null);
+		mUsernameView.setError(null);
 
 		// Store values at the time of the login attempt.
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
-
+		mOrganization = mOrganizationView.getText().toString();
+		mConfirm = mConfirmView.getText().toString();
+		mUsername  = mUsernameView.getText().toString();
+		
 		boolean cancel = false;
 		View focusView = null;
 
@@ -198,12 +203,32 @@ public class LoginActivity extends Activity {
 			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
 			cancel = true;
+		} else if (!mPassword.equals(mConfirm)) {
+			mPasswordView.setError(getString(R.string.error_match));
+			focusView = mPasswordView;
+			cancel = true;
 		}
 
 		// Check for a valid email address.
 		if (TextUtils.isEmpty(mEmail)) {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
+			cancel = true;
+		} 
+		
+		if (TextUtils.isEmpty(mOrganization)) {
+			mOrganizationView.setError(getString(R.string.error_field_required));
+			focusView = mOrganizationView;
+			cancel = true;
+		} 
+		if (TextUtils.isEmpty(mUsername)) {
+			mUsernameView.setError(getString(R.string.error_field_required));
+			focusView = mUsernameView;
+			cancel = true;
+		} 
+		if (TextUtils.isEmpty(mConfirm)) {
+			mConfirmView.setError(getString(R.string.error_field_required));
+			focusView = mConfirmView;
 			cancel = true;
 		} 
 
@@ -214,10 +239,10 @@ public class LoginActivity extends Activity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			mLoginStatusMessageView.setText(R.string.registerProgress);
 			showProgress(true);
 			mAuthTask = new UserLoginTask();
-			mAuthTask.execute("https://trac-us.appspot.com/api/login/");
+			mAuthTask.execute("https://trac-us.appspot.com/api/register/");
 		}
 	}
 
@@ -276,29 +301,17 @@ public class LoginActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			// Attempt authentication against a network service.
-			Log.d("Username:", mEmail);
+			Log.d("Email:", mEmail);
 			Log.d("Password:",mPassword);
+			Log.d("Username:",mUsername);
 			//inserts text into string
-			//String pre_json = "username="+mEmail+"&password="+mPassword+"&grant_type=password"+"&client_id="+mEmail;
+			String pre_json = "username="+mUsername+"&password="+mPassword+"&email="+mEmail+"&user_type=coach"+"&organization="+mOrganization;
 			//Log.d(DEBUG_TAG, "Pre JSON Data: "+ pre_json);
 			
 			//String json = gson.toJson(pre_json);
 			//Log.d(DEBUG_TAG, "JSON "+ json);
-			String ps = mEmail+":"+mPassword;
-			byte[] data;
-			String base64credential;
-			try {
-				data = ps.getBytes("UTF-8");
-				base64credential = Base64.encodeToString(data, Base64.DEFAULT);
-			} catch (UnsupportedEncodingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				base64credential = "Nope";
-			}
-			
-			String compounded = "Basic " + base64credential;
-			
-			RequestBody body = RequestBody.create(null, new byte[0]);
+
+			RequestBody body = RequestBody.create(JSON, pre_json);
 			//Log.d(DEBUG_TAG, "Request Body "+ body);
 			
 			
@@ -306,7 +319,6 @@ public class LoginActivity extends Activity {
 			Request request = new Request.Builder()
 	        .url(params[0])
 	        .post(body)
-	        .header("Authorization", compounded)
 	        .build();
 			
 			Log.d(DEBUG_TAG, "Request Data: "+ request);
@@ -322,7 +334,7 @@ public class LoginActivity extends Activity {
 			    
 			    Log.d(DEBUG_TAG, "VAR: "+ var);
 			    
-			    if (codevar == 200) {
+			    if (codevar == 201) {
 			    return true;
 			    }
 			    else {
@@ -364,28 +376,8 @@ public class LoginActivity extends Activity {
 			else if (success) {
 				//finish();
 				//store the token in Shared Preferences for other Acitivties to access
-				Gson gson = new Gson();
-				AccessToken parsedLogin = gson.fromJson(var, AccessToken.class);
-				Log.d("Test Test var ???", var);
-				client_id = parsedLogin.client_id;
-				client_secret = parsedLogin.client_secret;
-				Log.d("Test Test var ???", access_token);
 				
-				//context = getAppContext();
-				
-				Log.d("Success","Coach or Athlete");
-				SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
-				Editor edit = pref.edit();
-				edit.putString("usertype", parsedLogin.user_type);
-				edit.commit();
-				//SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
-				//   String access_token2 = userDetails.getString("token","");
-				  // Log.d("Access_token", access_token2);
-				
-				//go to calendar page
-     			 UserType userType = new UserType();
-     			 String url = "https://trac-us.appspot.com/oauth2/token/";
-     			 userType.execute(url);
+				alertDialog.show();
      			 
 				 
 				 
@@ -403,86 +395,7 @@ public class LoginActivity extends Activity {
 		}
 	}
 	
-	public class UserType extends AsyncTask<String, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(String... params) {
-			// Attempt authentication against a network service.
 
-			String pre_json = "username="+mEmail+"&password="+mPassword+"&client_id="+client_id+"&client_secret="+client_secret+"&grant_type=password";
-			Log.d(DEBUG_TAG, "Pre JSON Data: "+ pre_json);
-
-			
-			RequestBody body = RequestBody.create(JSON, pre_json);
-			Log.d(DEBUG_TAG, "Request Body "+ body);
-			
-			Request request = new Request.Builder()
-	        .url(params[0])
-	        .post(body)
-	        .build();
-			
-			Log.d(DEBUG_TAG, "Request Data: "+ request);
-			try {
-			    Response response = client.newCall(request).execute();
-			    Log.d(DEBUG_TAG, "Response Data: "+ response);
-			    
-			    int codevar = response.code();
-			    Log.d(DEBUG_TAG, "Response Code: "+ codevar);
-			    
-			    Log.d(DEBUG_TAG, "Request Data: "+ request);
-			    userVariable = response.body().string();
-			    
-			    Log.d(DEBUG_TAG, "USERTYPE RESPONSE: "+ userVariable);
-			    
-			    if (codevar == 200) {
-			    return true;
-			    }
-			    else {
-			    return false;
-			    }
-			    
-			} catch (IOException e) {
-				Log.d(DEBUG_TAG, "IoException" + e.getMessage());
-				return null;
-			}
-
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			
-			mAuthTask = null;
-
-			if (success == null){
-				alertDialog.show();
-			}
-			else if (success) {
-				//go to calendar page
-				Gson gson = new Gson();
-				AuthToken parsedOAuth = gson.fromJson(userVariable, AuthToken.class);
-
-				access_token = parsedOAuth.access_token;
-
-				SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
-				Editor edit = pref.edit();
-				edit.putString("token", access_token);
-				edit.commit();
-				
-				Intent intent = new Intent(LoginActivity.this, CalendarActivity.class);
-				 startActivity(intent);
-				
-
-			} else {
-				//It it doesnt work segue to login page
-				Log.d("NOPE","NO WORK");
-
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mAuthTask = null;
-
-		}
-	}
 	
 }
+

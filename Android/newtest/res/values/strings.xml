@@ -37,5 +37,14 @@
 	<string name="reset">Reset</string>
 	<string name="view_roster">View Roster</string>
 	<string name="view_roster_description">See roster before importing</string>
+	<string name="organization">Organization</string>
+	<string name="username">Username</string>
+	<string name="password">Password</string>
+	<string name="confirm">Confirm Password</string>
+	<string name="email">Email Address</string>
+	<string name="title_activity_registration">Register</string>
+	<string name="register">Register</string>
+	<string name="cancel">Cancel</string>
+	
 	
 </resources>
