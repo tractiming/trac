@@ -379,6 +379,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="Cnh-BI-ris"/>
                     <connections>
+                        <outlet property="cancelButton" destination="cWl-Iu-7L8" id="x3Q-xW-HZG"/>
+                        <outlet property="editButton" destination="6Bt-dj-JbH" id="LvR-88-vY4"/>
                         <outlet property="searchDisplayController" destination="gt6-Ce-3Qk" id="VoL-Ag-ddX"/>
                         <outlet property="tableData" destination="NGC-rB-d7s" id="uW1-5s-qke"/>
                         <outlet property="workoutSearchBar" destination="4T3-W0-aFv" id="RV9-Qh-ain"/>
@@ -394,8 +396,18 @@
                         <outlet property="searchResultsDelegate" destination="jIC-ob-hEH" id="JwZ-eZ-OGr"/>
                     </connections>
                 </searchDisplayController>
+                <barButtonItem title="Add" id="6Bt-dj-JbH">
+                    <connections>
+                        <action selector="editAction:" destination="jIC-ob-hEH" id="guG-GW-O84"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem title="Cancel" id="cWl-Iu-7L8">
+                    <connections>
+                        <action selector="cancelAction:" destination="jIC-ob-hEH" id="mua-uY-Kbc"/>
+                    </connections>
+                </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="791" y="2400"/>
+            <point key="canvasLocation" x="787" y="2400"/>
         </scene>
         <!--Second View Controller - Second-->
         <scene sceneID="ot8-2e-RuS">

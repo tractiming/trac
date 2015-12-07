@@ -21,7 +21,7 @@
 #import "RosterTableViewController.h"
 #import "Reachability.h"
 
-@interface RosterTableViewController ()
+@interface RosterTableViewController () <UIActionSheetDelegate>
 
 @property (nonatomic) Reachability *hostReachability;
 @property (nonatomic) Reachability *internetReachability;
@@ -32,7 +32,8 @@
 @property (nonatomic, strong) UIImageView *compass_spinner;
 @property (assign) BOOL isRefreshIconsOverlap;
 @property (assign) BOOL isRefreshAnimating;
-
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *editButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 
 @end
 
@@ -46,7 +47,7 @@
     NSString *url_token;
     NSString *pagination_url;
     UIActivityIndicatorView *spinner;
-    
+    UIToolbar *actionToolbar;
     int fakedTotalItemCount;
     int nextFifteen;
     NSString *savedToken;
@@ -56,6 +57,8 @@
     NSMutableArray *workoutArray;
     NSString *workoutName;
     NSString *workoutDate;
+    UIBarButtonItem *splitButton;
+    UIBarButtonItem *resetButton;
     
 }
 
@@ -67,6 +70,26 @@
 {
     [super viewDidLoad];
     
+    self.navigationItem.rightBarButtonItem = self.editButton;
+    self.tableData.allowsMultipleSelectionDuringEditing = YES;
+    
+    
+    //Define Toolbar
+    if (IDIOM ==IPAD) {
+        actionToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 416, self.view.frame.size.width, 44)];
+    }
+    else{
+        actionToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 416, 320, 44)];
+    }
+    splitButton =[[UIBarButtonItem alloc]initWithTitle:@"Register" style:UIBarButtonItemStyleDone target:self action:@selector(registerAction:)];
+    resetButton = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStylePlain target:self action:@selector(createAction:)];
+    splitButton.width = [[UIScreen mainScreen] bounds].size.width/2;
+    [actionToolbar setItems:@[splitButton,resetButton]];
+    
+    
+    
+    [self updateButtonsToMatchTableState];
+    [self showActionToolbar:NO];
     //Create a light gray background behind datatable
     CGRect frame = self.tableData.bounds;
     frame.origin.y = -frame.size.height;
@@ -80,10 +103,7 @@
     //initialize array for search
     self.filteredTitleArray = [NSMutableArray arrayWithCapacity:[title count]];
     
-    // Hide the search bar until user scrolls up
-    CGRect newBounds = self.tableData.bounds;
-    newBounds.origin.y = newBounds.origin.y + workoutSearchBar.bounds.size.height;
-    self.tableData.bounds = newBounds;
+    
     
     /*
      Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the method reachabilityHasChanged will be called.
@@ -122,6 +142,210 @@
     
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    [actionToolbar removeFromSuperview];
+    self.navigationItem.rightBarButtonItem = nil;
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.view.superview addSubview:actionToolbar];
+}
+
+- (void)updateButtonsToMatchTableState
+{
+    if (self.tableData.editing)
+    {
+        // Show the option to cancel the edit.
+        self.navigationItem.rightBarButtonItem = self.cancelButton;
+        
+        //[self updateSplitButtonTitle];
+        
+    }
+    else
+    {
+        // Show the edit button, but disable the edit button if there's nothing to edit.
+        if (self.filteredTitleArray.count > 0)
+        {
+            self.editButton.enabled = YES;
+        }
+        else
+        {
+            self.editButton.enabled = YES;
+        }
+        self.navigationItem.rightBarButtonItem = self.editButton;
+    }
+}
+
+- (void)showActionToolbar:(BOOL)show
+{
+    NSLog(@"Entered it again");
+    CGRect toolbarFrame = actionToolbar.frame;
+	CGRect tableViewFrame = self.tableData.frame;
+	if (show)
+	{
+		toolbarFrame.origin.y = actionToolbar.superview.frame.size.height - toolbarFrame.size.height;
+		tableViewFrame.size.height -= toolbarFrame.size.height;
+	}
+	else
+	{
+		toolbarFrame.origin.y = actionToolbar.superview.frame.size.height;
+		tableViewFrame.size.height += toolbarFrame.size.height;
+	}
+	
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+    NSLog(@"Toolbar Frame, TableView Frame %f,%f",toolbarFrame.origin.y,tableViewFrame.size.height);
+	actionToolbar.frame = toolbarFrame;
+	self.tableData.frame = tableViewFrame;
+	
+	[UIView commitAnimations];
+}
+
+- (IBAction)editAction:(id)sender
+{
+    [self.tableData setEditing:YES animated:YES];
+    [self updateButtonsToMatchTableState];
+    [self showActionToolbar:YES];
+}
+
+- (IBAction)cancelAction:(id)sender
+{
+    [self.tableData setEditing:NO animated:YES];
+    [self updateButtonsToMatchTableState];
+    [self showActionToolbar:NO];
+}
+
+- (void)registerAction:(id)sender
+{
+    
+    // Delete what the user selected.
+    NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
+    NSLog(@"Selected Rows, %@",selectedRows);
+    NSLog(@"Array!, %@",workoutArray);
+    
+    BOOL splitSpecificRows = selectedRows.count > 0;
+    
+
+    NSDictionary *sendThis;
+    NSMutableArray * s = [NSMutableArray new];
+    if (splitSpecificRows)
+    {
+        // Build an NSIndexSet of all the objects to delete, so they can all be removed at once.
+        
+        for (NSIndexPath *selectionIndex in selectedRows)
+        {
+            Workout *workout = nil;
+            workout = [workoutArray objectAtIndex:selectionIndex.row];
+            [s addObject:workout.urlID];
+
+           
+        }
+        sendThis = @{@"id":self.urlID,@"athletes": s};
+        NSLog(@"JSON %@",sendThis);
+    }
+    else
+    {
+        NSArray *selectedRows = [self.tableData indexPathsForVisibleRows];
+        for (NSIndexPath *selectionIndex in selectedRows)
+        {
+            Workout *workout = nil;
+            workout = [workoutArray objectAtIndex:selectionIndex.row];
+            [s addObject:workout.urlID];
+
+        }
+        sendThis = @{@"id":self.urlID,@"athletes": s};
+         NSLog(@"JSON %@",sendThis);
+        // Delete everything, delete the objects from our data model.
+        //Take every row and put into json. Then Send it
+    }
+    
+    // Exit editing mode after the deletion.
+    //async task now.
+    
+    
+    
+    NSInteger success = 0;
+    
+    @try {
+        
+        NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/reg_manytags/?access_token=%@",savedToken];
+        
+        NSURL *url=[NSURL URLWithString:idurl2];
+        NSError *error2 = nil;
+        
+        NSArray *array = [s copy];
+        NSString *post;
+        if (selectedRows.count == 1){
+            post =[[NSString alloc] initWithFormat:@"s=[%@]",array];
+        }
+        else {
+            post =[[NSString alloc] initWithFormat:@"s=%@",array];
+        }
+        NSLog(@"Post %@",post);
+        NSData *jsonData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        //NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:0 error:&error2];
+        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[jsonData length]];
+        //NSMutableData *data = [NSMutableData data];
+        //[data appendData:[sendThis dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setURL:url];
+        [request setHTTPMethod:@"POST"];
+        
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:jsonData];
+        
+        
+        NSError *error = [[NSError alloc] init];
+        NSHTTPURLResponse *response = nil;
+        NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        
+        if ([response statusCode] >= 200 && [response statusCode] < 300)
+        {
+            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+            NSLog(@"Response ==> %@", responseData);
+            
+            NSError *error = nil;
+            NSDictionary *jsonData = [NSJSONSerialization
+                                      JSONObjectWithData:urlData
+                                      options:NSJSONReadingMutableContainers
+                                      error:&error];
+            
+            success = [jsonData[@"success"] integerValue];
+            NSLog(@"Success: %ld",(long)success);
+            
+            if(success == 0)
+            {
+                NSLog(@"SUCCESS");
+                
+                
+            } else {
+                
+                NSLog(@"Failed");
+                
+            }
+            
+        } else {
+            //if (error) NSLog(@"Error: %@", error);
+            //NSLog(@"Failed");
+            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+            NSLog(@"Response ==> %@", responseData);
+        }
+        
+    }
+    @catch (NSException * e) {
+        // NSLog(@"Exception: %@", e);
+        
+    }
+    
+    
+}
 
 
 - (void)setupRefreshControl
@@ -425,6 +649,7 @@
                                   options:kNilOptions
                                   error:&error];
         
+        NSMutableArray* urlID= [json valueForKey:@"id"];
         NSDictionary* user= [json valueForKey:@"user"];
         NSMutableArray* firstname= [user valueForKey:@"first_name"];
         NSMutableArray* lastname= [user valueForKey:@"last_name"];
@@ -443,7 +668,7 @@
                 Workout *initialArray = [Workout new];
                 initialArray.name = combined;
                 initialArray.date = [id_str objectAtIndex:i];
-               
+                initialArray.urlID = [urlID objectAtIndex:i];
                 
                 workoutArray = [NSMutableArray arrayWithObjects:initialArray, nil];
                 
@@ -454,7 +679,7 @@
                 Workout *initialArray = [Workout new];
                 initialArray.name = combined;
                 initialArray.date = [id_str objectAtIndex:i];
-         
+                initialArray.urlID = [urlID objectAtIndex:i];
                 [workoutArray addObject:initialArray];
                 
                 
@@ -548,7 +773,7 @@
         NSLog(@"Index Path %ld", (long)indexPath.row);
         searchIndexPath = indexPath.row;
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        [self performSegueWithIdentifier:@"showWorkoutDetail" sender:self];
+        //[self performSegueWithIdentifier:@"showWorkoutDetail" sender:self];
         
     }
     

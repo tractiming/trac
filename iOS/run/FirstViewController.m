@@ -199,7 +199,7 @@
         else {
             post =[[NSString alloc] initWithFormat:@"s=%@",array];
         }
-        
+        NSLog(@"Post %@",post);
         NSData *jsonData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         //NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:0 error:&error2];
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[jsonData length]];
@@ -223,7 +223,7 @@
         if ([response statusCode] >= 200 && [response statusCode] < 300)
         {
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            //NSLog(@"Response ==> %@", responseData);
+            NSLog(@"Response ==> %@", responseData);
             
             NSError *error = nil;
             NSDictionary *jsonData = [NSJSONSerialization
@@ -232,16 +232,16 @@
                                       error:&error];
             
             success = [jsonData[@"success"] integerValue];
-            //NSLog(@"Success: %ld",(long)success);
+            NSLog(@"Success: %ld",(long)success);
             
             if(success == 0)
             {
-                //NSLog(@"SUCCESS");
+                NSLog(@"SUCCESS");
                 
                 
             } else {
                 
-                //NSLog(@"Failed");
+                NSLog(@"Failed");
                 
             }
             
@@ -249,7 +249,7 @@
             //if (error) NSLog(@"Error: %@", error);
             //NSLog(@"Failed");
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            //NSLog(@"Response ==> %@", responseData);
+            NSLog(@"Response ==> %@", responseData);
         }
         
     }
@@ -372,7 +372,7 @@
     self.athleteDictionaryArray = [[NSMutableArray alloc] init];
     Executed = TRUE;
     self.tableData.allowsMultipleSelectionDuringEditing = YES;
-     self.navigationItem.rightBarButtonItem = self.editButton;
+    self.navigationItem.rightBarButtonItem = self.editButton;
     
     [self.tabBarController.navigationItem setTitle:self.workoutName];
     //initilize spinner

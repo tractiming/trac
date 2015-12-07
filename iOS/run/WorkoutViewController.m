@@ -75,7 +75,7 @@
     [self.tableData addSubview:grayView];
 
     
-    fakedTotalItemCount = 16;
+    fakedTotalItemCount = 15;
     //initialize array for search
     self.filteredWorkoutArray = [NSMutableArray arrayWithCapacity:[title count]];
    
@@ -103,10 +103,10 @@
     //add token to url to find session data
     NSLog(@"Secutiy Token: %@",savedToken);
     if (IDIOM ==IPAD) {
-        url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=25&access_token=%@", savedToken];
+        url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/?limit=25&offset=0&access_token=%@", savedToken];
     }
     else{
-        url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=15&access_token=%@", savedToken];
+        url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/?limit=15&offset=0&access_token=%@", savedToken];
     }
     //initialize spinner for data load
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -309,10 +309,10 @@
     NSLog(@"Pull to Refresh");
     pullToRefresh = YES;
     if (IDIOM ==IPAD) {
-        fakedTotalItemCount = 26;
+        fakedTotalItemCount = 25;
     }
     else{
-        fakedTotalItemCount = 16;
+        fakedTotalItemCount = 15;
     }
     
     dispatch_async(TRACQueue, ^{
@@ -422,7 +422,7 @@
     CGFloat height = tableView.contentSize.height;
     CGFloat scrolledPercentage = yOffset / height;
     nextFifteen = fakedTotalItemCount + 15;
-    
+   
     if (totalSessions>fakedTotalItemCount)
         self.hasNextPage = YES;
     else
@@ -430,6 +430,7 @@
     
     // Check if all the conditions are met to allow loading the next page
     //
+    NSLog(@"Is Loading? %d",self.isLoading);
     if ((scrolledPercentage > .2f) && !self.isLoading && self.hasNextPage)
         [self loadNextPage];
 }
@@ -442,7 +443,8 @@
     //(yOffset < (height / 8.0) && !self.isLoading && self.hasNextPage)
     NSLog(@"Table View Scroll");
     //define URL
-    pagination_url = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/session_Pag/?i1=%d&i2=%d&access_token=%@", fakedTotalItemCount, nextFifteen, savedToken];
+    //
+    pagination_url = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/?limit=15&offset=%d&access_token=%@", fakedTotalItemCount, savedToken];
     //pagination_url = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/session_Pag/?i1=16&i2=31&access_token=%@", savedToken];
     NSLog(@"%@",pagination_url);
     dispatch_async(TRACQueue, ^{
@@ -462,11 +464,10 @@
     });
     
     
-    fakedTotalItemCount = fakedTotalItemCount + 16;
+    fakedTotalItemCount = fakedTotalItemCount + 15;
 
     
-    // Once the request is finished, call this
-    self.isLoading = NO;
+    
 }
 
 - (NSArray *)fetchedData:(NSData *)responseData {
@@ -485,7 +486,7 @@
             //NSDictionary* workoutid = [json valueForKey:@"workoutID"]; //2
             
             //Uncover number of sessions, and nested dictionary for sessions
-            numSessions = [json valueForKey:@"num_sessions"];
+            numSessions = [json valueForKey:@"count"];
             totalSessions = [numSessions intValue];
           //  NSLog(@"Results: %@",numSessions);
             
@@ -502,6 +503,7 @@
             
             int date_length = [appendedDate count];
             NSLog(@"Length: %d", date_length);
+            NSLog(@"Name: %@", appendedTitle);
             
             int i;
             NSString *tempvar;
@@ -590,6 +592,8 @@
             
             Workout *obj = [workoutArray objectAtIndex:17];
             NSLog(@"Workout number 17 : %@",obj.name);
+            // Once the request is finished, call this
+            self.isLoading = NO;
             
             return title;
             return date;
@@ -608,7 +612,7 @@
         //NSDictionary* workoutid = [json valueForKey:@"workoutID"]; //2
         
         //Uncover number of sessions, and nested dictionary for sessions
-        numSessions = [json valueForKey:@"num_sessions"];
+        numSessions = [json valueForKey:@"count"];
         totalSessions = [numSessions intValue];
             NSLog(@"Total Sessions %d",totalSessions);
 
@@ -678,11 +682,12 @@
 
         //    // Initialize Labels
         Workout *obj = [workoutArray objectAtIndex:13];
-        NSLog(@"worwkout number 3 : %@",obj.name);
+       // NSLog(@"worwkout number 3 : %@",obj.name);
         
             
         pullToRefresh = NO;
-            
+            // Once the request is finished, call this
+            self.isLoading = NO;
         return title;
         return date;
         return url;
@@ -691,6 +696,8 @@
     }
     @catch (NSException *exception) {
         NSLog(@"Exception %s","Except!");
+        // Once the request is finished, call this
+        self.isLoading = NO;
         return title;
         return date;
         return url;
