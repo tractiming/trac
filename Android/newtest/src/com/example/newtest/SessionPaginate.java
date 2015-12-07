@@ -10,7 +10,7 @@ public class SessionPaginate {
 
 	//For JSON 
 	
-	@SerializedName ("num_sessions")
+	@SerializedName ("count")
 	public String id;
 	@SerializedName ("results")
 	public JsonArray results;

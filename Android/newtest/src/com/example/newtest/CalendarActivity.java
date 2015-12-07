@@ -156,7 +156,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 			String url = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
 			String pre_json = "name=On-The-Run Workout";
 			createworkout.execute(url,pre_json);
-			String urlSession = "https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=20&access_token=" + access_token;
+			String urlSession = "https://trac-us.appspot.com/api/sessions/?limit=20&offset=0&access_token=" + access_token;
 			asyncExecuted = false;
 			asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(urlSession);
 		}
@@ -196,7 +196,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 	                swipeLayout.setRefreshing(true);
 	                Log.d("Swipe", "Refreshing Number");
 	                asyncExecuted = false;
-	                url = "https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=20&access_token=" + access_token;
+	                url = "https://trac-us.appspot.com/api/sessions/?limit=20&offset=0&access_token=" + access_token;
 	                asyncCall = (AsyncServiceCall) new AsyncServiceCall().execute(url);
 	                ( new Handler()).postDelayed(new Runnable() {
 	                    @Override
@@ -223,7 +223,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 				public void onClick(DialogInterface dialog, int which) {
 				}});
 			
-			 url = "https://trac-us.appspot.com/api/session_Pag/?i1=1&i2=20&access_token=" + access_token;
+			 url = "https://trac-us.appspot.com/api/sessions/?limit=20&offset=0&access_token=" + access_token;
 			  Log.d("URL ! : ", url);
 			//OnCreate Async Task Called, see below for async task class
 			asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
@@ -314,11 +314,11 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 							//else parse the result and put in adapter, hide spinner
 							var = new CalendarAdapter(result, getApplicationContext());
 							if(asyncExecuted == false ){
-								//Log.d("First","Execution");
+								Log.d("First","Execution");
 								setListAdapter(var);
 								asyncExecuted = true;
 								positionArray = result;
-							    fakedTotalItemCount = 21;
+							    fakedTotalItemCount = 20;
 							}
 							else{
 								((CalendarAdapter)getListAdapter()).add(result);
@@ -343,18 +343,18 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 				
 				
 				//Log.d("Total Item Count",Integer.toString(fakedTotalItemCount));
-				nextFifteen = fakedTotalItemCount + 15; 
+				
 				//Log.d("Next 15",Integer.toString(nextFifteen));
 				if (fakedTotalItemCount >= maxTotalSessions){
 					return; 
 				}
-				//System.out.println("onScroll");
-				//Log.d("State Change","on Scroll");
+				System.out.println("onScroll"+nextFifteen);
+				
 				if (executing == false){
 					executing = true;
 					//TODO: Add max count in, or return, if statement
-					String url2 = "https://trac-us.appspot.com/api/session_Pag/?i1="+Integer.toString(fakedTotalItemCount)+"&i2="+Integer.toString(nextFifteen)+"&access_token=" + access_token;
-					fakedTotalItemCount = fakedTotalItemCount + 16;
+					String url2 = "https://trac-us.appspot.com/api/sessions/?limit=15&offset="+Integer.toString(fakedTotalItemCount)+"&access_token=" + access_token;
+					fakedTotalItemCount = fakedTotalItemCount + 15;
 					Log.d("Dynamic URL",url2);
 					asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url2);
 					
