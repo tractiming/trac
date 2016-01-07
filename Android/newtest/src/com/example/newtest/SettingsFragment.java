@@ -62,7 +62,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         mItems = new ArrayList<ListViewItem>();
         Resources resources = getResources();
         
-        mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_download), getString(R.string.download), getString(R.string.download_description)));
+       
         mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_search_dark), getString(R.string.view_roster), getString(R.string.view_roster_description)));
         mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_dark), getString(R.string.play), getString(R.string.calibrate_description)));
         mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_over_video_dark), getString(R.string.record), getString(R.string.start_description)));
@@ -88,15 +88,8 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
     public void onListItemClick(ListView l, View v, int position, long id) {
         // retrieve theListView item
         ListViewItem item = mItems.get(position);
-        if(position == 0){
-        	Log.d("","Pressed Import ");
-        	
-        	ImportRoster impRost = new ImportRoster();
-        	impRost.delegate = this;
-        	String url = "https://trac-us.appspot.com/api/RegisterDefaultRunners/?id="+positionID+"&access_token=" + access_token;
-        	impRost.execute(url);
-        }
-        else if (position == 1){
+
+        if (position == 0){
         	//Calibrate start, start:now, finish:today+1day
         	Log.d("Going to new view","New Settings");
 			Intent i = new Intent(getActivity(), RosterActivity.class);
@@ -106,7 +99,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 
         	
         }
-        else if (position == 2){
+        else if (position == 1){
         	//Calibrate start, start:now, finish:today+1day
         	raceAuth = new RaceCalibration();
         	raceAuth.delegate = this;
@@ -116,7 +109,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 			 
 
         }
-        else if (position == 3){
+        else if (position == 2){
         	//TODO: Go Button. When endpoint made, hit it!
         	raceGo = new RaceStart();
         	raceGo.delegate = this;
@@ -124,7 +117,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         	raceGo.execute(url);
         	
         }
-        else if (position == 4){
+        else if (position == 3){
         	//End Workout, finish:now
         	
 			raceStop = new RaceStop();
@@ -134,7 +127,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 
         	
         }
-        else if (position == 5){
+        else if (position == 4){
         	//Reset Button
         	new AlertDialog.Builder(getActivity())
 		    .setTitle("Reset Workout")
@@ -156,7 +149,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 		    .setIcon(R.drawable.trac_launcher)
 		     .show();
         }
-        else if (position == 6){
+        else if (position == 5){
         	//Logout Button
         	SharedPreferences pref = this.getActivity().getSharedPreferences("userdetails", Context.MODE_PRIVATE);
 			Editor edit = pref.edit();

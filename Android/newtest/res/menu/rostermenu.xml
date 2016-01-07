@@ -9,7 +9,12 @@
           android:orderInCategory="100"
           android:showAsAction="collapseActionView|ifRoom"
           android:actionViewClass="android.widget.SearchView"/>
-
+   <item
+        android:id="@+id/action_addRunner"
+        android:orderInCategory="100"
+        android:title="@string/action_addRunner"
+        android:showAsAction="never"
+        />
    <item
         android:id="@+id/action_signout"
         android:orderInCategory="100"

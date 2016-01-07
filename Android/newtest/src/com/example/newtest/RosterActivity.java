@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -17,11 +18,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -36,7 +40,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-public class RosterActivity extends ListActivity{
+public class RosterActivity extends ListActivity implements StringAsyncResponse, BooleanAsyncResponse{
 	//protected Context context;
 	private String access_token;
 	private ArrayList<Results> positionArray;
@@ -57,7 +61,9 @@ public class RosterActivity extends ListActivity{
     int fakedTotalItemCount = 16;
     int maxTotalSessions;
 	private String urlID;
-	
+	private String m_Text = "";
+	private String primaryTeam;
+	private CreateAthleteAsyncTask splitCall;
 
 
 	public void onPause(){
@@ -135,8 +141,52 @@ public class RosterActivity extends ListActivity{
 			
 
 		}
+		else if(id == R.id.action_addRunner){
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		    // Get the layout inflater
+		    LayoutInflater inflater = getLayoutInflater();
+
+		    // Inflate and set the layout for the dialog
+		    // Pass null as the parent view because its going in the dialog layout
+		    builder.setView(inflater.inflate(R.layout.dialog_create, null))
+		    // Add action buttons
+		           .setPositiveButton(R.string.action_addRunner, new DialogInterface.OnClickListener() {
+		               @Override
+		               public void onClick(DialogInterface dialog, int id) {
+		                   // sign in the user ...
+		            	   confirmCreate(dialog);
+		               }
+		           })
+		           .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+		               public void onClick(DialogInterface dialog, int id) {
+		                  dialog.cancel();
+		               }
+		           });      
+		    builder.show();
+		}
 
 		return super.onOptionsItemSelected(item);
+	}
+	
+
+
+	public void confirmCreate(DialogInterface dialog){
+		EditText name = (EditText) ((Dialog)dialog).findViewById(R.id.name);
+ 	   String nameString = name.getText().toString();
+ 	   String[] parts = nameString.split("\\s+");
+ 	   
+ 	   String first_name = parts[0];
+ 	   String last_name = parts[1];
+ 	   
+ 	   EditText tagId = (EditText) ((Dialog)dialog).findViewById(R.id.tagID);
+ 	   String tagIdString = tagId.getText().toString();
+ 	   dialog.cancel();
+ 	   
+    		String createURL = "https://trac-us.appspot.com/api/athletes/?access_token=" + access_token;
+    		//http://10.0.2.2:8000/api/individual_splits/?access_token=XQ8JLMtCPznQGSWUep1jX3ES2FWjWX
+    		splitCall = new CreateAthleteAsyncTask(url,first_name,last_name,tagIdString,primaryTeam);
+    		splitCall.execute();
+    		splitCall.delegate = this;
 	}
 
 	
@@ -170,7 +220,7 @@ public class RosterActivity extends ListActivity{
 	                swipeLayout.setRefreshing(true);
 	                Log.d("Swipe", "Refreshing Number");
 	                asyncExecuted = false;
-	                url = "https://trac-us.appspot.com/api/reg_tag/?id="+urlID+"&access_token=" + access_token;
+	                url = "https://trac-us.appspot.com/api/athletes/?primary_team=True&access_token=" + access_token;
 	                asyncCall = (AsyncServiceCall) new AsyncServiceCall().execute(url);
 	                ( new Handler()).postDelayed(new Runnable() {
 	                    @Override
@@ -197,11 +247,19 @@ public class RosterActivity extends ListActivity{
 				public void onClick(DialogInterface dialog, int which) {
 				}});
 			
-			 url = "https://trac-us.appspot.com/api/reg_tag/?id="+urlID+"&access_token=" + access_token;
+			 url = "https://trac-us.appspot.com/api/athletes/?primary_team=True&access_token=" + access_token;
 			//OnCreate Async Task Called, see below for async task class
 			asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
-		    
+			
+			//Get primary team id to store if you create an athlete.
+			String teamURL = "https://trac-us.appspot.com/api/teams/?primary_team=True&access_token=" + access_token;
+			RetrievePrimaryTeams asyncTeams = (RetrievePrimaryTeams) new RetrievePrimaryTeams().execute(teamURL);
+			asyncTeams.delegate = this;
 		  }
+	 
+		public void processComplete(String success) {
+			primaryTeam = success; 
+		}
 	 
 
 		  @Override
@@ -222,8 +280,10 @@ public class RosterActivity extends ListActivity{
 				        .build();
 						try {
 							   Response response = client.newCall(request).execute();
+							   Log.d("Reponse", response.body().toString());
 							   RosterJson[] preFullyParsed = gson.fromJson(response.body().charStream(), RosterJson[].class);
-
+							   System.out.println(preFullyParsed);
+							   
 							   ArrayList<RosterJson> dataList = new ArrayList<RosterJson>(Arrays.asList(preFullyParsed));
 
 						    return dataList;
@@ -257,6 +317,13 @@ public class RosterActivity extends ListActivity{
 						}
 					}
 			  }
+
+			@Override
+			public void processFinish(Boolean success) {
+				url = "https://trac-us.appspot.com/api/athletes/?primary_team=True&access_token=" + access_token;
+				asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
+				
+			}
 
 			  
 
