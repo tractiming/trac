@@ -10,8 +10,8 @@ public class IndividualResults {
 
 	//For JSON 
 	
-	@SerializedName ("num_sessions")
-	public String num_sessions;
+	@SerializedName ("num_results")
+	public String num_results;
 	@SerializedName ("results")
 	public List<Runners> results;
 	@SerializedName ("num_returned")

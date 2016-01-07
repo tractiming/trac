@@ -177,7 +177,7 @@ public class WorkoutFragment extends ListFragment {
 				    //Runners parsedjWorkout = gson.fromJson(text, Runners.class);
 				    
 				    Workout test = null;
-				   // Log.d("preFullyParsed", text);
+				    System.out.println(text);
 				    return text;
 				    
 				} catch (IOException e) {
@@ -188,8 +188,6 @@ public class WorkoutFragment extends ListFragment {
 			
 			@Override
 			protected void onPostExecute(List<Runners> result) {
-				//Log.d(DEBUG_TAG,"execute");
-				
 				if(result==null){
 					alertDialog.show();
 				}

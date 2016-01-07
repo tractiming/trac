@@ -9,11 +9,11 @@ import com.google.gson.annotations.SerializedName;
 public class Workout {
 	
 	//For JSON
-	@SerializedName ("date")
-	public String date;
-	@SerializedName ("workoutID")
-	public String id;
-	@SerializedName ("runners")
+	@SerializedName ("num_results")
+	public String num_results;
+	@SerializedName ("num_returned")
+	public String num_returned;
+	@SerializedName ("results")
 	public List<Runners> runners;
 
 	

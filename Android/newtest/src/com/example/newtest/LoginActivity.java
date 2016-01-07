@@ -380,7 +380,6 @@ public class LoginActivity extends Activity {
 				edit.commit();
 				//SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 				//   String access_token2 = userDetails.getString("token","");
-				  // Log.d("Access_token", access_token2);
 				
 				//go to calendar page
      			 UserType userType = new UserType();

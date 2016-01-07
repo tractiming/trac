@@ -25,14 +25,17 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 	
     String url;
     ArrayList<String> checkArray;
+	private String idPosition;
+	
     @Override
     protected void onCancelled() {
         Log.d("Canceled", "canceld");
     }
 
-    SplitAsyncCall(ArrayList<String> checkArray, String url) {
+    SplitAsyncCall(ArrayList<String> checkArray, String url, String idPosition) {
         this.url = url;
         this.checkArray = checkArray;
+        this.idPosition = idPosition;
 
     }
 	
@@ -41,7 +44,7 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 		// Attempt authentication against a network service.
 		final String DEBUG_TAG = "Token Check";
 		final MediaType MEDIA_TYPE_MARKDOWN
-	      = MediaType.parse("text/x-markdown; charset=utf-8");
+	      = MediaType.parse("application/json; charset=utf-8");
 		
 		//String pre_json = "id=1";
 		Log.d(DEBUG_TAG, "data in here??? "+ checkArray);
@@ -49,13 +52,29 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
 		final String utcTime = dateFormatGmt.format(new Date());
 		
+		String[] sessionID = new String[] {idPosition};
+		
 		JSONObject parent = new JSONObject();
 		JSONArray masterArray = new JSONArray();
 		for (int i=0; i< checkArray.size();i++){
 			JSONArray jsonArray = new JSONArray();
-			jsonArray.put(checkArray.get(i));
-			jsonArray.put(utcTime);
-			masterArray.put(jsonArray);
+			jsonArray.put(idPosition);
+			JSONObject athleteJSON = new JSONObject();
+			try {
+				athleteJSON.put("athlete", checkArray.get(i));
+				athleteJSON.put("sessions", jsonArray);
+				athleteJSON.put("tag",JSONObject.NULL);
+				athleteJSON.put("reader", JSONObject.NULL);
+				athleteJSON.put("time", utcTime);
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			//jsonArray.put(athleteJSON);
+
+			masterArray.put(athleteJSON);
 		}
 		try {
 			parent.put("s",masterArray);
@@ -65,7 +84,7 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 		}
 		
 		
-		RequestBody body = RequestBody.create(MEDIA_TYPE_MARKDOWN, parent.toString());
+		RequestBody body = RequestBody.create(MEDIA_TYPE_MARKDOWN, masterArray.toString());
 		Log.d(DEBUG_TAG, "Request Body "+ body);
 		String tempArray = masterArray.toString();
 		tempArray = tempArray.replace("\\/", "/");
@@ -78,7 +97,7 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 	        .build();
 	    Request request = new Request.Builder()
 	        .url(url)
-	        .post(formBody)
+	        .post(body)
 	        .build();
 		
 		Log.d(DEBUG_TAG, "Request Data: "+ request);

@@ -72,6 +72,7 @@ public class GroupFragment extends ListFragment {
 	public static String testvar;
 	public static String title;
 	public static String date;
+	public static String idPosition;
 	public GroupAdapter groupList;
 	public GroupAsyncResponse delegate; 
 	public boolean executed;
@@ -150,6 +151,8 @@ public class GroupFragment extends ListFragment {
 		//message = "http://10.0.2.2:8000/api/sessions/3/individual_results/?all_athletes=true&access_token=GwbMwADpAddkDHaL6HT5YEBuEBzxwc";
         title = intent.getStringExtra("workoutName");
         date = intent.getStringExtra("workoutDate");
+        idPosition = intent.getStringExtra("positionID");
+
         //Log.d("The passed Variable in frag baby", message);
         
 
@@ -171,9 +174,9 @@ public class GroupFragment extends ListFragment {
 		    	
 		    	//Log.d("Array has data?2 ??",checkArray.toString());
 		    	
-	        	String url = "https://trac-us.appspot.com/api/individual_splits/?access_token=" + access_token;;
-	        	//http://10.0.2.2:8000/api/individual_splits/?access_token=TIqT4duj7LnkyE5YwDO3qV2a7AJET8
-	        	SplitAsyncCall splitCall = new SplitAsyncCall(checkArray,url);
+	        	String url = "https://trac-us.appspot.com/api/splits/?access_token=" + access_token;
+	        	//http://10.0.2.2:8000/api/individual_splits/?access_token=XQ8JLMtCPznQGSWUep1jX3ES2FWjWX
+	        	SplitAsyncCall splitCall = new SplitAsyncCall(checkArray,url,idPosition);
 	        	splitCall.execute();
 	        	groupList.splitButtonPressed(checkArray);
 	        	groupList.clearCheckboxes();
