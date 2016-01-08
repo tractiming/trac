@@ -39,7 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.amplitude.api.Amplitude;
 import com.trac.trac.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -169,7 +169,7 @@ public class GroupFragment extends ListFragment {
 		final Button b2 = (Button) rootView.findViewById(R.id.split);
 	    b2.setOnClickListener( new View.OnClickListener() {
 		    public void onClick(View v) {
-		    	
+		    	Amplitude.getInstance().logEvent("GroupFragment_SplitButton");
 		    	ArrayList<String> checkArray = groupList.getCheckArrayID();
 		    	
 		    	//Log.d("Array has data?2 ??",checkArray.toString());
@@ -226,6 +226,7 @@ public class GroupFragment extends ListFragment {
 	    final Button b1 = (Button) rootView.findViewById(R.id.reset);
 	    b1.setOnClickListener( new View.OnClickListener() {
 		    public void onClick(View v) {
+		      Amplitude.getInstance().logEvent("GroupFragment_ResetButton");
 		      ArrayList<String> checkArray = groupList.getCheckArrayID();
 		      groupList.resetButtonPressed(checkArray);
 		      groupList.resetCheckArray();
@@ -262,8 +263,7 @@ public class GroupFragment extends ListFragment {
 		
 	    switch (item.getItemId()) {
 	        case R.id.action_edit: 
-	        	//do something
-	        	//only does for one right now..
+	        	Amplitude.getInstance().logEvent("GroupFragment_ToggleCheckboxes");
 	        	groupList.changeCheck(editStatus);
 	        	if(editStatus){
 	        		editStatus = false;

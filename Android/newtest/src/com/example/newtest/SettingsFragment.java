@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.amplitude.api.Amplitude;
 
 public class SettingsFragment extends ListFragment implements BooleanAsyncResponse{
     private List<ListViewItem> mItems;        // ListView items list
@@ -90,6 +91,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         ListViewItem item = mItems.get(position);
 
         if (position == 0){
+        	Amplitude.getInstance().logEvent("SettingsFragment_to_Roster");
         	//Calibrate start, start:now, finish:today+1day
         	Log.d("Going to new view","New Settings");
 			Intent i = new Intent(getActivity(), RosterActivity.class);
@@ -100,6 +102,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         	
         }
         else if (position == 1){
+        	Amplitude.getInstance().logEvent("SettingsFragment_Calibrate");
         	//Calibrate start, start:now, finish:today+1day
         	raceAuth = new RaceCalibration();
         	raceAuth.delegate = this;
@@ -111,6 +114,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         }
         else if (position == 2){
         	//TODO: Go Button. When endpoint made, hit it!
+        	Amplitude.getInstance().logEvent("SettingsFragment_Start");
         	raceGo = new RaceStart();
         	raceGo.delegate = this;
         	String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/start_timer/?access_token=" + access_token;
@@ -119,7 +123,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         }
         else if (position == 3){
         	//End Workout, finish:now
-        	
+        	Amplitude.getInstance().logEvent("SettingsFragment_End");
 			raceStop = new RaceStop();
 			raceStop.delegate = this;
 			String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/close/?access_token=" + access_token;
@@ -129,6 +133,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         }
         else if (position == 4){
         	//Reset Button
+        	Amplitude.getInstance().logEvent("SettingsFragment_Reset");
         	new AlertDialog.Builder(getActivity())
 		    .setTitle("Reset Workout")
 		    .setMessage("Are you sure you want to reset this workout?")
@@ -151,6 +156,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         }
         else if (position == 5){
         	//Logout Button
+        	Amplitude.getInstance().logEvent("SettingsFragment_to_Logout");
         	SharedPreferences pref = this.getActivity().getSharedPreferences("userdetails", Context.MODE_PRIVATE);
 			Editor edit = pref.edit();
 			edit.putString("token", "");

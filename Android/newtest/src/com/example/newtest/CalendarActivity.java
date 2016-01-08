@@ -42,6 +42,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import com.amplitude.api.Amplitude;
 
 
 
@@ -101,6 +102,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
             @Override
             public boolean onQueryTextChange(String newText)
             {
+            	Amplitude.getInstance().logEvent("Calendar_Search");
                 try{// this is your adapter that will be filtered
                 	((CalendarAdapter)getListAdapter()).getFilter(newText);
                 //System.out.println("on text chnge text: "+newText);
@@ -140,6 +142,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		//If signout clicked, check for token in Shard Preferences and override
 		//Bring to LoginActivity.class then clear the stack of previous pages.
 		if (id == R.id.action_signout) {
+			Amplitude.getInstance().logEvent("Calendar_Logout");
 			SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
 			Editor edit = pref.edit();
 			edit.putString("token", "");
@@ -151,7 +154,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 			startActivity(i);
 		}
 		else if (id == R.id.create_workout){
-			Log.d("Pressed","Create Workout");
+			Amplitude.getInstance().logEvent("Calendar_CreateWorkout");
 			createTask createworkout = new createTask();
 			String url = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
 			String pre_json = "name=On-The-Run Workout";
@@ -172,6 +175,8 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    mLoginStatusView = findViewById(R.id.login_status);
 		    mLoginStatusView.setVisibility(View.VISIBLE);
 		    
+		    Amplitude.getInstance().initialize(this, "5ff966491ad403914c656a3da163d2f4").enableForegroundTracking(getApplication());
+		    Amplitude.getInstance().trackSessionEvents(true);
 		    //Set Listeners for infinite scroll
 		    //listView = (InfiniteScrollListView) this.getListView();
 		    list = getListView();
@@ -234,7 +239,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		  @Override
 		  protected void onListItemClick(ListView l, View v, int position, long id) {
 			  	// 1. create an intent pass class name or intnet action name 
-			  
+			  Amplitude.getInstance().logEvent("Calendar_to_Workout");
 			  	String idPosition = positionArray.get(position).id;
 			  	
 			  	// On Click, intent to go to main activity from calendar activity

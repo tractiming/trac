@@ -44,6 +44,7 @@ import com.google.gson.JsonElement;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.amplitude.api.Amplitude;
 
 public class RosterActivity extends ListActivity implements StringAsyncResponse, BooleanAsyncResponse{
 	//protected Context context;
@@ -71,6 +72,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 	private CreateAthleteAsyncTask splitCall;
 	private boolean editStatus;
 	public Boolean asyncStatus;
+	
 
 
 	public void onPause(){
@@ -99,6 +101,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
             @Override
             public boolean onQueryTextChange(String newText)
             {
+            	Amplitude.getInstance().logEvent("RosterActivity_SearchUsed");
                 try{// this is your adapter that will be filtered
                 	System.out.println("on text chnge text: "+newText);
                 	((RosterAdapter) getListAdapter()).getFilter(newText);
@@ -149,6 +152,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 
 		}
 		else if(id == R.id.action_addRunner){
+			Amplitude.getInstance().logEvent("RosterActivity_AddRunner");
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		    // Get the layout inflater
 		    LayoutInflater inflater = getLayoutInflater();
@@ -173,7 +177,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 		}
 		else if (id == R.id.action_edit){
 			//toggle checks.
-			
+			Amplitude.getInstance().logEvent("RosterActivity_ToggleChecks");
 			var.changeCheck(editStatus);
 			if(editStatus){
         		editStatus = false;
@@ -272,6 +276,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 	        final Button b2 = (Button) findViewById(R.id.registerButton);
 		    b2.setOnClickListener( new View.OnClickListener() {
 			    public void onClick(View v) {
+			    	Amplitude.getInstance().logEvent("RosterActivity_RegisterClicked");
 			    	onRegisterClick();
 			    }
 			  });

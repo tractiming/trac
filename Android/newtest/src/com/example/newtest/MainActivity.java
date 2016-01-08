@@ -39,6 +39,7 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.support.v4.app.ListFragment;
+import com.amplitude.api.Amplitude;
 
 public class MainActivity extends ActionBarActivity implements
 		ActionBar.TabListener{
@@ -171,6 +172,7 @@ public class MainActivity extends ActionBarActivity implements
             @Override
             public boolean onQueryTextChange(String newText)
             {
+            	Amplitude.getInstance().logEvent("MainActivity_Search");
                 try{// this is your adapter that will be filtered
                 groupAdapter.getFilter(newText);
                 workoutAdapter.getFilter(newText);
@@ -208,6 +210,7 @@ public class MainActivity extends ActionBarActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_signout2) {
+			Amplitude.getInstance().logEvent("MainActivity_Logout");
 			fragment = new Fragment();
 	    	super.onBackPressed();
 				GroupFragment.backButtonWasPressed();

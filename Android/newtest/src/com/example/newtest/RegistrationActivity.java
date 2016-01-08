@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.amplitude.api.Amplitude;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -139,6 +140,7 @@ public class RegistrationActivity extends Activity {
 					@Override
 					public void onClick(View view) {
 						//on click of signin, attemptLogin function called
+						Amplitude.getInstance().logEvent("RosterActivity_AttemptCreate");
 				        attemptLogin();
 				       // startActivity(new Intent(LoginActivity.this, CalendarActivity.class));
 					}
@@ -148,6 +150,7 @@ public class RegistrationActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
+						Amplitude.getInstance().logEvent("RosterActivity_Cancel");
 						//on click of signin, attemptLogin function called
 					       startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
 
