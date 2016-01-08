@@ -241,7 +241,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		        Intent intent = new Intent(CalendarActivity.this, MainActivity.class);
 		        
 		        // 2. put key/value data to pass on mainactivity load
-		        intent.putExtra("message", "https://trac-us.appspot.com/api/sessions/" + idPosition +"/individual_results/?all_athletes=true&access_token=" + access_token);
+		        intent.putExtra("message", "https://trac-us.appspot.com/api/sessions/" + idPosition +"/individual_results/?all_athletes=True&limit=200&access_token=" + access_token);
 		        intent.putExtra("positionID", idPosition);
 		        intent.putExtra("token", access_token);
 		        intent.putExtra("workoutName", positionArray.get(position).name);
