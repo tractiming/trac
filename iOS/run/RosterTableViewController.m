@@ -59,6 +59,7 @@
     NSString *workoutDate;
     UIBarButtonItem *splitButton;
     UIBarButtonItem *resetButton;
+    NSMutableArray* teamIDs;
     
 }
 
@@ -72,7 +73,7 @@
     
     self.navigationItem.rightBarButtonItem = self.editButton;
     self.tableData.allowsMultipleSelectionDuringEditing = YES;
-    
+    [self getTeamID];
     
     //Define Toolbar
     if (IDIOM ==IPAD) {
@@ -124,7 +125,7 @@
     //add token to url to find session data
     NSLog(@"Secutiy Token: %@",savedToken);
     
-    url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/athletes/?access_token=%@", savedToken];
+    url_token = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/athletes/?primary_team=True&access_token=%@", savedToken];
     
     //initialize spinner for data load
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -223,13 +224,10 @@
     
     // Delete what the user selected.
     NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
-    NSLog(@"Selected Rows, %@",selectedRows);
-    NSLog(@"Array!, %@",workoutArray);
-    
     BOOL splitSpecificRows = selectedRows.count > 0;
     
 
-    NSDictionary *sendThis;
+    NSDictionary *athleteData;
     NSMutableArray * s = [NSMutableArray new];
     if (splitSpecificRows)
     {
@@ -243,23 +241,9 @@
 
            
         }
-        sendThis = @{@"id":self.urlID,@"athletes": s};
-        NSLog(@"JSON %@",sendThis);
-    }
-    else
-    {
-        NSArray *selectedRows = [self.tableData indexPathsForVisibleRows];
-        for (NSIndexPath *selectionIndex in selectedRows)
-        {
-            Workout *workout = nil;
-            workout = [workoutArray objectAtIndex:selectionIndex.row];
-            [s addObject:workout.urlID];
+        athleteData = @{@"athletes": s};
+        NSLog(@"%@",athleteData);
 
-        }
-        sendThis = @{@"id":self.urlID,@"athletes": s};
-         NSLog(@"JSON %@",sendThis);
-        // Delete everything, delete the objects from our data model.
-        //Take every row and put into json. Then Send it
     }
     
     // Exit editing mode after the deletion.
@@ -272,33 +256,25 @@
     @try {
         
         NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
-        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/reg_manytags/?access_token=%@",savedToken];
+        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/register_athletes/?access_token=%@",self.urlID,savedToken];
         
         NSURL *url=[NSURL URLWithString:idurl2];
         NSError *error2 = nil;
         
         NSArray *array = [s copy];
         NSString *post;
-        if (selectedRows.count == 1){
-            post =[[NSString alloc] initWithFormat:@"s=[%@]",array];
-        }
-        else {
-            post =[[NSString alloc] initWithFormat:@"s=%@",array];
-        }
-        NSLog(@"Post %@",post);
-        NSData *jsonData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        //NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:0 error:&error2];
+        post =[[NSString alloc] initWithFormat:@"s=[%@]",array];
+
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:athleteData options:0 error:&error2];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[jsonData length]];
-        //NSMutableData *data = [NSMutableData data];
-        //[data appendData:[sendThis dataUsingEncoding:NSUTF8StringEncoding]];
-        
+        NSLog(@"JSON Data Format: %@",jsonString);
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
         [request setURL:url];
         [request setHTTPMethod:@"POST"];
         
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         [request setHTTPBody:jsonData];
         
         
@@ -347,6 +323,114 @@
     
 }
 
+- (void)createAction:(id)sender{
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Runner" message:@"Add a new runner to your roster" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    [av setAlertViewStyle:UIAlertViewStyleLoginAndPasswordInput];
+    
+    // Alert style customization
+    [[av textFieldAtIndex:1] setSecureTextEntry:NO];
+    [[av textFieldAtIndex:0] setPlaceholder:@"Full Name"];
+    [[av textFieldAtIndex:1] setPlaceholder:@"ID Number"];
+    
+    [av show];
+
+}
+
+- (void) alertView:(UIAlertView *)alert clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSInteger success = 0;
+    if(buttonIndex == 1){
+        if([[alert textFieldAtIndex:0] text].length > 0)
+        {
+            NSLog(@"Greater than 0");
+            //Parse Name into first and last
+            NSArray *unparsedString = [[[alert textFieldAtIndex:0] text] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            NSArray *parsedArray = [unparsedString filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
+            //Take Data and Create a new user
+            NSLog(@"First & Last: %@", parsedArray);
+            
+            NSString *urlString = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/athletes/?access_token=%@",savedToken];
+            
+            NSURL *urlPost=[NSURL URLWithString:urlString];
+            NSError *error2 = nil;
+            NSString *fname;
+            NSString *lname;
+            NSString *tagid = [[alert textFieldAtIndex:1] text];
+            NSString *teamid = [teamIDs objectAtIndex:0];
+            NSString *post;
+            
+            if ([parsedArray count] == 1 && tagid.length == 0){
+                fname = [parsedArray objectAtIndex:0];
+                post = [NSString stringWithFormat:@"first_name=%@&username=%@&team=%@",fname,fname,teamid];
+            }
+            else if ([parsedArray count] == 1 && tagid.length > 0){
+                fname = [parsedArray objectAtIndex:0];
+                post = [NSString stringWithFormat:@"first_name=%@&username=%@&tag=%@&team=%@",fname,fname,tagid,teamid];
+            }
+            else if ([parsedArray count] > 1 && tagid.length == 0){
+                fname = [parsedArray objectAtIndex:0];
+                lname = [parsedArray objectAtIndex:1];
+                post = [NSString stringWithFormat:@"first_name=%@&last_name=%@&username=%@&team=%@",fname,lname,fname,teamid];
+            }
+            else
+            {
+                fname = [parsedArray objectAtIndex:0];
+                lname = [parsedArray objectAtIndex:1];
+                post = [NSString stringWithFormat:@"first_name=%@&last_name=%@&username=%@&tag=%@&team=%@",fname,lname,fname,tagid,teamid];
+                
+            }
+            
+            NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+            NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+          
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+            [request setURL:urlPost];
+            [request setHTTPMethod:@"POST"];
+            
+            [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+            [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+            [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+            [request setHTTPBody:postData];
+            
+            
+            NSError *error = [[NSError alloc] init];
+            NSHTTPURLResponse *response = nil;
+            NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            
+            if ([response statusCode] >= 200 && [response statusCode] < 300)
+            {
+                NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+                NSLog(@"Response ==> %@", responseData);
+                
+                NSError *error = nil;
+                NSDictionary *jsonData = [NSJSONSerialization
+                                          JSONObjectWithData:urlData
+                                          options:NSJSONReadingMutableContainers
+                                          error:&error];
+                
+                success = [jsonData[@"success"] integerValue];
+                NSLog(@"Success: %ld",(long)success);
+                
+                if(success == 0)
+                {
+                    NSLog(@"SUCCESS");
+                    
+                    
+                } else {
+                    
+                    NSLog(@"Failed");
+                    
+                }
+                
+            } else {
+                //if (error) NSLog(@"Error: %@", error);
+                //NSLog(@"Failed");
+                NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
+                NSLog(@"Response ==> %@", responseData);
+            }
+        }
+    }
+}
 
 - (void)setupRefreshControl
 {
@@ -540,7 +624,46 @@
     [self.refreshControl endRefreshing];
 }
 
+- (void) getTeamID
+{
+    NSString *teamURL = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/teams/?primary_team=True&access_token=%@", savedToken];
+    
+    dispatch_async(TRACQueue, ^{
+        NSData* data = [NSData dataWithContentsOfURL:
+                        [NSURL URLWithString:teamURL]];
+        
+        dispatch_async(dispatch_get_main_queue() ,^{
+            [self fetchTeam:data];
+           
+        });
+        
+        
+    });
+    [self.refreshControl endRefreshing];
+}
 
+- (NSArray *)fetchTeam:(NSData *)responseData {
+    @try {
+        
+        
+        //parse out the json data
+        
+        NSError* error;
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:responseData //1
+                              
+                              options:kNilOptions
+                              error:&error];
+        
+        teamIDs= [json valueForKey:@"id"];
+        NSLog(@"TEam IDS %@",teamIDs);
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception %s","Except!");
+        
+    }
+    
+}
 
 /*!
  * Called by Reachability whenever status changes.
@@ -637,8 +760,7 @@
 
 
 - (NSArray *)fetchedData:(NSData *)responseData {
-    @try {
-        
+
 
             //parse out the json data
         
@@ -650,10 +772,10 @@
                                   error:&error];
         
         NSMutableArray* urlID= [json valueForKey:@"id"];
-        NSDictionary* user= [json valueForKey:@"user"];
-        NSMutableArray* firstname= [user valueForKey:@"first_name"];
-        NSMutableArray* lastname= [user valueForKey:@"last_name"];
-        NSMutableArray* id_str = [json valueForKey:@"tag"];
+        NSMutableArray* firstname= [json valueForKey:@"first_name"];
+        NSMutableArray* lastname= [json valueForKey:@"last_name"];
+        NSMutableArray* jsontag = [json valueForKey:@"tag"];
+        NSMutableArray *id_str = [NSMutableArray arrayWithArray:jsontag];
         NSLog(@"%@, %@", firstname, lastname);
         title=[[NSMutableArray alloc] init];
 
@@ -667,6 +789,10 @@
                 //Attempt to make workout a dictionary
                 Workout *initialArray = [Workout new];
                 initialArray.name = combined;
+                NSString *displayNameType = @"";
+                if ([id_str objectAtIndex:i] == [NSNull null]){
+                    [id_str replaceObjectAtIndex:i withObject:displayNameType];
+                }
                 initialArray.date = [id_str objectAtIndex:i];
                 initialArray.urlID = [urlID objectAtIndex:i];
                 
@@ -674,40 +800,32 @@
                 
             }
             else{
-                
                 //Attempt to make workout a dictionary
                 Workout *initialArray = [Workout new];
                 initialArray.name = combined;
+                if ([id_str objectAtIndex:i] == [NSNull null]){
+                    [id_str replaceObjectAtIndex:i withObject:@""];
+                }
                 initialArray.date = [id_str objectAtIndex:i];
                 initialArray.urlID = [urlID objectAtIndex:i];
                 [workoutArray addObject:initialArray];
                 
                 
             }
-
+            
             
             
             
             
         }
-        date = id_str;
-
         
+
+            date = id_str;
             return title;
             return date;
 
         
-        
-        
-        
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Exception %s","Except!");
-        return title;
-        return date;
-
-        
-    }
+    
     
 }
 
