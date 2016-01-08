@@ -257,6 +257,9 @@ public class GroupAdapter extends BaseAdapter{
 	public void clearCheckboxes(){
 		clearCheckboxes = true;
 		Log.d("Fired","Clear");	
+		    for(int k=0; k < positionArray.size(); k++){
+		    	positionArray.set(k, false);
+		    }
 	}
 	public void changeBool(){
 		clearCheckboxes = false;
