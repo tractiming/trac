@@ -200,10 +200,17 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 		EditText name = (EditText) ((Dialog)dialog).findViewById(R.id.name);
  	   String nameString = name.getText().toString();
  	   String[] parts = nameString.split("\\s+");
+ 	   String last_name;
+ 	   String first_name;
  	   
- 	   String first_name = parts[0];
- 	   String last_name = parts[1];
- 	   
+ 	   if (parts.length == 1){
+ 		   	first_name = parts[0];
+ 		    last_name = null;
+ 	   }
+ 	   else{
+ 		   first_name = parts[0];
+ 		   last_name = parts[1];
+ 	   }
  	   EditText tagId = (EditText) ((Dialog)dialog).findViewById(R.id.tagID);
  	   String tagIdString = tagId.getText().toString();
  	   dialog.cancel();
