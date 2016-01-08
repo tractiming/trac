@@ -132,8 +132,6 @@
     [dateFormatter setDateFormat:@"yyyy/MM/dd HH:mm:ss.SSS"];
     [dateFormatter setTimeZone:timeZone];
     NSString *localDateString = [dateFormatter stringFromDate:currentDate];
-    //NSLog(@"Date time %@", localDateString);
-    NSDictionary *sendThis;
     NSMutableArray * s = [NSMutableArray new];
     if (splitSpecificRows)
     {
@@ -142,8 +140,12 @@
         for (NSIndexPath *selectionIndex in selectedRows)
         {
             NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
-            [s addObject:@[[tempDict valueForKey:@"athleteID"],localDateString]];
+            NSDictionary *tempCreatedDict = @{@"athlete":[tempDict valueForKey:@"athleteID"],@"sessions":@[self.urlID],@"tag":[NSNull null],@"reader":[NSNull null],@"time":localDateString};
+            [s addObject:tempCreatedDict];
+           
+            NSLog(@"Value of S: %@",s);
             
+            //For the toast to keep time
             NSLog(@"%@, %@", [tempDict valueForKey:@"countStart"], [tempDict valueForKey:@"numberSplits"]);
             double tempHolder =[[tempDict valueForKey:@"numberSplits"] doubleValue];
             if ([[tempDict valueForKey:@"countStart"] doubleValue] == tempHolder){
@@ -152,8 +154,7 @@
                 NSLog(@"Executed");
             }
         }
-        sendThis = @{@"s": s};
-        //NSLog(@"JSON %@",sendThis);
+
     }
     else
     {
@@ -161,7 +162,11 @@
         for (NSIndexPath *selectionIndex in selectedRows)
         {
             NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
-            [s addObject:@[[tempDict valueForKey:@"athleteID"],localDateString]];
+            NSDictionary *tempCreatedDict = @{@"athlete":[tempDict valueForKey:@"athleteID"],@"sessions":@[self.urlID],@"tag":[NSNull null],@"reader":[NSNull null],@"time":localDateString};
+            [s arrayByAddingObject:tempCreatedDict];
+            
+            NSLog(@"Value of S: %@",s);
+            
             
             NSLog(@"%@, %@", [tempDict valueForKey:@"countStart"], [tempDict valueForKey:@"numberSplits"]);
             double tempHolder =[[tempDict valueForKey:@"numberSplits"] doubleValue] ;
@@ -170,8 +175,6 @@
                 [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
             }
         }
-        sendThis = @{@"s": s};
-        // NSLog(@"JSON %@",sendThis);
         // Delete everything, delete the objects from our data model.
         //Take every row and put into json. Then Send it
     }
@@ -186,22 +189,14 @@
     @try {
         
         NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
-        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/individual_splits/?access_token=%@",savedToken];
+        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/splits/?access_token=%@",savedToken];
         
         NSURL *url=[NSURL URLWithString:idurl2];
         NSError *error2 = nil;
         
-        NSArray *array = [s copy];
-        NSString *post;
-        if (selectedRows.count == 1){
-            post =[[NSString alloc] initWithFormat:@"s=[%@]",array];
-        }
-        else {
-            post =[[NSString alloc] initWithFormat:@"s=%@",array];
-        }
-        NSLog(@"Post %@",post);
-        NSData *jsonData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        //NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:0 error:&error2];
+        //NSData *jsonData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:s options:0 error:&error2];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[jsonData length]];
         //NSMutableData *data = [NSMutableData data];
         //[data appendData:[sendThis dataUsingEncoding:NSUTF8StringEncoding]];
@@ -211,15 +206,16 @@
         [request setHTTPMethod:@"POST"];
         
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        //[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [request setHTTPBody:jsonData];
+        NSLog(@"JSON Data Format: %@",jsonString);
         
         
         NSError *error = [[NSError alloc] init];
         NSHTTPURLResponse *response = nil;
         NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-        
+        NSLog(@"%ld",(long)[response statusCode]);
         if ([response statusCode] >= 200 && [response statusCode] < 300)
         {
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
