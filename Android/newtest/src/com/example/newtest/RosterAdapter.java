@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.example.newtest.GroupAdapter.Holder;
 import com.trac.trac.R;
 
 import android.content.Context;
@@ -12,13 +13,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class RosterAdapter extends BaseAdapter {
 	//Adapter specifically for CalendarActivity.class
 	private ArrayList<RosterJson> parsedJson; 
 	private List<RosterJson> parsedJsonList = null;
 	private Context context;
+	private boolean checkStatus;
+	private boolean clearCheckboxes;
+	ArrayList<Boolean> positionArray;
+	ArrayList<String> athleteIDArray;
 
 
 	
@@ -27,6 +36,13 @@ public class RosterAdapter extends BaseAdapter {
 	 this.parsedJson = new ArrayList<RosterJson>();
 	 this.parsedJson.addAll(parsedJsonList);
 	 this.context = context;
+	 positionArray = new ArrayList<Boolean>(parsedJsonList.size());
+	 athleteIDArray = new ArrayList<String>();
+	 checkStatus = false;
+	 
+	 for(int k=0; k < parsedJson.size(); k++){
+	        positionArray.add(false);
+	    }
 	}
 	
 	
@@ -73,14 +89,50 @@ public class RosterAdapter extends BaseAdapter {
 
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		//Inflate a view to show peoples names
+		Holder holder = null;
 		if (convertView == null) {
+			holder = new Holder();
 			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_roster, null);
+			holder.ckbox = (CheckBox) convertView.findViewById(R.id.rosterCheck);
+			convertView.setTag(holder);
 		}
+		else {
+			holder = (Holder) convertView.getTag();
+		}
+		if (clearCheckboxes)
+		{
+			holder.ckbox.setChecked(false);
+		}
+	
+		holder.ckbox.setFocusable(false);
 		
-		
+		 holder.ckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		    	
+		        @Override
+		        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		        	
+		            if(isChecked){
+		            	changeBool();
+		                positionArray.set(position, true);
+		                athleteIDArray.add(parsedJson.get(position).id);
+		                
+		            }
+		            else if(!isChecked){
+		                positionArray.set(position, false);
+		            //if its in there and its unchecked...
+			           if(athleteIDArray.contains(parsedJson.get(position).id)){
+			        	   int athleteindex = athleteIDArray.indexOf(parsedJson.get(position).id);
+			        	   athleteIDArray.remove(athleteindex);
+			            	
+			           }
+		            }
+		            //System.out.println(positionArray);
+		        }
+		        
+		    });
 		//this finds the name and displays it
 		TextView textView =(TextView) convertView.findViewById(R.id.list_text);
 		textView.setText(parsedJsonList.get(position).first +" "+  parsedJsonList.get(position).last);
@@ -88,7 +140,17 @@ public class RosterAdapter extends BaseAdapter {
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text3);
 		textView2.setText(parsedJsonList.get(position).id_str);
 		
-
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)textView.getLayoutParams();
+		if (checkStatus){
+			params.setMargins(50, 0, 0, 0); //substitute parameters for left, top, right, bottom
+			textView.setLayoutParams(params);
+			holder.ckbox.setVisibility(View.VISIBLE);
+		}
+		else{
+			params.setMargins(0, 0, 0, 0); //substitute parameters for left, top, right, bottom
+			textView.setLayoutParams(params);
+			holder.ckbox.setVisibility(View.GONE);
+		}
 		
 		//Fill that view with data
 		//Return that view
@@ -121,7 +183,27 @@ public class RosterAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
-	
+
+	public void changeCheck(boolean editStatus) {
+		checkStatus = editStatus;
+		notifyDataSetChanged();
+		
+	}
+
+	public void changeBool(){
+		clearCheckboxes = false;
+		
+	}
+	public ArrayList<String> getCheckArrayID(){
+		return athleteIDArray;
+	}
+	public void resetCheckArray(){
+		athleteIDArray.clear();
+	}
+	public void clearCheckboxes(){
+		clearCheckboxes = true;
+		Log.d("Fired","Clear");	
+	}
 	
 	
 }

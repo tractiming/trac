@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -25,7 +27,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -64,6 +69,8 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 	private String m_Text = "";
 	private String primaryTeam;
 	private CreateAthleteAsyncTask splitCall;
+	private boolean editStatus;
+	public Boolean asyncStatus;
 
 
 	public void onPause(){
@@ -164,6 +171,25 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 		           });      
 		    builder.show();
 		}
+		else if (id == R.id.action_edit){
+			//toggle checks.
+			
+			var.changeCheck(editStatus);
+			if(editStatus){
+        		editStatus = false;
+        		LinearLayout footer = (LinearLayout) this.findViewById(R.id.footer);
+	            footer.setVisibility(LinearLayout.VISIBLE);
+        	}
+        	else{
+        		editStatus = true;
+        		LinearLayout footer = (LinearLayout) this.findViewById(R.id.footer);
+	            footer.setVisibility(LinearLayout.GONE);
+        	}
+        	
+			
+			
+			
+		}
 
 		return super.onOptionsItemSelected(item);
 	}
@@ -198,6 +224,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 		    mLoginStatusView = findViewById(R.id.login_status);
 		    mLoginStatusView.setVisibility(View.VISIBLE);
 		    
+		    editStatus = true;
 		    //Set Listeners for infinite scroll
 		    //listView = (InfiniteScrollListView) this.getListView();
 		    list = getListView();
@@ -234,6 +261,13 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 		    
 	        });
 		    
+	        
+	        final Button b2 = (Button) findViewById(R.id.registerButton);
+		    b2.setOnClickListener( new View.OnClickListener() {
+			    public void onClick(View v) {
+			    	onRegisterClick();
+			    }
+			  });
 
 	        
 		  
@@ -257,6 +291,35 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 			asyncTeams.delegate = this;
 		  }
 	 
+	 public void onRegisterClick(){
+
+	    ArrayList<String> checkArray = var.getCheckArrayID();
+	    //Log.d("Array has data?2 ??",checkArray.toString());
+     	String url = "https://trac-us.appspot.com/api/sessions/"+ urlID +"/register_athletes/?access_token=" + access_token;
+     	//http://10.0.2.2:8000/api/individual_splits/?access_token=XQ8JLMtCPznQGSWUep1jX3ES2FWjWX
+     	RosterCheckboxAsync checkAsync = new RosterCheckboxAsync(checkArray,url);
+     	checkAsync.execute();
+     	checkAsync.delegate = this;
+
+     	var.clearCheckboxes();
+     	try {
+				asyncStatus = checkAsync.get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CancellationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+	     	if(asyncStatus != null){
+				var.resetCheckArray();
+				//groupList.changeBool();
+			}
+	 }
+	 
 		public void processComplete(String success) {
 			primaryTeam = success; 
 		}
@@ -264,8 +327,13 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 
 		  @Override
 		  protected void onListItemClick(ListView l, View v, int position, long id) {
-
-		  }
+			  super.onListItemClick(l, v, position, id);
+		        //Toggle CheckBox from not selected to selected and vice versa.
+		        if (v != null) {
+		            CheckBox checkBox = (CheckBox) v.findViewById(R.id.rosterCheck);
+		            checkBox.setChecked(!checkBox.isChecked());
+		        }
+		    }
 		  
 		  OkHttpClient client = new OkHttpClient();
 			Gson gson = new Gson();
@@ -320,9 +388,24 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 
 			@Override
 			public void processFinish(Boolean success) {
+				if (success){
+					new AlertDialog.Builder(this)
+				    .setTitle("Success!")
+				    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int which) { 
+		        	
+				        }
+				    })
+				    .setIcon(R.drawable.trac_launcher)
+				     .show();
+					
 				url = "https://trac-us.appspot.com/api/athletes/?primary_team=True&access_token=" + access_token;
 				asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
 				
+				editStatus = true;
+        		LinearLayout footer = (LinearLayout) this.findViewById(R.id.footer);
+	            footer.setVisibility(LinearLayout.GONE);
+				}
 			}
 
 			  
