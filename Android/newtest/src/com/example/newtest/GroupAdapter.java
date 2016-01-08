@@ -112,12 +112,14 @@ public class GroupAdapter extends BaseAdapter{
 		}
 		else {
 			holder = (Holder) convertView.getTag();
+			holder.ckbox.setOnCheckedChangeListener(null);
 		}
 		
 		if (clearCheckboxes)
 		{
 			holder.ckbox.setChecked(false);
 		}
+		holder.ckbox.setChecked(positionArray.get(position));
 	
 		holder.ckbox.setFocusable(false);
 	   if(!addingRow){ 

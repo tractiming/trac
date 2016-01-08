@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.example.newtest.GroupAdapter.Holder;
 import com.trac.trac.R;
 
 import android.content.Context;
@@ -101,13 +100,9 @@ public class RosterAdapter extends BaseAdapter {
 		}
 		else {
 			holder = (Holder) convertView.getTag();
+			holder.ckbox.setOnCheckedChangeListener(null);
 		}
-		if (clearCheckboxes)
-		{
-			holder.ckbox.setChecked(false);
-		}
-	
-		holder.ckbox.setFocusable(false);
+		holder.ckbox.setChecked(positionArray.get(position));
 		
 		 holder.ckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 		    	
@@ -129,7 +124,7 @@ public class RosterAdapter extends BaseAdapter {
 			            	
 			           }
 		            }
-		            //System.out.println(positionArray);
+		            System.out.println(positionArray);
 		        }
 		        
 		    });
@@ -205,6 +200,11 @@ public class RosterAdapter extends BaseAdapter {
 		Log.d("Fired","Clear");	
 	}
 	
-	
+	static class Holder
+	{
+	   
+	    CheckBox ckbox;
+
+	}
 }
 
