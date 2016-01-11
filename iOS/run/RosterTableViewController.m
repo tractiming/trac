@@ -633,6 +633,7 @@
                         [NSURL URLWithString:teamURL]];
         
         dispatch_async(dispatch_get_main_queue() ,^{
+            //Crashes on 64 bit
             [self fetchTeam:data];
            
         });
@@ -647,7 +648,7 @@
         
         
         //parse out the json data
-        
+        NSLog(@"Log Get here???");
         NSError* error;
         NSDictionary* json = [NSJSONSerialization
                               JSONObjectWithData:responseData //1
@@ -657,10 +658,11 @@
         
         teamIDs= [json valueForKey:@"id"];
         NSLog(@"TEam IDS %@",teamIDs);
+        return teamIDs;
     }
     @catch (NSException *exception) {
         NSLog(@"Exception %s","Except!");
-        
+        return teamIDs;
     }
     
 }
