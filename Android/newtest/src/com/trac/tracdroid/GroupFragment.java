@@ -68,7 +68,7 @@ public class GroupFragment extends ListFragment {
 	private View mLoginStatusView;
 	public static Timer timer;
 	public TimerTask doAsynchronousTask;
-	public static AsyncServiceCall asyncServiceCall;
+	public static AsyncServiceCallGroupFrag asyncServiceCall;
 	public static String testvar;
 	public static String title;
 	public static String date;
@@ -156,7 +156,7 @@ public class GroupFragment extends ListFragment {
         //Log.d("The passed Variable in frag baby", message);
         
 
-        asyncServiceCall = new AsyncServiceCall();
+        asyncServiceCall = new AsyncServiceCallGroupFrag();
     	asyncServiceCall.execute(message);
         
 		    
@@ -194,7 +194,7 @@ public class GroupFragment extends ListFragment {
 				} 
 	        	if(asyncStatus){
 	        	
-	        		asyncServiceCall = new AsyncServiceCall();
+	        		asyncServiceCall = new AsyncServiceCallGroupFrag();
                 	asyncServiceCall.execute(message);
                 	try {
 						tempRunVar = asyncServiceCall.get();
@@ -288,7 +288,7 @@ public class GroupFragment extends ListFragment {
 		                public void run() {       
 		                    try {
 		                    	asyncServiceCall.cancel(true);
-		                    	asyncServiceCall = new AsyncServiceCall();
+		                    	asyncServiceCall = new AsyncServiceCallGroupFrag();
 		                        // PerformBackgroundTask this class is the class that extends AsynchTask 
 		                    	//Log.d("URL:", message);
 		                    	//performs async service call on the message--url--passed
@@ -396,16 +396,16 @@ public class GroupFragment extends ListFragment {
 
 
  
-  private TextView mTextView;
-  private TextView mTextView1;
+  public TextView mTextView;
+  public TextView mTextView1;
 
   
   
-  	private final OkHttpClient client = new OkHttpClient();
+  	public final OkHttpClient client = new OkHttpClient();
 	Gson gson = new Gson();
-	private static final String DEBUG_TAG = "Debug";
+	public static final String DEBUG_TAG = "Debug";
 	
-	  private class AsyncServiceCall extends AsyncTask<String, Void, List<Runners>> {
+	  public class AsyncServiceCallGroupFrag extends AsyncTask<String, Void, List<Runners>> {
 		  protected void onPreExecute(){
 			  //Log.d("Async", "PreExcute");
 		  }

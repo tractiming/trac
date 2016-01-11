@@ -49,7 +49,7 @@ public class WorkoutFragment extends ListFragment {
 	private Boolean isVisible;
 	private AlertDialog alertDialog;
 	private  SwipeRefreshLayout swipeLayout;
-	private static AsyncWorkoutCall asyncTask;
+	public static AsyncWorkoutCall asyncTask;
 	public WorkoutAdapter workoutAdapter;
 	public ExpandableWorkoutAdapter expandableAdapter;
 	public WorkoutAsyncResponse delegate;
@@ -158,9 +158,9 @@ public class WorkoutFragment extends ListFragment {
   
   	OkHttpClient client = new OkHttpClient();
 	Gson gson = new Gson();
-	private static final String DEBUG_TAG = "griffinSucks";
+	public static final String DEBUG_TAG = "griffinSucks";
 	
-	  private class AsyncWorkoutCall extends AsyncTask<String, Void, List<Runners>> {
+	  public class AsyncWorkoutCall extends AsyncTask<String, Void, List<Runners>> {
 		  
 			@Override
 			protected List<Runners> doInBackground(String... params) {

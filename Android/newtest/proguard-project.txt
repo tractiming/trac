@@ -18,8 +18,13 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontobfuscate
 -keep class com.google.**
 -dontwarn com.google.**
 -keep class com.squareup.okhttp.** { *; }
 -keep interface com.squareup.okhttp.** { *; }
 -dontwarn okio.**
+-dontwarn com.trac.tracdroid.GroupAdapter.**
+-keep class com.trac.tracdroid.GroupAdapter** { *; }
+-dontwarn com.trac.tracdroid.WorkoutAdapter.**
+-keep class com.trac.tracdroid.WorkoutAdapter** { *; }

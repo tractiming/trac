@@ -77,8 +77,6 @@ public class LoginActivity extends Activity {
 	private String access_token;
 	private AlertDialog alertDialog;
 	private static String userVariable;
-	private String client_secret;
-	private String client_id;
 	
 	
 	 public void onBackPressed() {
@@ -279,138 +277,8 @@ public class LoginActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			// Attempt authentication against a network service.
-			Log.d("Username:", mEmail);
-			Log.d("Password:",mPassword);
-			//inserts text into string
-			//String pre_json = "username="+mEmail+"&password="+mPassword+"&grant_type=password"+"&client_id="+mEmail;
-			//Log.d(DEBUG_TAG, "Pre JSON Data: "+ pre_json);
-			
-			//String json = gson.toJson(pre_json);
-			//Log.d(DEBUG_TAG, "JSON "+ json);
-			String ps = mEmail+":"+mPassword;
-			byte[] data;
-			String base64credential;
-			try {
-				data = ps.getBytes("UTF-8");
-				base64credential = Base64.encodeToString(data, Base64.DEFAULT);
-			} catch (UnsupportedEncodingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				base64credential = "Nope";
-			}
-			
-			String compounded = "Basic " + base64credential;
-			
-			RequestBody body = RequestBody.create(null, new byte[0]);
-			//Log.d(DEBUG_TAG, "Request Body "+ body);
-			
-			
-			
-			Request request = new Request.Builder()
-	        .url(params[0])
-	        .post(body)
-	        .header("Authorization", compounded)
-	        .build();
-			
-			Log.d(DEBUG_TAG, "Request Data: "+ request);
-			try {
-			    Response response = client.newCall(request).execute();
-			    Log.d(DEBUG_TAG, "Response Data: "+ response);
-			    
-			    int codevar = response.code();
-			    Log.d(DEBUG_TAG, "Response Code: "+ codevar);
-			    
-			    Log.d(DEBUG_TAG, "Request Data: "+ request);
-			    var = response.body().string();
-			    
-			    Log.d(DEBUG_TAG, "VAR: "+ var);
-			    
-			    if (codevar == 200) {
-			    return true;
-			    }
-			    else {
-			    return false;
-			    }
-			    
-			} catch (IOException e) {
-				Log.d(DEBUG_TAG, "IoException" + e.getMessage());
-				return null;
-			}
-			
-			
-			/*try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
-			}
-
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
-			}
-*/
-			// TODO: register the new account here.
-			//return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			showProgress(false);
-			if (success == null){
-				alertDialog.show();
-			}
-			else if (success) {
-				//finish();
-				//store the token in Shared Preferences for other Acitivties to access
-				Gson gson = new Gson();
-				AccessToken parsedLogin = gson.fromJson(var, AccessToken.class);
-				Log.d("Test Test var ???", var);
-				client_id = parsedLogin.client_id;
-				client_secret = parsedLogin.client_secret;
-				Log.d("Test Test var ???", access_token);
-				
-				//context = getAppContext();
-				
-				Log.d("Success","Coach or Athlete");
-				SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
-				Editor edit = pref.edit();
-				edit.putString("usertype", parsedLogin.user_type);
-				edit.commit();
-				//SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
-				//   String access_token2 = userDetails.getString("token","");
-				
-				//go to calendar page
-     			 UserType userType = new UserType();
-     			 String url = "https://trac-us.appspot.com/oauth2/token/";
-     			 userType.execute(url);
-     			 
-				 
-				 
-			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mAuthTask = null;
-			showProgress(false);
-		}
-	}
-	
-	public class UserType extends AsyncTask<String, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(String... params) {
-			// Attempt authentication against a network service.
-
-			String pre_json = "username="+mEmail+"&password="+mPassword+"&client_id="+client_id+"&client_secret="+client_secret+"&grant_type=password";
+			String android_client="Opu8FB7AgwyychaR79YQISvxC2nRKAohCnGdVJud";
+			String pre_json = "username="+mEmail+"&password="+mPassword+"&client_id="+android_client+"&grant_type=password";
 			Log.d(DEBUG_TAG, "Pre JSON Data: "+ pre_json);
 
 			
