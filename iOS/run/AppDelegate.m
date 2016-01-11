@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "SiginViewController.h"
+#import "Heap.h"
 #define IDIOM    UI_USER_INTERFACE_IDIOM()
 #define IPAD     UIUserInterfaceIdiomPad
 
@@ -16,7 +17,12 @@
 //depending if logged in, show splash screen and segue to either login or workoutviewcontroller
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-   // NSLog(@"entered funt");
+    [Heap setAppId:@"1813560945"];
+#ifdef DEBUG
+    [Heap enableVisualizer];
+#endif
+
+    // NSLog(@"entered funt");
     NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
     
     //NSString *savedToken =@"dfda";

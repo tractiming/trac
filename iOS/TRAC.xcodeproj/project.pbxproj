@@ -23,6 +23,11 @@
 		90A0698D1A360D05008CAA75 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90A0698C1A360D05008CAA75 /* CustomCell.m */; };
 		90E1FC7B1AE09AB4001C24F2 /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E1FC7A1AE09AB4001C24F2 /* ThirdViewController.m */; };
 		90E215331BE86E4500E617EC /* RosterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E215321BE86E4500E617EC /* RosterTableViewController.m */; };
+		90E2EE691C406D100004C4EF /* libHeap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E2EE681C406D100004C4EF /* libHeap.a */; };
+		90E2EE6B1C406D610004C4EF /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E2EE6A1C406D610004C4EF /* CFNetwork.framework */; };
+		90E2EE6D1C406D730004C4EF /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E2EE6C1C406D730004C4EF /* libicucore.dylib */; };
+		90E2EE6F1C406D800004C4EF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E2EE6E1C406D800004C4EF /* SystemConfiguration.framework */; };
+		90E2EE711C406D880004C4EF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E2EE701C406D880004C4EF /* Security.framework */; };
 		90E5F4C01B72A3AE002B9276 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E5F4BF1B72A3AE002B9276 /* DetailViewController.m */; };
 		90E6879E1915C48B0060B20B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E6879D1915C48B0060B20B /* Foundation.framework */; };
 		90E687A01915C48B0060B20B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E6879F1915C48B0060B20B /* CoreGraphics.framework */; };
@@ -80,6 +85,12 @@
 		90E1FC7A1AE09AB4001C24F2 /* ThirdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdViewController.m; sourceTree = "<group>"; };
 		90E215311BE86E4500E617EC /* RosterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RosterTableViewController.h; sourceTree = "<group>"; };
 		90E215321BE86E4500E617EC /* RosterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RosterTableViewController.m; sourceTree = "<group>"; };
+		90E2EE671C406D100004C4EF /* Heap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Heap.h; sourceTree = "<group>"; };
+		90E2EE681C406D100004C4EF /* libHeap.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHeap.a; sourceTree = "<group>"; };
+		90E2EE6A1C406D610004C4EF /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		90E2EE6C1C406D730004C4EF /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		90E2EE6E1C406D800004C4EF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		90E2EE701C406D880004C4EF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		90E5F4BE1B72A3AE002B9276 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		90E5F4BF1B72A3AE002B9276 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		90E6879A1915C48B0060B20B /* trac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = trac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,11 +124,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90E687A21915C48B0060B20B /* UIKit.framework in Frameworks */,
+				90E2EE711C406D880004C4EF /* Security.framework in Frameworks */,
+				90E2EE6F1C406D800004C4EF /* SystemConfiguration.framework in Frameworks */,
+				90E2EE6D1C406D730004C4EF /* libicucore.dylib in Frameworks */,
+				90E2EE6B1C406D610004C4EF /* CFNetwork.framework in Frameworks */,
 				9048ABDC1BF1A3900062903B /* QuartzCore.framework in Frameworks */,
 				90E687A01915C48B0060B20B /* CoreGraphics.framework in Frameworks */,
-				90E687A21915C48B0060B20B /* UIKit.framework in Frameworks */,
 				90E6879E1915C48B0060B20B /* Foundation.framework in Frameworks */,
 				8915A414D35530C0DD268DE2 /* libPods-run.a in Frameworks */,
+				90E2EE691C406D100004C4EF /* libHeap.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +182,10 @@
 		90E6879C1915C48B0060B20B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				90E2EE701C406D880004C4EF /* Security.framework */,
+				90E2EE6E1C406D800004C4EF /* SystemConfiguration.framework */,
+				90E2EE6C1C406D730004C4EF /* libicucore.dylib */,
+				90E2EE6A1C406D610004C4EF /* CFNetwork.framework */,
 				9048ABDB1BF1A3900062903B /* QuartzCore.framework */,
 				90E6879D1915C48B0060B20B /* Foundation.framework */,
 				90E6879F1915C48B0060B20B /* CoreGraphics.framework */,
@@ -179,6 +199,8 @@
 		90E687A31915C48B0060B20B /* run */ = {
 			isa = PBXGroup;
 			children = (
+				90E2EE671C406D100004C4EF /* Heap.h */,
+				90E2EE681C406D100004C4EF /* libHeap.a */,
 				90E215311BE86E4500E617EC /* RosterTableViewController.h */,
 				90E215321BE86E4500E617EC /* RosterTableViewController.m */,
 				9048ABD81BF19C170062903B /* UIView+Toast.h */,
@@ -558,6 +580,10 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "run/TRAC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/run",
+				);
 				PRODUCT_NAME = trac;
 				PROVISIONING_PROFILE = "2a927e5f-5ad4-4bf6-a349-02d799f8f998";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -578,6 +604,10 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "run/TRAC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/run",
+				);
 				PRODUCT_NAME = trac;
 				PROVISIONING_PROFILE = "2a927e5f-5ad4-4bf6-a349-02d799f8f998";
 				TARGETED_DEVICE_FAMILY = "1,2";
