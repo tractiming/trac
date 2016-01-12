@@ -189,6 +189,16 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    //CalendarAdapter adapter = new CalendarAdapter(result, getApplicationContext());
 			//setListAdapter(adapter);
 
+		 	/*Target viewTarget = new ViewTarget(R.id.create_workout, this);
+			 new ShowcaseView.Builder(this)
+					 .withNewStyleShowcase()
+					 .setStyle(R.style.CustomShowcaseTheme2)
+					 .setTarget(viewTarget)
+					 .setContentTitle("Welcome to TRAC!")
+					 .setContentText("We'll help you set up the app")
+					 .build()
+					 .show();*/
+
 
 		    //Get token from Shared Preferences and create url endpoint with token inserted
 		    SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
