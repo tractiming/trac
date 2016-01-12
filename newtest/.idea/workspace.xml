@@ -23,7 +23,7 @@
     </layouts>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cfbf8398-0e08-435c-968a-d24b38c6242d" name="Default" comment="" />
@@ -46,29 +46,30 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CalendarActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CalendarActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/CalendarActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.444445">
-              <caret line="301" column="45" selection-start-line="301" selection-start-column="45" selection-end-line="301" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.105610564">
+              <caret line="191" column="0" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#8043#8887#0" expanded="true" />
-                <element signature="e#8886#8887#0" expanded="true" />
+                <element signature="e#7701#8545#0" expanded="true" />
+                <element signature="e#8544#8545#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/LoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.60679615">
-              <caret line="246" column="13" selection-start-line="246" selection-start-column="13" selection-end-line="246" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="222" column="29" selection-start-line="222" selection-start-column="29" selection-end-line="222" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#7678#7714#0" expanded="true" />
-                <element signature="e#7715#7749#0" expanded="true" />
+                <element signature="e#3547#3583#0" expanded="true" />
+                <element signature="e#7713#7749#0" expanded="true" />
+                <element signature="e#7750#7784#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -77,7 +78,7 @@
       <file leaf-file-name="SettingsFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/SettingsFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.888889">
+            <state vertical-scroll-proportion="-18.555555">
               <caret line="178" column="13" selection-start-line="178" selection-start-column="13" selection-end-line="178" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -100,7 +101,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GoogleAuthAysnc.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="72" column="9" selection-start-line="72" selection-start-column="9" selection-end-line="72" selection-end-column="9" />
+              <caret line="112" column="16" selection-start-line="112" selection-start-column="16" selection-end-line="112" selection-end-column="16" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#990#991#0" expanded="true" />
@@ -1819,11 +1820,11 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/showcase_styles.xml" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/CalendarActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GoogleAuthAysnc.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/LoginActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/CalendarActivity.java" />
       </list>
     </option>
   </component>
@@ -1832,7 +1833,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="1441" />
-    <option name="y" value="-179" />
+    <option name="y" value="-180" />
     <option name="width" value="1920" />
     <option name="height" value="1080" />
   </component>
@@ -1941,12 +1942,12 @@
     <property name="settings.editor.selected.configurable" value="configurable.group.language" />
     <property name="settings.editor.splitter.proportion" value="0.22779922" />
     <property name="recentsLimit" value="5" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="07c23597" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="035ded0f437e046e" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="AVD_for_Nexus_5_by_Google" />
     <property name="last_opened_file_path" value="$USER_HOME$/Dropbox/production.keystore" />
     <property name="ExportApk.ApkPath" value="$PROJECT_DIR$/app" />
     <property name="ExportApk.Flavors" value="" />
-    <property name="ExportApk.BuildType" value="release" />
+    <property name="ExportApk.BuildType" value="debug" />
     <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
   </component>
@@ -2123,8 +2124,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1441" y="-179" width="1920" height="1080" extended-state="6" />
-    <editor active="true" />
+    <frame x="1441" y="-180" width="1920" height="1080" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -2133,7 +2134,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32987553" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32987553" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32987553" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32987553" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39937758" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
@@ -2279,22 +2280,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2353,15 +2338,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/CalendarActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.444445">
-          <caret line="301" column="45" selection-start-line="301" selection-start-column="45" selection-end-line="301" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#8043#8887#0" expanded="true" />
-            <element signature="e#8886#8887#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2376,7 +2365,7 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GoogleAuthAysnc.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="72" column="9" selection-start-line="72" selection-start-column="9" selection-end-line="72" selection-end-column="9" />
+          <caret line="112" column="16" selection-start-line="112" selection-start-column="16" selection-end-line="112" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#990#991#0" expanded="true" />
@@ -2385,9 +2374,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="222" column="29" selection-start-line="222" selection-start-column="29" selection-end-line="222" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3547#3583#0" expanded="true" />
+            <element signature="e#7713#7749#0" expanded="true" />
+            <element signature="e#7750#7784#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/SettingsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.888889">
+        <state vertical-scroll-proportion="-18.555555">
           <caret line="178" column="13" selection-start-line="178" selection-start-column="13" selection-end-line="178" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -2395,14 +2397,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/LoginActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/CalendarActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60679615">
-          <caret line="246" column="13" selection-start-line="246" selection-start-column="13" selection-end-line="246" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.105610564">
+          <caret line="191" column="0" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#7678#7714#0" expanded="true" />
-            <element signature="e#7715#7749#0" expanded="true" />
+            <element signature="e#7701#8545#0" expanded="true" />
+            <element signature="e#8544#8545#0" expanded="true" />
           </folding>
         </state>
       </provider>

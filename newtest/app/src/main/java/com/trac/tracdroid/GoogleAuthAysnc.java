@@ -89,7 +89,7 @@ class GoogleAuthAsync extends AsyncTask<Void, Void, AuthToken> {
 
             Log.d(DEBUG_TAG, "Request Data: "+ request);
 
-            if (codevar == 201) {
+            if (codevar == 201 || codevar == 200) {
                 AuthToken result = gson.fromJson(response.body().charStream(), AuthToken.class);
                 return result;
             }
@@ -111,9 +111,8 @@ class GoogleAuthAsync extends AsyncTask<Void, Void, AuthToken> {
         if (success == null) {
             Log.d("NULL", "WORK");
         } else {
-
-
             String access_token = success.access_token;
+            Log.d("Token", access_token);
             delegate.processComplete(access_token);
 
         }

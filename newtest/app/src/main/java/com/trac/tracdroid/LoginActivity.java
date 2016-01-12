@@ -101,7 +101,7 @@ public class LoginActivity extends Activity implements StringAsyncResponse{
 		setContentView(R.layout.activity_login);
 
 		//Set Google Login Stuff
-		GoogleSignInOptions gso = new GoogleSignInOptions.Builder()
+		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 				.requestIdToken(getString(R.string.server_client_id))
 				.requestEmail()
 				.requestId()
@@ -234,6 +234,7 @@ public class LoginActivity extends Activity implements StringAsyncResponse{
 	}
 
 	public void processComplete(String token){
+		Log.d("Token in Login", token);
 		SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
 		Editor edit = pref.edit();
 		edit.putString("token", token);
