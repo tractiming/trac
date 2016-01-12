@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="dexedLibs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/newtest/bin/dexedLibs/amplitude-android-2.4.0-with-dependencies-c2894a06f18393de83c4a097f113b411.jar!/" />
+      <root url="jar://$PROJECT_DIR$/newtest/bin/dexedLibs/android-support-v7-appcompat-57cac95477599ecad35bec5241553c19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/newtest/bin/dexedLibs/android-support-v7-appcompat-42bb73a89d247f32fb6dd42067a47a64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/newtest/bin/dexedLibs/gson-2.2.4-ed4fd00aa9e2c89a7d1ecd81208bb4ba.jar!/" />
+      <root url="jar://$PROJECT_DIR$/newtest/bin/dexedLibs/android-support-v4-cdcc500e4d8221ebb0a3de74e065e923.jar!/" />
+      <root url="jar://$PROJECT_DIR$/newtest/bin/dexedLibs/gson-2.2.4-javadoc-66ecedb8dcb31cc12a564c091840a63c.jar!/" />
+      <root url="jar://$PROJECT_DIR$/newtest/bin/dexedLibs/okio-1.0.0-ff759e4502eafb2e946a3dc8c1b92f50.jar!/" />
+      <root url="jar://$PROJECT_DIR$/newtest/bin/dexedLibs/gson-2.2.4-sources-24b8ee22c89d70a4270cf8e7955a818c.jar!/" />
+      <root url="jar://$PROJECT_DIR$/newtest/bin/dexedLibs/okhttp-2.0.0-RC2-3945cd3475f1e5e155ccef2b80f94c5b.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

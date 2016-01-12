@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/newtest/libs/amplitude-android-2.4.0-with-dependencies.jar!/" />
+      <root url="jar://$PROJECT_DIR$/newtest/libs/gson-2.2.4-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/newtest/libs/gson-2.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/newtest/libs/android-support-v4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/newtest/libs/gson-2.2.4-javadoc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.trac.tracdroid"
+        minSdkVersion 14
+        targetSdkVersion 20
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.android.support:appcompat-v7:19.1.0'
+    compile 'com.github.amlcurran.showcaseview:library:5.4.0'
+    compile 'com.google.android.gms:play-services-auth:8.4.0'
+    compile files('libs/amplitude-android-2.4.0-with-dependencies.jar')
+}
+
+apply plugin: 'com.google.gms.google-services'
