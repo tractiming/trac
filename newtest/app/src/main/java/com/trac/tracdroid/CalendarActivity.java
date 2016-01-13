@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.PointTarget;
 import com.trac.tracdroid.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -47,6 +48,8 @@ import com.amplitude.api.Amplitude;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import android.widget.RelativeLayout;
+import android.view.ViewGroup;
 
 
 public class CalendarActivity extends ListActivity implements OnScrollListener{
@@ -69,6 +72,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
     private int nextFifteen;
     int fakedTotalItemCount = 21;
     int maxTotalSessions;
+	ShowcaseView sv;
 	
 
 	 public void onBackPressed() {
@@ -189,16 +193,23 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    //CalendarAdapter adapter = new CalendarAdapter(result, getApplicationContext());
 			//setListAdapter(adapter);
 
-		 	/*Target viewTarget = new ViewTarget(R.id.create_workout, this);
-			 new ShowcaseView.Builder(this)
-					 .withNewStyleShowcase()
-					 .setStyle(R.style.CustomShowcaseTheme2)
-					 .setTarget(viewTarget)
-					 .setContentTitle("Welcome to TRAC!")
-					 .setContentText("We'll help you set up the app")
-					 .build()
-					 .show();*/
+		 RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		 lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		 lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		 int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+		 lps.setMargins(margin, margin, margin, margin);
 
+		 PointTarget target = new PointTarget(150,150);
+		 sv = new ShowcaseView.Builder(this)
+				 .withMaterialShowcase()
+				 .setTarget(target)
+				 .setContentTitle("Title")
+				 .setContentText("Content Here")
+				 .setStyle(R.style.CustomShowcaseTheme2)
+				 .replaceEndButton(R.layout.view_custom_button)
+
+				 .build();
+		 sv.setButtonPosition(lps);
 
 		    //Get token from Shared Preferences and create url endpoint with token inserted
 		    SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);

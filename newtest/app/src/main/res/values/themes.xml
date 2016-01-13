@@ -13,10 +13,10 @@
     </style>
     
         <style name="ActionBarWidget" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- SearchView customization-->
+        <!-- SearchView customization
         <item name="searchViewSearchIcon">@drawable/ic_action_search</item>
         <item name="searchViewCloseIcon">@drawable/ic_action_remove</item>
-        <item name="searchViewAutoCompleteTextView">@style/AutoCompleteTextView</item>
+        <item name="searchViewAutoCompleteTextView">@style/AutoCompleteTextView</item>-->
     </style>
     
            <style name="AutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">

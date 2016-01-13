@@ -3,8 +3,6 @@ package com.trac.tracdroid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.apache.http.HttpResponse;
-
 import com.trac.tracdroid.R;
 import com.google.gson.Gson;
 import com.squareup.okhttp.MediaType;

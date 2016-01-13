@@ -3,8 +3,6 @@ package com.trac.tracdroid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.apache.http.HttpResponse;
-
 import com.trac.tracdroid.R;
 import com.google.gson.Gson;
 import com.squareup.okhttp.MediaType;
@@ -131,7 +129,6 @@ public class LoginActivity extends Activity implements StringAsyncResponse{
 		// Is there a token present?
 		SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 		   access_token = userDetails.getString("token","");
-		   Log.d("Access_token, Login Activity:", access_token);
 		
 		//Set Context
 		//LoginActivity.context = getApplicationContext();
