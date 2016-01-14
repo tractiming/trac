@@ -27,6 +27,7 @@ dependencies {
     compile 'com.github.amlcurran.showcaseview:library:5.4.0'
     compile 'com.google.android.gms:play-services-auth:8.4.0'
     compile files('libs/amplitude-android-2.4.0-with-dependencies.jar')
+    compile files('libs/nineoldandroids-2.4.0.jar')
 }
 
 apply plugin: 'com.google.gms.google-services'

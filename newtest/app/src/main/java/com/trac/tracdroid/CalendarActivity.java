@@ -1,23 +1,5 @@
 package com.trac.tracdroid;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
-import com.trac.tracdroid.R;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.SearchManager;
@@ -26,27 +8,31 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.BaseAdapter;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
+
 import com.amplitude.api.Amplitude;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.Target;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.trac.showcaseview.ShowcaseView;
+import com.trac.showcaseview.targets.ViewTarget;
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class CalendarActivity extends ListActivity implements OnScrollListener{
@@ -177,6 +163,10 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    setContentView(R.layout.activity_calendar);
 		    mLoginStatusView = findViewById(R.id.login_status);
 		    mLoginStatusView.setVisibility(View.VISIBLE);
+
+		 View showcasedView = findViewById(R.id.action_search2);
+		 ViewTarget target = new ViewTarget(showcasedView);
+		 ShowcaseView.insertShowcaseView(target, this, R.string.title_rosterActivity, R.string.common_signin_button_text);
 		    
 		    Amplitude.getInstance().initialize(this, "5ff966491ad403914c656a3da163d2f4").enableForegroundTracking(getApplication());
 		    Amplitude.getInstance().trackSessionEvents(true);
@@ -188,15 +178,6 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    //listView.setListener(scrollListener);
 		    //CalendarAdapter adapter = new CalendarAdapter(result, getApplicationContext());
 			//setListAdapter(adapter);
-
-			 new ShowcaseView.Builder(this)
-					 .withNewStyleShowcase()
-					 .setStyle(R.style.CustomShowcaseTheme2)
-					 .setContentTitle("Welcome to TRAC!")
-					 .setContentText("We'll help you set up the app \n \nClick the overflow button and select 'Create Workout' to begin")
-					 .hideOnTouchOutside()
-					 .build()
-					 .show();
 
 		    
 		    //Get token from Shared Preferences and create url endpoint with token inserted

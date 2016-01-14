@@ -35,6 +35,8 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.trac.showcaseview.ShowcaseView;
+import com.trac.showcaseview.targets.ViewTarget;
 
 import java.io.IOException;
 
@@ -92,6 +94,10 @@ public class LoginActivity extends Activity implements StringAsyncResponse{
 		setContentView(R.layout.activity_login);
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+		View showcasedView = findViewById(R.id.sign_in_button_TRAC);
+		ViewTarget target = new ViewTarget(showcasedView);
+		ShowcaseView.insertShowcaseView(target, this, R.string.title_rosterActivity, R.string.common_signin_button_text);
 
 		//Set Google Login Stuff
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder()
