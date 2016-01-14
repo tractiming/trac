@@ -3,9 +3,9 @@
 
 source 'https://github.com/CocoaPods/Specs.git'
 
-target 'run' do
+target 'TRAC' do
 
-pod 'NXOAuth2Client', '~> 1.2.8'
+pod 'Google/SignIn'
 
 end
 

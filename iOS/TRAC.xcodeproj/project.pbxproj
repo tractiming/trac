@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8915A414D35530C0DD268DE2 /* libPods-run.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65025FA5AE833806EAFCD44D /* libPods-run.a */; };
 		902104AF1A40AF3100FCC771 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 902104AE1A40AF3100FCC771 /* Reachability.m */; };
 		9039F6041BF42179003AB3BA /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9039F6031BF42179003AB3BA /* Main_iPad.storyboard */; };
 		903FBE401BF397050054C323 /* RegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 903FBE3F1BF397050054C323 /* RegistrationViewController.m */; };
@@ -44,7 +43,9 @@
 		90E687C51915C48B0060B20B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E687A11915C48B0060B20B /* UIKit.framework */; };
 		90E687CD1915C48B0060B20B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 90E687CB1915C48B0060B20B /* InfoPlist.strings */; };
 		90E687CF1915C48B0060B20B /* runTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E687CE1915C48B0060B20B /* runTests.m */; };
+		90EB99FE1C4751CE00B2254D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 90EB99FD1C4751CE00B2254D /* GoogleService-Info.plist */; };
 		90FB8C9A19F5BAE7006F1210 /* WorkoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB8C9919F5BAE7006F1210 /* WorkoutViewController.m */; };
+		AAAFFE1605B8A8DC3A6E42D7 /* libPods-TRAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FFE9A571CC4E92FD3F111CB /* libPods-TRAC.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,8 +59,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4E2E5E265C6D5DDEEF4466A9 /* Pods-run.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-run.release.xcconfig"; path = "Pods/Target Support Files/Pods-run/Pods-run.release.xcconfig"; sourceTree = "<group>"; };
-		65025FA5AE833806EAFCD44D /* libPods-run.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-run.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FFE9A571CC4E92FD3F111CB /* libPods-TRAC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TRAC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		45CB203C9C7682503890576B /* Pods-TRAC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRAC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TRAC/Pods-TRAC.debug.xcconfig"; sourceTree = "<group>"; };
+		86A3BA36D9FF600982953BE6 /* Pods-TRAC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRAC.release.xcconfig"; path = "Pods/Target Support Files/Pods-TRAC/Pods-TRAC.release.xcconfig"; sourceTree = "<group>"; };
 		902104AD1A40AF3100FCC771 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		902104AE1A40AF3100FCC771 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		9039F6031BF42179003AB3BA /* Main_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main_iPad.storyboard; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
@@ -114,9 +116,9 @@
 		90E687CA1915C48B0060B20B /* TRACTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TRACTests-Info.plist"; sourceTree = "<group>"; };
 		90E687CC1915C48B0060B20B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		90E687CE1915C48B0060B20B /* runTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = runTests.m; sourceTree = "<group>"; };
+		90EB99FD1C4751CE00B2254D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		90FB8C9819F5BAE7006F1210 /* WorkoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkoutViewController.h; sourceTree = "<group>"; };
 		90FB8C9919F5BAE7006F1210 /* WorkoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkoutViewController.m; sourceTree = "<group>"; };
-		A85C7CB5F7ABB05D9846DBD5 /* Pods-run.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-run.debug.xcconfig"; path = "Pods/Target Support Files/Pods-run/Pods-run.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,8 +134,8 @@
 				9048ABDC1BF1A3900062903B /* QuartzCore.framework in Frameworks */,
 				90E687A01915C48B0060B20B /* CoreGraphics.framework in Frameworks */,
 				90E6879E1915C48B0060B20B /* Foundation.framework in Frameworks */,
-				8915A414D35530C0DD268DE2 /* libPods-run.a in Frameworks */,
 				90E2EE691C406D100004C4EF /* libHeap.a in Frameworks */,
+				AAAFFE1605B8A8DC3A6E42D7 /* libPods-TRAC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,17 +153,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		90C046D51BDEFD5300E69B6A /* iPad */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = iPad;
-			sourceTree = "<group>";
-		};
 		90E687911915C48B0060B20B = {
 			isa = PBXGroup;
 			children = (
-				90C046D51BDEFD5300E69B6A /* iPad */,
+				90EB99FD1C4751CE00B2254D /* GoogleService-Info.plist */,
 				90E687A31915C48B0060B20B /* run */,
 				90E687C81915C48B0060B20B /* runTests */,
 				90E6879C1915C48B0060B20B /* Frameworks */,
@@ -191,7 +186,7 @@
 				90E6879F1915C48B0060B20B /* CoreGraphics.framework */,
 				90E687A11915C48B0060B20B /* UIKit.framework */,
 				90E687C21915C48B0060B20B /* XCTest.framework */,
-				65025FA5AE833806EAFCD44D /* libPods-run.a */,
+				2FFE9A571CC4E92FD3F111CB /* libPods-TRAC.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -273,8 +268,8 @@
 		C30994F964F60E9EE3236653 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A85C7CB5F7ABB05D9846DBD5 /* Pods-run.debug.xcconfig */,
-				4E2E5E265C6D5DDEEF4466A9 /* Pods-run.release.xcconfig */,
+				45CB203C9C7682503890576B /* Pods-TRAC.debug.xcconfig */,
+				86A3BA36D9FF600982953BE6 /* Pods-TRAC.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -291,6 +286,7 @@
 				90E687971915C48B0060B20B /* Frameworks */,
 				90E687981915C48B0060B20B /* Resources */,
 				3894499669E31D340150801E /* Copy Pods Resources */,
+				6B058BDA0EE09B10F769B758 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -374,6 +370,7 @@
 				9039F6041BF42179003AB3BA /* Main_iPad.storyboard in Resources */,
 				907377991A37912800F86C7C /* CustomCelliPad.xib in Resources */,
 				90E687A81915C48B0060B20B /* InfoPlist.strings in Resources */,
+				90EB99FE1C4751CE00B2254D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,7 +412,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-run/Pods-run-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TRAC/Pods-TRAC-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6B058BDA0EE09B10F769B758 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TRAC/Pods-TRAC-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -569,7 +581,7 @@
 		};
 		90E687D31915C48B0060B20B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A85C7CB5F7ABB05D9846DBD5 /* Pods-run.debug.xcconfig */;
+			baseConfigurationReference = 45CB203C9C7682503890576B /* Pods-TRAC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -593,7 +605,7 @@
 		};
 		90E687D41915C48B0060B20B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E2E5E265C6D5DDEEF4466A9 /* Pods-run.release.xcconfig */;
+			baseConfigurationReference = 86A3BA36D9FF600982953BE6 /* Pods-TRAC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

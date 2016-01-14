@@ -29,6 +29,35 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [GIDSignIn sharedInstance].uiDelegate = self;
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(receiveToggleAuthUINotification:)
+     name:@"ToggleAuthUINotification"
+     object:nil];
+}
+
+- (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
+    // Perform any operations on signed in user here.
+    NSString *userId = user.userID;                  // For client-side use only!
+    NSString *idToken = user.authentication.idToken; // Safe to send to the server
+    NSString *name = user.profile.name;
+    NSString *email = user.profile.email;
+    NSLog(@"Customer details: %@ %@ %@ %@", userId, idToken, name, email);
+    // ...
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:@"ToggleAuthUINotification"
+     object:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning
