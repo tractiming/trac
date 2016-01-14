@@ -1,0 +1,44 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:newtest="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.newtest.GroupView" >
+
+    <item android:id="@+id/action_search"
+          android:icon="@drawable/ic_action_search"
+          android:title="@string/action_search"
+          android:orderInCategory="100"
+        newtest:showAsAction="collapseActionView|ifRoom"
+          newtest:actionViewClass="android.widget.SearchView" />
+
+    
+<!--     <item android:id="@+id/action_play" -->
+<!--           android:icon="@drawable/ic_action_play" -->
+<!--           android:title="@string/play" -->
+<!--           android:orderInCategory="100" -->
+<!--         newtest:showAsAction="ifRoom" /> -->
+<!--     <item android:id="@+id/action_record" -->
+<!--           android:icon="@drawable/ic_action_play_over_video" -->
+<!--           android:title="@string/record" -->
+<!--           android:orderInCategory="100" -->
+<!--         newtest:showAsAction="ifRoom" /> -->
+<!--     <item android:id="@+id/action_stop" -->
+<!--           android:icon="@drawable/ic_action_stop" -->
+<!--           android:title="@string/action_stop" -->
+<!--           android:orderInCategory="100" -->
+<!--         newtest:showAsAction="ifRoom" /> -->
+    
+<!--     <item -->
+<!--         android:id="@+id/action_reset" -->
+<!--         android:icon="@drawable/ic_action_discard" -->
+<!--         android:orderInCategory="100" -->
+<!--         android:showAsAction="never" -->
+<!--         android:title="@string/action_reset"/> -->
+
+   <item
+        android:id="@+id/action_signout2"
+        android:orderInCategory="100"
+        android:title="@string/action_signout"
+        android:showAsAction="never"
+        />
+
+</menu>
