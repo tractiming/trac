@@ -58,6 +58,6 @@
 	<string name="step_three">Here you can calibrate start and stop times for a workout, and erase workout data.\nFor large race starts use the start workout button. \nLets look at our athletes: click on the roster button.</string>
 	<string name="step_four_title">This is your roster: </string>
 	<string name="step_four">To add an athlete not listed click on the overflow icon. \n \nClick the pencil icon to register previously created runners to a session. \n\nGood luck and enjoy TRAC!</string>
-	
+	<string name="ok">OK</string>
 	
 </resources>
