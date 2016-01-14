@@ -31,21 +31,28 @@
     </LinearLayout>
 
     <!-- Login form -->
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"/>
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:isScrollContainer="false"
+        >
 
        
         <LinearLayout
             style="@style/LoginFormContainer"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            >
 
-            <ImageView 
+            <ImageView
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:src="@drawable/traclogo_blue4"/>
+           android:src="@drawable/traclogo_blue4" />
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
@@ -53,7 +60,9 @@
                 android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textColor="#FFFFFF"
+                android:textColorHint="@color/White"/>
 
             <EditText
                 android:id="@+id/password"
@@ -65,7 +74,9 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textColor="#FFFFFF"
+                android:textColorHint="@color/White"/>
 
             <Button
                 android:id="@+id/sign_in_button_TRAC"
@@ -75,7 +86,14 @@
                 android:layout_marginTop="16dp"
                 android:paddingLeft="60dp"
                 android:paddingRight="60dp"
-                android:text="@string/action_sign_in_register" />
+                android:text="@string/action_sign_in_register"
+                android:background="@layout/login_button"/>
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
             <Button
                 android:id="@+id/create_button"
                 android:layout_width="fill_parent"
@@ -87,12 +105,7 @@
                 android:text="@string/create_account" 
                 android:background="@layout/button_layout"
                />
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"/>
+
         </LinearLayout>
     </ScrollView>
-
 </merge>

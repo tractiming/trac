@@ -189,13 +189,12 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    //CalendarAdapter adapter = new CalendarAdapter(result, getApplicationContext());
 			//setListAdapter(adapter);
 
-		 	Target viewTarget = new ViewTarget(R.id.create_workout, this);
 			 new ShowcaseView.Builder(this)
 					 .withNewStyleShowcase()
 					 .setStyle(R.style.CustomShowcaseTheme2)
-					 .setTarget(viewTarget)
 					 .setContentTitle("Welcome to TRAC!")
-					 .setContentText("We'll help you set up the app")
+					 .setContentText("We'll help you set up the app \n \nClick the overflow button and select 'Create Workout' to begin")
+					 .hideOnTouchOutside()
 					 .build()
 					 .show();
 

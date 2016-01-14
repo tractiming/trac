@@ -9,10 +9,10 @@
                 />
             <stroke
                 android:width="2dp"
-                android:color="#803577A8"
+                android:color="#80FFFFFF"
                 />
             <solid
-                android:color="#803577A8"
+                android:color="#80FFFFFF"
                 />
         </shape>
     </item>
@@ -25,10 +25,10 @@
                 />
             <stroke
                 android:width="2dp"
-                android:color="#80F0B922"
+                android:color="#80e5e5e5"
                 />
             <solid
-                android:color="#80F0B922"
+                android:color="#80e5e5e5"
                 />
         </shape>
     </item>
