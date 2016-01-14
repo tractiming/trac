@@ -149,7 +149,11 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 			Editor edit = pref.edit();
 			edit.putString("token", "");
 			edit.commit();
-			asyncCall.cancel(true);
+
+			//go to login page
+			Intent i = new Intent(RosterActivity.this, LoginActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(i);
 			
 
 		}
@@ -396,6 +400,8 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 						
 						
 						if(result==null){
+
+							Log.d("Crashing Here","Crashing Here");
 							alertDialog.show();
 							mLoginStatusView.setVisibility(View.GONE);
 							// swipeLayout.setRefreshing(false);

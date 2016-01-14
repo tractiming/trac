@@ -2,6 +2,7 @@ package com.trac.tracdroid;
  
 import java.io.IOException;
 
+import com.amplitude.api.Amplitude;
 import com.trac.tracdroid.R;
 import com.trac.tracdroid.LoginActivity.UserLoginTask;
 import com.google.gson.Gson;
@@ -36,7 +37,8 @@ public class SplashScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        
+		Amplitude.getInstance().initialize(this, "5ff966491ad403914c656a3da163d2f4").enableForegroundTracking(getApplication());
+		Amplitude.getInstance().trackSessionEvents(true);
         //check if there is a token
         SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 		   access_token = userDetails.getString("token","");

@@ -186,8 +186,6 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    mLoginStatusView = findViewById(R.id.login_status);
 		    mLoginStatusView.setVisibility(View.VISIBLE);
 
-		    Amplitude.getInstance().initialize(this, "5ff966491ad403914c656a3da163d2f4").enableForegroundTracking(getApplication());
-		    Amplitude.getInstance().trackSessionEvents(true);
 		    //Set Listeners for infinite scroll
 		    //listView = (InfiniteScrollListView) this.getListView();
 		    list = getListView();

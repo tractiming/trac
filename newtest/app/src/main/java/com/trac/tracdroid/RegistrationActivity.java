@@ -1,19 +1,5 @@
 package com.trac.tracdroid;
 
-import android.widget.EditText;
-
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
-import com.trac.tracdroid.R;
-import com.google.gson.Gson;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -394,9 +380,9 @@ public class RegistrationActivity extends Activity {
 				 
 				 
 			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
+				mEmailView
+						.setError("Username or email is invalid.");
+				mEmailView.requestFocus();
 			}
 		}
 

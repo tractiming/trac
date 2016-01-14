@@ -4,7 +4,11 @@
     >
 
     <!-- Login progress -->
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"/>
     <LinearLayout
         android:id="@+id/login_status"
         android:layout_width="wrap_content"
@@ -27,15 +31,12 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif-light"
             android:text="@string/login_progress_signing_in"
+            android:textColor="#FFFFFF"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
     <!-- Login form -->
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/background"
-        android:scaleType="centerCrop"/>
+
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"

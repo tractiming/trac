@@ -1,18 +1,5 @@
 package com.trac.tracdroid;
 
-import android.content.Intent;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
-import com.trac.tracdroid.R;
-import com.google.gson.Gson;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -409,7 +396,7 @@ public class LoginActivity extends Activity implements StringAsyncResponse{
 
 		@Override
 		protected void onPostExecute(final Boolean success) {
-			
+			showProgress(false);
 			mAuthTask = null;
 
 			if (success == null){
@@ -432,9 +419,8 @@ public class LoginActivity extends Activity implements StringAsyncResponse{
 				
 
 			} else {
-				//It it doesnt work segue to login page
-				Log.d("NOPE","NO WORK");
 
+				mEmailView.setError("Username and password do not match or are not found");
 			}
 		}
 
