@@ -1,5 +1,18 @@
 package com.trac.tracdroid;
 
+import android.content.Intent;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
+import com.trac.tracdroid.R;
+import com.google.gson.Gson;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -94,7 +107,7 @@ public class LoginActivity extends Activity implements StringAsyncResponse{
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		//Set Google Login Stuff
-		GoogleSignInOptions gso = new GoogleSignInOptions.Builder()
+		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 				.requestIdToken(getString(R.string.server_client_id))
 				.requestEmail()
 				.requestId()
@@ -228,6 +241,7 @@ public class LoginActivity extends Activity implements StringAsyncResponse{
 	}
 
 	public void processComplete(String token){
+		Log.d("Token in Login", token);
 		SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
 		Editor edit = pref.edit();
 		edit.putString("token", token);

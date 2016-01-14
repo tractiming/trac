@@ -13,6 +13,15 @@
         <item name="sv_titleTextAppearance">@style/CustomTitle</item>
     </style>
 
+    <style name="CustomShowcaseThemeGray" parent="ShowcaseView">
+        <item name="sv_backgroundColor">#808080</item>
+        <item name="sv_showcaseColor">#A9A9A9</item>
+        <item name="sv_buttonText">Hide</item>
+        <item name="sv_tintButtonColor">false</item>
+        <item name="sv_titleTextAppearance">@style/CustomTitle2</item>
+        <item name="sv_detailTextAppearance">@style/CustomText2</item>
+    </style>
+
     <style name="CustomShowcaseTheme2" parent="ShowcaseView">
         <item name="sv_backgroundColor">#e51249d9</item>
         <item name="sv_showcaseColor">#25467A</item>

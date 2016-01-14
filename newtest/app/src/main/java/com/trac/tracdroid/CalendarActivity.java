@@ -1,5 +1,24 @@
 package com.trac.tracdroid;
 
+import android.app.ListActivity;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import com.trac.tracdroid.R;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.SearchManager;
@@ -33,6 +52,8 @@ import com.trac.showcaseview.ShowcaseView;
 import com.trac.showcaseview.targets.ActionItemTarget;
 import java.io.IOException;
 import java.util.ArrayList;
+import android.widget.RelativeLayout;
+import android.view.ViewGroup;
 
 
 public class CalendarActivity extends ListActivity implements OnScrollListener{
@@ -55,6 +76,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
     private int nextFifteen;
     int fakedTotalItemCount = 21;
     int maxTotalSessions;
+	ShowcaseView sv;
 	
 
 	 public void onBackPressed() {
@@ -175,7 +197,6 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    //CalendarAdapter adapter = new CalendarAdapter(result, getApplicationContext());
 			//setListAdapter(adapter);
 
-		    
 		    //Get token from Shared Preferences and create url endpoint with token inserted
 		    SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 			   access_token = userDetails.getString("token","");

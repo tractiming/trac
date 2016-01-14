@@ -40,6 +40,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.amplitude.api.Amplitude;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.PointTarget;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.trac.tracdroid.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -111,8 +114,17 @@ public class GroupFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		startTime = SystemClock.elapsedRealtime();
-		
-		
+
+		new ShowcaseView.Builder(getActivity())
+				.setTarget(new PointTarget(0,0))
+				.withNewStyleShowcase()
+				.hideOnTouchOutside()
+				.setStyle(R.style.CustomShowcaseTheme)
+				.setContentTitle("Welcome to TRAC!")
+				.setContentText("We'll help you set up the app")
+				.build()
+				.show();
+
 		Bundle args = getArguments();
 		access_token = args.getString("AccessToken","");
 		
