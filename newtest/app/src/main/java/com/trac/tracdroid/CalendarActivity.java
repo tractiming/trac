@@ -30,7 +30,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.trac.showcaseview.ShowcaseView;
-import com.trac.showcaseview.targets.ViewTarget;
+import com.trac.showcaseview.targets.ActionItemTarget;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -164,10 +164,6 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    mLoginStatusView = findViewById(R.id.login_status);
 		    mLoginStatusView.setVisibility(View.VISIBLE);
 
-		 View showcasedView = findViewById(R.id.action_search2);
-		 ViewTarget target = new ViewTarget(showcasedView);
-		 ShowcaseView.insertShowcaseView(target, this, R.string.title_rosterActivity, R.string.common_signin_button_text);
-		    
 		    Amplitude.getInstance().initialize(this, "5ff966491ad403914c656a3da163d2f4").enableForegroundTracking(getApplication());
 		    Amplitude.getInstance().trackSessionEvents(true);
 		    //Set Listeners for infinite scroll
@@ -183,7 +179,17 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    //Get token from Shared Preferences and create url endpoint with token inserted
 		    SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 			   access_token = userDetails.getString("token","");
-			
+		 	boolean firstRun = userDetails.getBoolean("firstRun",true);
+
+			 if (firstRun) {
+				 ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
+				 co.shotType = ShowcaseView.TYPE_ONE_SHOT;
+				 co.showcaseId = ShowcaseView.ITEM_ACTION_ITEM;
+				 co.hideOnClickOutside = true;
+				 ActionItemTarget target = new ActionItemTarget(this, R.id.action_search2);
+				 final ShowcaseView sv = ShowcaseView.insertShowcaseView(target, this, R.string.intro, R.string.step_one,co);
+				 sv.show();
+			 }
 			   
 		    //Initialize swipe to refresh layout, what happens when swiped: async task called again
 		    swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);

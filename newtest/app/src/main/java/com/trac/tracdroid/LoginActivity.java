@@ -35,8 +35,6 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
-import com.trac.showcaseview.ShowcaseView;
-import com.trac.showcaseview.targets.ViewTarget;
 
 import java.io.IOException;
 
@@ -95,10 +93,6 @@ public class LoginActivity extends Activity implements StringAsyncResponse{
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-		View showcasedView = findViewById(R.id.sign_in_button_TRAC);
-		ViewTarget target = new ViewTarget(showcasedView);
-		ShowcaseView.insertShowcaseView(target, this, R.string.title_rosterActivity, R.string.common_signin_button_text);
-
 		//Set Google Login Stuff
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder()
 				.requestIdToken(getString(R.string.server_client_id))
@@ -128,10 +122,11 @@ public class LoginActivity extends Activity implements StringAsyncResponse{
 			});
 		
 		// Is there a token present?
-		SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
+		SharedPreferences userDetails = getSharedPreferences("userdetails", MODE_PRIVATE);
 		   access_token = userDetails.getString("token","");
-		   Log.d("Access_token, Login Activity:", access_token);
-		
+		   boolean firstRun = userDetails.getBoolean("firstRun",true);
+		System.out.println("Booleaen Value for First Run:"+firstRun);
+
 		//Set Context
 		//LoginActivity.context = getApplicationContext();
 

@@ -1,45 +1,31 @@
 package com.trac.tracdroid;
 
-import java.io.IOException;
-import java.util.Locale;
-
-import com.trac.tracdroid.R;
-import com.trac.tracdroid.SplashScreen.TokenValidation;
-import com.google.gson.Gson;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.AsyncTask;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.view.Display;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.widget.TextView;
-import android.support.v4.app.ListFragment;
+
 import com.amplitude.api.Amplitude;
+import com.trac.showcaseview.ShowcaseView;
+import com.trac.showcaseview.ShowcaseViews;
+import com.trac.showcaseview.targets.PointTarget;
+
+import java.util.Locale;
 
 public class MainActivity extends ActionBarActivity implements
 		ActionBar.TabListener{
@@ -96,9 +82,27 @@ public class MainActivity extends ActionBarActivity implements
 
 		 SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 		   access_token = userDetails.getString("token","");
+		boolean firstRun = userDetails.getBoolean("firstRun",true);
 		   //userVariable = userDetails.getString("usertype", "");
 		   //Log.d("Access_token, MainActivity:", userVariable);
-		  
+		if (firstRun) {
+			Display display = getWindowManager().getDefaultDisplay();
+			Point size = new Point();
+			display.getSize(size);
+			int width = size.x;
+			int frag = (width / 8) * 7;
+			int height = size.y;
+
+			ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
+			co.showcaseId = ShowcaseView.ITEM_ACTION_ITEM;
+			co.shotType = ShowcaseView.TYPE_ONE_SHOT;
+			co.hideOnClickOutside = true;
+			ShowcaseViews mViews;
+			PointTarget target = new PointTarget(frag, 250);
+			final ShowcaseView sv = ShowcaseView.insertShowcaseView(target, this, R.string.step_two_title, R.string.step_two,co);
+			sv.show();
+		}
+
 		  // resultOfComparison=userVariable.equals("coach");
 		// 1. get passed intent 
         Intent intent = getIntent();
