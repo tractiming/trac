@@ -36,6 +36,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 
+import com.trac.showcaseview.ShowcaseView;
+import com.trac.showcaseview.targets.ActionItemTarget;
 import com.trac.tracdroid.R;
 import com.trac.tracdroid.CalendarActivity.AsyncServiceCall;
 import com.google.gson.Gson;
@@ -239,15 +241,27 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 		    //Set Listeners for infinite scroll
 		    //listView = (InfiniteScrollListView) this.getListView();
 		    list = getListView();
+		 //Get token from Shared Preferences and create url endpoint with token inserted
+		 	SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
+		 	access_token = userDetails.getString("token","");
+		 	boolean firstRun = userDetails.getBoolean("firstRun",true);
+			 if(firstRun) {
+				 ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
+				 co.showcaseId = ShowcaseView.ITEM_ACTION_ITEM;
+				 co.hideOnClickOutside = true;
+				 ActionItemTarget target = new ActionItemTarget(this, R.id.action_edit);
+				 final ShowcaseView sv = ShowcaseView.insertShowcaseView(target, this, R.string.step_four_title, R.string.step_four,co);
+				 sv.show();
+				 SharedPreferences.Editor editor = userDetails.edit();
+				 editor.putBoolean("firstRun", false);
+				 editor.commit();
+			 }
 
 		    Intent intent = getIntent();
 			
 	        // 2. get message value from intent
 	       urlID = intent.getStringExtra("urlID");
-		    //Get token from Shared Preferences and create url endpoint with token inserted
-		    SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
-			   access_token = userDetails.getString("token","");
-			
+
 			   
 		    //Initialize swipe to refresh layout, what happens when swiped: async task called again
 		    swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);

@@ -1,5 +1,7 @@
 package com.trac.tracdroid;
 
+import android.content.Intent;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
@@ -16,12 +18,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,20 +30,26 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.amplitude.api.Amplitude;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
+import com.google.gson.Gson;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -97,6 +103,8 @@ public class LoginActivity extends Activity implements StringAsyncResponse{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		//Set Google Login Stuff
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -127,9 +135,11 @@ public class LoginActivity extends Activity implements StringAsyncResponse{
 			});
 		
 		// Is there a token present?
-		SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
+		SharedPreferences userDetails = getSharedPreferences("userdetails", MODE_PRIVATE);
 		   access_token = userDetails.getString("token","");
-		
+		   boolean firstRun = userDetails.getBoolean("firstRun",true);
+		System.out.println("Booleaen Value for First Run:"+firstRun);
+
 		//Set Context
 		//LoginActivity.context = getApplicationContext();
 

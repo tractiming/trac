@@ -23,7 +23,7 @@
         <activity
             android:name="com.trac.tracdroid.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" 
+            android:windowSoftInputMode="adjustResize|stateVisible"
             android:screenOrientation="portrait" 
             >
             
@@ -32,7 +32,7 @@
         <activity
             android:name="com.trac.tracdroid.RegistrationActivity"
             android:label="@string/title_activity_registration"
-            android:windowSoftInputMode="adjustResize|stateVisible" 
+            android:windowSoftInputMode="adjustResize|stateVisible"
             android:screenOrientation="portrait" 
             >
         </activity>

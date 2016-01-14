@@ -1,5 +1,7 @@
 package com.trac.tracdroid;
 
+import android.app.ListActivity;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -7,8 +9,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
-import com.github.amlcurran.showcaseview.targets.PointTarget;
 import com.trac.tracdroid.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -27,27 +27,31 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.BaseAdapter;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
+
 import com.amplitude.api.Amplitude;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.Target;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.trac.showcaseview.ShowcaseView;
+import com.trac.showcaseview.targets.ActionItemTarget;
+import java.io.IOException;
+import java.util.ArrayList;
 import android.widget.RelativeLayout;
 import android.view.ViewGroup;
 
@@ -181,7 +185,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    setContentView(R.layout.activity_calendar);
 		    mLoginStatusView = findViewById(R.id.login_status);
 		    mLoginStatusView.setVisibility(View.VISIBLE);
-		    
+
 		    Amplitude.getInstance().initialize(this, "5ff966491ad403914c656a3da163d2f4").enableForegroundTracking(getApplication());
 		    Amplitude.getInstance().trackSessionEvents(true);
 		    //Set Listeners for infinite scroll
@@ -193,28 +197,20 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		    //CalendarAdapter adapter = new CalendarAdapter(result, getApplicationContext());
 			//setListAdapter(adapter);
 
-		 RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		 lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		 lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		 int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-		 lps.setMargins(margin, margin, margin, margin);
-
-		 PointTarget target = new PointTarget(150,150);
-		 sv = new ShowcaseView.Builder(this)
-				 .withMaterialShowcase()
-				 .setTarget(target)
-				 .setContentTitle("Title")
-				 .setContentText("Content Here")
-				 .setStyle(R.style.CustomShowcaseTheme2)
-				 .replaceEndButton(R.layout.view_custom_button)
-
-				 .build();
-		 sv.setButtonPosition(lps);
-
 		    //Get token from Shared Preferences and create url endpoint with token inserted
 		    SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 			   access_token = userDetails.getString("token","");
-			
+		 	boolean firstRun = userDetails.getBoolean("firstRun",true);
+
+			 if (firstRun) {
+				 ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
+				 co.shotType = ShowcaseView.TYPE_ONE_SHOT;
+				 co.showcaseId = ShowcaseView.ITEM_ACTION_ITEM;
+				 co.hideOnClickOutside = true;
+				 ActionItemTarget target = new ActionItemTarget(this, R.id.action_search2);
+				 final ShowcaseView sv = ShowcaseView.insertShowcaseView(target, this, R.string.intro, R.string.step_one,co);
+				 sv.show();
+			 }
 			   
 		    //Initialize swipe to refresh layout, what happens when swiped: async task called again
 		    swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);

@@ -1,18 +1,5 @@
 package com.trac.tracdroid;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import com.trac.tracdroid.R;
-import com.google.gson.Gson;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,14 +7,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
-import android.os.AsyncTask;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ListView;
-import android.widget.Toast;
+
 import com.amplitude.api.Amplitude;
+import com.trac.showcaseview.ShowcaseView;
+import com.trac.showcaseview.targets.PointTarget;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingsFragment extends ListFragment implements BooleanAsyncResponse{
     private List<ListViewItem> mItems;        // ListView items list
@@ -49,6 +43,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         //GroupFragment.backButtonWasPressed();
 		//WorkoutFragment.backButtonWasPressed();
         	// 1. get passed intent from MainActivity
+
      		Intent intent = getActivity().getIntent();
      		
              // 2. get message value from intent
@@ -74,8 +69,28 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         
         // initialize and set the list adapter
         setListAdapter(new SettingsAdapter(getActivity(), mItems));
-       
-    }
+
+		SharedPreferences userDetails = this.getActivity().getSharedPreferences("userdetails",Context.MODE_PRIVATE);
+		boolean firstRun = userDetails.getBoolean("firstRun",true);
+
+		if(firstRun) {
+			WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+			Display display = wm.getDefaultDisplay();
+			Point size = new Point();
+			display.getSize(size);
+			int width = size.x;
+			int frag = (width / 4);
+			int height = size.y;
+
+			ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
+			co.showcaseId = ShowcaseView.ITEM_ACTION_ITEM;
+			co.shotType = ShowcaseView.TYPE_ONE_SHOT;
+			co.hideOnClickOutside = true;
+			PointTarget target = new PointTarget(frag, 400);
+			ShowcaseView.insertShowcaseView(target, getActivity(), R.string.step_three_title, R.string.step_three,co);
+		}
+
+	}
     
 
     @Override
@@ -83,7 +98,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         super.onViewCreated(view, savedInstanceState);
         // remove the dividers from the ListView of the ListFragment
         getListView().setDivider(null);
-    }
+	}
  
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
