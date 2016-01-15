@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <Google/SignIn.h>
 
-@interface SiginViewController : UIViewController <UITextFieldDelegate, GIDSignInUIDelegate>
+@interface SiginViewController : UIViewController <GIDSignInUIDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *txtUsername;
 @property (weak, nonatomic) IBOutlet UITextField *txtPassword;
 - (IBAction)signinClicked:(id)sender;
@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSString *access_token;
 @property (nonatomic, strong) NSString *client_id;
 @property (nonatomic, strong) NSString *client_secret;
-@property(weak, nonatomic) IBOutlet GIDSignInButton *signInButton;
+@property (weak, nonatomic) IBOutlet GIDSignInButton *signInButton;
 
 
 @end
