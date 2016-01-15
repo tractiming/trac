@@ -59,5 +59,6 @@
 	<string name="step_four_title">This is your roster: </string>
 	<string name="step_four">To add an athlete not listed click on the overflow icon. \n \nClick the pencil icon to register previously created runners to a session. \n\nGood luck and enjoy TRAC!</string>
 	<string name="ok">OK</string>
+	<string name="addTeam">Create Team</string>
 	
 </resources>

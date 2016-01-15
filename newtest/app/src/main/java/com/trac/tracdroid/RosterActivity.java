@@ -48,7 +48,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.amplitude.api.Amplitude;
 
-public class RosterActivity extends ListActivity implements StringAsyncResponse, BooleanAsyncResponse{
+public class RosterActivity extends ListActivity implements StringAsyncResponse, BooleanAsyncResponse, CreateTeamCallback{
 	//protected Context context;
 	private String access_token;
 	private ArrayList<Results> positionArray;
@@ -74,7 +74,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 	private CreateAthleteAsyncTask splitCall;
 	private boolean editStatus;
 	public Boolean asyncStatus;
-	
+	private CreateTeam teamCreateAsync;
 
 
 	public void onPause(){
@@ -170,7 +170,6 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 		           .setPositiveButton(R.string.action_addRunner, new DialogInterface.OnClickListener() {
 		               @Override
 		               public void onClick(DialogInterface dialog, int id) {
-		                   // sign in the user ...
 		            	   confirmCreate(dialog);
 		               }
 		           })
@@ -226,8 +225,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
  	   dialog.cancel();
  	   
     		String createURL = "https://trac-us.appspot.com/api/athletes/?access_token=" + access_token;
-    		//http://10.0.2.2:8000/api/individual_splits/?access_token=XQ8JLMtCPznQGSWUep1jX3ES2FWjWX
-    		splitCall = new CreateAthleteAsyncTask(url,first_name,last_name,tagIdString,primaryTeam);
+    		splitCall = new CreateAthleteAsyncTask(createURL,first_name,last_name,tagIdString,primaryTeam);
     		splitCall.execute();
     		splitCall.delegate = this;
 	}
@@ -351,9 +349,39 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 	 }
 	 
 		public void processComplete(String success) {
-			primaryTeam = success; 
+			if (success == "Null")
+			{
+				addTeam();
+			}else {
+				primaryTeam = success;
+			}
 		}
-	 
+	 	public void addTeam(){
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			// Get the layout inflater
+			LayoutInflater inflater = getLayoutInflater();
+			builder.setView(inflater.inflate(R.layout.dialog_team, null))
+					// Add action buttons
+					.setPositiveButton(R.string.addTeam, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							createTeam(dialog);
+						}
+					});
+			builder.show();
+
+		}
+
+	public void createTeam(DialogInterface dialog){
+		EditText name = (EditText) ((Dialog)dialog).findViewById(R.id.teamname);
+		String nameString = name.getText().toString();
+		dialog.cancel();
+
+		String createURL = "https://trac-us.appspot.com/api/teams/?access_token=" + access_token;
+		teamCreateAsync = new CreateTeam(createURL,nameString);
+		teamCreateAsync.execute();
+		teamCreateAsync.delegate = this;
+	}
 
 		  @Override
 		  protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -430,7 +458,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 				    })
 				    .setIcon(R.drawable.trac_launcher)
 				     .show();
-					
+
 				url = "https://trac-us.appspot.com/api/athletes/?primary_team=True&access_token=" + access_token;
 				asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(url);
 				
@@ -440,6 +468,25 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 				}
 			}
 
+	@Override
+	public void teamFinish(Boolean success) {
+		if (success){
+			new AlertDialog.Builder(this)
+					.setTitle("Success!")
+					.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+
+						}
+					})
+					.setIcon(R.drawable.trac_launcher)
+					.show();
+
+			String teamURL = "https://trac-us.appspot.com/api/teams/?primary_team=True&access_token=" + access_token;
+			RetrievePrimaryTeams asyncTeams = (RetrievePrimaryTeams) new RetrievePrimaryTeams().execute(teamURL);
+			asyncTeams.delegate = this;
+
+		}
+	}
 			  
 
 			

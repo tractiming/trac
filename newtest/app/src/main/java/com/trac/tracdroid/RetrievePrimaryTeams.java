@@ -1,17 +1,16 @@
 package com.trac.tracdroid;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 class RetrievePrimaryTeams extends AsyncTask<String, Void, ArrayList<Teams>> {
 	public StringAsyncResponse delegate = null; 
@@ -43,8 +42,12 @@ class RetrievePrimaryTeams extends AsyncTask<String, Void, ArrayList<Teams>> {
 		
 		@Override
 		protected void onPostExecute(ArrayList<Teams> result) {
-			Log.d("Team Async #:", result.get(0).id);
-			delegate.processComplete(result.get(0).id);
-
+			Log.d("Post","Post Execute");
+			if (result.size() == 0){
+				delegate.processComplete("Null");
+			}else {
+				Log.d("Team Async #:", result.get(0).id);
+				delegate.processComplete(result.get(0).id);
+			}
 		}
   }
