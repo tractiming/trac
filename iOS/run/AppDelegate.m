@@ -35,7 +35,7 @@
     // Show login view if not logged in already
     if(savedToken == NULL){
         NSLog(@"HI");
-       // [self showLoginScreen:NO];
+        [self showLoginScreen:NO];
     }
     else{
     //NSLog(@"Going to the calendar");
@@ -75,14 +75,14 @@
     
     @catch (NSException * e) {
         //NSLog(@"Exception: %@", e);
-       // [self showLoginScreen:NO];
+        [self showLoginScreen:NO];
         return YES;
     }
     }
     
 
     
-   //[self showLoginScreen:NO];
+   [self showLoginScreen:NO];
     return YES;
 }
 
@@ -97,41 +97,51 @@
 }
 
 - (void)backendAuth:(NSString*)idToken :(NSString*)email : (NSString*)userID{
-    NSString *signinEndpoint = @"https://trac-us.appspot.com/google-auth";
+    NSString *signinEndpoint = @"https://trac-us.appspot.com/google-auth/";
 
     NSString *tracClient = @"u75WXsu8ybif8e8i0Ufvy8qPcdywwj2JY0ydfScH";
     NSString *googleClient = @"983021202491-kupk29qejvri4mlpd8ji0pa7r31bkrin.apps.googleusercontent.com";
-    NSDictionary *params = @{@"id_token": idToken,@"email":email,@"trac_client_id":tracClient, @"google_client_id":googleClient};
+    NSLog(@"User ID %@",userID);
+    NSDictionary *params = @{@"id_token": idToken,@"email":email,@"trac_client_id":tracClient, @"google_client_id":googleClient, @"google_id":userID};
     NSError *error2 = nil;
     
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error2];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:signinEndpoint]];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:jsonData];
+    NSMutableURLRequest *request_google = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:signinEndpoint]];
+    [request_google setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request_google setHTTPMethod:@"POST"];
+    [request_google setHTTPBody:jsonData];
 
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     __block NSDictionary *json;
-    [NSURLConnection sendAsynchronousRequest:request
+    [NSURLConnection sendAsynchronousRequest:request_google
                                        queue:queue
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                               if (error) {
-                                   NSLog(@"Error:");
-                               } else {
+                               
+                               if ([data length] >0 && error == nil)
+                               {
+                                   
                                    json = [NSJSONSerialization JSONObjectWithData:data
                                                                           options:0
                                                                             error:nil];
+                                   NSLog(@"JSON %@", json);
                                    self.access_token = [json objectForKey:@"access_token"];
                                    //store sequrity token in NSuserdefaults
                                    NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
                                    [defaults setObject:self.access_token forKey:@"token"];
                                    [defaults synchronize];
-
+                                   
                                    //[self performSegueWithIdentifier:@"login_success" sender:self];
                                    [self.window.rootViewController performSegueWithIdentifier:@"login_success" sender:self];
-
                                    
                                }
+                               else if ([data length] == 0 && error == nil)
+                               {
+                                   NSLog(@"Nothing was downloaded.");
+                               }
+                               else if (error != nil){
+                                   NSLog(@"Error = %@", error);
+                               }
+                               
                            }];
 }
 
@@ -165,30 +175,28 @@ didDisconnectWithUser:(GIDGoogleUser *)user
 }
 
 //Enter differnet storyboard depending on iPad or iPhone
-//-(void) showLoginScreen:(BOOL)animated
-//{
-//    
-//    if ( IDIOM == IPAD) {
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPad" bundle:nil];
-//        SiginViewController *viewController = (SiginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"loginScreen"];
-//        [self.window makeKeyAndVisible];
-//        [self.window.rootViewController presentViewController:viewController
-//                                                     animated:animated
-//                                                   completion:nil];
-//    }
-//    else {
-//         // Get login screen from storyboard and present it
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
-//        SiginViewController *viewController = (SiginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"loginScreen"];
-//        [self.window makeKeyAndVisible];
-//        [self.window.rootViewController presentViewController:viewController
-//                                                     animated:animated
-//                                                   completion:nil];
-//    }
-//
-//    
-//   
-//}
+-(void) showLoginScreen:(BOOL)animated
+{
+    
+    if ( IDIOM == IPAD) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPad" bundle:nil];
+        SiginViewController *viewController = (SiginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"loginScreen"];
+        self.window.rootViewController = viewController;
+        [self.window makeKeyAndVisible];
+
+    }
+    else {
+         // Get login screen from storyboard and present it
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+        SiginViewController *viewController = (SiginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"loginScreen"];
+        
+        self.window.rootViewController = viewController;
+        [self.window makeKeyAndVisible];
+    }
+
+    
+   
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
