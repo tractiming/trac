@@ -35,7 +35,7 @@
     // Show login view if not logged in already
     if(savedToken == NULL){
         NSLog(@"HI");
-        [self showLoginScreen:NO];
+       // [self showLoginScreen:NO];
     }
     else{
     //NSLog(@"Going to the calendar");
@@ -75,14 +75,14 @@
     
     @catch (NSException * e) {
         //NSLog(@"Exception: %@", e);
-        [self showLoginScreen:NO];
+       // [self showLoginScreen:NO];
         return YES;
     }
     }
     
 
     
-   [self showLoginScreen:NO];
+   //[self showLoginScreen:NO];
     return YES;
 }
 
@@ -127,30 +127,30 @@ didDisconnectWithUser:(GIDGoogleUser *)user
 }
 
 //Enter differnet storyboard depending on iPad or iPhone
--(void) showLoginScreen:(BOOL)animated
-{
-    
-    if ( IDIOM == IPAD) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPad" bundle:nil];
-        SiginViewController *viewController = (SiginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"loginScreen"];
-        [self.window makeKeyAndVisible];
-        [self.window.rootViewController presentViewController:viewController
-                                                     animated:animated
-                                                   completion:nil];
-    }
-    else {
-         // Get login screen from storyboard and present it
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
-        SiginViewController *viewController = (SiginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"loginScreen"];
-        [self.window makeKeyAndVisible];
-        [self.window.rootViewController presentViewController:viewController
-                                                     animated:animated
-                                                   completion:nil];
-    }
-
-    
-   
-}
+//-(void) showLoginScreen:(BOOL)animated
+//{
+//    
+//    if ( IDIOM == IPAD) {
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPad" bundle:nil];
+//        SiginViewController *viewController = (SiginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"loginScreen"];
+//        [self.window makeKeyAndVisible];
+//        [self.window.rootViewController presentViewController:viewController
+//                                                     animated:animated
+//                                                   completion:nil];
+//    }
+//    else {
+//         // Get login screen from storyboard and present it
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+//        SiginViewController *viewController = (SiginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"loginScreen"];
+//        [self.window makeKeyAndVisible];
+//        [self.window.rootViewController presentViewController:viewController
+//                                                     animated:animated
+//                                                   completion:nil];
+//    }
+//
+//    
+//   
+//}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
