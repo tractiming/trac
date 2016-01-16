@@ -86,17 +86,55 @@
     return YES;
 }
 
-- (void)signIn:(GIDSignIn *)signIn
-didSignInForUser:(GIDGoogleUser *)user
-     withError:(NSError *)error {
+- (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
     // Perform any operations on signed in user here.
-    // ...
-    NSLog(@"G Signin");
     NSString *userId = user.userID;                  // For client-side use only!
     NSString *idToken = user.authentication.idToken; // Safe to send to the server
     NSString *name = user.profile.name;
     NSString *email = user.profile.email;
+    NSLog(@"Customer details: %@ %@ %@ %@", userId, idToken, name, email);
+    [self backendAuth:idToken :email :userId];
 }
+
+- (void)backendAuth:(NSString*)idToken :(NSString*)email : (NSString*)userID{
+    NSString *signinEndpoint = @"https://trac-us.appspot.com/google-auth";
+
+    NSString *tracClient = @"u75WXsu8ybif8e8i0Ufvy8qPcdywwj2JY0ydfScH";
+    NSString *googleClient = @"983021202491-kupk29qejvri4mlpd8ji0pa7r31bkrin.apps.googleusercontent.com";
+    NSDictionary *params = @{@"id_token": idToken,@"email":email,@"trac_client_id":tracClient, @"google_client_id":googleClient};
+    NSError *error2 = nil;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error2];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:signinEndpoint]];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:jsonData];
+
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    __block NSDictionary *json;
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:queue
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                               if (error) {
+                                   NSLog(@"Error:");
+                               } else {
+                                   json = [NSJSONSerialization JSONObjectWithData:data
+                                                                          options:0
+                                                                            error:nil];
+                                   self.access_token = [json objectForKey:@"access_token"];
+                                   //store sequrity token in NSuserdefaults
+                                   NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
+                                   [defaults setObject:self.access_token forKey:@"token"];
+                                   [defaults synchronize];
+
+                                   //[self performSegueWithIdentifier:@"login_success" sender:self];
+                                   [self.window.rootViewController performSegueWithIdentifier:@"login_success" sender:self];
+
+                                   
+                               }
+                           }];
+}
+
 
 - (BOOL)application:(UIApplication *)app
             openURL:(NSURL *)url

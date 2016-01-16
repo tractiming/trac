@@ -647,7 +647,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1544" y="253"/>
+            <point key="canvasLocation" x="-1200" y="309"/>
         </scene>
         <!--Workout View Controller-->
         <scene sceneID="91e-bb-aI6">
@@ -1027,6 +1027,6 @@
         <image name="traclogo_white1" width="250" height="42"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="2ri-eW-05b"/>
+        <segue reference="yLt-5e-iDq"/>
     </inferredMetricsTieBreakers>
 </document>
