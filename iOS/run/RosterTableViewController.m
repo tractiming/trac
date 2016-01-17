@@ -73,7 +73,7 @@
     
     self.navigationItem.rightBarButtonItem = self.editButton;
     self.tableData.allowsMultipleSelectionDuringEditing = YES;
-    [self getTeamID];
+    
     
     //Define Toolbar
     if (IDIOM ==IPAD) {
@@ -138,7 +138,7 @@
     
     
     [self setupRefreshControl];
-    
+    [self getTeamID];
     
     
 }
@@ -346,41 +346,53 @@
             //Parse Name into first and last
             NSArray *unparsedString = [[[alert textFieldAtIndex:0] text] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             NSArray *parsedArray = [unparsedString filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
+            
             //Take Data and Create a new user
             NSLog(@"First & Last: %@", parsedArray);
             
             NSString *urlString = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/athletes/?access_token=%@",savedToken];
+            UITextField *tagField = [alert textFieldAtIndex:1];
             
             NSURL *urlPost=[NSURL URLWithString:urlString];
             NSError *error2 = nil;
             NSString *fname;
             NSString *lname;
-            NSString *tagid = [[alert textFieldAtIndex:1] text];
+            NSString *tagid = [alert textFieldAtIndex:1].text;
             NSString *teamid = [teamIDs objectAtIndex:0];
-            NSString *post;
+            NSDictionary *params;
             
             if ([parsedArray count] == 1 && tagid.length == 0){
                 fname = [parsedArray objectAtIndex:0];
-                post = [NSString stringWithFormat:@"first_name=%@&username=%@&team=%@",fname,fname,teamid];
+                NSString *username = [NSString stringWithFormat:@"%@-%@",fname,teamid];
+                params = @{@"first_name": fname,@"username":username,@"team":teamid};
             }
             else if ([parsedArray count] == 1 && tagid.length > 0){
                 fname = [parsedArray objectAtIndex:0];
-                post = [NSString stringWithFormat:@"first_name=%@&username=%@&tag=%@&team=%@",fname,fname,tagid,teamid];
+                NSString *username = [NSString stringWithFormat:@"%@-%@",fname,teamid];
+                params = @{@"first_name": fname,@"tag":tagid,@"username":username,@"team":teamid};
             }
             else if ([parsedArray count] > 1 && tagid.length == 0){
                 fname = [parsedArray objectAtIndex:0];
                 lname = [parsedArray objectAtIndex:1];
-                post = [NSString stringWithFormat:@"first_name=%@&last_name=%@&username=%@&team=%@",fname,lname,fname,teamid];
+                NSString *username = [NSString stringWithFormat:@"%@-%@-%@",fname,lname,teamid];
+                params = @{@"first_name": fname,@"last_name":lname,@"username":username,@"team":teamid};
             }
             else
             {
                 fname = [parsedArray objectAtIndex:0];
                 lname = [parsedArray objectAtIndex:1];
-                post = [NSString stringWithFormat:@"first_name=%@&last_name=%@&username=%@&tag=%@&team=%@",fname,lname,fname,tagid,teamid];
+                NSString *username = [NSString stringWithFormat:@"%@-%@-%@",fname,lname,teamid];
+                params = @{@"first_name": fname,@"last_name":lname,@"username":username,@"tag":tagid,@"team":teamid};
                 
             }
             
-            NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+            
+           
+            //NSError *error2 = nil;
+            
+            NSData *postData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error2];
+            
+            
             NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
           
             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -388,8 +400,8 @@
             [request setHTTPMethod:@"POST"];
             
             [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-            [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-            [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+            [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            //[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
             [request setHTTPBody:postData];
             
             
@@ -413,8 +425,15 @@
                 
                 if(success == 0)
                 {
-                    NSLog(@"SUCCESS");
-                    
+                    dispatch_async(TRACQueue, ^{
+                        NSData* data = [NSData dataWithContentsOfURL:
+                                        [NSURL URLWithString:url_token]];
+                        
+                        dispatch_async(dispatch_get_main_queue() ,^{
+                            [self fetchedData:data];
+                            [self.tableData reloadData];
+                        });
+                    });
                     
                 } else {
                     
@@ -627,13 +646,13 @@
 - (void) getTeamID
 {
     NSString *teamURL = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/teams/?primary_team=True&access_token=%@", savedToken];
+    NSLog(@"Team ID: %@",savedToken);
     
     dispatch_async(TRACQueue, ^{
         NSData* data = [NSData dataWithContentsOfURL:
                         [NSURL URLWithString:teamURL]];
         
         dispatch_async(dispatch_get_main_queue() ,^{
-            //Crashes on 64 bit
             [self fetchTeam:data];
            
         });
@@ -645,19 +664,21 @@
 
 - (NSArray *)fetchTeam:(NSData *)responseData {
     @try {
-        
-        
-        //parse out the json data
-        NSLog(@"Log Get here???");
         NSError* error;
         NSDictionary* json = [NSJSONSerialization
                               JSONObjectWithData:responseData //1
                               
                               options:kNilOptions
                               error:&error];
+        if (!json || !json.count)
+        {
+            [self addPrimaryTeam];
+        }
+        else
+        {
         
         teamIDs= [json valueForKey:@"id"];
-        NSLog(@"TEam IDS %@",teamIDs);
+        }
         return teamIDs;
     }
     @catch (NSException *exception) {
@@ -665,6 +686,64 @@
         return teamIDs;
     }
     
+}
+
+-(void)addPrimaryTeam{
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Create Team:"
+                                                                   message:@""
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              UITextField *temp = alert.textFields.firstObject;
+                                                              
+                                                              NSLog(@"%@",temp.text);
+                                                              NSString *newPrimaryTeam = temp.text;
+                                                              [self createTeam:newPrimaryTeam];
+
+                                                          }];
+
+    [alert addAction:defaultAction];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Team Name";
+        textField.keyboardType = UIKeyboardTypeDefault;
+    }];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void) createTeam:(NSString*)teamname
+{
+    NSString *urlEndpoint = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/teams/?access_token=%@", savedToken];
+    Boolean primary_team = true;
+    
+    NSDictionary *params = @{@"name": teamname,@"primary_team":[NSNumber numberWithBool:primary_team]};
+    NSError *error2 = nil;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error2];
+    NSMutableURLRequest *request_google = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlEndpoint]];
+    [request_google setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request_google setHTTPMethod:@"POST"];
+    [request_google setHTTPBody:jsonData];
+    
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    __block NSDictionary *json;
+    [NSURLConnection sendAsynchronousRequest:request_google
+                                       queue:queue
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                               NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+                               int responseStatusCode = [httpResponse statusCode];
+                               
+                               if ([data length] >0 && error == nil)
+                               {
+                                   
+                                   json = [NSJSONSerialization JSONObjectWithData:data
+                                                                          options:0
+                                                                            error:nil];
+                                   NSLog(@"The create worked %@", json);
+                                   teamIDs= [json valueForKey:@"id"];
+                               }
+                           }];
 }
 
 /*!

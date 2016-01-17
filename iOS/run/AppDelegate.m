@@ -22,6 +22,12 @@
     [Heap enableVisualizer];
 #endif
 
+    NSError* configureError;
+    [[GGLContext sharedInstance] configureWithError: &configureError];
+    NSAssert(!configureError, @"Error configuring Google services: %@", configureError);
+    
+    [GIDSignIn sharedInstance].delegate = self;
+    
     // NSLog(@"entered funt");
     NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
     
@@ -70,14 +76,117 @@
     @catch (NSException * e) {
         //NSLog(@"Exception: %@", e);
         [self showLoginScreen:NO];
-        
+        return YES;
     }
     }
     
 
     
    [self showLoginScreen:NO];
+    return YES;
 }
+
+- (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
+    // Perform any operations on signed in user here.
+    NSString *userId = user.userID;                  // For client-side use only!
+    NSString *idToken = user.authentication.idToken; // Safe to send to the server
+    NSString *name = user.profile.name;
+    NSString *email = user.profile.email;
+    NSLog(@"Customer details: %@ %@ %@ %@", userId, idToken, name, email);
+    [self backendAuth:idToken :email :userId];
+}
+
+- (void)backendAuth:(NSString*)idToken :(NSString*)email : (NSString*)userID{
+    NSString *signinEndpoint = @"https://trac-us.appspot.com/google-auth/";
+    NSString *tracClient = @"u75WXsu8ybif8e8i0Ufvy8qPcdywwj2JY0ydfScH";
+
+    NSDictionary *params = @{@"id_token": idToken,@"email":email,@"trac_client_id":tracClient};
+    NSError *error2 = nil;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error2];
+    NSMutableURLRequest *request_google = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:signinEndpoint]];
+    [request_google setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request_google setHTTPMethod:@"POST"];
+    [request_google setHTTPBody:jsonData];
+
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    __block NSDictionary *json;
+    [NSURLConnection sendAsynchronousRequest:request_google
+                                       queue:queue
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                               NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+                               int responseStatusCode = [httpResponse statusCode];
+
+                               if ([data length] >0 && error == nil)
+                               {
+                                   
+                                   json = [NSJSONSerialization JSONObjectWithData:data
+                                                                          options:0
+                                                                            error:nil];
+                                   NSLog(@"JSON %@", json);
+                                   self.access_token = [json objectForKey:@"access_token"];
+                                   //store sequrity token in NSuserdefaults
+                                   NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
+                                   [defaults setObject:self.access_token forKey:@"token"];
+                                   [defaults synchronize];
+                                   
+                                   //[self performSegueWithIdentifier:@"login_success" sender:self];
+                                   //[self.window.rootViewController performSegueWithIdentifier:@"login_success" sender:self];
+                                   
+                                   UIViewController *topRootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+                                   while (topRootViewController.presentedViewController)
+                                   {
+                                       //NSLog(@"Help me!!!");
+                                       topRootViewController = topRootViewController.presentedViewController;
+                                   }
+                                   UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+                                   UINavigationController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"navigationController"];
+
+                                   [topRootViewController presentViewController:loginViewController animated:YES completion:nil];
+                                   
+                                   [self.window makeKeyAndVisible];
+                                   
+                               }
+                               else if ([data length] == 0 && error == nil)
+                               {
+                                   NSLog(@"Nothing was downloaded.");
+                               }
+                               else if (error != nil){
+                                   NSLog(@"Error = %@", error);
+                               }
+                               
+                           }];
+}
+
+
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary *)options {
+    NSLog(@"Gooooogle");
+    return [[GIDSignIn sharedInstance] handleURL:url
+                               sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                      annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    NSLog(@"Gooooogle");
+    NSDictionary *options = @{UIApplicationOpenURLOptionsSourceApplicationKey: sourceApplication,
+                              UIApplicationOpenURLOptionsAnnotationKey: annotation};
+    return [self application:application
+                     openURL:url
+                     options:options];
+}
+
+- (void)signIn:(GIDSignIn *)signIn
+didDisconnectWithUser:(GIDGoogleUser *)user
+     withError:(NSError *)error {
+    // Perform any operations when the user disconnects from app here.
+    // ...
+}
+
 //Enter differnet storyboard depending on iPad or iPhone
 -(void) showLoginScreen:(BOOL)animated
 {
@@ -85,26 +194,23 @@
     if ( IDIOM == IPAD) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPad" bundle:nil];
         SiginViewController *viewController = (SiginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"loginScreen"];
+        self.window.rootViewController = viewController;
         [self.window makeKeyAndVisible];
-        [self.window.rootViewController presentViewController:viewController
-                                                     animated:animated
-                                                   completion:nil];
+
     }
     else {
          // Get login screen from storyboard and present it
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
         SiginViewController *viewController = (SiginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"loginScreen"];
+        
+        self.window.rootViewController = viewController;
         [self.window makeKeyAndVisible];
-        [self.window.rootViewController presentViewController:viewController
-                                                     animated:animated
-                                                   completion:nil];
     }
 
     
    
 }
 
-							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

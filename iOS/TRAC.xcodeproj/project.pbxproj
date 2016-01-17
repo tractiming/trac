@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8915A414D35530C0DD268DE2 /* libPods-run.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65025FA5AE833806EAFCD44D /* libPods-run.a */; };
+		901DFC7F1C48E869003AC14B /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 901DFC7E1C48E869003AC14B /* MessageUI.framework */; };
+		901DFC811C48E878003AC14B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 901DFC801C48E878003AC14B /* AssetsLibrary.framework */; };
+		901DFC831C48E881003AC14B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 901DFC821C48E881003AC14B /* CoreMotion.framework */; };
+		901DFC851C48E88C003AC14B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 901DFC841C48E88C003AC14B /* AddressBook.framework */; };
+		901DFC871C48EB56003AC14B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 901DFC861C48EB56003AC14B /* CoreLocation.framework */; };
 		902104AF1A40AF3100FCC771 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 902104AE1A40AF3100FCC771 /* Reachability.m */; };
 		9039F6041BF42179003AB3BA /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9039F6031BF42179003AB3BA /* Main_iPad.storyboard */; };
 		903FBE401BF397050054C323 /* RegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 903FBE3F1BF397050054C323 /* RegistrationViewController.m */; };
@@ -44,7 +48,9 @@
 		90E687C51915C48B0060B20B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E687A11915C48B0060B20B /* UIKit.framework */; };
 		90E687CD1915C48B0060B20B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 90E687CB1915C48B0060B20B /* InfoPlist.strings */; };
 		90E687CF1915C48B0060B20B /* runTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E687CE1915C48B0060B20B /* runTests.m */; };
+		90EB99FE1C4751CE00B2254D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 90EB99FD1C4751CE00B2254D /* GoogleService-Info.plist */; };
 		90FB8C9A19F5BAE7006F1210 /* WorkoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB8C9919F5BAE7006F1210 /* WorkoutViewController.m */; };
+		AAAFFE1605B8A8DC3A6E42D7 /* libPods-TRAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FFE9A571CC4E92FD3F111CB /* libPods-TRAC.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,8 +64,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4E2E5E265C6D5DDEEF4466A9 /* Pods-run.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-run.release.xcconfig"; path = "Pods/Target Support Files/Pods-run/Pods-run.release.xcconfig"; sourceTree = "<group>"; };
-		65025FA5AE833806EAFCD44D /* libPods-run.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-run.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FFE9A571CC4E92FD3F111CB /* libPods-TRAC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TRAC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		45CB203C9C7682503890576B /* Pods-TRAC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRAC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TRAC/Pods-TRAC.debug.xcconfig"; sourceTree = "<group>"; };
+		86A3BA36D9FF600982953BE6 /* Pods-TRAC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRAC.release.xcconfig"; path = "Pods/Target Support Files/Pods-TRAC/Pods-TRAC.release.xcconfig"; sourceTree = "<group>"; };
+		901DFC7E1C48E869003AC14B /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		901DFC801C48E878003AC14B /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		901DFC821C48E881003AC14B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		901DFC841C48E88C003AC14B /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		901DFC861C48EB56003AC14B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		902104AD1A40AF3100FCC771 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		902104AE1A40AF3100FCC771 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		9039F6031BF42179003AB3BA /* Main_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main_iPad.storyboard; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
@@ -114,9 +126,9 @@
 		90E687CA1915C48B0060B20B /* TRACTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TRACTests-Info.plist"; sourceTree = "<group>"; };
 		90E687CC1915C48B0060B20B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		90E687CE1915C48B0060B20B /* runTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = runTests.m; sourceTree = "<group>"; };
+		90EB99FD1C4751CE00B2254D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		90FB8C9819F5BAE7006F1210 /* WorkoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkoutViewController.h; sourceTree = "<group>"; };
 		90FB8C9919F5BAE7006F1210 /* WorkoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkoutViewController.m; sourceTree = "<group>"; };
-		A85C7CB5F7ABB05D9846DBD5 /* Pods-run.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-run.debug.xcconfig"; path = "Pods/Target Support Files/Pods-run/Pods-run.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,16 +136,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90E2EE6F1C406D800004C4EF /* SystemConfiguration.framework in Frameworks */,
+				901DFC7F1C48E869003AC14B /* MessageUI.framework in Frameworks */,
+				901DFC831C48E881003AC14B /* CoreMotion.framework in Frameworks */,
+				901DFC851C48E88C003AC14B /* AddressBook.framework in Frameworks */,
+				901DFC871C48EB56003AC14B /* CoreLocation.framework in Frameworks */,
+				901DFC811C48E878003AC14B /* AssetsLibrary.framework in Frameworks */,
 				90E687A21915C48B0060B20B /* UIKit.framework in Frameworks */,
 				90E2EE711C406D880004C4EF /* Security.framework in Frameworks */,
-				90E2EE6F1C406D800004C4EF /* SystemConfiguration.framework in Frameworks */,
 				90E2EE6D1C406D730004C4EF /* libicucore.dylib in Frameworks */,
 				90E2EE6B1C406D610004C4EF /* CFNetwork.framework in Frameworks */,
 				9048ABDC1BF1A3900062903B /* QuartzCore.framework in Frameworks */,
 				90E687A01915C48B0060B20B /* CoreGraphics.framework in Frameworks */,
 				90E6879E1915C48B0060B20B /* Foundation.framework in Frameworks */,
-				8915A414D35530C0DD268DE2 /* libPods-run.a in Frameworks */,
 				90E2EE691C406D100004C4EF /* libHeap.a in Frameworks */,
+				AAAFFE1605B8A8DC3A6E42D7 /* libPods-TRAC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,17 +168,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		90C046D51BDEFD5300E69B6A /* iPad */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = iPad;
-			sourceTree = "<group>";
-		};
 		90E687911915C48B0060B20B = {
 			isa = PBXGroup;
 			children = (
-				90C046D51BDEFD5300E69B6A /* iPad */,
 				90E687A31915C48B0060B20B /* run */,
 				90E687C81915C48B0060B20B /* runTests */,
 				90E6879C1915C48B0060B20B /* Frameworks */,
@@ -182,6 +191,11 @@
 		90E6879C1915C48B0060B20B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				901DFC861C48EB56003AC14B /* CoreLocation.framework */,
+				901DFC841C48E88C003AC14B /* AddressBook.framework */,
+				901DFC821C48E881003AC14B /* CoreMotion.framework */,
+				901DFC801C48E878003AC14B /* AssetsLibrary.framework */,
+				901DFC7E1C48E869003AC14B /* MessageUI.framework */,
 				90E2EE701C406D880004C4EF /* Security.framework */,
 				90E2EE6E1C406D800004C4EF /* SystemConfiguration.framework */,
 				90E2EE6C1C406D730004C4EF /* libicucore.dylib */,
@@ -191,7 +205,7 @@
 				90E6879F1915C48B0060B20B /* CoreGraphics.framework */,
 				90E687A11915C48B0060B20B /* UIKit.framework */,
 				90E687C21915C48B0060B20B /* XCTest.framework */,
-				65025FA5AE833806EAFCD44D /* libPods-run.a */,
+				2FFE9A571CC4E92FD3F111CB /* libPods-TRAC.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -244,6 +258,7 @@
 		90E687A41915C48B0060B20B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				90EB99FD1C4751CE00B2254D /* GoogleService-Info.plist */,
 				90E687A51915C48B0060B20B /* TRAC-Info.plist */,
 				90E687A61915C48B0060B20B /* InfoPlist.strings */,
 				90E687A91915C48B0060B20B /* main.m */,
@@ -273,8 +288,8 @@
 		C30994F964F60E9EE3236653 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A85C7CB5F7ABB05D9846DBD5 /* Pods-run.debug.xcconfig */,
-				4E2E5E265C6D5DDEEF4466A9 /* Pods-run.release.xcconfig */,
+				45CB203C9C7682503890576B /* Pods-TRAC.debug.xcconfig */,
+				86A3BA36D9FF600982953BE6 /* Pods-TRAC.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -291,6 +306,7 @@
 				90E687971915C48B0060B20B /* Frameworks */,
 				90E687981915C48B0060B20B /* Resources */,
 				3894499669E31D340150801E /* Copy Pods Resources */,
+				6B058BDA0EE09B10F769B758 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -325,7 +341,7 @@
 		90E687921915C48B0060B20B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Griffin Kelly";
 				TargetAttributes = {
 					90E687991915C48B0060B20B = {
@@ -374,6 +390,7 @@
 				9039F6041BF42179003AB3BA /* Main_iPad.storyboard in Resources */,
 				907377991A37912800F86C7C /* CustomCelliPad.xib in Resources */,
 				90E687A81915C48B0060B20B /* InfoPlist.strings in Resources */,
+				90EB99FE1C4751CE00B2254D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,7 +432,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-run/Pods-run-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TRAC/Pods-TRAC-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6B058BDA0EE09B10F769B758 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TRAC/Pods-TRAC-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -495,7 +527,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -511,6 +542,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Griffin Kelly (8GZGC5RAVP)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Griffin Kelly (8GZGC5RAVP)";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -522,7 +554,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "d40d78cd-35da-48bd-a113-dcb3bd2f812b";
 				SDKROOT = iphoneos;
@@ -534,7 +566,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -559,7 +590,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PROVISIONING_PROFILE = "d40d78cd-35da-48bd-a113-dcb3bd2f812b";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -569,7 +600,7 @@
 		};
 		90E687D31915C48B0060B20B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A85C7CB5F7ABB05D9846DBD5 /* Pods-run.debug.xcconfig */;
+			baseConfigurationReference = 45CB203C9C7682503890576B /* Pods-TRAC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -579,11 +610,12 @@
 				GCC_PREFIX_HEADER = "run/TRAC-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "run/TRAC-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/run",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.griffinkelly.trac;
 				PRODUCT_NAME = trac;
 				PROVISIONING_PROFILE = "2a927e5f-5ad4-4bf6-a349-02d799f8f998";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -593,7 +625,7 @@
 		};
 		90E687D41915C48B0060B20B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E2E5E265C6D5DDEEF4466A9 /* Pods-run.release.xcconfig */;
+			baseConfigurationReference = 86A3BA36D9FF600982953BE6 /* Pods-TRAC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -603,11 +635,12 @@
 				GCC_PREFIX_HEADER = "run/TRAC-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "run/TRAC-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/run",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.griffinkelly.trac;
 				PRODUCT_NAME = trac;
 				PROVISIONING_PROFILE = "2a927e5f-5ad4-4bf6-a349-02d799f8f998";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -618,7 +651,6 @@
 		90E687D61915C48B0060B20B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/run.app/run";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -632,6 +664,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "runTests/TRACTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "trac.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = TRACTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -641,7 +674,6 @@
 		90E687D71915C48B0060B20B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/run.app/run";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -651,6 +683,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "run/run-Prefix.pch";
 				INFOPLIST_FILE = "runTests/TRACTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "trac.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = TRACTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

@@ -28,7 +28,35 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
+    [GIDSignIn sharedInstance].uiDelegate = self;
+    
+    UIGraphicsBeginImageContext(self.view.frame.size);
+    [[UIImage imageNamed:@"jamison.png"] drawInRect:self.view.bounds];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:image];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(receiveToggleAuthUINotification:)
+     name:@"ToggleAuthUINotification"
+     object:nil];
+}
+
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:@"ToggleAuthUINotification"
+     object:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning
