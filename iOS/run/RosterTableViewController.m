@@ -425,8 +425,15 @@
                 
                 if(success == 0)
                 {
-                    NSLog(@"SUCCESS");
-                    
+                    dispatch_async(TRACQueue, ^{
+                        NSData* data = [NSData dataWithContentsOfURL:
+                                        [NSURL URLWithString:url_token]];
+                        
+                        dispatch_async(dispatch_get_main_queue() ,^{
+                            [self fetchedData:data];
+                            [self.tableData reloadData];
+                        });
+                    });
                     
                 } else {
                     
