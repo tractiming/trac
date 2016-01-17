@@ -639,7 +639,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="Hxw-Dg-uVS"/>
                     <connections>
-                        <outlet property="signInButton" destination="kfE-Ww-K0F" id="VyL-EA-v4y"/>
                         <outlet property="txtPassword" destination="Miq-Qe-7OV" id="5e1-ob-z3v"/>
                         <outlet property="txtUsername" destination="ETC-gG-XeP" id="pRw-SG-f2y"/>
                         <segue destination="XAg-wE-Z4h" kind="modal" identifier="login_success" id="27F-Fc-Mwq"/>
