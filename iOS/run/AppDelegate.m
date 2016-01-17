@@ -98,10 +98,8 @@
 
 - (void)backendAuth:(NSString*)idToken :(NSString*)email : (NSString*)userID{
     NSString *signinEndpoint = @"https://trac-us.appspot.com/google-auth/";
-
     NSString *tracClient = @"u75WXsu8ybif8e8i0Ufvy8qPcdywwj2JY0ydfScH";
 
-    NSLog(@"User ID %@",userID);
     NSDictionary *params = @{@"id_token": idToken,@"email":email,@"trac_client_id":tracClient};
     NSError *error2 = nil;
     
@@ -116,16 +114,9 @@
     [NSURLConnection sendAsynchronousRequest:request_google
                                        queue:queue
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                               // This will get the NSURLResponse into NSHTTPURLResponse format
                                NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-                               
-                               // This will Fetch the status code from NSHTTPURLResponse object
                                int responseStatusCode = [httpResponse statusCode];
-                               
-                               //Just to make sure, it works or not
-                               NSLog(@"Status Code :: %d", responseStatusCode);
-                               
-                               
+
                                if ([data length] >0 && error == nil)
                                {
                                    
@@ -140,7 +131,20 @@
                                    [defaults synchronize];
                                    
                                    //[self performSegueWithIdentifier:@"login_success" sender:self];
-                                   [self.window.rootViewController performSegueWithIdentifier:@"login_success" sender:self];
+                                   //[self.window.rootViewController performSegueWithIdentifier:@"login_success" sender:self];
+                                   
+                                   UIViewController *topRootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+                                   while (topRootViewController.presentedViewController)
+                                   {
+                                       //NSLog(@"Help me!!!");
+                                       topRootViewController = topRootViewController.presentedViewController;
+                                   }
+                                   UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+                                   UINavigationController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"navigationController"];
+
+                                   [topRootViewController presentViewController:loginViewController animated:YES completion:nil];
+                                   
+                                   [self.window makeKeyAndVisible];
                                    
                                }
                                else if ([data length] == 0 && error == nil)

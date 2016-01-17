@@ -67,11 +67,11 @@
 }
 -(IBAction)createAccountClicked:(id)sender{
     
-    //[self performSegueWithIdentifier:@"create_account" sender:self];
+    [self performSegueWithIdentifier:@"create_account" sender:self];
  //   [self presentModalViewController:@"create_account" animated:YES];
-  //  if (![[self modalViewController] isBeingPresented]) {
-    //    [self dismissModalViewControllerAnimated:YES];
-  //  }
+    if (![[self modalViewController] isBeingPresented]) {
+        [self dismissModalViewControllerAnimated:YES];
+    }
 }
 
 

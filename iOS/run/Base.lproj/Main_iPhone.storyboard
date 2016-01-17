@@ -617,7 +617,6 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="createAccountClicked:" destination="XB9-YH-zY5" eventType="touchUpInside" id="UBu-D6-CxG"/>
-                                    <segue destination="yws-XT-CTl" kind="modal" identifier="create_account" id="0BZ-cT-zhJ"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" id="kfE-Ww-K0F" customClass="GIDSignInButton">
@@ -638,6 +637,7 @@
                         <outlet property="txtPassword" destination="Miq-Qe-7OV" id="5e1-ob-z3v"/>
                         <outlet property="txtUsername" destination="ETC-gG-XeP" id="pRw-SG-f2y"/>
                         <segue destination="XAg-wE-Z4h" kind="modal" identifier="login_success" id="27F-Fc-Mwq"/>
+                        <segue destination="yws-XT-CTl" kind="modal" identifier="create_account" id="gUc-Md-P2C"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RGo-j2-54k" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -647,7 +647,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1200" y="309"/>
+            <point key="canvasLocation" x="-1248" y="357"/>
         </scene>
         <!--Workout View Controller-->
         <scene sceneID="91e-bb-aI6">
@@ -810,9 +810,6 @@
                                             <action selector="signinClicked:" destination="XB9-YH-zY5" eventType="touchUpInside" id="1be-ZL-qz5"/>
                                         </connections>
                                     </button>
-                                    <connections>
-                                        <segue destination="XB9-YH-zY5" kind="modal" identifier="cancel_create" id="yLt-5e-iDq"/>
-                                    </connections>
                                 </barButtonItem>
                                 <barButtonItem style="plain" id="6oB-oF-QuG">
                                     <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="zds-kc-CKh">
@@ -981,6 +978,7 @@
                         <outlet property="txtOrganization" destination="HGd-PY-NE4" id="wA5-Fj-fp3"/>
                         <outlet property="txtPassword" destination="tsN-Mn-woJ" id="ZCo-Om-HVR"/>
                         <outlet property="txtUsername" destination="xR9-tg-EJ3" id="SWb-H9-wpD"/>
+                        <segue destination="XB9-YH-zY5" kind="modal" identifier="cancel_create" id="jUx-4k-uWl"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NKX-fB-Z32" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -990,12 +988,12 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-2275" y="460"/>
+            <point key="canvasLocation" x="-1929" y="708"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="J7P-sv-vhY">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XAg-wE-Z4h" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="navigationController" automaticallyAdjustsScrollViewInsets="NO" id="XAg-wE-Z4h" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="KQm-Ce-tbZ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="gIj-wR-Njc">
@@ -1027,6 +1025,6 @@
         <image name="traclogo_white1" width="250" height="42"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="yLt-5e-iDq"/>
+        <segue reference="2ri-eW-05b"/>
     </inferredMetricsTieBreakers>
 </document>
