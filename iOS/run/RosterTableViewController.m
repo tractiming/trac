@@ -633,7 +633,6 @@
                         [NSURL URLWithString:teamURL]];
         
         dispatch_async(dispatch_get_main_queue() ,^{
-            //Crashes on 64 bit
             [self fetchTeam:data];
            
         });

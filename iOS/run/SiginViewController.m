@@ -39,6 +39,7 @@
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:image];
     
+    
     [[NSNotificationCenter defaultCenter]
      addObserver:self
      selector:@selector(receiveToggleAuthUINotification:)
@@ -65,11 +66,12 @@
     // Dispose of any resources that can be recreated.
 }
 -(IBAction)createAccountClicked:(id)sender{
-    [self performSegueWithIdentifier:@"create_account" sender:self];
+    
+    //[self performSegueWithIdentifier:@"create_account" sender:self];
  //   [self presentModalViewController:@"create_account" animated:YES];
-    if (![[self modalViewController] isBeingPresented]) {
-        [self dismissModalViewControllerAnimated:YES];
-    }
+  //  if (![[self modalViewController] isBeingPresented]) {
+    //    [self dismissModalViewControllerAnimated:YES];
+  //  }
 }
 
 

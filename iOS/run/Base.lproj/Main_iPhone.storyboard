@@ -990,7 +990,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1967" y="1148"/>
+            <point key="canvasLocation" x="-2275" y="460"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="J7P-sv-vhY">

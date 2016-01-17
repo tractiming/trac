@@ -100,9 +100,9 @@
     NSString *signinEndpoint = @"https://trac-us.appspot.com/google-auth/";
 
     NSString *tracClient = @"u75WXsu8ybif8e8i0Ufvy8qPcdywwj2JY0ydfScH";
-    NSString *googleClient = @"983021202491-kupk29qejvri4mlpd8ji0pa7r31bkrin.apps.googleusercontent.com";
+
     NSLog(@"User ID %@",userID);
-    NSDictionary *params = @{@"id_token": idToken,@"email":email,@"trac_client_id":tracClient, @"google_client_id":googleClient, @"google_id":userID};
+    NSDictionary *params = @{@"id_token": idToken,@"email":email,@"trac_client_id":tracClient};
     NSError *error2 = nil;
     
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error2];
@@ -116,6 +116,15 @@
     [NSURLConnection sendAsynchronousRequest:request_google
                                        queue:queue
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                               // This will get the NSURLResponse into NSHTTPURLResponse format
+                               NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+                               
+                               // This will Fetch the status code from NSHTTPURLResponse object
+                               int responseStatusCode = [httpResponse statusCode];
+                               
+                               //Just to make sure, it works or not
+                               NSLog(@"Status Code :: %d", responseStatusCode);
+                               
                                
                                if ([data length] >0 && error == nil)
                                {
