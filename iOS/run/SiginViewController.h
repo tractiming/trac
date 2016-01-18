@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSString *access_token;
 @property (nonatomic, strong) NSString *client_id;
 @property (nonatomic, strong) NSString *client_secret;
-@property (weak, nonatomic) IBOutlet GIDSignInButton *signInButton;
+
 
 
 @end

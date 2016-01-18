@@ -103,7 +103,7 @@
             
             //[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
             
-            NSError *error = [[NSError alloc] init];
+            NSError *error = nil;
             NSHTTPURLResponse *response = nil;
             NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
             
