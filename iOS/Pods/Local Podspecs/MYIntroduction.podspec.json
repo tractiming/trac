@@ -1,0 +1,24 @@
+{
+  "name": "MYIntroduction",
+  "version": "0.1.1",
+  "summary": "Solution for building stylish app introductions and tutorials.",
+  "homepage": "https://github.com/MatthewYork/iPhone-IntroductionTutorial",
+  "description": "A \"drop-in\" solution for building stylish app introductions and tutorials. Now supports left-to-right and right-to-left languages.",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Matthew York": "my3681@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/MatthewYork/iPhone-IntroductionTutorial.git",
+    "commit": "8eb9f93c4d0651d4c6d40feb0bc76dedda4af547"
+  },
+  "platforms": {
+    "ios": "5.0"
+  },
+  "requires_arc": true,
+  "source_files": "IntroductionExample/MYIntroduction{Panel,View}.{h,m}",
+  "frameworks": "QuartzCore"
+}

@@ -128,17 +128,25 @@
                 
                 if(success == 0)
                 {
-                    //NSLog(@"Login SUCCESS");
                     
-                    //NSLog(@"SecToken: %@", [jsonData objectForKey:@"access_token"]);
                     self.access_token = [jsonData objectForKey:@"access_token"];
                     
-                    //store sequrity token in NSuserdefaults
+                    //store sequrity token in NSUserDefaults
                     NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
                     [defaults setObject:self.access_token forKey:@"token"];
-                    [defaults synchronize];
-                    [self performSegueWithIdentifier:@"login_success" sender:self];
-                    //return self.access_token;
+                    
+                    NSLog(@"%@",[[NSUserDefaults standardUserDefaults]
+                          objectForKey:@"first_time"]);
+                    if(![@"1" isEqualToString:[[NSUserDefaults standardUserDefaults]
+                                               objectForKey:@"first_time"]]) {
+                        [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"first_time"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                        [self performSegueWithIdentifier:@"toTutorial" sender:self];
+                        
+                    }
+                    else{
+                        [self performSegueWithIdentifier:@"login_success" sender:self];
+                    }
                     
                     
                     

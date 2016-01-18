@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "SiginViewController.h"
 #import "Heap.h"
+#import "TutorialViewController.h"
 #define IDIOM    UI_USER_INTERFACE_IDIOM()
 #define IPAD     UIUserInterfaceIdiomPad
 
@@ -140,9 +141,22 @@
                                        topRootViewController = topRootViewController.presentedViewController;
                                    }
                                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
-                                   UINavigationController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"navigationController"];
+                                   
+                                   
+                                   if(![@"1" isEqualToString:[[NSUserDefaults standardUserDefaults]
+                                                              objectForKey:@"first_time"]]) {
+                                       [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"first_time"];
+                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                       TutorialViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"tutorialController"];
+                                       [topRootViewController presentViewController:loginViewController animated:YES completion:nil];
+                                       
+                                   }
+                                   else{
+                                       UINavigationController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"navigationController"];
+                                       [topRootViewController presentViewController:loginViewController animated:YES completion:nil];
+                                   }
 
-                                   [topRootViewController presentViewController:loginViewController animated:YES completion:nil];
+                                   
                                    
                                    [self.window makeKeyAndVisible];
                                    

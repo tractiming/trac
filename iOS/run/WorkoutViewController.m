@@ -809,10 +809,8 @@
 
 - (IBAction)logoutClicked:(id)sender{
     //if logout clicked, perform segue and clear token
-    [[NSUserDefaults standardUserDefaults] setPersistentDomain:[NSDictionary dictionary] forName:[[NSBundle mainBundle] bundleIdentifier]];
-    NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
-    
-    NSLog(@"Secutiy Token: %@",savedToken);
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self performSegueWithIdentifier:@"logout" sender:self];
 
 }

@@ -13,6 +13,7 @@
 		901DFC851C48E88C003AC14B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 901DFC841C48E88C003AC14B /* AddressBook.framework */; };
 		901DFC871C48EB56003AC14B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 901DFC861C48EB56003AC14B /* CoreLocation.framework */; };
 		902104AF1A40AF3100FCC771 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 902104AE1A40AF3100FCC771 /* Reachability.m */; };
+		9038DA571C4C79ED00E83526 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9038DA561C4C79ED00E83526 /* TutorialViewController.m */; };
 		9039F6041BF42179003AB3BA /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9039F6031BF42179003AB3BA /* Main_iPad.storyboard */; };
 		903FBE401BF397050054C323 /* RegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 903FBE3F1BF397050054C323 /* RegistrationViewController.m */; };
 		90428CDE1B9897590011B346 /* RunnerDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 90428CDD1B9897590011B346 /* RunnerDetail.m */; };
@@ -74,6 +75,8 @@
 		901DFC861C48EB56003AC14B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		902104AD1A40AF3100FCC771 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		902104AE1A40AF3100FCC771 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		9038DA551C4C79ED00E83526 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
+		9038DA561C4C79ED00E83526 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
 		9039F6031BF42179003AB3BA /* Main_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main_iPad.storyboard; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		903FBE3E1BF397050054C323 /* RegistrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationViewController.h; sourceTree = "<group>"; };
 		903FBE3F1BF397050054C323 /* RegistrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationViewController.m; sourceTree = "<group>"; };
@@ -215,6 +218,8 @@
 			children = (
 				90E2EE671C406D100004C4EF /* Heap.h */,
 				90E2EE681C406D100004C4EF /* libHeap.a */,
+				9038DA551C4C79ED00E83526 /* TutorialViewController.h */,
+				9038DA561C4C79ED00E83526 /* TutorialViewController.m */,
 				90E215311BE86E4500E617EC /* RosterTableViewController.h */,
 				90E215321BE86E4500E617EC /* RosterTableViewController.m */,
 				9048ABD81BF19C170062903B /* UIView+Toast.h */,
@@ -472,6 +477,7 @@
 				90E215331BE86E4500E617EC /* RosterTableViewController.m in Sources */,
 				90E687AA1915C48B0060B20B /* main.m in Sources */,
 				90862F7D1B6B205100DB9E4B /* Workout.m in Sources */,
+				9038DA571C4C79ED00E83526 /* TutorialViewController.m in Sources */,
 				90E5F4C01B72A3AE002B9276 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
