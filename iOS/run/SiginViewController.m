@@ -7,7 +7,8 @@
 //
 
 #import "SiginViewController.h"
-
+#define IDIOM    UI_USER_INTERFACE_IDIOM()
+#define IPAD     UIUserInterfaceIdiomPad
 
 
 @interface SiginViewController ()
@@ -33,7 +34,12 @@
     [GIDSignIn sharedInstance].uiDelegate = self;
     
     UIGraphicsBeginImageContext(self.view.frame.size);
-    [[UIImage imageNamed:@"jamison.png"] drawInRect:self.view.bounds];
+    if ( IDIOM == IPAD) {
+        [[UIImage imageNamed:@"ipad_jamison.png"] drawInRect:self.view.bounds];
+    }
+    else{
+        [[UIImage imageNamed:@"jamison.png"] drawInRect:self.view.bounds];
+    }
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     

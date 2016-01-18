@@ -185,6 +185,7 @@
     NSLog(@"Entered it again");
     CGRect toolbarFrame = actionToolbar.frame;
 	CGRect tableViewFrame = self.tableData.frame;
+    
 	if (show)
 	{
 		toolbarFrame.origin.y = actionToolbar.superview.frame.size.height - toolbarFrame.size.height;

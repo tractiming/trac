@@ -14,7 +14,6 @@
 		901DFC871C48EB56003AC14B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 901DFC861C48EB56003AC14B /* CoreLocation.framework */; };
 		902104AF1A40AF3100FCC771 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 902104AE1A40AF3100FCC771 /* Reachability.m */; };
 		9038DA571C4C79ED00E83526 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9038DA561C4C79ED00E83526 /* TutorialViewController.m */; };
-		9039F6041BF42179003AB3BA /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9039F6031BF42179003AB3BA /* Main_iPad.storyboard */; };
 		903FBE401BF397050054C323 /* RegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 903FBE3F1BF397050054C323 /* RegistrationViewController.m */; };
 		90428CDE1B9897590011B346 /* RunnerDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 90428CDD1B9897590011B346 /* RunnerDetail.m */; };
 		9048ABDA1BF19C170062903B /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 9048ABD91BF19C170062903B /* UIView+Toast.m */; };
@@ -26,6 +25,7 @@
 		90862F7D1B6B205100DB9E4B /* Workout.m in Sources */ = {isa = PBXBuildFile; fileRef = 90862F7C1B6B205100DB9E4B /* Workout.m */; };
 		90A0698A1A360C79008CAA75 /* CustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90A069891A360C79008CAA75 /* CustomCell.xib */; };
 		90A0698D1A360D05008CAA75 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90A0698C1A360D05008CAA75 /* CustomCell.m */; };
+		90A40EBC1C4CC4CA002A3B50 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90A40EBA1C4CC4CA002A3B50 /* Main_iPad.storyboard */; };
 		90E1FC7B1AE09AB4001C24F2 /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E1FC7A1AE09AB4001C24F2 /* ThirdViewController.m */; };
 		90E215331BE86E4500E617EC /* RosterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E215321BE86E4500E617EC /* RosterTableViewController.m */; };
 		90E2EE691C406D100004C4EF /* libHeap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E2EE681C406D100004C4EF /* libHeap.a */; };
@@ -77,7 +77,6 @@
 		902104AE1A40AF3100FCC771 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		9038DA551C4C79ED00E83526 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
 		9038DA561C4C79ED00E83526 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
-		9039F6031BF42179003AB3BA /* Main_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main_iPad.storyboard; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		903FBE3E1BF397050054C323 /* RegistrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationViewController.h; sourceTree = "<group>"; };
 		903FBE3F1BF397050054C323 /* RegistrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationViewController.m; sourceTree = "<group>"; };
 		90428CDC1B9897590011B346 /* RunnerDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunnerDetail.h; sourceTree = "<group>"; };
@@ -95,6 +94,7 @@
 		90A069891A360C79008CAA75 /* CustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CustomCell.xib; path = ../CustomCell.xib; sourceTree = "<group>"; };
 		90A0698B1A360D05008CAA75 /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomCell.h; path = ../CustomCell.h; sourceTree = "<group>"; };
 		90A0698C1A360D05008CAA75 /* CustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomCell.m; path = ../CustomCell.m; sourceTree = "<group>"; };
+		90A40EBB1C4CC4CA002A3B50 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		90AFFE741A04620E00193190 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
 		90E1FC791AE09AB4001C24F2 /* ThirdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdViewController.h; sourceTree = "<group>"; };
 		90E1FC7A1AE09AB4001C24F2 /* ThirdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdViewController.m; sourceTree = "<group>"; };
@@ -242,8 +242,8 @@
 				90862F7C1B6B205100DB9E4B /* Workout.m */,
 				90E687AC1915C48B0060B20B /* AppDelegate.h */,
 				90E687AD1915C48B0060B20B /* AppDelegate.m */,
-				9039F6031BF42179003AB3BA /* Main_iPad.storyboard */,
 				90E687AF1915C48B0060B20B /* Main_iPhone.storyboard */,
+				90A40EBA1C4CC4CA002A3B50 /* Main_iPad.storyboard */,
 				903FBE3E1BF397050054C323 /* RegistrationViewController.h */,
 				903FBE3F1BF397050054C323 /* RegistrationViewController.m */,
 				90E687B51915C48B0060B20B /* FirstViewController.h */,
@@ -392,9 +392,9 @@
 				90A0698A1A360C79008CAA75 /* CustomCell.xib in Resources */,
 				90E687BC1915C48B0060B20B /* Images.xcassets in Resources */,
 				90E687B11915C48B0060B20B /* Main_iPhone.storyboard in Resources */,
-				9039F6041BF42179003AB3BA /* Main_iPad.storyboard in Resources */,
 				907377991A37912800F86C7C /* CustomCelliPad.xib in Resources */,
 				90E687A81915C48B0060B20B /* InfoPlist.strings in Resources */,
+				90A40EBC1C4CC4CA002A3B50 /* Main_iPad.storyboard in Resources */,
 				90EB99FE1C4751CE00B2254D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -501,6 +501,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		90A40EBA1C4CC4CA002A3B50 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				90A40EBB1C4CC4CA002A3B50 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
 		90E687A61915C48B0060B20B /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
