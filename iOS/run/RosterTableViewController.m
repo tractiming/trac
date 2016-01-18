@@ -90,7 +90,7 @@
     
     
     [self updateButtonsToMatchTableState];
-    [self showActionToolbar:NO];
+    [self showActionToolbar:YES];
     //Create a light gray background behind datatable
     CGRect frame = self.tableData.bounds;
     frame.origin.y = -frame.size.height;
@@ -185,7 +185,6 @@
     NSLog(@"Entered it again");
     CGRect toolbarFrame = actionToolbar.frame;
 	CGRect tableViewFrame = self.tableData.frame;
-    
 	if (show)
 	{
 		toolbarFrame.origin.y = actionToolbar.superview.frame.size.height - toolbarFrame.size.height;
