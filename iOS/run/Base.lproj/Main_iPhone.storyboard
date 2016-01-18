@@ -633,9 +633,6 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="p0K-LV-htX" appends="YES" id="4te-n8-aD4"/>
-                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="Hxw-Dg-uVS"/>
                     <connections>
@@ -643,16 +640,29 @@
                         <outlet property="txtUsername" destination="ETC-gG-XeP" id="pRw-SG-f2y"/>
                         <segue destination="XAg-wE-Z4h" kind="modal" identifier="login_success" id="27F-Fc-Mwq"/>
                         <segue destination="yws-XT-CTl" kind="modal" identifier="create_account" id="gUc-Md-P2C"/>
+                        <segue destination="pq6-jd-5VE" kind="modal" identifier="toTutorial" id="PTn-zN-taQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RGo-j2-54k" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="p0K-LV-htX">
-                    <connections>
-                        <action selector="backgroundTap:" destination="XB9-YH-zY5" id="pGa-ww-9xU"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1248" y="357"/>
+            <point key="canvasLocation" x="-1412" y="429"/>
+        </scene>
+        <!--Tutorial View Controller-->
+        <scene sceneID="hmh-BE-0Zx">
+            <objects>
+                <viewController storyboardIdentifier="tutorialController" id="pq6-jd-5VE" customClass="TutorialViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="iBv-EB-AW7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.14901961389999999" green="0.3803921938" blue="0.58431375029999999" alpha="1" colorSpace="deviceRGB"/>
+                    </view>
+                    <connections>
+                        <segue destination="XAg-wE-Z4h" kind="modal" identifier="toNavigation" id="3QL-rP-Qmo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w9p-DD-OBV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1721" y="1468"/>
         </scene>
         <!--Workout View Controller-->
         <scene sceneID="91e-bb-aI6">
@@ -993,7 +1003,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1929" y="708"/>
+            <point key="canvasLocation" x="-2389" y="480"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="J7P-sv-vhY">
@@ -1031,5 +1041,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="jUx-4k-uWl"/>
+        <segue reference="27F-Fc-Mwq"/>
     </inferredMetricsTieBreakers>
 </document>

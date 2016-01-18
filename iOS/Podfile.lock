@@ -24,9 +24,20 @@ PODS:
   - GoogleSymbolUtilities (1.0.3)
   - GoogleUtilities (1.1.0):
     - GoogleSymbolUtilities (~> 1.0.0)
+  - MYIntroduction (0.1.1)
 
 DEPENDENCIES:
   - Google/SignIn
+  - MYIntroduction (from `https://github.com/MatthewYork/iPhone-IntroductionTutorial.git`)
+
+EXTERNAL SOURCES:
+  MYIntroduction:
+    :git: https://github.com/MatthewYork/iPhone-IntroductionTutorial.git
+
+CHECKOUT OPTIONS:
+  MYIntroduction:
+    :commit: 4e44cf359bf654edf756047ee9da0f77d086ec2d
+    :git: https://github.com/MatthewYork/iPhone-IntroductionTutorial.git
 
 SPEC CHECKSUMS:
   Google: 97618e118111b998cce1d8dd1bd98b82301d72db
@@ -37,5 +48,6 @@ SPEC CHECKSUMS:
   GoogleSignIn: 79929b51e6299c69f1197bbd9c7a1367d523ecd8
   GoogleSymbolUtilities: 82ad9f93d3615244b3f4ce440f5ab2515e8b4f56
   GoogleUtilities: 8ed9134debe11719097881711464752900668f10
+  MYIntroduction: f2c9a6b1e4e39cf82c3f123625cba89c64299359
 
 COCOAPODS: 0.39.0

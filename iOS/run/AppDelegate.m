@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "SiginViewController.h"
 #import "Heap.h"
+#import "TutorialViewController.h"
 #define IDIOM    UI_USER_INTERFACE_IDIOM()
 #define IPAD     UIUserInterfaceIdiomPad
 
@@ -55,7 +56,7 @@
             [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
             [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
             
-            NSError *error = [[NSError alloc] init];
+            NSError *error = nil;
             NSHTTPURLResponse *response = nil;
             NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
         
@@ -93,7 +94,12 @@
     NSString *name = user.profile.name;
     NSString *email = user.profile.email;
     NSLog(@"Customer details: %@ %@ %@ %@", userId, idToken, name, email);
-    [self backendAuth:idToken :email :userId];
+    @try{
+        [self backendAuth:idToken :email :userId];
+    }
+    @catch(NSException * e){
+        
+    }
 }
 
 - (void)backendAuth:(NSString*)idToken :(NSString*)email : (NSString*)userID{
@@ -140,9 +146,22 @@
                                        topRootViewController = topRootViewController.presentedViewController;
                                    }
                                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
-                                   UINavigationController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"navigationController"];
+                                   
+                                   
+                                   if(![@"1" isEqualToString:[[NSUserDefaults standardUserDefaults]
+                                                              objectForKey:@"first_time"]]) {
+                                       [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"first_time"];
+                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                       TutorialViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"tutorialController"];
+                                       [topRootViewController presentViewController:loginViewController animated:YES completion:nil];
+                                       
+                                   }
+                                   else{
+                                       UINavigationController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"navigationController"];
+                                       [topRootViewController presentViewController:loginViewController animated:YES completion:nil];
+                                   }
 
-                                   [topRootViewController presentViewController:loginViewController animated:YES completion:nil];
+                                   
                                    
                                    [self.window makeKeyAndVisible];
                                    
@@ -162,7 +181,6 @@
 - (BOOL)application:(UIApplication *)app
             openURL:(NSURL *)url
             options:(NSDictionary *)options {
-    NSLog(@"Gooooogle");
     return [[GIDSignIn sharedInstance] handleURL:url
                                sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
                                       annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
@@ -172,7 +190,6 @@
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    NSLog(@"Gooooogle");
     NSDictionary *options = @{UIApplicationOpenURLOptionsSourceApplicationKey: sourceApplication,
                               UIApplicationOpenURLOptionsAnnotationKey: annotation};
     return [self application:application
@@ -184,9 +201,10 @@
 didDisconnectWithUser:(GIDGoogleUser *)user
      withError:(NSError *)error {
     // Perform any operations when the user disconnects from app here.
-    // ...
-}
+    // [START_EXCLUDE]
+    NSDictionary *statusText = @{@"statusText": @"Disconnected user" };
 
+}
 //Enter differnet storyboard depending on iPad or iPhone
 -(void) showLoginScreen:(BOOL)animated
 {
