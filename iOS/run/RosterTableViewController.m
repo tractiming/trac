@@ -90,6 +90,8 @@
     
     
     [self updateButtonsToMatchTableState];
+    [self showActionToolbar:NO];
+    //Bad hack to get toolbar to not show when searching
     [self showActionToolbar:YES];
     //Create a light gray background behind datatable
     CGRect frame = self.tableData.bounds;
