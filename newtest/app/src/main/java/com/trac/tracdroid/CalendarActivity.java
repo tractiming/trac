@@ -1,5 +1,6 @@
 package com.trac.tracdroid;
 
+import android.app.Dialog;
 import android.app.ListActivity;
 
 import java.io.IOException;
@@ -32,11 +33,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -166,15 +169,38 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		}
 		else if (id == R.id.create_workout){
 			Amplitude.getInstance().logEvent("Calendar_CreateWorkout");
-			createTask createworkout = new createTask();
-			String url = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
-			String pre_json = "name=On-The-Run Workout";
-			createworkout.execute(url,pre_json);
-			String urlSession = "https://trac-us.appspot.com/api/sessions/?limit=20&offset=0&access_token=" + access_token;
-			asyncExecuted = false;
-			asyncCall =  (AsyncServiceCall) new AsyncServiceCall().execute(urlSession);
+			addWorkout();
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void addWorkout(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// Get the layout inflater
+		LayoutInflater inflater = getLayoutInflater();
+		builder.setView(inflater.inflate(R.layout.dialog_workout, null))
+				// Add action buttons
+				.setPositiveButton(R.string.addWorkout, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						EditText name = (EditText) ((Dialog)dialog).findViewById(R.id.workoutname);
+						String nameString = name.getText().toString();
+						createTask createworkout = new createTask();
+						String url = "https://trac-us.appspot.com/api/sessions/?access_token=" + access_token;
+						String pre_json = "name="+nameString;
+						createworkout.execute(url, pre_json);
+						String urlSession = "https://trac-us.appspot.com/api/sessions/?limit=20&offset=0&access_token=" + access_token;
+						asyncExecuted = false;
+						asyncCall = (AsyncServiceCall) new AsyncServiceCall().execute(urlSession);
+					}
+				})
+				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+		builder.show();
+
 	}
 
 	
