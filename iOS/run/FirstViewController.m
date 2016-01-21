@@ -675,6 +675,7 @@
 
                         if ( [personalinterval  count] == 0)
                         {
+                            NSLog(@"Deleted Checkbox again");
                             elapsedtime = [NSString stringWithFormat:@"NT"];
                             superlasttime = [NSString stringWithFormat:@"NT"];
                             universalIndex = 0;

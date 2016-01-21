@@ -303,8 +303,8 @@
             if(success == 0)
             {
                 NSLog(@"SUCCESS");
-                
-                
+                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Athletes added to workout." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alert show];
             } else {
                 
                 NSLog(@"Failed");
@@ -409,7 +409,7 @@
             [request setHTTPBody:postData];
             
             
-            NSError *error = [[NSError alloc] init];
+            NSError *error = nil;
             NSHTTPURLResponse *response = nil;
             NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
             
