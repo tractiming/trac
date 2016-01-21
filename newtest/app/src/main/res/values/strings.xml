@@ -4,7 +4,7 @@
     <string name="app_name">TRAC</string>
     <string name="title_section1">Live</string>
     <string name="title_section2">Summary</string>
-    <string name="title_section3">Settings</string>
+    <string name="title_section3">Controls</string>
     <string name="action_settings">Settings</string>
     <string name="create_account">Create Account</string>
     <string name="action_addRunner">Add Athlete</string>    

@@ -289,7 +289,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.92346938775510201" green="0.92346938775510201" blue="0.92346938775510201" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" image="settings" id="W0S-YM-xe8"/>
+                    <tabBarItem key="tabBarItem" title="Controls" image="settings" id="W0S-YM-xe8"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="XB9-YH-zY5" kind="modal" identifier="logout" id="T1N-OC-CF6"/>
@@ -421,7 +421,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OEs-Lh-GTl">
-                                                    <rect key="frame" x="243.5" y="12" width="41.5" height="19.5"/>
+                                                    <rect key="frame" x="243" y="12" width="42" height="20"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
@@ -507,7 +507,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3rN-cf-X5e">
-                                                    <rect key="frame" x="263.5" y="12" width="41.5" height="19.5"/>
+                                                    <rect key="frame" x="263" y="12" width="42" height="20"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
@@ -693,7 +693,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hYE-hh-NG9">
-                                                    <rect key="frame" x="15" y="4" width="35.5" height="21.5"/>
+                                                    <rect key="frame" x="15" y="3" width="36" height="22"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -802,12 +802,12 @@
                             <color key="backgroundColor" red="0.20784313730000001" green="0.46666666670000001" blue="0.6588235294" alpha="1" colorSpace="deviceRGB"/>
                         </view>
                         <toolbar key="tableFooterView" clearsContextBeforeDrawing="NO" alpha="0.80000000000000004" contentMode="scaleToFill" id="ZNU-Jr-WAU">
-                            <rect key="frame" x="0.0" y="341.5" width="320" height="44"/>
+                            <rect key="frame" x="0.0" y="342" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
                                 <barButtonItem style="plain" id="dFQ-UF-gL7">
                                     <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="zzJ-T8-q76">
-                                        <rect key="frame" x="16" y="6.5" width="138" height="31"/>
+                                        <rect key="frame" x="16" y="7" width="138" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="1" green="0.0" blue="0.075800706818756503" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
@@ -828,7 +828,7 @@
                                 </barButtonItem>
                                 <barButtonItem style="plain" id="6oB-oF-QuG">
                                     <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="zds-kc-CKh">
-                                        <rect key="frame" x="164" y="6.5" width="138" height="31"/>
+                                        <rect key="frame" x="164" y="7" width="138" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.97448979589999996" green="0.86438930619999998" blue="0.23431335289999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
