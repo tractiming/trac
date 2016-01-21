@@ -672,8 +672,8 @@
                 if (found){
                     
                     if ([[self.has_split objectAtIndex:index] boolValue]) {
-
-                        if ( [personalinterval  count] == 0)
+                        NSLog(@"Last Split String: %@", [[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"lastSplit"]);
+                        if ( [[[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"lastSplit"] isEqualToString:@"DNS"])
                         {
                             NSLog(@"Deleted Checkbox again");
                             elapsedtime = [NSString stringWithFormat:@"NT"];
