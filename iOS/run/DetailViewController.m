@@ -35,6 +35,9 @@
 {
     [super viewDidLoad];
     self.navigationItem.title = self.runnersName;
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
+    barButton.title = @"Back";
+    self.navigationController.navigationBar.topItem.backBarButtonItem = barButton;
     
     refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(doLoad) forControlEvents:UIControlEventValueChanged];

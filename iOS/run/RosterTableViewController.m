@@ -73,7 +73,9 @@
     
     self.navigationItem.rightBarButtonItem = self.editButton;
     self.tableData.allowsMultipleSelectionDuringEditing = YES;
-    
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
+    barButton.title = @"Back";
+    self.navigationController.navigationBar.topItem.backBarButtonItem = barButton;
     
     //Define Toolbar
     if (IDIOM ==IPAD) {
