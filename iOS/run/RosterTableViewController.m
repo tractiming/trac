@@ -242,7 +242,7 @@
             Workout *workout = nil;
             workout = [workoutArray objectAtIndex:selectionIndex.row];
             [s addObject:workout.urlID];
-
+            [self.tableData deselectRowAtIndexPath:selectionIndex animated:nil];
            
         }
         athleteData = @{@"athletes": s};
@@ -305,6 +305,7 @@
                 NSLog(@"SUCCESS");
                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Athletes added to workout." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [alert show];
+
             } else {
                 
                 NSLog(@"Failed");
