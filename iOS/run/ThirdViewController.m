@@ -291,72 +291,8 @@
         //NSLog(@"Exception: %@", e);
         
     }
-
-        
-
 }
-- (IBAction)importRunners:(id)sender {
-    
-    NSInteger success = 0;
-    //NSLog(@"Import Runners");
-    @try {
-        
-        NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
-        NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/RegisterDefaultRunners/?id=%@&access_token=%@", self.urlID ,savedToken];
-        
-        NSURL *url=[NSURL URLWithString:idurl2];
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:url];
-        [request setHTTPMethod:@"GET"];
-        
-        
-        NSError *error = [[NSError alloc] init];
-        NSHTTPURLResponse *response = nil;
-        NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-        
-        if ([response statusCode] >= 200 && [response statusCode] < 300)
-        {
-            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            //NSLog(@"Response ==> %@", responseData);
-            
-            NSError *error = nil;
-            NSDictionary *jsonData = [NSJSONSerialization
-                                      JSONObjectWithData:urlData
-                                      options:NSJSONReadingMutableContainers
-                                      error:&error];
-            
-            success = [jsonData[@"success"] integerValue];
-            //NSLog(@"Success: %ld",(long)success);
-            
-            if(success == 0)
-            {
-               // NSLog(@"SUCCESS");
-                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Successfully imported registered runners!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-                //return self.access_token;
-            } else {
-                
-                //NSLog(@"Failed");
-                
-            }
-            
-        } else {
-            //if (error) NSLog(@"Error: %@", error);
-            //NSLog(@"Failed");
-            NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-            //NSLog(@"Response ==> %@", responseData);
-        }
-        
-    }
-    @catch (NSException * e) {
-        //NSLog(@"Exception: %@", e);
-        
-    }
-    
-    
-    
-}
+
 
 - (IBAction)calibrateWorkout:(id)sender {
     
