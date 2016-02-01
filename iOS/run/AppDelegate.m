@@ -122,57 +122,60 @@
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
                                int responseStatusCode = [httpResponse statusCode];
-
-                               if ([data length] >0 && error == nil)
-                               {
-                                   
-                                   json = [NSJSONSerialization JSONObjectWithData:data
-                                                                          options:0
-                                                                            error:nil];
-                                   NSLog(@"JSON %@", json);
-                                   self.access_token = [json objectForKey:@"access_token"];
-                                   //store sequrity token in NSuserdefaults
-                                   NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
-                                   [defaults setObject:self.access_token forKey:@"token"];
-                                   [defaults synchronize];
-                                   
-                                   //[self performSegueWithIdentifier:@"login_success" sender:self];
-                                   //[self.window.rootViewController performSegueWithIdentifier:@"login_success" sender:self];
-                                   
-                                   UIViewController *topRootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-                                   while (topRootViewController.presentedViewController)
+                               if(responseStatusCode == 201 || responseStatusCode == 200){
+                                   if ([data length] >0 && error == nil)
                                    {
-                                       //NSLog(@"Help me!!!");
-                                       topRootViewController = topRootViewController.presentedViewController;
-                                   }
-                                   UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
-                                   
-                                   
-                                   if(![@"1" isEqualToString:[[NSUserDefaults standardUserDefaults]
-                                                              objectForKey:@"first_time"]]) {
-                                       [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"first_time"];
-                                       [[NSUserDefaults standardUserDefaults] synchronize];
-                                       TutorialViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"tutorialController"];
-                                       [topRootViewController presentViewController:loginViewController animated:YES completion:nil];
+                                       
+                                       json = [NSJSONSerialization JSONObjectWithData:data
+                                                                              options:0
+                                                                                error:nil];
+                                       NSLog(@"JSON %@", json);
+                                       self.access_token = [json objectForKey:@"access_token"];
+                                       //store sequrity token in NSuserdefaults
+                                       NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
+                                       [defaults setObject:self.access_token forKey:@"token"];
+                                       [defaults synchronize];
+                                       
+                                       //[self performSegueWithIdentifier:@"login_success" sender:self];
+                                       //[self.window.rootViewController performSegueWithIdentifier:@"login_success" sender:self];
+                                       
+                                       UIViewController *topRootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+                                       while (topRootViewController.presentedViewController)
+                                       {
+                                           //NSLog(@"Help me!!!");
+                                           topRootViewController = topRootViewController.presentedViewController;
+                                       }
+                                       UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+                                       
+                                       
+                                       if(![@"1" isEqualToString:[[NSUserDefaults standardUserDefaults]
+                                                                  objectForKey:@"first_time"]]) {
+                                           [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"first_time"];
+                                           [[NSUserDefaults standardUserDefaults] synchronize];
+                                           TutorialViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"tutorialController"];
+                                           [topRootViewController presentViewController:loginViewController animated:YES completion:nil];
+                                           
+                                       }
+                                       else{
+                                           UINavigationController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"navigationController"];
+                                           [topRootViewController presentViewController:loginViewController animated:YES completion:nil];
+                                       }
+
+                                       
+                                       
+                                       [self.window makeKeyAndVisible];
                                        
                                    }
-                                   else{
-                                       UINavigationController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"navigationController"];
-                                       [topRootViewController presentViewController:loginViewController animated:YES completion:nil];
+                                   else if ([data length] == 0 && error == nil)
+                                   {
+                                       NSLog(@"Nothing was downloaded.");
                                    }
-
-                                   
-                                   
-                                   [self.window makeKeyAndVisible];
-                                   
+                                   else if (error != nil){
+                                       NSLog(@"Error = %@", error);
+                                   }
                                }
-                               else if ([data length] == 0 && error == nil)
-                               {
-                                   NSLog(@"Nothing was downloaded.");
-                               }
-                               else if (error != nil){
-                                   NSLog(@"Error = %@", error);
-                               }
+                               else
+                                   return;
                                
                            }];
 }
