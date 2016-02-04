@@ -148,7 +148,16 @@
             //For the toast to keep time
             NSLog(@"%@, %@", [tempDict valueForKey:@"countStart"], [tempDict valueForKey:@"numberSplits"]);
             double tempHolder =[[tempDict valueForKey:@"numberSplits"] doubleValue];
-            if ([[tempDict valueForKey:@"countStart"] doubleValue] == tempHolder){
+            
+            if ([[tempDict valueForKey:@"lastSplit"] isEqualToString:@"DNS"]){
+                NSLog(@"Entered DNS?");
+                [tempDict removeObjectForKey:@"dateTime"];
+                [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
+            }
+            else if ([[tempDict valueForKey:@"countStart"] doubleValue] == 0) {
+                //Do Nothing
+            }
+            else if ([[tempDict valueForKey:@"countStart"] doubleValue] == tempHolder){
                 [tempDict removeObjectForKey:@"dateTime"];
                 [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
                 NSLog(@"Executed");
@@ -170,7 +179,16 @@
             
             NSLog(@"%@, %@", [tempDict valueForKey:@"countStart"], [tempDict valueForKey:@"numberSplits"]);
             double tempHolder =[[tempDict valueForKey:@"numberSplits"] doubleValue] ;
-            if ([[tempDict valueForKey:@"countStart"] doubleValue] == tempHolder){
+            NSLog(@"Tempholder Value: %f",tempHolder);
+            
+            if ([[tempDict valueForKey:@"lastSplit"] isEqualToString:@"DNS"]){
+                [tempDict removeObjectForKey:@"dateTime"];
+                [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
+            }
+            else if ([[tempDict valueForKey:@"countStart"] doubleValue] == 0) {
+                //do nothing
+            }
+            else if ([[tempDict valueForKey:@"countStart"] doubleValue] == tempHolder){
                 [tempDict removeObjectForKey:@"dateTime"];
                 [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
             }
@@ -703,10 +721,17 @@
                         //adds all intervals together to give cumulative time
                         NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
                         NSMutableDictionary *tempDictIndex = [self.athleteDictionaryArray objectAtIndex:closestIndex];
-                        NSInteger rangeVar = [[tempDictIndex valueForKey:@"countStart"] integerValue]+1;
-                        //NSLog(@"Errors Here? %ld", (long)rangeVar);
+                        NSInteger rangeVar = [[tempDictIndex valueForKey:@"countStart"] integerValue];
+                        if(rangeVar == 0){
+                            //do nothing because you want the 0 to be counted in the elapsed time.
+                        }
+                        else
+                        {
+                            //Dont count the rest period so skip 1.
+                            rangeVar = rangeVar + 1;
+                        }
                         NSArray *resetViewCount = [tempArray subarrayWithRange: NSMakeRange(rangeVar, [tempArray count]-rangeVar)];
-                       
+                            NSLog(@"Reset View Count: %@",resetViewCount);
 
                         for (NSArray *subinterval in resetViewCount){
                             NSArray* subs=[subinterval lastObject];
@@ -797,7 +822,6 @@
                         
                     }
                     else if(!tempArray || !tempArray.count){
-                        
                         elapsedtime = [NSString stringWithFormat:@"NT"];
                         superlasttime = [NSString stringWithFormat:@"NT"];
                         universalIndex = 0;
