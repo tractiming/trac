@@ -1,12 +1,5 @@
 package com.trac.tracdroid;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-
-import com.trac.tracdroid.R;
-
 import android.content.Context;
 import android.os.SystemClock;
 import android.util.Log;
@@ -17,9 +10,13 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public class GroupAdapter extends BaseAdapter{
 	//class for group fragment
@@ -269,8 +266,7 @@ public class GroupAdapter extends BaseAdapter{
 		
 		for (int i = 0; i < splitArray.size(); i++){
 			//iterate through fed array and see if it matches id to any temp dict
-			Boolean tempBool = totalAthleteID.contains(splitArray.get(i));		
-
+			Boolean tempBool = totalAthleteID.contains(splitArray.get(i));
 			//If its in there, replace the values, reset the timer array
 
 			if (tempBool) {
@@ -281,7 +277,17 @@ public class GroupAdapter extends BaseAdapter{
 				Log.d(totalCountArray.get(tempIndex),totalSizeArray.get(tempIndex));
 				
 				int tempCount = Integer.parseInt(totalCountArray.get(tempIndex)) -1;
-				if(totalSizeArray.get(tempIndex) == Integer.toString(tempCount)){
+				System.out.println("Debug what's the value of "+ totalSizeArray.get(tempIndex).toString());
+				if (parsedJson.get(tempIndex).has_split.equalsIgnoreCase("false"))
+				{
+					Log.d("Entered", "The DNS FUnction");
+					int temporaryCount = Integer.parseInt(totalSizeArray.get(tempIndex));
+					totalCountArray.set(tempIndex, Integer.toString(temporaryCount));
+					timeArray.set(tempIndex, Long.toString(SystemClock.elapsedRealtime()));
+
+				}
+				else if(totalSizeArray.get(tempIndex) == Integer.toString(tempCount)){
+					Log.d("Entered", "The Everything else FUnction");
 					timeArray.set(tempIndex, Long.toString(SystemClock.elapsedRealtime()));
 				}
         	}
