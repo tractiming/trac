@@ -248,21 +248,24 @@ public class GroupFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
 	    switch (item.getItemId()) {
-	        case R.id.action_edit: 
-	        	Amplitude.getInstance().logEvent("GroupFragment_ToggleCheckboxes");
-	        	groupList.changeCheck(editStatus);
-	        	if(editStatus){
-	        		editStatus = false;
-	        		LinearLayout footer = (LinearLayout) getActivity().findViewById(R.id.footer);
-		            footer.setVisibility(LinearLayout.VISIBLE);
-	        	}
-	        	else{
-	        		editStatus = true;
-	        		LinearLayout footer = (LinearLayout) getActivity().findViewById(R.id.footer);
-		            footer.setVisibility(LinearLayout.GONE);
-	        	}
-	        	
-	            return true;
+	        case R.id.action_edit:
+				try {
+					Amplitude.getInstance().logEvent("GroupFragment_ToggleCheckboxes");
+					groupList.changeCheck(editStatus);
+					if (editStatus) {
+						editStatus = false;
+						LinearLayout footer = (LinearLayout) getActivity().findViewById(R.id.footer);
+						footer.setVisibility(LinearLayout.VISIBLE);
+					} else {
+						editStatus = true;
+						LinearLayout footer = (LinearLayout) getActivity().findViewById(R.id.footer);
+						footer.setVisibility(LinearLayout.GONE);
+					}
+					return true;
+				}
+				catch(NullPointerException e) {
+					return true;
+				}
 	    }
 	    return super.onOptionsItemSelected(item);
 	} 

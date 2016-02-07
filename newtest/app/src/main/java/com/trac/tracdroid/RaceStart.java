@@ -1,15 +1,14 @@
 package com.trac.tracdroid;
 
-import java.io.IOException;
-
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+
+import java.io.IOException;
 
 public class RaceStart extends AsyncTask<String, Void, Boolean> {
 	public BooleanAsyncResponse delegate = null; 
@@ -41,7 +40,7 @@ public class RaceStart extends AsyncTask<String, Void, Boolean> {
 		    
 		    Log.d(DEBUG_TAG, "VAR: "+ var);
 		    
-		    if (codevar == 200) {
+		    if (codevar == 202) {
 		    return true;
 		    }
 		    else {

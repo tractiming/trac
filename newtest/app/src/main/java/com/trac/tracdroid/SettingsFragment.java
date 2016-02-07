@@ -128,7 +128,6 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 
         }
         else if (position == 2){
-        	//TODO: Go Button. When endpoint made, hit it!
         	Amplitude.getInstance().logEvent("SettingsFragment_Start");
         	raceGo = new RaceStart();
         	raceGo.delegate = this;
