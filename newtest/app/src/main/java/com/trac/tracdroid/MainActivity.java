@@ -127,6 +127,7 @@ public class MainActivity extends ActionBarActivity implements
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
+		mViewPager.setOffscreenPageLimit(2);
 
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
@@ -234,57 +235,7 @@ public class MainActivity extends ActionBarActivity implements
 			startActivity(i);
 		}
 		
-//		else if (id == R.id.action_reset)
-//		{
-//			Log.d("PRESSED BUTTOn","REset");
-//			
-//			
-//			new AlertDialog.Builder(this)
-//		    .setTitle("Reset Workout")
-//		    .setMessage("Are you sure you want to reset this workout?")
-//		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//		        public void onClick(DialogInterface dialog, int which) { 
-//					mAuthTask = new WorkoutReset();
-//					String url = "https://trac-us.appspot.com/api/TimingSessionReset/?access_token=" + access_token;
-//					 mAuthTask.execute(url,numID);
-//		        }
-//		     })
-//		    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//		        public void onClick(DialogInterface dialog, int which) { 
-//		            // do nothing
-//		        	Log.d("Do Nothing","Cancel");
-//		        }
-//		     })
-//		    .setIcon(R.drawable.trac_launcher)
-//		     .show();			
-//		}
-//		else if (id == R.id.action_play)
-//		{
-//			RaceCalibration raceAuth = new RaceCalibration();
-//			//Add Delegate If We want this
-//			String url = "https://trac-us.appspot.com/api/sessions/"+ numID+"/?access_token="+access_token;
-//			String pre_json = "id=1";
-//			 raceAuth.execute(url,pre_json);
-//			
-//		}
-//		else if (id == R.id.action_record)
-//		{
-//			//TODO:HIT START WORKOUT ENDPOINT WHEN SETUP
-//			//Log.d("Start","Pressed");
-//			//RaceStart raceStart = new RaceStart();
-//			//String url = "https://trac-us.appspot.com/api/sessions/"+ numID+"/?access_token="+access_token;
-//			//String pre_json = "id=1";
-//			//raceStart.execute(url,pre_json);
-//		}
-//		else if (id == R.id.action_stop)
-//		{
-//			RaceStop raceStop = new RaceStop();
-//			//Add Delagate if we want this
-//			String url = "https://trac-us.appspot.com/api/sessions/"+ numID+"/?access_token="+access_token;
-//			String pre_json = "id=1";
-//			 raceStop.execute(url,pre_json);
-//			
-//		}
+//
 		return super.onOptionsItemSelected(item);
 	}
 

@@ -45,7 +45,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         	// 1. get passed intent from MainActivity
 
      		Intent intent = getActivity().getIntent();
-     		
+
              // 2. get message value from intent
              positionID = intent.getStringExtra("positionID");
              Log.d("The passed Variable in frag baby", positionID);
@@ -53,12 +53,12 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
              Log.d("The passed Variable in frag baby", access_token);
              message = intent.getStringExtra("message");
 
-             
+
         // initialize the items list
         mItems = new ArrayList<ListViewItem>();
         Resources resources = getResources();
-        
-       
+
+
         mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_search_dark), getString(R.string.view_roster), getString(R.string.view_roster_description)));
         mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_dark), getString(R.string.play), getString(R.string.calibrate_description)));
         mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_over_video_dark), getString(R.string.record), getString(R.string.start_description)));
@@ -66,7 +66,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_discard_dark), getString(R.string.action_reset), getString(R.string.reset_description)));
         mItems.add(new ListViewItem(resources.getDrawable(R.drawable.trac_launcher_small), getString(R.string.action_signout), getString(R.string.logout_description)));
 
-        
+
         // initialize and set the list adapter
         setListAdapter(new SettingsAdapter(getActivity(), mItems));
 
@@ -99,7 +99,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         // remove the dividers from the ListView of the ListFragment
         getListView().setDivider(null);
 	}
- 
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // retrieve theListView item
@@ -114,7 +114,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(i);
 
-        	
+
         }
         else if (position == 1){
         	Amplitude.getInstance().logEvent("SettingsFragment_Calibrate");
@@ -124,7 +124,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 			String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/open/?access_token=" + access_token;
 
 			 raceAuth.execute(url);
-			 
+
 
         }
         else if (position == 2){
@@ -134,7 +134,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         	raceGo.delegate = this;
         	String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/start_timer/?access_token=" + access_token;
         	raceGo.execute(url);
-        	
+
         }
         else if (position == 3){
         	//End Workout, finish:now
@@ -144,7 +144,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 			String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/close/?access_token=" + access_token;
 			raceStop.execute(url);
 
-        	
+
         }
         else if (position == 4){
         	//Reset Button
@@ -153,15 +153,15 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 		    .setTitle("Reset Workout")
 		    .setMessage("Are you sure you want to reset this workout?")
 		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int which) { 
+		        public void onClick(DialogInterface dialog, int which) {
         	WorkoutReset raceReset = new WorkoutReset();
         	String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/reset/?access_token=" + access_token;
-        	
+
         	raceReset.execute(url);
 		        }
 		    })
 		    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int which) { 
+		        public void onClick(DialogInterface dialog, int which) {
 		            // do nothing
 		        	Log.d("Do Nothing","Cancel");
 		        }
@@ -176,20 +176,20 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 			Editor edit = pref.edit();
 			edit.putString("token", "");
 			edit.commit();
-			
+
 			GroupFragment.backButtonWasPressed();
 			Log.d("Back","PRESSED");
 			WorkoutFragment.backButtonWasPressed();
-			
+
 			Intent i = new Intent(getActivity(), LoginActivity.class);
-			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(i);
-        	
+
         }
         // do something
        // Toast.makeText(getActivity(), item.title, Toast.LENGTH_SHORT).show();
     }
-    
+
 
 	@Override
 	public void processFinish(Boolean success) {
@@ -200,8 +200,8 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 		    .setTitle("Success!")
 		    .setMessage("Time successfully changed")
 		    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int which) { 
-        	
+		        public void onClick(DialogInterface dialog, int which) {
+
 		        }
 		    })
 		    .setIcon(R.drawable.trac_launcher)
@@ -209,7 +209,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 		}
 	}
 
-    
+
     
     
 }
