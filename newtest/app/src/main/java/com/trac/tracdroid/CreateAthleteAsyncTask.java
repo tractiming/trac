@@ -1,16 +1,7 @@
 package com.trac.tracdroid;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.MediaType;
@@ -18,6 +9,11 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 
   class CreateAthleteAsyncTask extends AsyncTask<Void, Void, Boolean> {
@@ -48,20 +44,31 @@ import com.squareup.okhttp.Response;
 			// Attempt authentication against a network service.
 			final MediaType MEDIA_TYPE_MARKDOWN
 		      = MediaType.parse("application/json; charset=utf-8");
-			
 			JSONObject athleteJSON = new JSONObject();
-			try {
-				athleteJSON.put("first_name", first_name);
-				athleteJSON.put("last_name", last_name);
-				athleteJSON.put("tag",tagId);
-				athleteJSON.put("team", team);
-				athleteJSON.put("username", first_name+last_name);
-				
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (tagId.isEmpty())
+			{
+				try {
+					athleteJSON.put("first_name", first_name);
+					athleteJSON.put("last_name", last_name);
+					athleteJSON.put("team", team);
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			
+			else {
+				try {
+					athleteJSON.put("first_name", first_name);
+					athleteJSON.put("last_name", last_name);
+					athleteJSON.put("tag", tagId);
+					athleteJSON.put("team", team);
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			RequestBody body = RequestBody.create(MEDIA_TYPE_MARKDOWN,athleteJSON.toString());
 			
 			

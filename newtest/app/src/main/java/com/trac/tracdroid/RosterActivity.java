@@ -223,7 +223,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
  	   EditText tagId = (EditText) ((Dialog)dialog).findViewById(R.id.tagID);
  	   String tagIdString = tagId.getText().toString();
  	   dialog.cancel();
- 	   
+
     		String createURL = "https://trac-us.appspot.com/api/athletes/?access_token=" + access_token;
     		splitCall = new CreateAthleteAsyncTask(createURL,first_name,last_name,tagIdString,primaryTeam);
     		splitCall.execute();
