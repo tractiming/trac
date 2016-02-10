@@ -1,27 +1,23 @@
 package com.trac.tracdroid;
  
-import java.io.IOException;
-
-import com.amplitude.api.Amplitude;
-import com.trac.tracdroid.R;
-import com.trac.tracdroid.LoginActivity.UserLoginTask;
-import com.google.gson.Gson;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+
+import com.amplitude.api.Amplitude;
+import com.google.gson.Gson;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
  
 public class SplashScreen extends Activity {
  
@@ -116,7 +112,7 @@ public class SplashScreen extends Activity {
 			    
 			    int codevar = response.code();
 			   // Log.d(DEBUG_TAG, "Response Code: "+ codevar);
-			    
+
 			   // Log.d(DEBUG_TAG, "Request Data: "+ request);
 			    var = response.body().string();
 			    
@@ -126,12 +122,11 @@ public class SplashScreen extends Activity {
 			    return true;
 			    }
 			    else {
-			    return false;
 			    }
 			    
 			} catch (IOException e) {
 				//Log.d(DEBUG_TAG, "IoException" + e.getMessage());
-				return null;
+				return false;
 			}
 
 		}
