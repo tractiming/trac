@@ -122,6 +122,7 @@ public class SplashScreen extends Activity {
 			    return true;
 			    }
 			    else {
+			    return false;
 			    }
 			    
 			} catch (IOException e) {
