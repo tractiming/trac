@@ -63,8 +63,8 @@
       <file leaf-file-name="GroupFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.148148">
-              <caret line="413" column="20" selection-start-line="413" selection-start-column="20" selection-end-line="421" selection-end-column="21" />
+            <state vertical-scroll-proportion="-4.6666665">
+              <caret line="465" column="68" selection-start-line="465" selection-start-column="68" selection-end-line="465" selection-end-column="68" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#8678#9395#0" expanded="true" />
@@ -84,55 +84,46 @@
       <file leaf-file-name="RaceStop.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RaceStop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.777778">
-              <caret line="43" column="24" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="24" />
+            <state vertical-scroll-proportion="-12.481482">
+              <caret line="62" column="27" selection-start-line="62" selection-start-column="27" selection-end-line="62" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/MainActivity.java">
+      <file leaf-file-name="SettingsFragment.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/SettingsFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.4814816">
-              <caret line="237" column="2" selection-start-line="237" selection-start-column="2" selection-end-line="237" selection-end-column="2" />
+            <state vertical-scroll-proportion="0.4140625">
+              <caret line="225" column="81" selection-start-line="225" selection-start-column="81" selection-end-line="225" selection-end-column="81" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3447#3470#0" expanded="true" />
-                <element signature="e#3472#3489#0" expanded="true" />
-                <element signature="e#4670#4843#0" expanded="true" />
-                <element signature="e#4842#4843#0" expanded="true" />
-                <element signature="e#10095#10129#0" expanded="true" />
-                <element signature="e#10183#10217#0" expanded="true" />
-                <element signature="e#10271#10305#0" expanded="true" />
+                <element signature="e#2134#2165#0" expanded="true" />
+                <element signature="e#2167#2210#0" expanded="true" />
+                <element signature="e#2305#2329#0" expanded="true" />
+                <element signature="e#2331#2372#0" expanded="true" />
+                <element signature="e#2478#2504#0" expanded="true" />
+                <element signature="e#2506#2543#0" expanded="true" />
+                <element signature="e#2638#2669#0" expanded="true" />
+                <element signature="e#2671#2707#0" expanded="true" />
+                <element signature="e#2805#2837#0" expanded="true" />
+                <element signature="e#2839#2876#0" expanded="true" />
+                <element signature="e#2971#3005#0" expanded="true" />
+                <element signature="e#3007#3045#0" expanded="true" />
+                <element signature="e#3933#3958#0" expanded="true" />
+                <element signature="e#3960#3979#0" expanded="true" />
+                <element signature="e#6585#6781#0" expanded="true" />
+                <element signature="e#6780#6781#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SettingsFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/SettingsFragment.java">
+      <file leaf-file-name="RegistrationActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RegistrationActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.962963">
-              <caret line="196" column="26" selection-start-line="196" selection-start-column="26" selection-end-line="196" selection-end-column="26" />
-              <folding>
-                <element signature="e#2091#2122#0" expanded="true" />
-                <element signature="e#2124#2167#0" expanded="true" />
-                <element signature="e#2262#2286#0" expanded="true" />
-                <element signature="e#2288#2329#0" expanded="true" />
-                <element signature="e#2435#2461#0" expanded="true" />
-                <element signature="e#2463#2500#0" expanded="true" />
-                <element signature="e#2595#2626#0" expanded="true" />
-                <element signature="e#2628#2664#0" expanded="true" />
-                <element signature="e#2762#2794#0" expanded="true" />
-                <element signature="e#2796#2833#0" expanded="true" />
-                <element signature="e#2928#2962#0" expanded="true" />
-                <element signature="e#2964#3002#0" expanded="true" />
-                <element signature="e#3890#3915#0" expanded="true" />
-                <element signature="e#3917#3936#0" expanded="true" />
-                <element signature="e#6542#6738#0" expanded="true" />
-                <element signature="e#6737#6738#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0">
+              <caret line="380" column="17" selection-start-line="380" selection-start-column="17" selection-end-line="380" selection-end-column="17" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -149,11 +140,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RosterActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RosterActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RosterActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.76603776">
-              <caret line="421" column="66" selection-start-line="421" selection-start-column="66" selection-end-line="421" selection-end-column="66" />
+            <state vertical-scroll-proportion="-11.148149">
+              <caret line="414" column="59" selection-start-line="414" selection-start-column="59" selection-end-line="414" selection-end-column="59" />
               <folding>
                 <element signature="e#6109#6134#0" expanded="true" />
                 <element signature="e#6382#6397#0" expanded="true" />
@@ -172,6 +163,7 @@
       <list>
         <option value="Class" />
         <option value="layoutResourceFile_vertical" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -1813,18 +1805,20 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_workout.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/proguard-project.txt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RaceStart.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/CreateAthleteAsyncTask.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/SplashScreen.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/CalendarActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RaceStop.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/SettingsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/WorkoutFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RosterActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/BooleanWorkoutEndResponse.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RaceStop.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/BooleanStartRace.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RaceStart.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/SettingsFragment.java" />
       </list>
     </option>
   </component>
@@ -2178,23 +2172,23 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34977064" sideWeight="0.5122471" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34977064" sideWeight="0.5101172" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32912844" sideWeight="0.5021299" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34977064" sideWeight="0.48988286" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23935091" sideWeight="0.5063898" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16187434" sideWeight="0.24273504" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16187434" sideWeight="0.24338624" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.48722044" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960597" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16187434" sideWeight="0.757265" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32912844" sideWeight="0.4978701" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16187434" sideWeight="0.75661373" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.4978701" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2221,21 +2215,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="61" column="33" selection-start-line="61" selection-start-column="33" selection-end-line="61" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RetrievePrimaryTeams.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="46" column="41" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/CreateTeamCallback.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2409,13 +2388,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RegistrationActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28435114">
-          <caret line="380" column="17" selection-start-line="380" selection-start-column="17" selection-end-line="380" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/settings.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2446,13 +2418,6 @@
       </provider>
       <provider editor-type-id="android-designer">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/BooleanAsyncResponse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RetrievePrimaryTeams.java">
@@ -2524,16 +2489,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RaceStart.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="46" column="25" selection-start-line="46" selection-start-column="25" selection-end-line="46" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/WorkoutReset.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2591,58 +2546,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RaceStop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.777778">
-          <caret line="43" column="24" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/SettingsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.962963">
-          <caret line="196" column="26" selection-start-line="196" selection-start-column="26" selection-end-line="196" selection-end-column="26" />
-          <folding>
-            <element signature="e#2091#2122#0" expanded="true" />
-            <element signature="e#2124#2167#0" expanded="true" />
-            <element signature="e#2262#2286#0" expanded="true" />
-            <element signature="e#2288#2329#0" expanded="true" />
-            <element signature="e#2435#2461#0" expanded="true" />
-            <element signature="e#2463#2500#0" expanded="true" />
-            <element signature="e#2595#2626#0" expanded="true" />
-            <element signature="e#2628#2664#0" expanded="true" />
-            <element signature="e#2762#2794#0" expanded="true" />
-            <element signature="e#2796#2833#0" expanded="true" />
-            <element signature="e#2928#2962#0" expanded="true" />
-            <element signature="e#2964#3002#0" expanded="true" />
-            <element signature="e#3890#3915#0" expanded="true" />
-            <element signature="e#3917#3936#0" expanded="true" />
-            <element signature="e#6542#6738#0" expanded="true" />
-            <element signature="e#6737#6738#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.148148">
-          <caret line="413" column="20" selection-start-line="413" selection-start-column="20" selection-end-line="421" selection-end-column="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#8678#9395#0" expanded="true" />
-            <element signature="e#9394#9395#0" expanded="true" />
-            <element signature="e#9522#11024#0" expanded="true" />
-            <element signature="e#11023#11024#0" expanded="true" />
-            <element signature="e#11218#12125#0" expanded="true" />
-            <element signature="e#11820#12030#0" expanded="true" />
-            <element signature="e#12029#12030#0" expanded="true" />
-            <element signature="e#12124#12125#0" expanded="true" />
-            <element signature="e#14157#14165#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.4814816">
@@ -2672,14 +2575,106 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RosterActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.76603776">
-          <caret line="421" column="66" selection-start-line="421" selection-start-column="66" selection-end-line="421" selection-end-column="66" />
+        <state vertical-scroll-proportion="-11.148149">
+          <caret line="414" column="59" selection-start-line="414" selection-start-column="59" selection-end-line="414" selection-end-column="59" />
           <folding>
             <element signature="e#6109#6134#0" expanded="true" />
             <element signature="e#6382#6397#0" expanded="true" />
             <element signature="e#9164#9188#0" expanded="true" />
             <element signature="e#9190#9208#0" expanded="true" />
             <element signature="e#13493#13509#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.6666665">
+          <caret line="465" column="68" selection-start-line="465" selection-start-column="68" selection-end-line="465" selection-end-column="68" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#8678#9395#0" expanded="true" />
+            <element signature="e#9394#9395#0" expanded="true" />
+            <element signature="e#9522#11024#0" expanded="true" />
+            <element signature="e#11023#11024#0" expanded="true" />
+            <element signature="e#11218#12125#0" expanded="true" />
+            <element signature="e#11820#12030#0" expanded="true" />
+            <element signature="e#12029#12030#0" expanded="true" />
+            <element signature="e#12124#12125#0" expanded="true" />
+            <element signature="e#14157#14165#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/BooleanWorkoutEndResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="21" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RaceStop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.481482">
+          <caret line="62" column="27" selection-start-line="62" selection-start-column="27" selection-end-line="62" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RaceStart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16512059">
+          <caret line="56" column="13" selection-start-line="56" selection-start-column="13" selection-end-line="56" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/BooleanStartRace.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16697589">
+          <caret line="6" column="25" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/BooleanAsyncResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.08348794">
+          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RegistrationActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="380" column="17" selection-start-line="380" selection-start-column="17" selection-end-line="380" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/SettingsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4140625">
+          <caret line="225" column="81" selection-start-line="225" selection-start-column="81" selection-end-line="225" selection-end-column="81" />
+          <folding>
+            <element signature="e#2134#2165#0" expanded="true" />
+            <element signature="e#2167#2210#0" expanded="true" />
+            <element signature="e#2305#2329#0" expanded="true" />
+            <element signature="e#2331#2372#0" expanded="true" />
+            <element signature="e#2478#2504#0" expanded="true" />
+            <element signature="e#2506#2543#0" expanded="true" />
+            <element signature="e#2638#2669#0" expanded="true" />
+            <element signature="e#2671#2707#0" expanded="true" />
+            <element signature="e#2805#2837#0" expanded="true" />
+            <element signature="e#2839#2876#0" expanded="true" />
+            <element signature="e#2971#3005#0" expanded="true" />
+            <element signature="e#3007#3045#0" expanded="true" />
+            <element signature="e#3933#3958#0" expanded="true" />
+            <element signature="e#3960#3979#0" expanded="true" />
+            <element signature="e#6585#6781#0" expanded="true" />
+            <element signature="e#6780#6781#0" expanded="true" />
           </folding>
         </state>
       </provider>

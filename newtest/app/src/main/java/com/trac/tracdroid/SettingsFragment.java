@@ -23,7 +23,7 @@ import com.trac.showcaseview.targets.PointTarget;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsFragment extends ListFragment implements BooleanAsyncResponse{
+public class SettingsFragment extends ListFragment implements BooleanAsyncResponse,BooleanWorkoutEndResponse,BooleanStartRace{
     private List<ListViewItem> mItems;        // ListView items list
     private String access_token;
     private String positionID;
@@ -197,7 +197,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 		if (successVariable){
 			new AlertDialog.Builder(getActivity())
 		    .setTitle("Success!")
-		    .setMessage("Time successfully changed")
+		    .setMessage("Time successfully changed. Athletes are now editable.")
 		    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 		        public void onClick(DialogInterface dialog, int which) {
 
@@ -216,6 +216,57 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 		}
 	}
 
+	@Override
+	public void workoutEnded(Boolean success) {
+		// TODO Auto-generated method stub
+		successVariable =  success;
+		if (successVariable){
+			new AlertDialog.Builder(getActivity())
+					.setTitle("Success!")
+					.setMessage("Workout ended. Athletes' splits cannot be edited.")
+					.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+
+						}
+					})
+					.setIcon(R.drawable.trac_launcher)
+					.show();
+		}
+		else {
+			//if bad response, redirect to login
+			//go to login page
+			Intent i = new Intent(getActivity(), LoginActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(i);
+
+		}
+	}
+
+	@Override
+	public void booleanstartRace(Boolean success) {
+		// TODO Auto-generated method stub
+		successVariable =  success;
+		if (successVariable){
+			new AlertDialog.Builder(getActivity())
+					.setTitle("Success!")
+					.setMessage("Race started. All runners will be given a single start time.")
+					.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+
+						}
+					})
+					.setIcon(R.drawable.trac_launcher)
+					.show();
+		}
+		else {
+			//if bad response, redirect to login
+			//go to login page
+			Intent i = new Intent(getActivity(), LoginActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(i);
+
+		}
+	}
 
     
     

@@ -1,18 +1,17 @@
 package com.trac.tracdroid;
 
-import java.io.IOException;
-
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import java.io.IOException;
+
 public class RaceStop extends AsyncTask<String, Void, Boolean> {
-	public BooleanAsyncResponse delegate = null; 
+	public BooleanWorkoutEndResponse delegate = null;
 	@Override
 	protected Boolean doInBackground(String... params) {
 		// Attempt authentication against a network service.
@@ -57,7 +56,7 @@ public class RaceStop extends AsyncTask<String, Void, Boolean> {
 	@Override
 	protected void onPostExecute(final Boolean success) {
 		
-		delegate.processFinish(success);
+		delegate.workoutEnded(success);
 		if (success == null){
 			Log.d("NULL","WORK");
 		}
