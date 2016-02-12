@@ -169,7 +169,16 @@ public class WorkoutFragment extends ListFragment {
 		        .build();
 				try {
 				    Response response = client.newCall(request).execute();
-				    
+
+					int responseCode = response.code();
+
+					if (responseCode >= 400) {
+						//if bad response, redirect to login
+						//go to login page
+						Intent i = new Intent(getActivity(), LoginActivity.class);
+						i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(i);
+					}
 				    
 				    IndividualResults preFullyParsed = gson.fromJson(response.body().charStream(), IndividualResults.class);
 				    List<Runners> text = preFullyParsed.results;

@@ -65,8 +65,8 @@ public class GroupAdapter extends BaseAdapter{
 			totalAthleteID.add(parsedJson.get(k).id);
 	    }
 	}
-	
-	
+
+
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
@@ -346,7 +346,7 @@ public class GroupAdapter extends BaseAdapter{
         for (int i = 0; i < result.size(); i++){
         	//Does athelte id exist? check recently polled json from stored dictionary
         	//If doesnt exist add to end
-        
+
         	Boolean tempBool = tempDict.contains(result.get(i).id);
         	//if its not in the array add it
         	if (!tempBool){

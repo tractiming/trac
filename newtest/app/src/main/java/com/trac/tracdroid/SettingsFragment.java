@@ -206,6 +206,14 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 		    .setIcon(R.drawable.trac_launcher)
 		     .show();
 		}
+		else {
+				//if bad response, redirect to login
+				//go to login page
+				Intent i = new Intent(getActivity(), LoginActivity.class);
+				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(i);
+
+		}
 	}
 
 

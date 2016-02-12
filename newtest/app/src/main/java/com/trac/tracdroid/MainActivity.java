@@ -74,7 +74,7 @@ public class MainActivity extends ActionBarActivity implements
 			//Log.d("Back","PRESSED FROM WORKOUT");
     	
     }
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -244,6 +244,7 @@ public class MainActivity extends ActionBarActivity implements
 			FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
+		Log.d("Fired Here","Fired");
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
 

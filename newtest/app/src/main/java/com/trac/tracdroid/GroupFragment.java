@@ -93,7 +93,7 @@ public class GroupFragment extends ListFragment {
 		timer.cancel();
 		asyncServiceCall.cancel(true);
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -101,7 +101,7 @@ public class GroupFragment extends ListFragment {
 
 		Bundle args = getArguments();
 		access_token = args.getString("AccessToken","");
-		
+
 		setHasOptionsMenu(true);
 		//Log.d("Instance State in Group on Create",savedInstanceState.toString());
 		View rootView = inflater.inflate(R.layout.fragment_group_view, container,
@@ -411,6 +411,15 @@ public class GroupFragment extends ListFragment {
 		        .build();
 				try {
 				    Response response = client.newCall(request).execute();
+					int responseCode = response.code();
+
+					if (responseCode >= 400) {
+						//if bad response, redirect to login
+						//go to login page
+						Intent i = new Intent(getActivity(), LoginActivity.class);
+						i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(i);
+					}
 
 				    IndividualResults preFullyParsed = gson.fromJson(response.body().charStream(), IndividualResults.class);
 				    
@@ -485,7 +494,7 @@ public class GroupFragment extends ListFragment {
 					}
 					//Log.d("Dictionary",athleteDictionary.toString());
 					
-					
+
 					//set result to show on screen
 					Parcelable state = lview.onSaveInstanceState();
 					if (executed == false){
