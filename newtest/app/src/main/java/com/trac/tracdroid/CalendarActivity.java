@@ -1,26 +1,7 @@
 package com.trac.tracdroid;
 
-import android.app.Dialog;
-import android.app.ListActivity;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import com.trac.tracdroid.R;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -37,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.EditText;
@@ -53,10 +35,10 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.trac.showcaseview.ShowcaseView;
 import com.trac.showcaseview.targets.ActionItemTarget;
+
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
-import android.widget.RelativeLayout;
-import android.view.ViewGroup;
 
 
 public class CalendarActivity extends ListActivity implements OnScrollListener{
@@ -207,6 +189,19 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 	
 	 public void onCreate(Bundle savedInstanceState) {
 		    super.onCreate(savedInstanceState);
+		 	//Force overflow button
+			 try {
+				 ViewConfiguration config = ViewConfiguration.get(this);
+				 Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+
+				 if (menuKeyField != null) {
+					 menuKeyField.setAccessible(true);
+					 menuKeyField.setBoolean(config, false);
+				 }
+			 }
+			 catch (Exception e) {
+				 // presumably, not relevant
+			 }
 		    //initialize content views
 		    setContentView(R.layout.activity_calendar);
 		    mLoginStatusView = findViewById(R.id.login_status);

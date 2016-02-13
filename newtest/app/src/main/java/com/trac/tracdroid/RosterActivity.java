@@ -1,12 +1,5 @@
 package com.trac.tracdroid;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -20,13 +13,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
+import android.view.ViewConfiguration;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -34,19 +27,21 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
 
-import com.trac.showcaseview.ShowcaseView;
-import com.trac.showcaseview.targets.ActionItemTarget;
-import com.trac.tracdroid.R;
-import com.trac.tracdroid.CalendarActivity.AsyncServiceCall;
+import com.amplitude.api.Amplitude;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.amplitude.api.Amplitude;
+import com.trac.showcaseview.ShowcaseView;
+import com.trac.showcaseview.targets.ActionItemTarget;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 
 public class RosterActivity extends ListActivity implements StringAsyncResponse, BooleanAsyncResponse, CreateTeamCallback{
 	//protected Context context;
@@ -234,6 +229,19 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 	
 	 public void onCreate(Bundle savedInstanceState) {
 		    super.onCreate(savedInstanceState);
+		 //Force overflow button
+			 try {
+				 ViewConfiguration config = ViewConfiguration.get(this);
+				 Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+
+				 if (menuKeyField != null) {
+					 menuKeyField.setAccessible(true);
+					 menuKeyField.setBoolean(config, false);
+				 }
+			 }
+			 catch (Exception e) {
+				 // presumably, not relevant
+			 }
 		    //initialize content views
 		    setContentView(R.layout.activity_roster);
 		    mLoginStatusView = findViewById(R.id.login_status);

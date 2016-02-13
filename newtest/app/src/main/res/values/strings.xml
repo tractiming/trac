@@ -51,13 +51,13 @@
 	<string name="server_client_id">983021202491-kupk29qejvri4mlpd8ji0pa7r31bkrin.apps.googleusercontent.com</string>
 	<string name="trac_client_id">Opu8FB7AgwyychaR79YQISvxC2nRKAohCnGdVJud</string>
 	<string name="intro">Welcome to TRAC!</string>
-	<string name="step_one">This is the calendar page. You can view all your previous and upcoming workouts here. \n\nCreate a new session and click on the overflow button.</string>
+	<string name="step_one">This is the calendar page. You can view all your previous and upcoming workouts here. \n\nCreate a new session by clicking on the overflow button.</string>
 	<string name="step_two_title">Welcome to the workout page.</string>
-	<string name="step_two">Here you can view splits and create them using the pencil button in the top right corner. \n\nRunning time can be viewed by holding an individuals name. \n\nBut now, let us set up a workout: \nClick on the settings tab. </string>
+	<string name="step_two">Here you can view splits and create them using the pencil button in the top right corner. \n\nA running timer can be viewed by holding an individuals name. \n\nBut now, let us set up a workout: \nClick on the controls tab. </string>
 	<string name="step_three_title">This is the settings page. </string>
-	<string name="step_three">Here you can calibrate start and stop times for a workout, and erase workout data.\nFor large race starts use the start workout button. \nLets look at our athletes: click on the roster button.</string>
+	<string name="step_three">Here you can calibrate start and stop times for a workout, and erase workout data.\nFor large race starts, use the start workout button. It gives all runners a single start time. \nLets look at our athletes: click on the roster button.</string>
 	<string name="step_four_title">This is your roster: </string>
-	<string name="step_four">To add an athlete not listed click on the overflow icon. \n \nClick the pencil icon to register previously created runners to a session. \n\nGood luck and enjoy TRAC!</string>
+	<string name="step_four">To add an athlete not listed, click on the overflow icon. \n \nClick the pencil icon to register previously created runners to a session. \n\nGood luck and enjoy TRAC!</string>
 	<string name="ok">OK</string>
 	<string name="addTeam">Create Team</string>
 	<string name="addWorkout">Create Workout</string>
