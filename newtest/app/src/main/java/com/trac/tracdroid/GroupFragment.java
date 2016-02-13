@@ -236,10 +236,13 @@ public class GroupFragment extends ListFragment {
 		ArrayList<String> tempTimes = groupList.getTimes();
 		ArrayList<String> tempResets = groupList.getSplitReset();
 		ArrayList<String> tempIDs = groupList.getAllIDs();
+		String tempTimesString = "tempTimes-"+idPosition;
+		String tempResetsString = "tempResets-"+idPosition;
+		String tempIDsString = "tempIDs-"+idPosition;
 		try {
-			InternalStorage.writeObject(getContext(), "tempTimes", tempTimes);
-			InternalStorage.writeObject(getContext(), "tempResets", tempResets);
-			InternalStorage.writeObject(getContext(), "tempIDs", tempIDs);
+			InternalStorage.writeObject(getContext(), tempTimesString, tempTimes);
+			InternalStorage.writeObject(getContext(), tempResetsString, tempResets);
+			InternalStorage.writeObject(getContext(), tempIDsString, tempIDs);
 
 		}
 		catch(IOException e){
@@ -544,9 +547,12 @@ public class GroupFragment extends ListFragment {
 
 						try {
 							// Retrieve the list from internal storage
-							ArrayList<String> tempTimes = (ArrayList<String>) InternalStorage.readObject(getContext(), "tempTimes");
-							ArrayList<String> tempResets = (ArrayList<String>) InternalStorage.readObject(getContext(), "tempResets");
-							ArrayList<String> tempIDs = (ArrayList<String>) InternalStorage.readObject(getContext(), "tempIDs");
+							String tempTimesString = "tempTimes-"+idPosition;
+							String tempResetsString = "tempResets-"+idPosition;
+							String tempIDsString = "tempIDs-"+idPosition;
+							ArrayList<String> tempTimes = (ArrayList<String>) InternalStorage.readObject(getContext(), tempTimesString);
+							ArrayList<String> tempResets = (ArrayList<String>) InternalStorage.readObject(getContext(), tempResetsString);
+							ArrayList<String> tempIDs = (ArrayList<String>) InternalStorage.readObject(getContext(), tempIDsString);
 							System.out.println("timeArray:"+tempTimes+"time zie"+ tempResets);
 							groupList.passInTimeResetID(tempTimes, tempResets, tempIDs);
 						}
