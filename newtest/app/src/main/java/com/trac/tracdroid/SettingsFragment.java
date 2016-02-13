@@ -60,10 +60,10 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 
 
         mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_search_dark), getString(R.string.view_roster), getString(R.string.view_roster_description)));
+		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_over_video_dark), getString(R.string.record), getString(R.string.start_description)));
+		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_discard_dark), getString(R.string.action_reset), getString(R.string.reset_description)));
         mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_dark), getString(R.string.play), getString(R.string.calibrate_description)));
-        mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_over_video_dark), getString(R.string.record), getString(R.string.start_description)));
         mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_stop_dark), getString(R.string.action_stop), getString(R.string.stop_description)));
-        mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_discard_dark), getString(R.string.action_reset), getString(R.string.reset_description)));
         mItems.add(new ListViewItem(resources.getDrawable(R.drawable.trac_launcher_small), getString(R.string.action_signout), getString(R.string.logout_description)));
 
 
@@ -98,7 +98,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 
 
         }
-        else if (position == 1){
+        else if (position == 3){
         	Amplitude.getInstance().logEvent("SettingsFragment_Calibrate");
         	//Calibrate start, start:now, finish:today+1day
         	raceAuth = new RaceCalibration();
@@ -109,7 +109,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 
 
         }
-        else if (position == 2){
+        else if (position == 1){
         	Amplitude.getInstance().logEvent("SettingsFragment_Start");
         	raceGo = new RaceStart();
         	raceGo.delegate = this;
@@ -117,7 +117,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         	raceGo.execute(url);
 
         }
-        else if (position == 3){
+        else if (position == 4){
         	//End Workout, finish:now
         	Amplitude.getInstance().logEvent("SettingsFragment_End");
 			raceStop = new RaceStop();
@@ -127,7 +127,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 
 
         }
-        else if (position == 4){
+        else if (position == 2){
         	//Reset Button
         	Amplitude.getInstance().logEvent("SettingsFragment_Reset");
         	new AlertDialog.Builder(getActivity())

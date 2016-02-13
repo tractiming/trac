@@ -24,11 +24,11 @@
 	<string name="stop">Stop</string>
 	<string name="action_reset">Reset Workout</string>
 	<string name="action_search">Search</string>
-	<string name="play">Calibrate Start</string>
+	<string name="play">Calibrate Start (Sensor Control)</string>
 	<string name="record">Start Race/Workout</string>
-	<string name="action_stop">End Workout</string>
+	<string name="action_stop">End Workout (Sensor Control)</string>
 	<string name="calibrate_description">Calibrate date to today</string>
-	<string name="start_description">Ready, Set, GO!</string>
+	<string name="start_description">GO! Gives all athletes single start time.</string>
 	<string name="stop_description">Finalize results, accept no additional athletes</string>
 	<string name="reset_description">Clear results of all athletes</string>
 	<string name="logout_description">Return to login screen</string>
