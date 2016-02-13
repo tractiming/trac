@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -132,6 +133,7 @@ public class MainActivity extends ActionBarActivity implements
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		mViewPager.setOffscreenPageLimit(2);
 
+
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
@@ -255,6 +257,10 @@ public class MainActivity extends ActionBarActivity implements
 
 
 		}
+		else if (tab.getPosition() == 1)
+		{
+			mSectionsPagerAdapter.notifyDataSetChanged();
+		}
 		else if (tab.getPosition() == 2)
 		{
 			SharedPreferences userDetails = this.getSharedPreferences("userdetails",Context.MODE_PRIVATE);
@@ -300,6 +306,16 @@ public class MainActivity extends ActionBarActivity implements
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
+		}
+		@Override
+		public Parcelable saveState()
+		{
+			return null;
+		}
+
+		@Override
+		public int getItemPosition(Object object){
+			return POSITION_NONE;
 		}
 
 		@Override

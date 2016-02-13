@@ -352,6 +352,7 @@ public class GroupFragment extends ListFragment {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+	  Log.d("On Acitivyt","On Activity");
     lview = getListView();
     
     lview.setOnItemLongClickListener(new OnItemLongClickListener() {
