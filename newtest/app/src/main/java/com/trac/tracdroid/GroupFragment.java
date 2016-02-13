@@ -92,11 +92,16 @@ public class GroupFragment extends ListFragment {
     }
 
 	public void onPause(){
-		Log.d("Caled on pause","pause");
+		Log.d("Caled on pause", "pause");
 		super.onPause();
 		timer.cancel();
 		asyncServiceCall.cancel(true);
-		saveShared();
+		try {
+			saveShared();
+		}
+		catch(NullPointerException e){
+
+		}
 	}
 
 	@Override

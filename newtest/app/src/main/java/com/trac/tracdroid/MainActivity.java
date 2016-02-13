@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.SearchView;
 
@@ -28,6 +29,7 @@ import com.trac.showcaseview.ShowcaseView;
 import com.trac.showcaseview.ShowcaseViews;
 import com.trac.showcaseview.targets.PointTarget;
 
+import java.lang.reflect.Field;
 import java.util.Locale;
 
 public class MainActivity extends ActionBarActivity implements
@@ -81,6 +83,19 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		try {
+			ViewConfiguration config = ViewConfiguration.get(this);
+			Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+
+			if (menuKeyField != null) {
+				menuKeyField.setAccessible(true);
+				menuKeyField.setBoolean(config, false);
+			}
+		}
+		catch (Exception e) {
+			// presumably, not relevant
+		}
+
 		Log.d("Does this happen Multi","Multi?");
 		setContentView(R.layout.activity_main);
 
@@ -246,7 +261,7 @@ public class MainActivity extends ActionBarActivity implements
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+							  FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		Log.d("Fired Here","Fired");
