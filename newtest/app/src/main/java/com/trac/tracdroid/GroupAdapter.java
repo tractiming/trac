@@ -40,6 +40,7 @@ public class GroupAdapter extends BaseAdapter{
 	 this.parsedJson = workout;
 	 this.context = context;
 	 this.resultData = resultData;
+		Log.d("Result data",resultData.toString());
 	 runnersList.addAll(parsedJson);
 	 checkStatus = false;
 	 athleteIDArray = new ArrayList<String>();
@@ -124,15 +125,15 @@ public class GroupAdapter extends BaseAdapter{
 		   addingRow = false;
 	   }
 		   holder.ckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-	    	
+
 	        @Override
 	        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-	        	
+
 	            if(isChecked){
 	            	changeBool();
 	                positionArray.set(position, true);
 	                athleteIDArray.add(parsedJson.get(position).id);
-	                
+
 	            }
 	            else if(!isChecked){
 	                positionArray.set(position, false);
@@ -140,12 +141,12 @@ public class GroupAdapter extends BaseAdapter{
 		            if(athleteIDArray.contains(parsedJson.get(position).id)){
 		            	int athleteindex = athleteIDArray.indexOf(parsedJson.get(position).id);
 		            	athleteIDArray.remove(athleteindex);
-		            	
+
 		            }
 	            }
 	            //System.out.println(positionArray);
 	        }
-	        
+
 	    });
 	  
 		//this finds the name and displays it
@@ -154,7 +155,7 @@ public class GroupAdapter extends BaseAdapter{
 		
 		
 		TextView textView4 =(TextView) convertView.findViewById(R.id.list_text3);
-		
+
 		
 		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)textView.getLayoutParams();
 		if (checkStatus){
@@ -418,5 +419,5 @@ public class GroupAdapter extends BaseAdapter{
 	    CheckBox ckbox;
 
 	}
-	
+
 }

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.SearchView;
 
 import com.amplitude.api.Amplitude;
@@ -46,7 +48,7 @@ public class MainActivity extends ActionBarActivity implements
 	private Fragment fragment;
 	int check = 0;
 	private WorkoutReset mAuthTask = null;
-	private static String var; 
+	private static String var;
 	private String access_token;
 	private String numID;
 	private static String userVariable;
@@ -55,7 +57,7 @@ public class MainActivity extends ActionBarActivity implements
 	private GroupAdapter groupAdapter;
 	WorkoutFragment workoutFrag;
 	private ExpandableWorkoutAdapter workoutAdapter;
-	
+
     public void onBackPressed() {
     	fragment = new Fragment();
     	super.onBackPressed();
@@ -64,7 +66,7 @@ public class MainActivity extends ActionBarActivity implements
 			WorkoutFragment.backButtonWasPressed();
 			//Log.d("Back","PRESSED FROM WORKOUT");
     }
-    
+
     public void onPause(){
     	fragment = new Fragment();
     	super.onPause();
@@ -72,12 +74,13 @@ public class MainActivity extends ActionBarActivity implements
 			//Log.d("Back","PRESSED");
 			WorkoutFragment.backButtonWasPressed();
 			//Log.d("Back","PRESSED FROM WORKOUT");
-    	
+
     }
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d("Does this happen Multi","Multi?");
 		setContentView(R.layout.activity_main);
 
 		 SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
@@ -106,15 +109,15 @@ public class MainActivity extends ActionBarActivity implements
 		  // resultOfComparison=userVariable.equals("coach");
 		// 1. get passed intent 
         Intent intent = getIntent();
- 
+
         // 2. get message--token-- value from intent
         String message = intent.getStringExtra("message");
        // Log.d("The passed Variable", message);
-        
+
         numID = intent.getStringExtra("positionID");
        // Log.d("The ID Number", numID);
-        
-        
+
+
 		// Set up the action bar.
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -150,7 +153,7 @@ public class MainActivity extends ActionBarActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					//.setIcon(R.drawable.log)
 					.setTabListener(this));
-			
+
 		}
 
 
@@ -158,7 +161,7 @@ public class MainActivity extends ActionBarActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		
+
 		// TODO Auto-generated method stub
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.shared_view, menu);
@@ -168,10 +171,10 @@ public class MainActivity extends ActionBarActivity implements
 	    // Assumes current activity is the searchable activity
 	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 	    searchView.setIconifiedByDefault(false);
-	    
+
 	    // Do not iconify the widget; expand it by default
 
-	   
+
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
         {
             @Override
@@ -203,7 +206,7 @@ public class MainActivity extends ActionBarActivity implements
             }
         };
         searchView.setOnQueryTextListener(textChangeListener);
-	    
+
 	    return true;
 
 	}
@@ -222,19 +225,19 @@ public class MainActivity extends ActionBarActivity implements
 				Log.d("Back","PRESSED");
 				WorkoutFragment.backButtonWasPressed();
 				Log.d("Back","PRESSED FROM WORKOUT");
-			
+
 			//delete token
 			SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
 			Editor edit = pref.edit();
 			edit.putString("token", "");
 			edit.commit();
-			
+
 			//go to login page
 			Intent i = new Intent(MainActivity.this, LoginActivity.class);
-			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(i);
 		}
-		
+
 //
 		return super.onOptionsItemSelected(item);
 	}
@@ -246,6 +249,35 @@ public class MainActivity extends ActionBarActivity implements
 		// the ViewPager.
 		Log.d("Fired Here","Fired");
 		mViewPager.setCurrentItem(tab.getPosition());
+		if (tab.getPosition()==0)
+		{
+			Log.d("akjdlf", "kjladf");
+
+
+		}
+		else if (tab.getPosition() == 2)
+		{
+			SharedPreferences userDetails = this.getSharedPreferences("userdetails",Context.MODE_PRIVATE);
+			boolean firstRun = userDetails.getBoolean("firstRun",true);
+
+			if(firstRun) {
+				WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+				Display display = wm.getDefaultDisplay();
+				Point size = new Point();
+				display.getSize(size);
+				int width = size.x;
+				int frag = (width / 4);
+				int height = size.y;
+
+				ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
+				co.showcaseId = ShowcaseView.ITEM_ACTION_ITEM;
+				co.shotType = ShowcaseView.TYPE_ONE_SHOT;
+				co.hideOnClickOutside = true;
+				PointTarget target = new PointTarget(frag, 400);
+				ShowcaseView.insertShowcaseView(target, this, R.string.step_three_title, R.string.step_three,co);
+			}
+
+		}
 	}
 
 	@Override
@@ -256,13 +288,15 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
+		if (tab.getPosition()==0) {
+		}
 	}
 
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
 	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter implements GroupAsyncResponse, WorkoutAsyncResponse {
+	public class SectionsPagerAdapter extends FragmentStatePagerAdapter implements GroupAsyncResponse, WorkoutAsyncResponse {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -281,10 +315,11 @@ public class MainActivity extends ActionBarActivity implements
 			fragment = new Fragment();
 			switch(position){
 			case 0:
+				Log.d("Get Item","get item");
 				groupFrag = new GroupFragment();
 				groupFrag.delegate = this;
 				Bundle args = new Bundle();
-			    args.putString("AccessToken",access_token);
+				args.putString("AccessToken",access_token);
 			    groupFrag.setArguments(args);
 				return groupFrag;
 			case 1:
@@ -294,10 +329,10 @@ public class MainActivity extends ActionBarActivity implements
 			case 2:
 				return fragment = new SettingsFragment();
 			default:
-				break;			
+				break;
 			}
 			return fragment;
-		
+
 		}
 
 		@Override
@@ -324,11 +359,11 @@ public class MainActivity extends ActionBarActivity implements
 		public void processFinish(ExpandableWorkoutAdapter expandableAdapter) {
 			// TODO Auto-generated method stub
 			workoutAdapter = expandableAdapter;
-			
+
 		}
 	}
 
 
-	
-	
+
+
 }

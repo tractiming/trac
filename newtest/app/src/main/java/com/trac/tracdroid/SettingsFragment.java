@@ -70,25 +70,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         // initialize and set the list adapter
         setListAdapter(new SettingsAdapter(getActivity(), mItems));
 
-		SharedPreferences userDetails = this.getActivity().getSharedPreferences("userdetails",Context.MODE_PRIVATE);
-		boolean firstRun = userDetails.getBoolean("firstRun",true);
 
-		if(firstRun) {
-			WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-			Display display = wm.getDefaultDisplay();
-			Point size = new Point();
-			display.getSize(size);
-			int width = size.x;
-			int frag = (width / 4);
-			int height = size.y;
-
-			ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
-			co.showcaseId = ShowcaseView.ITEM_ACTION_ITEM;
-			co.shotType = ShowcaseView.TYPE_ONE_SHOT;
-			co.hideOnClickOutside = true;
-			PointTarget target = new PointTarget(frag, 400);
-			ShowcaseView.insertShowcaseView(target, getActivity(), R.string.step_three_title, R.string.step_three,co);
-		}
 
 	}
     

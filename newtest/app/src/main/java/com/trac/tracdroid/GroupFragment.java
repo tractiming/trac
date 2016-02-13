@@ -79,6 +79,8 @@ public class GroupFragment extends ListFragment {
 	long storedTime = 0L;
 	public volatile boolean shutdown;
 	int counter;
+	public HashMap<String,List<String>> storedDictionary;
+	public List<Runners> storedRunners;
 
 	
 	public static void backButtonWasPressed() {
@@ -97,6 +99,8 @@ public class GroupFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		setRetainInstance(false);
+		Log.d("view created agian","view created again");
 		startTime = SystemClock.elapsedRealtime();
 
 		Bundle args = getArguments();
@@ -223,14 +227,14 @@ public class GroupFragment extends ListFragment {
 		
 
 		return rootView;
-	}	
-	
-	
+	}
+
+
 
 	
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
+		super.onListItemClick(l, v, position, id);
         //Toggle CheckBox from not selected to selected and vice versa.
         if (v != null) {
             CheckBox checkBox = (CheckBox)v.findViewById(R.id.checkBox);
@@ -241,8 +245,8 @@ public class GroupFragment extends ListFragment {
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	    inflater.inflate(R.menu.group_view, menu);
-	    super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.group_view, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -384,26 +388,26 @@ public class GroupFragment extends ListFragment {
   
 
 
- 
+
   public TextView mTextView;
   public TextView mTextView1;
 
-  
-  
+
+
   	public final OkHttpClient client = new OkHttpClient();
 	Gson gson = new Gson();
 	public static final String DEBUG_TAG = "Debug";
-	
+
 	  public class AsyncServiceCallGroupFrag extends AsyncTask<String, Void, List<Runners>> {
 		  protected void onPreExecute(){
 			  //Log.d("Async", "PreExcute");
 		  }
-		  
+
 		    @Override
 		    protected void onCancelled() {
 		        //Log.d("Canceled", "canceld");
 		    }
-		  
+
 			@Override
 			protected List<Runners> doInBackground(String... params) {
 				Request request = new Request.Builder()
@@ -422,19 +426,19 @@ public class GroupFragment extends ListFragment {
 					}
 
 				    IndividualResults preFullyParsed = gson.fromJson(response.body().charStream(), IndividualResults.class);
-				    
+
 				    List<Runners> text = preFullyParsed.results;
-				    
+
 				    Workout test = null;
 
 				    return text;
-				    
+
 				} catch (IOException e) {
-					
+
 					return null;
 				}
 			}
-			
+
 			@Override
 			protected void onPostExecute(List<Runners> result) {
 
@@ -456,11 +460,11 @@ public class GroupFragment extends ListFragment {
 							tempArray.add(result.get(i).name);
 							tempArray.add(Integer.toString(-1));
 							tempArray.add(Integer.toString(0));
-							athleteDictionary.put(resultData.get(i), tempArray);	
-							continue; 
+							athleteDictionary.put(resultData.get(i), tempArray);
+							continue;
 						}
 						for (int j = 0; j < result.get(i).interval.size(); j++){
-							
+
 							float temp = Float.parseFloat(result.get(i).interval.get(j)[0]);
 							if (temp>90){
 								int min = (int) Math.floor(temp/60);
@@ -469,19 +473,19 @@ public class GroupFragment extends ListFragment {
 								StringBuilder sb = new StringBuilder();
 								if (sec < 10)
 								{
-									
+
 									sb.append(min + ":0" + sec +"." + mili );
 								}
 								else
 								{
-									
+
 									sb.append(min + ":" +sec +"."+ mili);
 								}
 								//tempArray.add(sb.toString());
 							}
 							else{
 								//tempArray.add(result.get(i).interval.get(j)[0].toString());
-							}				
+							}
 							//Log.d("Interval to String", result.get(i).interval.get(j)[0].toString());
 						}
 						tempArray.add(result.get(i).name);
@@ -493,7 +497,7 @@ public class GroupFragment extends ListFragment {
 						athleteDictionary.put(resultData.get(i), tempArray);
 					}
 					//Log.d("Dictionary",athleteDictionary.toString());
-					
+
 
 					//set result to show on screen
 					Parcelable state = lview.onSaveInstanceState();
@@ -501,8 +505,8 @@ public class GroupFragment extends ListFragment {
 						//Log.d(DEBUG_TAG,result.toString());
 						//Log.d(DEBUG_TAG,athleteDictionary.toString());
 						groupList = new GroupAdapter(result, getActivity(),athleteDictionary);
-					    setListAdapter(groupList);	
-					    
+					    setListAdapter(groupList);
+
 					    //Set Headers
 					    mTextView.setText("Workout Name: " + title);
 					    mTextView1.setText("Date: " + date.substring(0,10));
@@ -510,17 +514,16 @@ public class GroupFragment extends ListFragment {
 					}
 					else{
 						groupList.updateResults(result);
-						
+
 					}
 				    delegate.processFinish(groupList);
-				 
 				   //lview.onRestoreInstanceState(state);
 				}
 			}
-			  
+
 		  }
 
 
-  
+
   
 } 
