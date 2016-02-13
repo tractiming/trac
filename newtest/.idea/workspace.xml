@@ -6,6 +6,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="paus" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
@@ -59,53 +60,46 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GroupFragment.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GroupFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.6666665">
-              <caret line="118" column="8" selection-start-line="118" selection-start-column="8" selection-end-line="118" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.37525773">
+              <caret line="94" column="40" selection-start-line="94" selection-start-column="40" selection-end-line="94" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5019#6938#0" expanded="true" />
-                <element signature="e#6937#6938#0" expanded="true" />
-                <element signature="e#7042#7392#0" expanded="true" />
-                <element signature="e#7391#7392#0" expanded="true" />
-                <element signature="e#8835#9552#0" expanded="true" />
-                <element signature="e#9551#9552#0" expanded="true" />
-                <element signature="e#9679#11181#0" expanded="true" />
-                <element signature="e#11180#11181#0" expanded="true" />
-                <element signature="e#11414#12321#0" expanded="true" />
-                <element signature="e#12016#12226#0" expanded="true" />
-                <element signature="e#12225#12226#0" expanded="true" />
-                <element signature="e#12320#12321#0" expanded="true" />
-                <element signature="e#14307#14315#0" expanded="true" />
+                <element signature="e#9935#10652#0" expanded="true" />
+                <element signature="e#10651#10652#0" expanded="true" />
+                <element signature="e#10779#12281#0" expanded="true" />
+                <element signature="e#12280#12281#0" expanded="true" />
+                <element signature="e#12511#13418#0" expanded="true" />
+                <element signature="e#13113#13323#0" expanded="true" />
+                <element signature="e#13322#13323#0" expanded="true" />
+                <element signature="e#13417#13418#0" expanded="true" />
+                <element signature="e#15404#15412#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/MainActivity.java">
+      <file leaf-file-name="InternalStorage.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/InternalStorage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6845361">
-              <caret line="261" column="57" selection-start-line="261" selection-start-column="57" selection-end-line="261" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="27" column="47" selection-start-line="27" selection-start-column="47" selection-end-line="27" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3602#3625#0" expanded="true" />
-                <element signature="e#3627#3644#0" expanded="true" />
-                <element signature="e#4801#4974#0" expanded="true" />
-                <element signature="e#4973#4974#0" expanded="true" />
-                <element signature="e#9713#9738#0" expanded="true" />
-                <element signature="e#9740#9759#0" expanded="true" />
-                <element signature="e#10327#10328#0" expanded="true" />
-                <element signature="e#10345#10346#0" expanded="true" />
-                <element signature="e#10393#10394#0" expanded="true" />
-                <element signature="e#10413#10414#0" expanded="true" />
-                <element signature="e#10471#10472#0" expanded="true" />
-                <element signature="e#10500#10501#0" expanded="true" />
-                <element signature="e#11430#11464#0" expanded="true" />
-                <element signature="e#11518#11552#0" expanded="true" />
-                <element signature="e#11606#11640#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="5.3703704">
+              <caret line="233" column="12" selection-start-line="233" selection-start-column="12" selection-end-line="233" selection-end-column="40" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -114,27 +108,16 @@
       <file leaf-file-name="GroupAdapter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.425926">
-              <caret line="421" column="0" selection-start-line="421" selection-start-column="0" selection-end-line="421" selection-end-column="0" />
+            <state vertical-scroll-proportion="-5.648148">
+              <caret line="361" column="20" selection-start-line="361" selection-start-column="20" selection-end-line="361" selection-end-column="94" />
               <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#8042#8043#0" expanded="true" />
+                <element signature="e#8070#8071#0" expanded="true" />
                 <element signature="e#8102#8103#0" expanded="true" />
                 <element signature="e#8131#8132#0" expanded="true" />
-                <element signature="method#changeBool#0;class#GroupAdapter#0" expanded="false" />
-                <element signature="method#splitButtonPressed#0;class#GroupAdapter#0" expanded="false" />
-                <element signature="e#11190#11198#0" expanded="true" />
-                <element signature="e#12022#12030#0" expanded="true" />
-                <element signature="e#12736#12744#0" expanded="true" />
+                <element signature="e#13871#13879#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SettingsFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/SettingsFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -1800,10 +1783,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/RaceStart.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_item_group.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/SettingsFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/AsyncServiceCallGroupFrag.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/InternalStorage.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupFragment.java" />
       </list>
     </option>
   </component>
@@ -1848,6 +1832,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="ProjectPane" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -1912,10 +1898,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
-      <pane id="ProjectPane" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2102,38 +2086,47 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="988" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34977064" sideWeight="0.5037274" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34977064" sideWeight="0.49307775" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34977064" sideWeight="0.49627262" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34977064" sideWeight="0.50692225" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23935091" sideWeight="0.5063898" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16187434" sideWeight="0.24338624" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.48509052" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16187434" sideWeight="0.25396827" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.48083067" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.49574015" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960597" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16187434" sideWeight="0.75661373" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.49361023" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16187434" sideWeight="0.74603176" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.48935038" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -2286,13 +2279,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.06352087">
-          <caret line="398" column="32" selection-start-line="398" selection-start-column="32" selection-end-line="398" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.74712646">
@@ -2409,9 +2395,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="36" column="42" selection-start-line="36" selection-start-column="42" selection-end-line="36" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2419,7 +2402,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.74953616">
           <caret line="122" column="17" selection-start-line="122" selection-start-column="17" selection-end-line="122" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2427,7 +2409,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6122449">
           <caret line="68" column="31" selection-start-line="68" selection-start-column="31" selection-end-line="68" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2439,24 +2420,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/CalendarActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35051546">
-          <caret line="225" column="15" selection-start-line="225" selection-start-column="15" selection-end-line="225" selection-end-column="15" />
-          <folding>
-            <element signature="e#6241#6260#0" expanded="false" />
-            <element signature="e#6262#6983#0" expanded="false" />
-            <element signature="e#6982#6983#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/WorkoutFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-11.481482">
           <caret line="179" column="41" selection-start-line="179" selection-start-column="41" selection-end-line="179" selection-end-column="41" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2479,7 +2448,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="6" column="21" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2495,7 +2463,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.16697589">
           <caret line="6" column="25" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2503,7 +2470,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.08348794">
           <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2511,7 +2477,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="380" column="17" selection-start-line="380" selection-start-column="17" selection-end-line="380" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2545,6 +2510,26 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/CalendarActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33203125">
+          <caret line="159" column="54" selection-start-line="159" selection-start-column="40" selection-end-line="159" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15625">
+          <caret line="225" column="30" selection-start-line="225" selection-start-column="30" selection-end-line="227" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/SettingsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2553,66 +2538,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupAdapter.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/InternalStorage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.425926">
-          <caret line="421" column="0" selection-start-line="421" selection-start-column="0" selection-end-line="421" selection-end-column="0" />
-          <folding>
-            <element signature="e#8102#8103#0" expanded="true" />
-            <element signature="e#8131#8132#0" expanded="true" />
-            <element signature="method#changeBool#0;class#GroupAdapter#0" expanded="false" />
-            <element signature="method#splitButtonPressed#0;class#GroupAdapter#0" expanded="false" />
-            <element signature="e#11190#11198#0" expanded="true" />
-            <element signature="e#12022#12030#0" expanded="true" />
-            <element signature="e#12736#12744#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.6666665">
-          <caret line="118" column="8" selection-start-line="118" selection-start-column="8" selection-end-line="118" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="47" selection-start-line="27" selection-start-column="47" selection-end-line="27" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5019#6938#0" expanded="true" />
-            <element signature="e#6937#6938#0" expanded="true" />
-            <element signature="e#7042#7392#0" expanded="true" />
-            <element signature="e#7391#7392#0" expanded="true" />
-            <element signature="e#8835#9552#0" expanded="true" />
-            <element signature="e#9551#9552#0" expanded="true" />
-            <element signature="e#9679#11181#0" expanded="true" />
-            <element signature="e#11180#11181#0" expanded="true" />
-            <element signature="e#11414#12321#0" expanded="true" />
-            <element signature="e#12016#12226#0" expanded="true" />
-            <element signature="e#12225#12226#0" expanded="true" />
-            <element signature="e#12320#12321#0" expanded="true" />
-            <element signature="e#14307#14315#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6845361">
-          <caret line="261" column="57" selection-start-line="261" selection-start-column="57" selection-end-line="261" selection-end-column="57" />
+        <state vertical-scroll-proportion="5.3703704">
+          <caret line="233" column="12" selection-start-line="233" selection-start-column="12" selection-end-line="233" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3602#3625#0" expanded="true" />
-            <element signature="e#3627#3644#0" expanded="true" />
-            <element signature="e#4801#4974#0" expanded="true" />
-            <element signature="e#4973#4974#0" expanded="true" />
-            <element signature="e#9713#9738#0" expanded="true" />
-            <element signature="e#9740#9759#0" expanded="true" />
-            <element signature="e#10327#10328#0" expanded="true" />
-            <element signature="e#10345#10346#0" expanded="true" />
-            <element signature="e#10393#10394#0" expanded="true" />
-            <element signature="e#10413#10414#0" expanded="true" />
-            <element signature="e#10471#10472#0" expanded="true" />
-            <element signature="e#10500#10501#0" expanded="true" />
-            <element signature="e#11430#11464#0" expanded="true" />
-            <element signature="e#11518#11552#0" expanded="true" />
-            <element signature="e#11606#11640#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.648148">
+          <caret line="361" column="20" selection-start-line="361" selection-start-column="20" selection-end-line="361" selection-end-column="94" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#8042#8043#0" expanded="true" />
+            <element signature="e#8070#8071#0" expanded="true" />
+            <element signature="e#8102#8103#0" expanded="true" />
+            <element signature="e#8131#8132#0" expanded="true" />
+            <element signature="e#13871#13879#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37525773">
+          <caret line="94" column="40" selection-start-line="94" selection-start-column="40" selection-end-line="94" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#9935#10652#0" expanded="true" />
+            <element signature="e#10651#10652#0" expanded="true" />
+            <element signature="e#10779#12281#0" expanded="true" />
+            <element signature="e#12280#12281#0" expanded="true" />
+            <element signature="e#12511#13418#0" expanded="true" />
+            <element signature="e#13113#13323#0" expanded="true" />
+            <element signature="e#13322#13323#0" expanded="true" />
+            <element signature="e#13417#13418#0" expanded="true" />
+            <element signature="e#15404#15412#0" expanded="true" />
           </folding>
         </state>
       </provider>

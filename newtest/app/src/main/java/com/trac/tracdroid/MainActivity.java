@@ -254,7 +254,7 @@ public class MainActivity extends ActionBarActivity implements
 		if (tab.getPosition()==0)
 		{
 			Log.d("akjdlf", "kjladf");
-
+			mSectionsPagerAdapter.notifyDataSetChanged();
 
 		}
 		else if (tab.getPosition() == 1)

@@ -81,6 +81,7 @@ public class GroupFragment extends ListFragment {
 	int counter;
 	public HashMap<String,List<String>> storedDictionary;
 	public List<Runners> storedRunners;
+	String FILENAME = "tracstorage";
 
 	
 	public static void backButtonWasPressed() {
@@ -91,14 +92,17 @@ public class GroupFragment extends ListFragment {
     }
 
 	public void onPause(){
+		Log.d("Caled on pause","pause");
 		super.onPause();
 		timer.cancel();
 		asyncServiceCall.cancel(true);
+		saveShared();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
 		setRetainInstance(false);
 		Log.d("view created agian","view created again");
 		startTime = SystemClock.elapsedRealtime();
@@ -228,10 +232,34 @@ public class GroupFragment extends ListFragment {
 
 		return rootView;
 	}
+	private void saveShared(){
+		ArrayList<String> tempTimes = groupList.getTimes();
+		ArrayList<String> tempResets = groupList.getSplitReset();
+		ArrayList<String> tempIDs = groupList.getAllIDs();
+		try {
+			InternalStorage.writeObject(getContext(), "tempTimes", tempTimes);
+			InternalStorage.writeObject(getContext(), "tempResets", tempResets);
+			InternalStorage.writeObject(getContext(), "tempIDs", tempIDs);
+
+		}
+		catch(IOException e){
+
+		}
+/*		SharedPreferences pref = getActivity().getSharedPreferences("userdetails", Context.MODE_PRIVATE);
+		SharedPreferences.Editor edit = pref.edit();
+		edit.putStringSet("temporaryTimes",null);
+		edit.putStringSet("tempResets",null);
+		edit.putStringSet("tempIDs",null);
+		Set<String> set = new HashSet<String>(tempTimes);
+		edit.putStringSet("temporaryTimes", set);
+		Set<String> set2 = new HashSet<String>(tempResets);
+		edit.putStringSet("tempResets", set2);
+		Set<String> set3 = new HashSet<String>(tempIDs);
+		edit.putStringSet("tempIDs", set3);
+		edit.commit();*/
+	}
 
 
-
-	
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
@@ -352,9 +380,9 @@ public class GroupFragment extends ListFragment {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-	  Log.d("On Acitivyt","On Activity");
+	  Log.d("On Acitivyt", "On Activity");
     lview = getListView();
-    
+
     lview.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 
@@ -500,6 +528,8 @@ public class GroupFragment extends ListFragment {
 					//Log.d("Dictionary",athleteDictionary.toString());
 
 
+
+
 					//set result to show on screen
 					Parcelable state = lview.onSaveInstanceState();
 					if (executed == false){
@@ -510,7 +540,23 @@ public class GroupFragment extends ListFragment {
 
 					    //Set Headers
 					    mTextView.setText("Workout Name: " + title);
-					    mTextView1.setText("Date: " + date.substring(0,10));
+					    mTextView1.setText("Date: " + date.substring(0, 10));
+
+						try {
+							// Retrieve the list from internal storage
+							ArrayList<String> tempTimes = (ArrayList<String>) InternalStorage.readObject(getContext(), "tempTimes");
+							ArrayList<String> tempResets = (ArrayList<String>) InternalStorage.readObject(getContext(), "tempResets");
+							ArrayList<String> tempIDs = (ArrayList<String>) InternalStorage.readObject(getContext(), "tempIDs");
+							System.out.println("timeArray:"+tempTimes+"time zie"+ tempResets);
+							groupList.passInTimeResetID(tempTimes, tempResets, tempIDs);
+						}
+						catch(IOException e){
+
+						}
+						catch (ClassNotFoundException e) {
+							Log.e("tag", e.getMessage());
+						}
+
 					    executed = true;
 					}
 					else{
@@ -518,7 +564,9 @@ public class GroupFragment extends ListFragment {
 
 					}
 				    delegate.processFinish(groupList);
+
 				   //lview.onRestoreInstanceState(state);
+
 				}
 			}
 

@@ -254,7 +254,7 @@ public class GroupAdapter extends BaseAdapter{
 	}
 	public void clearCheckboxes(){
 		clearCheckboxes = true;
-		Log.d("Fired","Clear");	
+		Log.d("Fired", "Clear");
 		    for(int k=0; k < positionArray.size(); k++){
 		    	positionArray.set(k, false);
 		    }
@@ -336,6 +336,43 @@ public class GroupAdapter extends BaseAdapter{
 	public ArrayList<String> getTimes(){
 
 		return timeArray;
+	}
+
+ 	public ArrayList<String> getSplitReset(){
+
+		return totalCountArray;
+	}
+
+	public ArrayList<String> getAllIDs(){
+
+		return totalAthleteID;
+	}
+
+	public void passInTimeResetID(ArrayList<String> time, ArrayList<String> resetSplits, ArrayList<String> runnerIDs){
+		//TODO: Reorder arrays to match what the jsonID array outputs has; aka the order of the indicies.
+		//Replace the
+		List<String> tempDict = new ArrayList<String>(resultData.keySet());
+		Log.d("Temp Dict-----",tempDict.toString());
+		for (int i = 0; i < runnerIDs.size(); i++){
+			Boolean tempBool = tempDict.contains(runnerIDs.get(i));
+			if (tempBool){
+				//if its in the array from previous, add its time
+				for (int j = 0; j < tempDict.size();j++)
+				{
+					System.out.println("timeArray:"+timeArray.size()+"time zie"+ time.size());
+					if((tempDict.get(j)).equals(runnerIDs.get(i))){
+
+						Log.d("repacling", "replaceing");
+						timeArray.set(j,time.get(i));
+						totalCountArray.set(j,resetSplits.get(i));
+						Log.d("repacling","replace me!");
+						//TODO: Replace for reset value as well.
+						continue;
+					}
+				}
+			}
+		}
+		notifyDataSetChanged();
 	}
 	
 	public void updateResults(List<Runners> result) {
