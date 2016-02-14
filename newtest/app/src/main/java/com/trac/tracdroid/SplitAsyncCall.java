@@ -1,15 +1,5 @@
 package com.trac.tracdroid;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.TimeZone;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -20,11 +10,19 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 	//public BooleanAsyncResponse delegate = null; 
 	
     String url;
     ArrayList<String> checkArray;
+	ArrayList<String> timeArray;
 	private String idPosition;
 	
     @Override
@@ -32,10 +30,11 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
         Log.d("Canceled", "canceld");
     }
 
-    SplitAsyncCall(ArrayList<String> checkArray, String url, String idPosition) {
+    SplitAsyncCall(ArrayList<String> checkArray, String url, String idPosition, ArrayList<String> timeArray) {
         this.url = url;
         this.checkArray = checkArray;
         this.idPosition = idPosition;
+		this.timeArray = timeArray;
 
     }
 	
@@ -48,9 +47,9 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 		
 		//String pre_json = "id=1";
 		Log.d(DEBUG_TAG, "data in here??? "+ checkArray);
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
-		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
-		final String utcTime = dateFormatGmt.format(new Date());
+		//SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+		//dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+		//final String utcTime = dateFormatGmt.format(new Date());
 		
 		String[] sessionID = new String[] {idPosition};
 		
@@ -65,7 +64,7 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 				athleteJSON.put("sessions", jsonArray);
 				athleteJSON.put("tag",JSONObject.NULL);
 				athleteJSON.put("reader", JSONObject.NULL);
-				athleteJSON.put("time", utcTime);
+				athleteJSON.put("time", timeArray.get(i));
 				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

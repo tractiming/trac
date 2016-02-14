@@ -109,7 +109,7 @@ public class GroupFragment extends ListFragment {
 			Bundle savedInstanceState) {
 
 		setRetainInstance(false);
-		Log.d("view created agian","view created again");
+		//Log.d("view created agian","view created again");
 		startTime = SystemClock.elapsedRealtime();
 
 		Bundle args = getArguments();
@@ -170,12 +170,13 @@ public class GroupFragment extends ListFragment {
 		    public void onClick(View v) {
 		    	Amplitude.getInstance().logEvent("GroupFragment_SplitButton");
 		    	ArrayList<String> checkArray = groupList.getCheckArrayID();
+				ArrayList<String> timeArray = groupList.getCheckTimeArray();
 		    	
 		    	//Log.d("Array has data?2 ??",checkArray.toString());
 		    	
 	        	String url = "https://trac-us.appspot.com/api/splits/?access_token=" + access_token;
 	        	//http://10.0.2.2:8000/api/individual_splits/?access_token=XQ8JLMtCPznQGSWUep1jX3ES2FWjWX
-	        	SplitAsyncCall splitCall = new SplitAsyncCall(checkArray,url,idPosition);
+	        	SplitAsyncCall splitCall = new SplitAsyncCall(checkArray,url,idPosition, timeArray);
 	        	splitCall.execute();
 	        	groupList.splitButtonPressed(checkArray);
 	        	groupList.clearCheckboxes();
@@ -241,6 +242,7 @@ public class GroupFragment extends ListFragment {
 		ArrayList<String> tempTimes = groupList.getTimes();
 		ArrayList<String> tempResets = groupList.getSplitReset();
 		ArrayList<String> tempIDs = groupList.getAllIDs();
+		System.out.println("SAVING IN : timeArray:"+tempTimes+"Resets"+ tempResets+"IDs"+tempIDs);
 		String tempTimesString = "tempTimes-"+idPosition;
 		String tempResetsString = "tempResets-"+idPosition;
 		String tempIDsString = "tempIDs-"+idPosition;
@@ -253,18 +255,6 @@ public class GroupFragment extends ListFragment {
 		catch(IOException e){
 
 		}
-/*		SharedPreferences pref = getActivity().getSharedPreferences("userdetails", Context.MODE_PRIVATE);
-		SharedPreferences.Editor edit = pref.edit();
-		edit.putStringSet("temporaryTimes",null);
-		edit.putStringSet("tempResets",null);
-		edit.putStringSet("tempIDs",null);
-		Set<String> set = new HashSet<String>(tempTimes);
-		edit.putStringSet("temporaryTimes", set);
-		Set<String> set2 = new HashSet<String>(tempResets);
-		edit.putStringSet("tempResets", set2);
-		Set<String> set3 = new HashSet<String>(tempIDs);
-		edit.putStringSet("tempIDs", set3);
-		edit.commit();*/
 	}
 
 
@@ -322,7 +312,7 @@ public class GroupFragment extends ListFragment {
 		                    	//Log.d("URL:", message);
 		                    	//performs async service call on the message--url--passed
 		                    	asyncServiceCall.execute(message);
-		                    	Log.i(DEBUG_TAG, "counter");
+		                    	//Log.i(DEBUG_TAG, "counter");
 		                    } catch (Exception e) {
 		                        // TODO Auto-generated catch block
 		                    }
@@ -388,7 +378,7 @@ public class GroupFragment extends ListFragment {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-	  Log.d("On Acitivyt", "On Activity");
+	 // Log.d("On Acitivyt", "On Activity");
     lview = getListView();
 
     lview.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -415,7 +405,7 @@ public class GroupFragment extends ListFragment {
              }
          };
          // Toast...
-         Log.d("Hello","Helo");
+        // Log.d("Hello","Helo");
             return true;
         }
     });
@@ -558,8 +548,9 @@ public class GroupFragment extends ListFragment {
 							ArrayList<String> tempTimes = (ArrayList<String>) InternalStorage.readObject(getContext(), tempTimesString);
 							ArrayList<String> tempResets = (ArrayList<String>) InternalStorage.readObject(getContext(), tempResetsString);
 							ArrayList<String> tempIDs = (ArrayList<String>) InternalStorage.readObject(getContext(), tempIDsString);
-							System.out.println("timeArray:"+tempTimes+"time zie"+ tempResets);
-							groupList.passInTimeResetID(tempTimes, tempResets, tempIDs);
+							//System.out.println(" Reading IN : timeArray:"+tempTimes+"Resets"+ tempResets+"IDs"+tempIDs);
+							if(tempIDs != null)
+								groupList.passInTimeResetID(tempTimes, tempResets, tempIDs);
 						}
 						catch(IOException e){
 

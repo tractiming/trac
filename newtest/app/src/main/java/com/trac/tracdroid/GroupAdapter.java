@@ -13,10 +13,13 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class GroupAdapter extends BaseAdapter{
 	//class for group fragment
@@ -27,10 +30,12 @@ public class GroupAdapter extends BaseAdapter{
 	private boolean checkStatus;
 	ArrayList<Boolean> positionArray;
 	ArrayList<String> athleteIDArray;
+	ArrayList<String> athleteTimeArray;
 	private boolean clearCheckboxes;
 	ArrayList<String> totalCountArray;
 	ArrayList<String> totalSizeArray;
 	ArrayList<String> totalAthleteID;
+	ArrayList<String> runningToastStore;
 	ArrayList<String> timeArray;
 	public boolean addingRow;
 	
@@ -40,10 +45,11 @@ public class GroupAdapter extends BaseAdapter{
 	 this.parsedJson = workout;
 	 this.context = context;
 	 this.resultData = resultData;
-		Log.d("Result data",resultData.toString());
 	 runnersList.addAll(parsedJson);
 	 checkStatus = false;
+		runningToastStore = new ArrayList<String>();
 	 athleteIDArray = new ArrayList<String>();
+	 athleteTimeArray = new ArrayList<String>();
 	 //iterate through array and put false in for every entry--checkboxes
 	 timeArray = new ArrayList<String>(parsedJson.size());
 	 positionArray = new ArrayList<Boolean>(parsedJson.size());
@@ -92,7 +98,7 @@ public class GroupAdapter extends BaseAdapter{
 		// TODO Auto-generated method stub
 		//Inflate a view to show peoples names
 		//constantly update totalsize array
-		Log.d("has split","split");
+		//Log.d("has split","split");
 		if(parsedJson.get(position).has_split.equalsIgnoreCase("true"))
 			totalSizeArray.set(position,Integer.toString(parsedJson.get(position).interval.size()));
 		else 
@@ -102,7 +108,7 @@ public class GroupAdapter extends BaseAdapter{
 	    Holder holder = null;
 		
 		if (convertView == null) {
-			Log.d("null","null");
+			//Log.d("null","null");
 			holder = new Holder();
 			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_group, null);
 			holder.ckbox = (CheckBox) convertView.findViewById(R.id.checkBox);
@@ -133,6 +139,11 @@ public class GroupAdapter extends BaseAdapter{
 	            	changeBool();
 	                positionArray.set(position, true);
 	                athleteIDArray.add(parsedJson.get(position).id);
+					SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+					dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+					final String utcTime = dateFormatGmt.format(new Date());
+					athleteTimeArray.add(utcTime);
+					runningToastStore.add(Long.toString(SystemClock.elapsedRealtime()));
 
 	            }
 	            else if(!isChecked){
@@ -141,6 +152,8 @@ public class GroupAdapter extends BaseAdapter{
 		            if(athleteIDArray.contains(parsedJson.get(position).id)){
 		            	int athleteindex = athleteIDArray.indexOf(parsedJson.get(position).id);
 		            	athleteIDArray.remove(athleteindex);
+						athleteTimeArray.remove(athleteindex);
+						runningToastStore.remove(athleteindex);
 
 		            }
 	            }
@@ -249,8 +262,13 @@ public class GroupAdapter extends BaseAdapter{
 	public ArrayList<String> getCheckArrayID(){
 		return athleteIDArray;
 	}
+	public ArrayList<String> getCheckTimeArray(){
+		return athleteTimeArray;
+	}
 	public void resetCheckArray(){
 		athleteIDArray.clear();
+		athleteTimeArray.clear();
+		runningToastStore.clear();
 	}
 	public void clearCheckboxes(){
 		clearCheckboxes = true;
@@ -284,12 +302,12 @@ public class GroupAdapter extends BaseAdapter{
 					Log.d("Entered", "The DNS FUnction");
 					int temporaryCount = Integer.parseInt(totalSizeArray.get(tempIndex));
 					totalCountArray.set(tempIndex, Integer.toString(temporaryCount));
-					timeArray.set(tempIndex, Long.toString(SystemClock.elapsedRealtime()));
+					timeArray.set(tempIndex, runningToastStore.get(i));
 
 				}
 				else if(totalSizeArray.get(tempIndex) == Integer.toString(tempCount)){
 					Log.d("Entered", "The Everything else FUnction");
-					timeArray.set(tempIndex, Long.toString(SystemClock.elapsedRealtime()));
+					timeArray.set(tempIndex, runningToastStore.get(i));
 				}
         	}
 
@@ -351,27 +369,23 @@ public class GroupAdapter extends BaseAdapter{
 	public void passInTimeResetID(ArrayList<String> time, ArrayList<String> resetSplits, ArrayList<String> runnerIDs){
 		//TODO: Reorder arrays to match what the jsonID array outputs has; aka the order of the indicies.
 		//Replace the
-		List<String> tempDict = new ArrayList<String>(resultData.keySet());
-		Log.d("Temp Dict-----",tempDict.toString());
+		//List<String> tempDict = new ArrayList<String>(resultData.keySet());
+		//Log.d("Temp Dict-----",tempDict.toString());
 		for (int i = 0; i < runnerIDs.size(); i++){
-			Boolean tempBool = tempDict.contains(runnerIDs.get(i));
+			Boolean tempBool = totalAthleteID.contains(runnerIDs.get(i));
 			if (tempBool){
 				//if its in the array from previous, add its time
-				for (int j = 0; j < tempDict.size();j++)
+				for (int j = 0; j < totalAthleteID.size();j++)
 				{
-					System.out.println("timeArray:"+timeArray.size()+"time zie"+ time.size());
-					if((tempDict.get(j)).equals(runnerIDs.get(i))){
-
-						Log.d("repacling", "replaceing");
+					if((totalAthleteID.get(j)).equals(runnerIDs.get(i))){
+						System.out.println("Old Index:"+j+"new index"+i);
 						timeArray.set(j,time.get(i));
 						totalCountArray.set(j,resetSplits.get(i));
-						Log.d("repacling","replace me!");
-						//TODO: Replace for reset value as well.
-						continue;
 					}
 				}
 			}
 		}
+		System.out.println("Adapter Total Count Array:" + totalCountArray.toString() + "Time Array:" + timeArray.toString());
 		notifyDataSetChanged();
 	}
 	
