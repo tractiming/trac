@@ -221,6 +221,7 @@ public class GroupFragment extends ListFragment {
 	        		
 	        		
 	        	}
+				dynamicButtons();
 	        	//Log.d("Array has data? 3?",checkArray.toString());
 	        	//groupList.resetCheckArray();
 	        	//groupList.clearCheckboxes();
@@ -232,10 +233,14 @@ public class GroupFragment extends ListFragment {
 		    public void onClick(View v) {
 		      Amplitude.getInstance().logEvent("GroupFragment_ResetButton");
 		      ArrayList<String> checkArray = groupList.getCheckArrayID();
+				if(checkArray.size() == 0 || checkArray == null)
+				{
+					checkArray = groupList.getAllIDs();
+				}
 		      groupList.resetButtonPressed(checkArray);
 		      groupList.resetCheckArray();
 		      groupList.clearCheckboxes();
-		      
+		      dynamicButtons();
 		    }
 		  });
 		
