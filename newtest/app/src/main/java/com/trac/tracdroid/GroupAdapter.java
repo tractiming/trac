@@ -130,7 +130,8 @@ public class GroupAdapter extends BaseAdapter{
 		   holder.ckbox.setChecked(positionArray.get(position));
 		   addingRow = false;
 	   }
-		   holder.ckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		final View finalConvertView = convertView;
+		holder.ckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 	        @Override
 	        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -158,6 +159,8 @@ public class GroupAdapter extends BaseAdapter{
 		            }
 	            }
 	            //System.out.println(positionArray);
+				//If array has anything in it, flip button value
+
 	        }
 
 	    });
@@ -282,7 +285,8 @@ public class GroupAdapter extends BaseAdapter{
 		
 	}
 	public void splitButtonPressed(ArrayList<String> splitArray){
-		
+		if(splitArray.size() == 0)
+			splitArray = totalSizeArray;
 		for (int i = 0; i < splitArray.size(); i++){
 			//iterate through fed array and see if it matches id to any temp dict
 			Boolean tempBool = totalAthleteID.contains(splitArray.get(i));

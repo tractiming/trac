@@ -34,8 +34,8 @@
 	<string name="logout_description">Return to login screen</string>
 	<string name="download">Import Roster</string>
 	<string name="download_description">Pull registered runners into workout</string>
-	<string name="split">Split</string>
-	<string name="reset">Reset</string>
+	<string name="split">Split All</string>
+	<string name="reset">Reset All</string>
 	<string name="view_roster">View Roster</string>
 	<string name="view_roster_description">See roster before importing</string>
 	<string name="organization">Organization</string>

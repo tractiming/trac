@@ -15,7 +15,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
 	//public BooleanAsyncResponse delegate = null; 
@@ -30,11 +33,31 @@ public class SplitAsyncCall extends AsyncTask<Void, Void, Boolean> {
         Log.d("Canceled", "canceld");
     }
 
-    SplitAsyncCall(ArrayList<String> checkArray, String url, String idPosition, ArrayList<String> timeArray) {
+    SplitAsyncCall(ArrayList<String> checkArray, String url, String idPosition, ArrayList<String> timeArray, ArrayList<String> allIDs) {
         this.url = url;
-        this.checkArray = checkArray;
         this.idPosition = idPosition;
-		this.timeArray = timeArray;
+
+		Log.d("All IDS? size", allIDs.toString());
+		if(checkArray.size() == 0 || checkArray == null)
+		{
+			Log.d("Get here","get here");
+			this.checkArray = allIDs;
+			SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+			dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+			final String utcTime = dateFormatGmt.format(new Date());
+			this.timeArray = new ArrayList<String>();
+			for (int i=0; i < this.checkArray.size(); i++)
+			{
+				Log.d("In Loop","in Loop");
+				this.timeArray.add(utcTime);
+			}
+			Log.d("CheckArray",this.timeArray.toString()+this.checkArray.toString());
+		}
+		else{
+			this.checkArray = checkArray;
+			this.timeArray = timeArray;
+		}
+
 
     }
 	

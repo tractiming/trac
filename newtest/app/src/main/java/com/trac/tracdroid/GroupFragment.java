@@ -82,6 +82,7 @@ public class GroupFragment extends ListFragment {
 	public HashMap<String,List<String>> storedDictionary;
 	public List<Runners> storedRunners;
 	String FILENAME = "tracstorage";
+	public View rootView;
 
 	
 	public static void backButtonWasPressed() {
@@ -117,7 +118,7 @@ public class GroupFragment extends ListFragment {
 
 		setHasOptionsMenu(true);
 		//Log.d("Instance State in Group on Create",savedInstanceState.toString());
-		View rootView = inflater.inflate(R.layout.fragment_group_view, container,
+		rootView = inflater.inflate(R.layout.fragment_group_view, container,
 				false);
         //Inflate ID and Workout Numbers
 		mTextView = (TextView) rootView.findViewById(R.id.workout_date_view);
@@ -157,7 +158,9 @@ public class GroupFragment extends ListFragment {
 
         asyncServiceCall = new AsyncServiceCallGroupFrag();
     	asyncServiceCall.execute(message);
-        
+
+		//LinearLayout footer = (LinearLayout) getActivity().findViewById(R.id.footer);
+
 		    
 
 		//Inflate Header--gives titles above names and splits
@@ -171,12 +174,13 @@ public class GroupFragment extends ListFragment {
 		    	Amplitude.getInstance().logEvent("GroupFragment_SplitButton");
 		    	ArrayList<String> checkArray = groupList.getCheckArrayID();
 				ArrayList<String> timeArray = groupList.getCheckTimeArray();
-		    	
+				ArrayList<String> allIds = groupList.getAllIDs();
+
 		    	//Log.d("Array has data?2 ??",checkArray.toString());
 		    	
 	        	String url = "https://trac-us.appspot.com/api/splits/?access_token=" + access_token;
 	        	//http://10.0.2.2:8000/api/individual_splits/?access_token=XQ8JLMtCPznQGSWUep1jX3ES2FWjWX
-	        	SplitAsyncCall splitCall = new SplitAsyncCall(checkArray,url,idPosition, timeArray);
+	        	SplitAsyncCall splitCall = new SplitAsyncCall(checkArray,url,idPosition, timeArray,allIds);
 	        	splitCall.execute();
 	        	groupList.splitButtonPressed(checkArray);
 	        	groupList.clearCheckboxes();
@@ -238,6 +242,21 @@ public class GroupFragment extends ListFragment {
 
 		return rootView;
 	}
+
+	public void dynamicButtons(){
+		Button button = (Button) rootView.findViewById(R.id.split);
+		Button resetButton = (Button) rootView.findViewById(R.id.reset);
+		ArrayList<String> size = groupList.getCheckArrayID();
+		if (size.size() == 0) {
+			button.setText("Split All");
+			resetButton.setText("Reset All");
+		}
+		else {
+			button.setText("Split (" + size.size() + ")");
+			resetButton.setText("Reset (" + size.size() + ")");
+		}
+
+	}
 	private void saveShared(){
 		ArrayList<String> tempTimes = groupList.getTimes();
 		ArrayList<String> tempResets = groupList.getSplitReset();
@@ -266,6 +285,7 @@ public class GroupFragment extends ListFragment {
             CheckBox checkBox = (CheckBox)v.findViewById(R.id.checkBox);
             checkBox.setChecked(!checkBox.isChecked());
         }
+		dynamicButtons();
     }
 	
 	
