@@ -154,8 +154,26 @@
                 
                 
              }
-            else {
+            else if ([response statusCode] == 500) {
               [self alertStatus:@"Server Error" :@"Registration Failed!" :0];
+            }
+            else if ([response statusCode] == 400){
+                NSError *error = nil;
+                NSDictionary *jsonData = [NSJSONSerialization
+                                          JSONObjectWithData:urlData
+                                          options:NSJSONReadingMutableContainers
+                                          error:&error];
+                
+                if([jsonData objectForKey:@"password"]){
+
+                    [self alertStatus:[NSString stringWithFormat:@"%@", [jsonData objectForKey:@"password"][0]] :@"Password Error" :0];
+                }
+                else if([jsonData objectForKey:@"username"])
+                    [self alertStatus:[NSString stringWithFormat:@"%@", [jsonData objectForKey:@"username"][0]] :@"Username Error" :0];
+                else if([jsonData objectForKey:@"email"])
+                    [self alertStatus:[NSString stringWithFormat:@"%@", [jsonData objectForKey:@"email"][0]] :@"Email Error" :0];
+                
+                
             }
         }
         else{
