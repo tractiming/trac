@@ -172,28 +172,28 @@
         {
             NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
             NSDictionary *tempCreatedDict = @{@"athlete":[tempDict valueForKey:@"athleteID"],@"sessions":@[self.urlID],@"tag":[NSNull null],@"reader":[NSNull null],@"time":localDateString};
-            [s arrayByAddingObject:tempCreatedDict];
+            [s addObject:tempCreatedDict];
             
             NSLog(@"Value of S: %@",s);
             
-            
+            //For the toast to keep time
             NSLog(@"%@, %@", [tempDict valueForKey:@"countStart"], [tempDict valueForKey:@"numberSplits"]);
-            double tempHolder =[[tempDict valueForKey:@"numberSplits"] doubleValue] ;
-            NSLog(@"Tempholder Value: %f",tempHolder);
+            double tempHolder =[[tempDict valueForKey:@"numberSplits"] doubleValue];
             
             if ([[tempDict valueForKey:@"lastSplit"] isEqualToString:@"DNS"]){
+                NSLog(@"Entered DNS?");
                 [tempDict removeObjectForKey:@"dateTime"];
                 [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
             }
             else if ([[tempDict valueForKey:@"countStart"] doubleValue] == 0) {
-                //do nothing
+                //Do Nothing
             }
             else if ([[tempDict valueForKey:@"countStart"] doubleValue] == tempHolder){
                 [tempDict removeObjectForKey:@"dateTime"];
                 [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
+                NSLog(@"Executed");
             }
-        }
-        // Delete everything, delete the objects from our data model.
+        }        // Delete everything, delete the objects from our data model.
         //Take every row and put into json. Then Send it
     }
     
@@ -560,6 +560,7 @@
         self.storeDelete = NULL;
     }
     //parse out the json data
+    
     //NSLog(@"Enters Fetched Data Again");
    @try {
         NSError* error;
@@ -927,6 +928,9 @@
   }
     @catch (NSException *exception) {
         //NSLog(@"Exception.......... %s","Except!");
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self performSegueWithIdentifier:@"logout_exception" sender:self];
         return self.runners;
     }
 

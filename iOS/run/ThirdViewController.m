@@ -115,7 +115,8 @@
             //if (error) NSLog(@"Error: %@", error);
             //NSLog(@"Failed");
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
-           // NSLog(@"Response ==> %@", responseData);
+            [self performSegueWithIdentifier:@"logout" sender:self];
+           
         }
         
     }
@@ -199,6 +200,7 @@
                 }
                 
             } else {
+                [self performSegueWithIdentifier:@"logout" sender:self];
                 //if (error) NSLog(@"Error: %@", error);
                 //NSLog(@"Failed");
                 
@@ -284,6 +286,7 @@
             //NSLog(@"Failed");
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
             //NSLog(@"Response ==> %@", responseData);
+            [self performSegueWithIdentifier:@"logout" sender:self];
         }
         
     }
@@ -345,6 +348,7 @@
             //NSLog(@"Failed");
             NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSASCIIStringEncoding];
             //NSLog(@"Response ==> %@", responseData);
+            [self performSegueWithIdentifier:@"logout" sender:self];
         }
         
     }

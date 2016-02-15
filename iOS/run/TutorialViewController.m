@@ -78,11 +78,15 @@
 #pragma mark - Sample Delegate Methods
 
 -(void)introductionDidFinishWithType:(MYFinishType)finishType{
-    if (finishType == MYFinishTypeSkipButton) {
+    NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+    if (finishType == MYFinishTypeSkipButton && savedToken != NULL) {
         [self performSegueWithIdentifier:@"toNavigation" sender:self];
     }
-    else if (finishType == MYFinishTypeSwipeOut){
+    else if (finishType == MYFinishTypeSwipeOut && savedToken != NULL){
         [self performSegueWithIdentifier:@"toNavigation" sender:self];
+    }
+    else{
+        [self performSegueWithIdentifier:@"backToLogin" sender:self];
     }
     
     //One might consider making the introductionview a class variable and releasing it here.
