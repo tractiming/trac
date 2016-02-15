@@ -139,8 +139,10 @@
         
         for (NSIndexPath *selectionIndex in selectedRows)
         {
+            
             NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:selectionIndex.row];
-            NSDictionary *tempCreatedDict = @{@"athlete":[tempDict valueForKey:@"athleteID"],@"sessions":@[self.urlID],@"tag":[NSNull null],@"reader":[NSNull null],@"time":localDateString};
+            NSUInteger indexOfTheObject = [self.selectedRunners indexOfObject:[tempDict valueForKey:@"athleteID"]];
+            NSDictionary *tempCreatedDict = @{@"athlete":[tempDict valueForKey:@"athleteID"],@"sessions":@[self.urlID],@"tag":[NSNull null],@"reader":[NSNull null],@"time":[self.selectedRunnersUTC objectAtIndex:indexOfTheObject]};
             [s addObject:tempCreatedDict];
            
             NSLog(@"Value of S: %@",s);
@@ -152,14 +154,14 @@
             if ([[tempDict valueForKey:@"lastSplit"] isEqualToString:@"DNS"]){
                 NSLog(@"Entered DNS?");
                 [tempDict removeObjectForKey:@"dateTime"];
-                [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
+                [tempDict setObject:[self.selectedRunnersToast objectAtIndex:indexOfTheObject] forKey:@"dateTime"];
             }
             else if ([[tempDict valueForKey:@"countStart"] doubleValue] == 0) {
                 //Do Nothing
             }
             else if ([[tempDict valueForKey:@"countStart"] doubleValue] == tempHolder){
                 [tempDict removeObjectForKey:@"dateTime"];
-                [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
+                [tempDict setObject:[self.selectedRunnersToast objectAtIndex:indexOfTheObject] forKey:@"dateTime"];
                 NSLog(@"Executed");
             }
         }
@@ -167,6 +169,7 @@
     }
     else
     {
+        //For Split ALL
         NSArray *selectedRows = [self.tableData indexPathsForVisibleRows];
         for (NSIndexPath *selectionIndex in selectedRows)
         {
@@ -197,6 +200,10 @@
         //Take every row and put into json. Then Send it
     }
     
+    //Clear the selection arrays
+    [self.selectedRunnersUTC removeAllObjects];
+    [self.selectedRunners removeAllObjects];
+    [self.selectedRunnersToast removeAllObjects];
     // Exit editing mode after the deletion.
     //async task now.
     
@@ -371,6 +378,9 @@
 {
     [super viewDidLoad];
     CurrentTime = CACurrentMediaTime();
+    self.selectedRunners =[[NSMutableArray alloc] init];
+    self.selectedRunnersUTC =[[NSMutableArray alloc] init];
+    self.selectedRunnersToast = [[NSMutableArray alloc] init];
     
     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(handleLongPress:)];
@@ -941,13 +951,33 @@
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+     NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:indexPath.row];
     // Update the delete button's title based on how many items are selected.
+    NSUInteger indexOfTheObject = [self.selectedRunners indexOfObject:[tempDict valueForKey:@"athleteID"]];
+    [self.selectedRunners removeObjectAtIndex:indexOfTheObject];
+    [self.selectedRunnersUTC removeObjectAtIndex:indexOfTheObject];
+    [self.selectedRunnersToast removeObjectAtIndex:indexOfTheObject];
+    NSLog(@"UTC %@",self.selectedRunnersUTC);
+    NSLog(@"Indecies %@",self.selectedRunners);
     [self updateSplitButtonTitle];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:indexPath.row];
+    NSDate *currentDate = [[NSDate alloc] init];
+    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy/MM/dd HH:mm:ss.SSS"];
+    [dateFormatter setTimeZone:timeZone];
+    NSString *localDateString = [dateFormatter stringFromDate:currentDate];
+    
+    [self.selectedRunners addObject:[tempDict valueForKey:@"athleteID"]];
+    [self.selectedRunnersUTC addObject:localDateString];
+    [self.selectedRunnersToast addObject:[NSNumber numberWithDouble:CACurrentMediaTime()]];
+    NSLog(@"UTC %@",self.selectedRunnersUTC);
+    NSLog(@"Indecies %@",self.selectedRunners);
     // Update the delete button's title based on how many items are selected.
     [self updateButtonsToMatchTableState];
 }

@@ -17,6 +17,10 @@
 @property (strong, nonatomic) NSMutableArray *lasttimearray;
 @property (strong, nonatomic) NSMutableArray *summationTimeArray;
 @property (strong, nonatomic) NSMutableArray *interval;
+@property (strong, nonatomic) NSMutableArray *selectedRunners;
+@property (strong, nonatomic) NSMutableArray *selectedRunnersUTC;
+@property (strong, nonatomic) NSMutableArray *selectedRunnersToast;
+
 
 @property (strong, nonatomic) NSString *storeDelete;
 @property (strong, nonatomic) NSMutableArray *athleteDictionaryArray;
