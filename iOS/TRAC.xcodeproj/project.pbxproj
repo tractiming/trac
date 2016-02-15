@@ -632,7 +632,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.griffinkelly.trac;
 				PRODUCT_NAME = trac;
-				PROVISIONING_PROFILE = "2a927e5f-5ad4-4bf6-a349-02d799f8f998";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -658,7 +658,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.griffinkelly.trac;
 				PRODUCT_NAME = trac;
-				PROVISIONING_PROFILE = "2a927e5f-5ad4-4bf6-a349-02d799f8f998";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
