@@ -72,6 +72,10 @@
                // NSLog(@"To Login Screen");
                 return YES;
             }
+            else{
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
         }
     
     @catch (NSException * e) {

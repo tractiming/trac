@@ -818,7 +818,7 @@
 - (IBAction)createWorkout:(id)sender{
     //if plus button clicked, create workout "On-the-run"
     UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:@"Create Workout"
-                                                       message:@"Are you sure you want to create a workout?"
+                                                       message:@""
                                                       delegate:self
                              
                                              cancelButtonTitle:@"OK"
