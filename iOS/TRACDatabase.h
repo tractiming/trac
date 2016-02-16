@@ -12,7 +12,7 @@
     
 }
 
-+ (NSMutableArray *)loadScaryBugDocs;
-+ (NSString *)nextScaryBugDocPath;
++ (NSMutableArray *)loadDocs;
++ (NSString *)nextDocPath;
 
 @end

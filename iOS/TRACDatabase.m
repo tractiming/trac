@@ -24,7 +24,7 @@
     
 }
 
-+ (NSMutableArray *)loadScaryBugDocs {
++ (NSMutableArray *)loadDocs {
     
     // Get private docs dir
     NSString *documentsDirectory = [TRACDatabase getPrivateDocsDir];
@@ -41,7 +41,7 @@
     // Create ScaryBugDoc for each file
     NSMutableArray *retval = [NSMutableArray arrayWithCapacity:files.count];
     for (NSString *file in files) {
-        if ([file.pathExtension compare:@"scarybug" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+        if ([file.pathExtension compare:@"trac" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
             NSString *fullPath = [documentsDirectory stringByAppendingPathComponent:file];
             TRACDoc *doc = [[TRACDoc alloc] initWithDocPath:fullPath];
             [retval addObject:doc];
@@ -52,7 +52,7 @@
     
 }
 
-+ (NSString *)nextScaryBugDocPath {
++ (NSString *)nextDocPath {
     
     // Get private docs dir
     NSString *documentsDirectory = [TRACDatabase getPrivateDocsDir];
@@ -68,14 +68,14 @@
     // Search for an available name
     int maxNumber = 0;
     for (NSString *file in files) {
-        if ([file.pathExtension compare:@"scarybug" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+        if ([file.pathExtension compare:@"trac" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
             NSString *fileName = [file stringByDeletingPathExtension];
             maxNumber = MAX(maxNumber, fileName.intValue);
         }
     }
     
     // Get available name
-    NSString *availableName = [NSString stringWithFormat:@"%d.scarybug", maxNumber+1];
+    NSString *availableName = [NSString stringWithFormat:@"%d.trac", maxNumber+1];
     return [documentsDirectory stringByAppendingPathComponent:availableName];
     
 }

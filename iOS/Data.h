@@ -9,13 +9,14 @@
 #import <Foundation/Foundation.h>
 
 @interface Data : NSObject <NSCoding> {
-    NSString *_title;
-    float _rating;
+    NSArray *_storedIDs;
+    NSArray *_storedToast;
+    
 }
 
-@property (copy) NSString *title;
-@property  float rating;
+@property (copy) NSArray *storedIDs;
+@property  NSArray* storedToast;
 
-- (id)initWithTitle:(NSString*)title rating:(float)rating;
+- (id)initWithTitle:(NSArray*)storedIDs toast:(NSArray*)storedToast;
 
 @end

@@ -32,9 +32,9 @@
     return self;
 }
 
-- (id)initWithTitle:(NSString*)title rating:(float)rating thumbImage:(UIImage *)thumbImage fullImage:(UIImage *)fullImage {
+- (id)initWithTitle:(NSArray*)storedIDs toast:(NSArray*)storedToast {
     if ((self = [super init])) {
-        _data = [[Data alloc] initWithTitle:title rating:rating];
+        _data = [[Data alloc] initWithTitle:storedIDs toast:storedToast];
     }
     return self;
 }
@@ -50,7 +50,7 @@
 - (BOOL)createDataPath {
     
     if (_docPath == nil) {
-        self.docPath = [TRACDatabase nextScaryBugDocPath];
+        self.docPath = [TRACDatabase nextDocPath];
     }
     
     NSError *error;

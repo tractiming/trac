@@ -9,37 +9,38 @@
 #import "Data.h"
 
 @implementation Data
-@synthesize title = _title;
-@synthesize rating = _rating;
+@synthesize storedIDs = _storedIDs;
+@synthesize storedToast = _storedToast;
 
-- (id)initWithTitle:(NSString*)title rating:(float)rating {
+- (id)initWithTitle:(NSArray*)storedIDs toast:(NSArray*)storedToast {
     if ((self = [super init])) {
-        _title = [title copy];
-        _rating = rating;
+        _storedToast = storedToast;
+        _storedIDs = storedIDs;
     }
     return self;
 }
 
 - (void)dealloc {
 
-    _title = nil;
+    _storedIDs = nil;
 
 }
 
 #pragma mark NSCoding
 
 #define kTitleKey       @"Title"
-#define kRatingKey      @"Rating"
+#define kToastKey      @"Toast"
 
 - (void) encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject:_title forKey:kTitleKey];
-    [encoder encodeFloat:_rating forKey:kRatingKey];
+    [encoder encodeObject:_storedIDs forKey:kTitleKey];
+    [encoder encodeObject:_storedToast forKey:kToastKey];
+
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
-    NSString *title = [decoder decodeObjectForKey:kTitleKey];
-    float rating = [decoder decodeFloatForKey:kRatingKey];
-    return [self initWithTitle:title rating:rating];
+    NSArray *storedIDs = [decoder decodeObjectForKey:kTitleKey];
+    NSArray *storedToast = [decoder decodeObjectForKey:kToastKey];
+    return [self initWithTitle:storedIDs toast:storedToast];
 }
 
 @end
