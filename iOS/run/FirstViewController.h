@@ -8,6 +8,7 @@
 
 
 #import <UIKit/UIKit.h>
+@class TRACDoc;
 
 @interface FirstViewController :UIViewController <UITableViewDelegate,UITableViewDataSource>
 
@@ -21,7 +22,7 @@
 @property (strong, nonatomic) NSMutableArray *selectedRunnersUTC;
 @property (strong, nonatomic) NSMutableArray *selectedRunnersToast;
 
-
+@property (retain) TRACDoc *TRACDoc;
 @property (strong, nonatomic) NSString *storeDelete;
 @property (strong, nonatomic) NSMutableArray *athleteDictionaryArray;
 //@property (strong, nonatomic) NSArray *name;

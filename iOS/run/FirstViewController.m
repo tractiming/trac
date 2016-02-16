@@ -17,6 +17,9 @@
 #import "CustomCell.h"
 #import "CustomCelliPad.h"
 #import "UIView+Toast.h"
+#import "TRACDatabase.h"
+#import "TRACDoc.h"
+#import "Data.h"
 #define IDIOM    UI_USER_INTERFACE_IDIOM()
 #define IPAD     UIUserInterfaceIdiomPad
 #define UITableViewCellEditingStyleMultiSelect (3)
@@ -27,6 +30,7 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *editButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (nonatomic, assign) CFTimeInterval ticks;
+
 @end
 
 
@@ -51,8 +55,10 @@
     double CurrentTime;
     double tempTime;
     double tempTimeMax;
+    TRACDoc *_TRACDoc;
     
 }
+@synthesize TRACDoc = _TRACDoc;
 
 - (IBAction)editAction:(id)sender
 {
@@ -200,6 +206,9 @@
         //Take every row and put into json. Then Send it
     }
     
+    _TRACDoc.data.storedIDs = self.selectedRunners;
+    _TRACDoc.data.storedToast = self.selectedRunnersToast;
+    [_TRACDoc saveData];
     //Clear the selection arrays
     [self.selectedRunnersUTC removeAllObjects];
     [self.selectedRunners removeAllObjects];
@@ -285,6 +294,7 @@
     //[self updateButtonsToMatchTableState];
     //NSLog(@"Hits Again?");
     [self sendRequest];
+
     
 }
 
@@ -377,6 +387,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSMutableArray *loadDocs = [TRACDatabase loadDocs];
+    
+    
     CurrentTime = CACurrentMediaTime();
     self.selectedRunners =[[NSMutableArray alloc] init];
     self.selectedRunnersUTC =[[NSMutableArray alloc] init];
