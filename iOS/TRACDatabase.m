@@ -41,7 +41,9 @@
     // Create ScaryBugDoc for each file
     NSMutableArray *retval = [NSMutableArray arrayWithCapacity:files.count];
     for (NSString *file in files) {
+        NSLog(@"It got here");
         if ([file.pathExtension compare:@"trac" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+             NSLog(@"It got here 1.1");
             NSString *fullPath = [documentsDirectory stringByAppendingPathComponent:file];
             TRACDoc *doc = [[TRACDoc alloc] initWithDocPath:fullPath];
             [retval addObject:doc];
@@ -68,6 +70,7 @@
     // Search for an available name
     int maxNumber = 0;
     for (NSString *file in files) {
+         NSLog(@"It got here");
         if ([file.pathExtension compare:@"trac" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
             NSString *fileName = [file stringByDeletingPathExtension];
             maxNumber = MAX(maxNumber, fileName.intValue);
@@ -75,7 +78,7 @@
     }
     
     // Get available name
-    NSString *availableName = [NSString stringWithFormat:@"%d.trac", maxNumber+1];
+    NSString *availableName = [NSString stringWithFormat:@"%trac", maxNumber+1];
     return [documentsDirectory stringByAppendingPathComponent:availableName];
     
 }

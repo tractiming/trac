@@ -55,10 +55,9 @@
     double CurrentTime;
     double tempTime;
     double tempTimeMax;
-    TRACDoc *_TRACDoc;
     
 }
-@synthesize TRACDoc = _TRACDoc;
+@synthesize tracDoc = _tracDoc;
 
 - (IBAction)editAction:(id)sender
 {
@@ -124,7 +123,9 @@
 
 - (void)splitAction:(id)sender
 {
-
+    _tracDoc.data.storedIDs = self.selectedRunners;
+    _tracDoc.data.storedToast = self.selectedRunnersToast;
+    [_tracDoc saveData];
     // Delete what the user selected.
     NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
     //NSLog(@"Selected Rows, %@",selectedRows);
@@ -206,9 +207,7 @@
         //Take every row and put into json. Then Send it
     }
     
-    _TRACDoc.data.storedIDs = self.selectedRunners;
-    _TRACDoc.data.storedToast = self.selectedRunnersToast;
-    [_TRACDoc saveData];
+    
     //Clear the selection arrays
     [self.selectedRunnersUTC removeAllObjects];
     [self.selectedRunners removeAllObjects];
@@ -363,6 +362,7 @@
 
 }
 - (void)viewWillAppear:(BOOL)animated{
+    NSLog(@"%@",_tracDoc.data.storedIDs);
     self.parentViewController.navigationItem.rightBarButtonItem = self.editButton;
     
 //NSLog(@"Reappear");

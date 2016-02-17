@@ -11,6 +11,9 @@
 @class TRACDoc;
 
 @interface FirstViewController :UIViewController <UITableViewDelegate,UITableViewDataSource>
+{
+    TRACDoc *_tracDoc;
+}
 
 @property (strong, nonatomic) NSMutableArray *has_split;
 @property (strong, nonatomic) NSMutableArray *runners;
@@ -22,7 +25,7 @@
 @property (strong, nonatomic) NSMutableArray *selectedRunnersUTC;
 @property (strong, nonatomic) NSMutableArray *selectedRunnersToast;
 
-@property (retain) TRACDoc *TRACDoc;
+@property (retain) TRACDoc *tracDoc;
 @property (strong, nonatomic) NSString *storeDelete;
 @property (strong, nonatomic) NSMutableArray *athleteDictionaryArray;
 //@property (strong, nonatomic) NSArray *name;

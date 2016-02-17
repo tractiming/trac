@@ -48,7 +48,7 @@
 }
 
 - (BOOL)createDataPath {
-    
+    NSLog(@"Enter Function");
     if (_docPath == nil) {
         self.docPath = [TRACDatabase nextDocPath];
     }
@@ -63,7 +63,7 @@
 }
 
 - (Data *)data {
-    
+    NSLog(@"Enter Function");
     if (_data != nil) return _data;
     
     NSString *dataPath = [_docPath stringByAppendingPathComponent:kDataFile];
@@ -79,17 +79,19 @@
 }
 
 - (void)saveData {
-    
+    NSLog(@"Enter Function");
     if (_data == nil) return;
     
     [self createDataPath];
-    
+    NSLog(@"Got datapath");
     NSString *dataPath = [_docPath stringByAppendingPathComponent:kDataFile];
     NSMutableData *data = [[NSMutableData alloc] init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+    NSLog(@"Got encoding");
     [archiver encodeObject:_data forKey:kDataKey];
     [archiver finishEncoding];
     [data writeToFile:dataPath atomically:YES];
+    NSLog(@"Write Success");
     
 }
 
