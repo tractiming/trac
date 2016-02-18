@@ -47,10 +47,9 @@
 
 }
 
-- (BOOL)createDataPath {
-    NSLog(@"Enter Function");
+- (BOOL)createDataPath: (NSString *) SessionID {
     if (_docPath == nil) {
-        self.docPath = [TRACDatabase nextDocPath];
+        self.docPath = [TRACDatabase nextDocPath: SessionID];
     }
     
     NSError *error;
@@ -63,7 +62,6 @@
 }
 
 - (Data *)data {
-    NSLog(@"Enter Function");
     if (_data != nil) return _data;
     
     NSString *dataPath = [_docPath stringByAppendingPathComponent:kDataFile];
@@ -78,20 +76,16 @@
     
 }
 
-- (void)saveData {
-    NSLog(@"Enter Function");
+- (void)saveData:(NSString*) SessionID{
     if (_data == nil) return;
     
-    [self createDataPath];
-    NSLog(@"Got datapath");
+    [self createDataPath:SessionID];
     NSString *dataPath = [_docPath stringByAppendingPathComponent:kDataFile];
     NSMutableData *data = [[NSMutableData alloc] init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-    NSLog(@"Got encoding");
     [archiver encodeObject:_data forKey:kDataKey];
     [archiver finishEncoding];
     [data writeToFile:dataPath atomically:YES];
-    NSLog(@"Write Success");
     
 }
 

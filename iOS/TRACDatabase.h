@@ -12,7 +12,7 @@
     
 }
 
-+ (NSMutableArray *)loadDocs;
-+ (NSString *)nextDocPath;
++ (NSMutableArray *)loadDocs: (NSString *) sessionID;
++ (NSString *)nextDocPath:(NSString*) sessionID;
 
 @end

@@ -124,10 +124,8 @@
 - (void)splitAction:(id)sender
 {
     TRACDoc *newDoc = [[TRACDoc alloc] initWithTitle:self.selectedRunners toast:self.selectedRunnersToast];
-    _tracDoc.data.storedIDs = self.selectedRunners;
-    _tracDoc.data.storedToast = self.selectedRunnersToast;
     NSLog(@"DATA IN HERE??? %@",newDoc.data.storedToast);
-    [newDoc saveData];
+    [newDoc saveData:self.urlID];
     // Delete what the user selected.
     NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
     //NSLog(@"Selected Rows, %@",selectedRows);
@@ -390,8 +388,10 @@
 {
     [super viewDidLoad];
     
-    NSMutableArray *loadDocs = [TRACDatabase loadDocs];
-    
+    NSMutableArray *loadDocs = [TRACDatabase loadDocs:self.urlID];
+        NSLog(@"Temp Doc ?? %@",loadDocs);
+
+
     
     CurrentTime = CACurrentMediaTime();
     self.selectedRunners =[[NSMutableArray alloc] init];
