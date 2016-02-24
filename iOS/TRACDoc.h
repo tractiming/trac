@@ -20,7 +20,7 @@
 
 - (id)init;
 - (id)initWithDocPath:(NSString *)docPath;
-- (id)initWithTitle:(NSArray*)storedIDs toast:(NSArray*)storedToast;
+- (id)initWithTitle:(NSArray*)storedIDs toast:(NSArray*)storedToast reset:(NSArray*)storedReset;
 - (void)saveData:(NSString*) SessionID;
 - (void)deleteDoc;
 

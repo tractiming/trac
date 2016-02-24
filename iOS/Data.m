@@ -11,11 +11,13 @@
 @implementation Data
 @synthesize storedIDs = _storedIDs;
 @synthesize storedToast = _storedToast;
+@synthesize storedReset = _storedReset;
 
-- (id)initWithTitle:(NSArray*)storedIDs toast:(NSArray*)storedToast {
+- (id)initWithTitle:(NSArray*)storedIDs toast:(NSArray*)storedToast reset:(NSArray*)storedReset{
     if ((self = [super init])) {
         _storedToast = storedToast;
         _storedIDs = storedIDs;
+        _storedReset = storedReset;
     }
     return self;
 }
@@ -30,17 +32,20 @@
 
 #define kTitleKey       @"Title"
 #define kToastKey      @"Toast"
+#define kResetKey      @"Reset"
 
 - (void) encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeObject:_storedIDs forKey:kTitleKey];
     [encoder encodeObject:_storedToast forKey:kToastKey];
+    [encoder encodeObject:_storedReset forKey:kResetKey];
 
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
     NSArray *storedIDs = [decoder decodeObjectForKey:kTitleKey];
     NSArray *storedToast = [decoder decodeObjectForKey:kToastKey];
-    return [self initWithTitle:storedIDs toast:storedToast];
+    NSArray *storedReset = [decoder decodeObjectForKey:kResetKey];
+    return [self initWithTitle:storedIDs toast:storedToast reset:storedReset];
 }
 
 @end

@@ -123,9 +123,6 @@
 
 - (void)splitAction:(id)sender
 {
-    TRACDoc *newDoc = [[TRACDoc alloc] initWithTitle:self.selectedRunners toast:self.selectedRunnersToast];
-    NSLog(@"DATA IN HERE??? %@",newDoc.data.storedToast);
-    [newDoc saveData:self.urlID];
     // Delete what the user selected.
     NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
     //NSLog(@"Selected Rows, %@",selectedRows);
@@ -356,13 +353,22 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 
+    
+    for (NSMutableDictionary *tempDict in self.athleteDictionaryArray) {
+        [self.resetValueArray addObject:[tempDict valueForKey:@"countStart"]];
+    }
+    NSLog(@"Data in here? %@",self.resetValueArray);
+    TRACDoc *newDoc = [[TRACDoc alloc] initWithTitle:self.selectedRunners toast:self.selectedRunnersToast reset:self.resetValueArray];
+    NSLog(@"DATA IN HERE??? %@",newDoc.data.storedIDs);
+    [newDoc saveData:self.urlID];
+    
     [timer invalidate];
     [actionToolbar removeFromSuperview];
     self.parentViewController.navigationItem.rightBarButtonItem = nil;
 
 }
 - (void)viewWillAppear:(BOOL)animated{
-    NSLog(@"%@",_tracDoc.data.storedIDs);
+    
     self.parentViewController.navigationItem.rightBarButtonItem = self.editButton;
     
 //NSLog(@"Reappear");
@@ -389,13 +395,16 @@
     [super viewDidLoad];
     
     NSMutableArray *loadDocs = [TRACDatabase loadDocs:self.urlID];
-        NSLog(@"Temp Doc ?? %@",loadDocs);
-
-
+    for (TRACDoc* doc in loadDocs)
+    {
+        TRACDoc* datatoLoad = doc;
+        NSLog(@" Data of somekind %@",datatoLoad.data.storedIDs);
+    }
     
     CurrentTime = CACurrentMediaTime();
-    self.selectedRunners =[[NSMutableArray alloc] init];
-    self.selectedRunnersUTC =[[NSMutableArray alloc] init];
+    self.resetValueArray = [[NSMutableArray alloc] init];
+    self.selectedRunners = [[NSMutableArray alloc] init];
+    self.selectedRunnersUTC = [[NSMutableArray alloc] init];
     self.selectedRunnersToast = [[NSMutableArray alloc] init];
     
     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
@@ -603,8 +612,8 @@
         self.interval = [results valueForKey:@"splits"];
         self.has_split = [results valueForKey:@"has_split"];
 
-       self.summationTimeArray=[[NSMutableArray alloc] init];
-        self.lasttimearray=[[NSMutableArray alloc] init];
+       self.summationTimeArray = [[NSMutableArray alloc] init];
+       self.lasttimearray = [[NSMutableArray alloc] init];
        
         //Iterate through most recent JSON request
         NSUInteger index = 0;

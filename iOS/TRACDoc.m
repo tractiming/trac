@@ -32,9 +32,9 @@
     return self;
 }
 
-- (id)initWithTitle:(NSArray*)storedIDs toast:(NSArray*)storedToast {
+- (id)initWithTitle:(NSArray*)storedIDs toast:(NSArray*)storedToast reset:(NSArray*)storedReset{
     if ((self = [super init])) {
-        _data = [[Data alloc] initWithTitle:storedIDs toast:storedToast];
+        _data = [[Data alloc] initWithTitle:storedIDs toast:storedToast reset:storedReset];
     }
     return self;
 }

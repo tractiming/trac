@@ -24,6 +24,7 @@
 @property (strong, nonatomic) NSMutableArray *selectedRunners;
 @property (strong, nonatomic) NSMutableArray *selectedRunnersUTC;
 @property (strong, nonatomic) NSMutableArray *selectedRunnersToast;
+@property (strong, nonatomic) NSMutableArray *resetValueArray;
 
 @property (retain) TRACDoc *tracDoc;
 @property (strong, nonatomic) NSString *storeDelete;

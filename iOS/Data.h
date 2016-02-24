@@ -11,12 +11,14 @@
 @interface Data : NSObject <NSCoding> {
     NSArray *_storedIDs;
     NSArray *_storedToast;
+    NSArray *_storedReset;
     
 }
 
 @property (copy) NSArray *storedIDs;
 @property  NSArray* storedToast;
+@property  NSArray* storedReset;
 
-- (id)initWithTitle:(NSArray*)storedIDs toast:(NSArray*)storedToast;
+- (id)initWithTitle:(NSArray*)storedIDs toast:(NSArray*)storedToast reset:(NSArray*)storedReset;
 
 @end
