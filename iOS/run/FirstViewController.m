@@ -356,10 +356,11 @@
     
     for (NSMutableDictionary *tempDict in self.athleteDictionaryArray) {
         [self.resetValueArray addObject:[tempDict valueForKey:@"countStart"]];
+        [self.athleteIDArray addObject: [tempDict valueForKey:@"athleteID"]];
+        [self.utcTimeArray addObject:[tempDict valueForKey:@"dateTime"]];
     }
     NSLog(@"Data in here? %@",self.resetValueArray);
-    TRACDoc *newDoc = [[TRACDoc alloc] initWithTitle:self.selectedRunners toast:self.selectedRunnersToast reset:self.resetValueArray];
-    NSLog(@"DATA IN HERE??? %@",newDoc.data.storedIDs);
+    TRACDoc *newDoc = [[TRACDoc alloc] initWithTitle:self.athleteIDArray toast:self.utcTimeArray reset:self.resetValueArray];
     [newDoc saveData:self.urlID];
     
     [timer invalidate];
@@ -403,6 +404,8 @@
     
     CurrentTime = CACurrentMediaTime();
     self.resetValueArray = [[NSMutableArray alloc] init];
+    self.athleteIDArray = [[NSMutableArray alloc] init];
+    self.utcTimeArray = [[NSMutableArray alloc] init];
     self.selectedRunners = [[NSMutableArray alloc] init];
     self.selectedRunnersUTC = [[NSMutableArray alloc] init];
     self.selectedRunnersToast = [[NSMutableArray alloc] init];
