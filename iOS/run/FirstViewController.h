@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSString *urlName;
 @property (nonatomic, strong) NSString *workoutName;
 @property (nonatomic, strong) NSString *workoutDate;
+@property (nonatomic, strong) NSTimer *timer;
 
 
 

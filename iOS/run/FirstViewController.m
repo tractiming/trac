@@ -47,7 +47,6 @@
     NSMutableString *countedTime;
     UILabel *toastText;
     UIView *customView;
-    NSTimer *_timer;
     double CurrentTime;
     double tempTime;
     double tempTimeMax;
@@ -441,16 +440,22 @@
     if (indexPath == nil) {
         //NSLog(@"long press on table view but not on a row");
     } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        if([_timer isValid])
+        if([self.timer isValid])
         {
             NSLog(@"If Clock is running, invalidate it");
-            [_timer invalidate];
-            _timer = nil;
-            
+            [self.timer invalidate];
+            self.timer = nil;
         }
+        
+        
         NSLog(@"long press on table view at row %ld", (long)indexPath.row);
-        _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(refreshTimeLabel:) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSDefaultRunLoopMode];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(refreshTimeLabel:) userInfo:nil repeats:YES];
+            [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
+        });
+        
+        
+        
         tempTime = [[[self.athleteDictionaryArray objectAtIndex:indexPath.row] valueForKey:@"dateTime"] doubleValue];
         if (tempTime != 0){
             tempTimeMax = CACurrentMediaTime() - tempTime + 99999999;
@@ -483,9 +488,9 @@
     SSSnackbar *snackbar = [SSSnackbar snackbarWithMessage:itemView
                                                 actionText:@"Hide"
                                                   duration:99999999
-                                               actionBlock:^(SSSnackbar *sender){[_timer invalidate];
+                                               actionBlock:^(SSSnackbar *sender){[self.timer invalidate];
                                                }
-                                            dismissalBlock:^(SSSnackbar *sender){[_timer invalidate];
+                                            dismissalBlock:^(SSSnackbar *sender){[self.timer invalidate];
                                             }];
     return snackbar;
 }
