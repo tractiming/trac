@@ -20,7 +20,7 @@
 #define IDIOM    UI_USER_INTERFACE_IDIOM()
 #define IPAD     UIUserInterfaceIdiomPad
 #define UITableViewCellEditingStyleMultiSelect (3)
-
+#import "SSSnackbar.h"
 
 @interface FirstViewController() <UIActionSheetDelegate>
 
@@ -457,12 +457,10 @@
         toastText.textAlignment = NSTextAlignmentCenter;
         [toastText setTextColor:[UIColor whiteColor]];
         [toastText setCenter:customView.center];
-        [customView addSubview:toastText];
-        customView.layer.cornerRadius = 15;
-        customView.layer.masksToBounds = YES;
-        [customView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.8]];
-        [self.navigationController.view showToast:customView duration:3.0 position:CSToastPositionTop completion:nil];
         
+        SSSnackbar *snackbar;
+        snackbar = [self snackbarForQuickRunningItem:toastText atIndexPath:indexPath];
+        [snackbar show];
        
     } else {
        // NSLog(@"gestureRecognizer.state = %ld", gestureRecognizer.state);
@@ -470,6 +468,18 @@
     
     // More coming soon...
 }
+
+- (SSSnackbar *)snackbarForQuickRunningItem:(UILabel *)itemView atIndexPath:(NSIndexPath *)indexPath {
+    
+    SSSnackbar *snackbar = [SSSnackbar snackbarWithMessage:itemView
+                                                actionText:@"Undo"
+                                                  duration:9999999999
+                                               actionBlock:^(SSSnackbar *sender){
+                                               }
+                                            dismissalBlock:nil];
+    return snackbar;
+}
+
 
 -(void)refreshTimeLabel:(id)sender
 {

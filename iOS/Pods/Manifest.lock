@@ -25,12 +25,10 @@ PODS:
   - GoogleUtilities (1.1.0):
     - GoogleSymbolUtilities (~> 1.0.0)
   - MYIntroduction (0.1.1)
-  - SSSnackbar (0.1.2)
 
 DEPENDENCIES:
   - Google/SignIn
   - MYIntroduction (from `https://github.com/MatthewYork/iPhone-IntroductionTutorial.git`)
-  - SSSnackbar
 
 EXTERNAL SOURCES:
   MYIntroduction:
@@ -51,6 +49,5 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 82ad9f93d3615244b3f4ce440f5ab2515e8b4f56
   GoogleUtilities: 8ed9134debe11719097881711464752900668f10
   MYIntroduction: f2c9a6b1e4e39cf82c3f123625cba89c64299359
-  SSSnackbar: 6a16cf8ab848d99a03ba21a7dab94d4478beabed
 
 COCOAPODS: 0.39.0

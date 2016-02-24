@@ -6,7 +6,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'TRAC' do
 
 pod 'Google/SignIn'
-pod 'SSSnackbar'
 pod 'MYIntroduction', :git => 'https://github.com/MatthewYork/iPhone-IntroductionTutorial.git'
 
 end
