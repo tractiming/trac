@@ -20,7 +20,7 @@
 #define IDIOM    UI_USER_INTERFACE_IDIOM()
 #define IPAD     UIUserInterfaceIdiomPad
 #define UITableViewCellEditingStyleMultiSelect (3)
-
+#import "SSSnackbar.h"
 
 @interface FirstViewController() <UIActionSheetDelegate>
 
@@ -47,7 +47,6 @@
     NSMutableString *countedTime;
     UILabel *toastText;
     UIView *customView;
-    NSTimer *_timer;
     double CurrentTime;
     double tempTime;
     double tempTimeMax;
@@ -318,6 +317,7 @@
             NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:selectionIndex.row inSection:0];
             NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
             [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
+            [self updateButtonsToMatchTableState];
         }
 
     }
@@ -337,6 +337,7 @@
             NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:selectionIndex.row inSection:0];
             NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
             [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
+            [self updateButtonsToMatchTableState];
             
         }
        
@@ -432,22 +433,35 @@
 
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
 {
-    NSLog(@"Hello");
+    
      CGPoint location = [gestureRecognizer locationInView:self.tableData];
     
     NSIndexPath *indexPath = [self.tableData indexPathForRowAtPoint:location];
     if (indexPath == nil) {
         //NSLog(@"long press on table view but not on a row");
     } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        if([self.timer isValid])
+        {
+            NSLog(@"If Clock is running, invalidate it");
+            [self.timer invalidate];
+            self.timer = nil;
+        }
+        
+        
         NSLog(@"long press on table view at row %ld", (long)indexPath.row);
-        _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(refreshTimeLabel:) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSDefaultRunLoopMode];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(refreshTimeLabel:) userInfo:nil repeats:YES];
+            [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
+        });
+        
+        
+        
         tempTime = [[[self.athleteDictionaryArray objectAtIndex:indexPath.row] valueForKey:@"dateTime"] doubleValue];
         if (tempTime != 0){
-            tempTimeMax = CACurrentMediaTime() - tempTime + 3.5;
+            tempTimeMax = CACurrentMediaTime() - tempTime + 99999999;
             }
         else{
-            tempTimeMax = CACurrentMediaTime() - CurrentTime +3.5;
+            tempTimeMax = CACurrentMediaTime() - CurrentTime + 99999999;
         }
         
         customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 40)];
@@ -457,12 +471,10 @@
         toastText.textAlignment = NSTextAlignmentCenter;
         [toastText setTextColor:[UIColor whiteColor]];
         [toastText setCenter:customView.center];
-        [customView addSubview:toastText];
-        customView.layer.cornerRadius = 15;
-        customView.layer.masksToBounds = YES;
-        [customView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.8]];
-        [self.navigationController.view showToast:customView duration:3.0 position:CSToastPositionTop completion:nil];
         
+        SSSnackbar *snackbar;
+        snackbar = [self snackbarForQuickRunningItem:toastText atIndexPath:indexPath];
+        [snackbar show];
        
     } else {
        // NSLog(@"gestureRecognizer.state = %ld", gestureRecognizer.state);
@@ -471,8 +483,22 @@
     // More coming soon...
 }
 
+- (SSSnackbar *)snackbarForQuickRunningItem:(UILabel *)itemView atIndexPath:(NSIndexPath *)indexPath {
+    
+    SSSnackbar *snackbar = [SSSnackbar snackbarWithMessage:itemView
+                                                actionText:@"Hide"
+                                                  duration:99999999
+                                               actionBlock:^(SSSnackbar *sender){[self.timer invalidate];
+                                               }
+                                            dismissalBlock:^(SSSnackbar *sender){[self.timer invalidate];
+                                            }];
+    return snackbar;
+}
+
+
 -(void)refreshTimeLabel:(id)sender
 {
+    NSLog(@"Hit the time label");
     // Timers are not guaranteed to tick at the nominal rate specified, so this isn't technically accurate.
     // However, this is just an example to demonstrate how to stop some ongoing activity, so we can live with that inaccuracy.
     _ticks = 0.1;
@@ -493,7 +519,7 @@
         toastText.text = [NSString stringWithFormat:@"%02.0f:%02.0f:%04.1f", hours, minutes, seconds];
     }
     else{
-        [_timer invalidate];
+       // [_timer invalidate];
     }
 }
 
@@ -930,7 +956,7 @@
            [self.tableData reloadData];
        }
        Executed = FALSE;
-      
+      [self updateButtonsToMatchTableState];
 
         self.humanReadble.text = [NSString stringWithFormat:@"Date: %@", self.workoutDate];
 
