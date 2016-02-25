@@ -17,6 +17,9 @@
 #import "CustomCell.h"
 #import "CustomCelliPad.h"
 #import "UIView+Toast.h"
+#import "TRACDatabase.h"
+#import "TRACDoc.h"
+#import "Data.h"
 #define IDIOM    UI_USER_INTERFACE_IDIOM()
 #define IPAD     UIUserInterfaceIdiomPad
 #define UITableViewCellEditingStyleMultiSelect (3)
@@ -27,6 +30,7 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *editButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (nonatomic, assign) CFTimeInterval ticks;
+
 @end
 
 
@@ -52,6 +56,7 @@
     double tempTimeMax;
     
 }
+@synthesize tracDoc = _tracDoc;
 
 - (IBAction)editAction:(id)sender
 {
@@ -117,7 +122,6 @@
 
 - (void)splitAction:(id)sender
 {
-
     // Delete what the user selected.
     NSArray *selectedRows = [self.tableData indexPathsForSelectedRows];
     //NSLog(@"Selected Rows, %@",selectedRows);
@@ -198,6 +202,7 @@
         }        // Delete everything, delete the objects from our data model.
         //Take every row and put into json. Then Send it
     }
+    
     
     //Clear the selection arrays
     [self.selectedRunnersUTC removeAllObjects];
@@ -284,6 +289,7 @@
     //[self updateButtonsToMatchTableState];
     //NSLog(@"Hits Again?");
     [self sendRequest];
+
     
 }
 
@@ -347,13 +353,27 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-
+    [self.resetValueArray removeAllObjects];
+    [self.athleteIDArray removeAllObjects];
+    [self.utcTimeArray removeAllObjects];
+    
+    for (NSMutableDictionary *tempDict in self.athleteDictionaryArray) {
+        [self.resetValueArray addObject:[tempDict valueForKey:@"countStart"]];
+        [self.athleteIDArray addObject: [tempDict valueForKey:@"athleteID"]];
+        [self.utcTimeArray addObject:[tempDict valueForKey:@"dateTime"]];
+    }
+    NSLog(@"Data in here? %@, %@, %@",self.resetValueArray, self.athleteIDArray, self.utcTimeArray);
+    
+    TRACDoc *newDoc = [[TRACDoc alloc] initWithTitle:self.athleteIDArray toast:self.utcTimeArray reset:self.resetValueArray];
+    [newDoc saveData:self.urlID];
+    
     [timer invalidate];
     [actionToolbar removeFromSuperview];
     self.parentViewController.navigationItem.rightBarButtonItem = nil;
 
 }
 - (void)viewWillAppear:(BOOL)animated{
+    
     self.parentViewController.navigationItem.rightBarButtonItem = self.editButton;
     
 //NSLog(@"Reappear");
@@ -378,11 +398,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     CurrentTime = CACurrentMediaTime();
-    self.selectedRunners =[[NSMutableArray alloc] init];
-    self.selectedRunnersUTC =[[NSMutableArray alloc] init];
+  //  self.resetValueArray = [[NSMutableArray alloc] init];
+   // self.athleteIDArray = [[NSMutableArray alloc] init];
+   // self.utcTimeArray = [[NSMutableArray alloc] init];
+    self.selectedRunners = [[NSMutableArray alloc] init];
+    self.selectedRunnersUTC = [[NSMutableArray alloc] init];
     self.selectedRunnersToast = [[NSMutableArray alloc] init];
     
+    
+    NSMutableArray *loadDocs = [TRACDatabase loadDocs:self.urlID];
+    for (TRACDoc* doc in loadDocs)
+    {
+        TRACDoc* datatoLoad = doc;
+        self.athleteIDArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedIDs];
+        self.utcTimeArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedToast];
+        self.resetValueArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedReset];
+        NSLog(@"Stored Array Values %@,%@,%@",datatoLoad.data.storedIDs,datatoLoad.data.storedToast,datatoLoad.data.storedReset);
+
+    }
+    [TRACDatabase deletePath:self.urlID];
+
     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(handleLongPress:)];
     lpgr.minimumPressDuration = 2.0; //seconds
@@ -613,8 +650,8 @@
         self.interval = [results valueForKey:@"splits"];
         self.has_split = [results valueForKey:@"has_split"];
 
-       self.summationTimeArray=[[NSMutableArray alloc] init];
-        self.lasttimearray=[[NSMutableArray alloc] init];
+       self.summationTimeArray = [[NSMutableArray alloc] init];
+       self.lasttimearray = [[NSMutableArray alloc] init];
        
         //Iterate through most recent JSON request
         NSUInteger index = 0;
@@ -634,14 +671,43 @@
                 }
                 else{
                     //adds all intervals together to give cumulative time
+                    NSArray *tempArray = [self.interval objectAtIndex:index];
+                    
+                    //adds all intervals together to give cumulative time
                     NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
-                    NSUInteger subindex = 0;
-                    for (NSArray *subinterval in personalinterval){
+                    NSInteger rangeVar;
+                    
+                    NSUInteger indexOfAthlete = [self.athleteIDArray indexOfObject:[self.runnerID objectAtIndex:index]];
+                    
+                    if (self.utcTimeArray == nil || [self.utcTimeArray count] == 0)
+                    {
+                        NSLog(@"Setting Zero");
+                        rangeVar = [[NSNumber numberWithInt:0] integerValue];
+                    }
+                    else{
+                        NSLog(@"Varying Time");
+                        rangeVar = [[self.resetValueArray objectAtIndex:indexOfAthlete] integerValue];
+                    }
+                    
+                   
+                    if(rangeVar == 0){
+                        //do nothing because you want the 0 to be counted in the elapsed time.
+                    }
+                    else
+                    {
+                        //Dont count the rest period so skip 1.
+                        rangeVar = rangeVar + 1;
+                    }
+                    NSArray *resetViewCount = [tempArray subarrayWithRange: NSMakeRange(rangeVar, [tempArray count]-rangeVar)];
+                    NSLog(@"Reset View Count: %@",resetViewCount);
+                    
+                    for (NSArray *subinterval in resetViewCount){
                         NSArray* subs=[subinterval lastObject];
                         finaltimeArray =[finaltimeArray arrayByAddingObject:subs];
-                        subindex++;
+                        
                     }
-                    universalIndex = subindex;
+                    universalIndex = [tempArray count];
+
                     
                     NSNumber *sum = [finaltimeArray valueForKeyPath:@"@sum.floatValue"];
                     
@@ -705,16 +771,30 @@
                     
                     
                 }
+                NSUInteger indexOfAthlete = [self.athleteIDArray indexOfObject:[self.runnerID objectAtIndex:index]];
+
+                
                 NSMutableDictionary *athleteDictionary = [NSMutableDictionary new];
                 [athleteDictionary setObject:[self.runners objectAtIndex:index] forKey:@"name"];
                 [athleteDictionary setObject:[self.runnerID objectAtIndex:index] forKey:@"athleteID"];
                 [athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
-                //NSLog(@"Error here?");
+                if (self.utcTimeArray == nil || [self.utcTimeArray count] == 0)
+                {
+                    NSLog(@"Setting Zero");
+                    [athleteDictionary setObject:[NSNumber numberWithInt:0] forKey:@"countStart"];
+                    [athleteDictionary setObject:[NSNumber numberWithDouble:0] forKey:@"dateTime"];
+                }
+                else{
+                    NSLog(@"Varying Time");
+                    [athleteDictionary setObject:[self.resetValueArray objectAtIndex:indexOfAthlete] forKey:@"countStart"];
+                    [athleteDictionary setObject:[self.utcTimeArray objectAtIndex:indexOfAthlete] forKey:@"dateTime"];
+                }
+                
+                
                 [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
-                [athleteDictionary setObject:[NSNumber numberWithInt:0] forKey:@"countStart"];
-                [athleteDictionary setObject:[NSNumber numberWithDouble:0] forKey:@"dateTime"];
                 [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
                 [self.athleteDictionaryArray addObject:athleteDictionary];
+                
             }
             
             else{
