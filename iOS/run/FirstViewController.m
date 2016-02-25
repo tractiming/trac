@@ -352,7 +352,9 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-
+    [self.resetValueArray removeAllObjects];
+    [self.athleteIDArray removeAllObjects];
+    [self.utcTimeArray removeAllObjects];
     
     for (NSMutableDictionary *tempDict in self.athleteDictionaryArray) {
         [self.resetValueArray addObject:[tempDict valueForKey:@"countStart"]];
@@ -412,7 +414,7 @@
         self.athleteIDArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedIDs];
         self.utcTimeArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedToast];
         self.resetValueArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedReset];
-        NSLog(@"Stored Array Values %@,%@,%@",self.athleteIDArray,self.utcTimeArray,self.resetValueArray);
+        NSLog(@"Stored Array Values %@,%@,%@",datatoLoad.data.storedIDs,datatoLoad.data.storedToast,datatoLoad.data.storedReset);
 
     }
     [TRACDatabase deletePath:self.urlID];
@@ -643,14 +645,43 @@
                 }
                 else{
                     //adds all intervals together to give cumulative time
+                    NSArray *tempArray = [self.interval objectAtIndex:index];
+                    
+                    //adds all intervals together to give cumulative time
                     NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
-                    NSUInteger subindex = 0;
-                    for (NSArray *subinterval in personalinterval){
+                    NSInteger rangeVar;
+                    
+                    NSUInteger indexOfAthlete = [self.athleteIDArray indexOfObject:[self.runnerID objectAtIndex:index]];
+                    
+                    if (self.utcTimeArray == nil || [self.utcTimeArray count] == 0)
+                    {
+                        NSLog(@"Setting Zero");
+                        rangeVar = [[NSNumber numberWithInt:0] integerValue];
+                    }
+                    else{
+                        NSLog(@"Varying Time");
+                        rangeVar = [[self.resetValueArray objectAtIndex:indexOfAthlete] integerValue];
+                    }
+                    
+                   
+                    if(rangeVar == 0){
+                        //do nothing because you want the 0 to be counted in the elapsed time.
+                    }
+                    else
+                    {
+                        //Dont count the rest period so skip 1.
+                        rangeVar = rangeVar + 1;
+                    }
+                    NSArray *resetViewCount = [tempArray subarrayWithRange: NSMakeRange(rangeVar, [tempArray count]-rangeVar)];
+                    NSLog(@"Reset View Count: %@",resetViewCount);
+                    
+                    for (NSArray *subinterval in resetViewCount){
                         NSArray* subs=[subinterval lastObject];
                         finaltimeArray =[finaltimeArray arrayByAddingObject:subs];
-                        subindex++;
+                        
                     }
-                    universalIndex = subindex;
+                    universalIndex = [tempArray count];
+
                     
                     NSNumber *sum = [finaltimeArray valueForKeyPath:@"@sum.floatValue"];
                     
@@ -721,20 +752,23 @@
                 [athleteDictionary setObject:[self.runners objectAtIndex:index] forKey:@"name"];
                 [athleteDictionary setObject:[self.runnerID objectAtIndex:index] forKey:@"athleteID"];
                 [athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
-                if ([self.utcTimeArray count] > 0)
+                if (self.utcTimeArray == nil || [self.utcTimeArray count] == 0)
                 {
-                    [athleteDictionary setObject:[self.resetValueArray objectAtIndex:indexOfAthlete] forKey:@"countStart"];
-                    [athleteDictionary setObject:[self.utcTimeArray objectAtIndex:indexOfAthlete] forKey:@"dateTime"];
-                }
-                else{
+                    NSLog(@"Setting Zero");
                     [athleteDictionary setObject:[NSNumber numberWithInt:0] forKey:@"countStart"];
                     [athleteDictionary setObject:[NSNumber numberWithDouble:0] forKey:@"dateTime"];
+                }
+                else{
+                    NSLog(@"Varying Time");
+                    [athleteDictionary setObject:[self.resetValueArray objectAtIndex:indexOfAthlete] forKey:@"countStart"];
+                    [athleteDictionary setObject:[self.utcTimeArray objectAtIndex:indexOfAthlete] forKey:@"dateTime"];
                 }
                 
                 
                 [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
                 [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
                 [self.athleteDictionaryArray addObject:athleteDictionary];
+                
             }
             
             else{
