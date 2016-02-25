@@ -7,19 +7,19 @@
           android:icon="@drawable/ic_action_search"
           android:title="@string/action_search"
           android:orderInCategory="100"
-          android:showAsAction="collapseActionView|ifRoom"
+          newtest:showAsAction="always"
           android:actionViewClass="android.widget.SearchView"/>
    <item
         android:id="@+id/create_workout"
         android:orderInCategory="100"
         android:title="@string/create_workout"
-        android:showAsAction="never"
+        newtest:showAsAction="never"
         /> 
    <item
         android:id="@+id/action_signout"
         android:orderInCategory="100"
         android:title="@string/action_signout"
-        android:showAsAction="never"
+        newtest:showAsAction="never"
         />
 
 

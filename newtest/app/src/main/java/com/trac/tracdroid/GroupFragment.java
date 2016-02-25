@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -421,6 +422,9 @@ public class GroupFragment extends ListFragment {
          customHandler.post(updateTimerThread);
        	
        	final Toast toast = Toast.makeText(getActivity(), "", Toast.LENGTH_LONG);
+
+			final Snackbar snackbar = Snackbar.make(getView(),"Welcome", Snackbar.LENGTH_LONG);
+			snackbar.show();
        	toast.show();
        	 mHandler = new Handler() { 
              @Override public void handleMessage(Message msg) { 

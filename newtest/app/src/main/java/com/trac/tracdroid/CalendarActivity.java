@@ -2,9 +2,6 @@ package com.trac.tracdroid;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,9 +19,9 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.amplitude.api.Amplitude;
@@ -41,7 +39,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 
-public class CalendarActivity extends ListActivity implements OnScrollListener{
+public class CalendarActivity extends AppCompatActivity implements OnScrollListener{
 	//protected Context context;
 	private String access_token;
 	private ArrayList<Results> positionArray;
@@ -84,13 +82,14 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 
+/*
 	    // Get the SearchView and set the searchable configuration
 	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 	    SearchView searchView = (SearchView) menu.findItem(R.id.action_search2).getActionView();
 	    // Assumes current activity is the searchable activity
 	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 	    searchView.setIconifiedByDefault(false);
-	    
+
 	    // Do not iconify the widget; expand it by default
 
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
@@ -100,7 +99,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
             {
             	Amplitude.getInstance().logEvent("Calendar_Search");
                 try{// this is your adapter that will be filtered
-                	((CalendarAdapter)getListAdapter()).getFilter(newText);
+                	((CalendarAdapter)list.getAdapter()).getFilter(newText);
                 //System.out.println("on text chnge text: "+newText);
                 return true;
                 }
@@ -113,7 +112,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
             public boolean onQueryTextSubmit(String query)
             {
                 try{// this is your adapter that will be filtered
-                	((CalendarAdapter)getListAdapter()).getFilter(query);
+                	((CalendarAdapter)list.getAdapter()).getFilter(query);
                 	//System.out.println("on query submit: "+query);
                 	return true;
                 }
@@ -122,9 +121,9 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
             }
         };
         searchView.setOnQueryTextListener(textChangeListener);
-	    
-	    return true;
+*/
 
+	    return true;
 
 	}
 
@@ -190,6 +189,8 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 	 public void onCreate(Bundle savedInstanceState) {
 		    super.onCreate(savedInstanceState);
 		 	//Force overflow button
+		 	//Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+		 	//myToolbar.inflateMenu(R.menu.main);
 			 try {
 				 ViewConfiguration config = ViewConfiguration.get(this);
 				 Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
@@ -209,7 +210,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 
 		    //Set Listeners for infinite scroll
 		    //listView = (InfiniteScrollListView) this.getListView();
-		    list = getListView();
+		    list = (ListView) findViewById(android.R.id.list);
 		    list.setOnScrollListener(this);
 		    //scrollListener = new OnScrollListener(this);
 		    //listView.setListener(scrollListener);
@@ -233,7 +234,7 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 			   
 		    //Initialize swipe to refresh layout, what happens when swiped: async task called again
 		    swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-		    swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_light);
+		    //swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_light);
 	        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 	            @Override
 	            public void onRefresh() {
@@ -275,33 +276,6 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 		  }
 	 
 
-		  @Override
-		  protected void onListItemClick(ListView l, View v, int position, long id) {
-			  	// 1. create an intent pass class name or intnet action name 
-			  Amplitude.getInstance().logEvent("Calendar_to_Workout");
-			  	String idPosition = positionArray.get(position).id;
-			  	
-			  	// On Click, intent to go to main activity from calendar activity
-		        Intent intent = new Intent(CalendarActivity.this, MainActivity.class);
-		        
-		        // 2. put key/value data to pass on mainactivity load
-		        intent.putExtra("message", "https://trac-us.appspot.com/api/sessions/" + idPosition +"/individual_results/?all_athletes=True&limit=200&access_token=" + access_token);
-		        intent.putExtra("positionID", idPosition);
-		        intent.putExtra("token", access_token);
-		        intent.putExtra("workoutName", positionArray.get(position).name);
-		        intent.putExtra("workoutDate", positionArray.get(position).startTime);
-		        
-
-		        // 3. or you can add data to a bundle
-		        Bundle extras = new Bundle();
-		        extras.putString("status", "Data Received!");
-		 
-		        // 4. add bundle to intent
-		        intent.putExtras(extras);
-		 
-		        
-		        startActivity(intent);
-		  }
 		  
 		  OkHttpClient client = new OkHttpClient();
 			Gson gson = new Gson();
@@ -359,13 +333,41 @@ public class CalendarActivity extends ListActivity implements OnScrollListener{
 							var = new CalendarAdapter(result, getApplicationContext());
 							if(asyncExecuted == false ){
 								Log.d("First","Execution");
-								setListAdapter(var);
+								list.setAdapter(var);
+								list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+									@Override
+									public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+										Amplitude.getInstance().logEvent("Calendar_to_Workout");
+										String idPosition = positionArray.get(position).id;
+
+										// On Click, intent to go to main activity from calendar activity
+										Intent intent = new Intent(CalendarActivity.this, MainActivity.class);
+
+										// 2. put key/value data to pass on mainactivity load
+										intent.putExtra("message", "https://trac-us.appspot.com/api/sessions/" + idPosition +"/individual_results/?all_athletes=True&limit=200&access_token=" + access_token);
+										intent.putExtra("positionID", idPosition);
+										intent.putExtra("token", access_token);
+										intent.putExtra("workoutName", positionArray.get(position).name);
+										intent.putExtra("workoutDate", positionArray.get(position).startTime);
+
+
+										// 3. or you can add data to a bundle
+										Bundle extras = new Bundle();
+										extras.putString("status", "Data Received!");
+
+										// 4. add bundle to intent
+										intent.putExtras(extras);
+
+
+										startActivity(intent);
+									}
+								});
 								asyncExecuted = true;
 								positionArray = result;
 							    fakedTotalItemCount = 20;
 							}
 							else{
-								((CalendarAdapter)getListAdapter()).add(result);
+								((CalendarAdapter)list.getAdapter()).add(result);
 							
 						}
 						

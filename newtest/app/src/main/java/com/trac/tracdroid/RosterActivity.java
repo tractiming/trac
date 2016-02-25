@@ -2,9 +2,6 @@ package com.trac.tracdroid;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,12 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.amplitude.api.Amplitude;
@@ -43,7 +41,7 @@ import java.util.Arrays;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
-public class RosterActivity extends ListActivity implements StringAsyncResponse, BooleanAsyncResponse, CreateTeamCallback{
+public class RosterActivity extends AppCompatActivity implements StringAsyncResponse, BooleanAsyncResponse, CreateTeamCallback{
 	//protected Context context;
 	private String access_token;
 	private ArrayList<Results> positionArray;
@@ -84,7 +82,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.rostermenu, menu);
 
-	    // Get the SearchView and set the searchable configuration
+	   /* // Get the SearchView and set the searchable configuration
 	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 	    SearchView searchView = (SearchView) menu.findItem(R.id.action_searchroster).getActionView();
 	    // Assumes current activity is the searchable activity
@@ -101,7 +99,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
             	Amplitude.getInstance().logEvent("RosterActivity_SearchUsed");
                 try{// this is your adapter that will be filtered
                 	System.out.println("on text chnge text: "+newText);
-                	((RosterAdapter) getListAdapter()).getFilter(newText);
+                	((RosterAdapter) list.getAdapter()).getFilter(newText);
                 
                 return true;
                 }
@@ -115,7 +113,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
             public boolean onQueryTextSubmit(String query)
             {
                 try{// this is your adapter that will be filtered
-                	((CalendarAdapter)getListAdapter()).getFilter(query);
+                	((CalendarAdapter) list.getAdapter()).getFilter(query);
                 	System.out.println("on query submit: "+query);
                 	return true;
                 }
@@ -124,7 +122,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
             }
         };
         searchView.setOnQueryTextListener(textChangeListener);
-	    
+	    */
 	    return true;
 
 
@@ -250,7 +248,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 		    editStatus = true;
 		    //Set Listeners for infinite scroll
 		    //listView = (InfiniteScrollListView) this.getListView();
-		    list = getListView();
+		    list = (ListView) findViewById(android.R.id.list);
 		 //Get token from Shared Preferences and create url endpoint with token inserted
 		 	SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
 		 	access_token = userDetails.getString("token","");
@@ -275,7 +273,7 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 			   
 		    //Initialize swipe to refresh layout, what happens when swiped: async task called again
 		    swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-		    swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_light);
+		    //swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_light);
 	        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 	            @Override
 	            public void onRefresh() {
@@ -391,15 +389,6 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 		teamCreateAsync.delegate = this;
 	}
 
-		  @Override
-		  protected void onListItemClick(ListView l, View v, int position, long id) {
-			  super.onListItemClick(l, v, position, id);
-		        //Toggle CheckBox from not selected to selected and vice versa.
-		        if (v != null) {
-		            CheckBox checkBox = (CheckBox) v.findViewById(R.id.rosterCheck);
-		            checkBox.setChecked(!checkBox.isChecked());
-		        }
-		    }
 		  
 		  OkHttpClient client = new OkHttpClient();
 			Gson gson = new Gson();
@@ -456,8 +445,17 @@ public class RosterActivity extends ListActivity implements StringAsyncResponse,
 						else{
 							//else parse the result and put in adapter, hide spinner
 							var = new RosterAdapter(result, getApplicationContext());
-							setListAdapter(var);
-
+							list.setAdapter(var);
+							list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+								@Override
+								public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+									//Toggle CheckBox from not selected to selected and vice versa.
+									if (view != null) {
+										CheckBox checkBox = (CheckBox) view.findViewById(R.id.rosterCheck);
+										checkBox.setChecked(!checkBox.isChecked());
+									}
+								}
+							});
 							mLoginStatusView.setVisibility(View.GONE);
 							executing = false;
 							// swipeLayout.setRefreshing(false);

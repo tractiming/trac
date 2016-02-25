@@ -7,26 +7,26 @@
           android:icon="@drawable/ic_action_search"
           android:title="@string/action_search"
           android:orderInCategory="100"
-          android:showAsAction="collapseActionView|ifRoom"
+          newtest:showAsAction="collapseActionView|ifRoom"
           android:actionViewClass="android.widget.SearchView"/>
     
   	<item android:id="@+id/action_edit"
           android:icon="@drawable/ic_action_edit"
           android:title="@string/action_edit"
           android:orderInCategory="100"
-          android:showAsAction="collapseActionView|ifRoom"
+          newtest:showAsAction="collapseActionView|ifRoom"
          />
    <item
         android:id="@+id/action_addRunner"
         android:orderInCategory="100"
         android:title="@string/action_addRunner"
-        android:showAsAction="never"
+        newtest:showAsAction="never"
         />
    <item
         android:id="@+id/action_signout"
         android:orderInCategory="100"
         android:title="@string/action_signout"
-        android:showAsAction="never"
+        newtest:showAsAction="never"
         />
 
 
