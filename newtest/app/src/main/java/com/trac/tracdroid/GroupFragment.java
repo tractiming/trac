@@ -24,7 +24,6 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amplitude.api.Amplitude;
 import com.google.gson.Gson;
@@ -388,7 +387,7 @@ public class GroupFragment extends ListFragment {
 	            customHandler.post(this);
 	            counter++;
 	            //Log.d("Run",Integer.toString(counter));
-	            if (counter>1000){
+	            if (counter>999999999){
 	            	shutdown = true;
 	            	counter = 0;
 	            }
@@ -421,15 +420,27 @@ public class GroupFragment extends ListFragment {
          storedTime = Long.parseLong(tempList.get(arg2));
          customHandler.post(updateTimerThread);
        	
-       	final Toast toast = Toast.makeText(getActivity(), "", Toast.LENGTH_LONG);
+       	//final Toast toast = Toast.makeText(getActivity(), "", Toast.LENGTH_LONG);
 
-			final Snackbar snackbar = Snackbar.make(getView(),"Welcome", Snackbar.LENGTH_LONG);
+			final Snackbar snackbar = Snackbar.make(getView(),"Welcome", Snackbar.LENGTH_INDEFINITE)
+					.setAction("Hide", new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+						}
+					});
+
+			snackbar.setActionTextColor(getResources().getColor(R.color.TRACYellow));
+
+			// Changing action button text color
+			View sbView = snackbar.getView();
+			TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+			textView.setTextSize(20);
 			snackbar.show();
-       	toast.show();
+       	//toast.show();
        	 mHandler = new Handler() { 
              @Override public void handleMessage(Message msg) { 
                 String mString=(String)msg.obj;
-                toast.setText(mString);
+                snackbar.setText(mString);
               
              }
          };
