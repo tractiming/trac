@@ -14,5 +14,6 @@
 
 + (NSMutableArray *)loadDocs: (NSString *) sessionID;
 + (NSString *)nextDocPath:(NSString*) sessionID;
++ (void)deletePath: (NSString*) sessionID;
 
 @end

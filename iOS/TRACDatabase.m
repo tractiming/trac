@@ -39,7 +39,7 @@
         return nil;
     }
     
-    // Create ScaryBugDoc for each file
+    // Create TRAC for each file
     NSMutableArray *retval = [NSMutableArray arrayWithCapacity:files.count];
     for (NSString *file in files) {
         
@@ -50,11 +50,46 @@
                 NSString *fullPath = [documentsDirectory stringByAppendingPathComponent:file];
                 TRACDoc *doc = [[TRACDoc alloc] initWithDocPath:fullPath];
                 [retval addObject:doc];
+               
             }
         }
     }
     
     return retval;
+    
+}
+
++ (void)deletePath: (NSString *) sessionID {
+    
+    // Get private docs dir
+    NSString *documentsDirectory = [TRACDatabase getPrivateDocsDir];
+    NSLog(@"Loading bugs from %@", documentsDirectory);
+    
+    // Get contents of documents directory
+    NSString *fullPath;
+    NSError *error;
+    NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:&error];
+    NSLog(@"Files Names: %@",files);
+    if (files == nil) {
+        NSLog(@"Error reading contents of documents directory: %@", [error localizedDescription]);
+    }
+    
+    for (NSString *file in files) {
+        
+        if ([file.pathExtension compare:@"trac" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+            
+            if([[NSString stringWithFormat:@"%@",sessionID] isEqualToString:[NSString stringWithFormat:@"%@",[[file lastPathComponent] stringByDeletingPathExtension]] ]){
+                NSLog(@"Hello hello");
+                fullPath = [documentsDirectory stringByAppendingPathComponent:file];
+                NSLog(@"Load Docs Delete Path %@",fullPath);
+                BOOL success = [[NSFileManager defaultManager] removeItemAtPath:fullPath error:&error];
+                if (!success) {
+                    NSLog(@"Error removing document path: %@", error.localizedDescription);
+                }
+            }
+        }
+    }
+    
     
 }
 

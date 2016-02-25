@@ -359,7 +359,8 @@
         [self.athleteIDArray addObject: [tempDict valueForKey:@"athleteID"]];
         [self.utcTimeArray addObject:[tempDict valueForKey:@"dateTime"]];
     }
-    NSLog(@"Data in here? %@",self.resetValueArray);
+    NSLog(@"Data in here? %@, %@, %@",self.resetValueArray, self.athleteIDArray, self.utcTimeArray);
+    
     TRACDoc *newDoc = [[TRACDoc alloc] initWithTitle:self.athleteIDArray toast:self.utcTimeArray reset:self.resetValueArray];
     [newDoc saveData:self.urlID];
     
@@ -395,21 +396,27 @@
 {
     [super viewDidLoad];
     
-    NSMutableArray *loadDocs = [TRACDatabase loadDocs:self.urlID];
-    for (TRACDoc* doc in loadDocs)
-    {
-        TRACDoc* datatoLoad = doc;
-        NSLog(@" Data of somekind %@",datatoLoad.data.storedIDs);
-    }
-    
     CurrentTime = CACurrentMediaTime();
-    self.resetValueArray = [[NSMutableArray alloc] init];
-    self.athleteIDArray = [[NSMutableArray alloc] init];
-    self.utcTimeArray = [[NSMutableArray alloc] init];
+  //  self.resetValueArray = [[NSMutableArray alloc] init];
+   // self.athleteIDArray = [[NSMutableArray alloc] init];
+   // self.utcTimeArray = [[NSMutableArray alloc] init];
     self.selectedRunners = [[NSMutableArray alloc] init];
     self.selectedRunnersUTC = [[NSMutableArray alloc] init];
     self.selectedRunnersToast = [[NSMutableArray alloc] init];
     
+    
+    NSMutableArray *loadDocs = [TRACDatabase loadDocs:self.urlID];
+    for (TRACDoc* doc in loadDocs)
+    {
+        TRACDoc* datatoLoad = doc;
+        self.athleteIDArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedIDs];
+        self.utcTimeArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedToast];
+        self.resetValueArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedReset];
+        NSLog(@"Stored Array Values %@,%@,%@",self.athleteIDArray,self.utcTimeArray,self.resetValueArray);
+
+    }
+    [TRACDatabase deletePath:self.urlID];
+
     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(handleLongPress:)];
     lpgr.minimumPressDuration = 2.0; //seconds
@@ -707,14 +714,25 @@
                     
                     
                 }
+                NSUInteger indexOfAthlete = [self.athleteIDArray indexOfObject:[self.runnerID objectAtIndex:index]];
+
+                
                 NSMutableDictionary *athleteDictionary = [NSMutableDictionary new];
                 [athleteDictionary setObject:[self.runners objectAtIndex:index] forKey:@"name"];
                 [athleteDictionary setObject:[self.runnerID objectAtIndex:index] forKey:@"athleteID"];
                 [athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
-                //NSLog(@"Error here?");
+                if ([self.utcTimeArray count] > 0)
+                {
+                    [athleteDictionary setObject:[self.resetValueArray objectAtIndex:indexOfAthlete] forKey:@"countStart"];
+                    [athleteDictionary setObject:[self.utcTimeArray objectAtIndex:indexOfAthlete] forKey:@"dateTime"];
+                }
+                else{
+                    [athleteDictionary setObject:[NSNumber numberWithInt:0] forKey:@"countStart"];
+                    [athleteDictionary setObject:[NSNumber numberWithDouble:0] forKey:@"dateTime"];
+                }
+                
+                
                 [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
-                [athleteDictionary setObject:[NSNumber numberWithInt:0] forKey:@"countStart"];
-                [athleteDictionary setObject:[NSNumber numberWithDouble:0] forKey:@"dateTime"];
                 [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
                 [self.athleteDictionaryArray addObject:athleteDictionary];
             }

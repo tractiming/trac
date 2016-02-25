@@ -90,10 +90,10 @@
 }
 
 
-- (void)deleteDoc {
-    
+- (void)deleteDoc: (NSString*) dataPath{
+
     NSError *error;
-    BOOL success = [[NSFileManager defaultManager] removeItemAtPath:_docPath error:&error];
+    BOOL success = [[NSFileManager defaultManager] removeItemAtPath:dataPath error:&error];
     if (!success) {
         NSLog(@"Error removing document path: %@", error.localizedDescription);
     }
