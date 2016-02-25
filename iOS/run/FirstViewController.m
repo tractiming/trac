@@ -375,7 +375,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     
     self.parentViewController.navigationItem.rightBarButtonItem = self.editButton;
-    
+    self.tableData.contentInset = UIEdgeInsetsMake(0,0,44,0);
 //NSLog(@"Reappear");
     dispatch_async(kBgQueue, ^{
         
@@ -400,9 +400,7 @@
     [super viewDidLoad];
     
     CurrentTime = CACurrentMediaTime();
-  //  self.resetValueArray = [[NSMutableArray alloc] init];
-   // self.athleteIDArray = [[NSMutableArray alloc] init];
-   // self.utcTimeArray = [[NSMutableArray alloc] init];
+
     self.selectedRunners = [[NSMutableArray alloc] init];
     self.selectedRunnersUTC = [[NSMutableArray alloc] init];
     self.selectedRunnersToast = [[NSMutableArray alloc] init];
@@ -419,6 +417,13 @@
 
     }
     [TRACDatabase deletePath:self.urlID];
+    
+    if([loadDocs count]== 0 || loadDocs == nil){
+        NSLog(@"Init Arrays as doc is null");
+        self.resetValueArray = [[NSMutableArray alloc] init];
+        self.athleteIDArray = [[NSMutableArray alloc] init];
+        self.utcTimeArray = [[NSMutableArray alloc] init];
+    }
 
     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(handleLongPress:)];
