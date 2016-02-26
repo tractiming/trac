@@ -1,7 +1,9 @@
 package com.trac.tracdroid;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,7 +44,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 
-public class GroupFragment extends ListFragment {
+public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 	
 	private ListView labels;
 	View detailListHeader;
@@ -341,6 +343,11 @@ public class GroupFragment extends ListFragment {
 	
 	public void onResume(){
 		super.onResume();
+		TokenValidate tokenCheck = new TokenValidate();
+		tokenCheck.delegate = this;
+		String url = "https://trac-us.appspot.com/api/verifyLogin/?token="+access_token;
+		tokenCheck.execute(url);
+
 		 timer = new Timer();
 		    doAsynchronousTask = new TimerTask() {       
 		                public void run() {       
@@ -468,8 +475,20 @@ public class GroupFragment extends ListFragment {
     //new AsyncServiceCall().execute("http://76.12.155.219/trac/json/test.json");
     
   }
-  
 
+	public void processFinish(Boolean success){
+		if (success == false){
+			SharedPreferences pref = getActivity().getSharedPreferences("userdetails", Context.MODE_PRIVATE);
+			SharedPreferences.Editor edit = pref.edit();
+			edit.putString("token", "");
+			edit.commit();
+			asyncServiceCall.cancel(true);
+
+			Intent i = new Intent(getActivity(), LoginActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(i);
+		}
+	}
 
 
   public TextView mTextView;

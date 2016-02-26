@@ -332,7 +332,7 @@ public class RegistrationActivity extends Activity {
 
 				Log.d(DEBUG_TAG, "VAR: "+ var);
 
-				if (codevar > 200 || codevar < 300) {
+				if (codevar > 200 && codevar < 300) {
 					return "Success";
 				}
 				else if(codevar == 500) {
