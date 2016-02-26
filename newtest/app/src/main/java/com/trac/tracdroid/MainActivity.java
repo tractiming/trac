@@ -18,13 +18,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
-import android.support.v7.widget.SearchView;
+import android.widget.RelativeLayout;
 
 import com.amplitude.api.Amplitude;
 import com.trac.showcaseview.ShowcaseView;
@@ -98,7 +99,7 @@ public class MainActivity extends ActionBarActivity implements
 			// presumably, not relevant
 		}
 
-		Log.d("Does this happen Multi","Multi?");
+		Log.d("Does this happen Multi", "Multi?");
 		setContentView(R.layout.activity_main);
 
 		 SharedPreferences userDetails = getSharedPreferences("userdetails",MODE_PRIVATE);
@@ -266,6 +267,17 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 							  FragmentTransaction fragmentTransaction) {
+		// TODO Auto-generated method stub
+		if(tab.getCustomView() == null)
+		{
+
+		}
+		else{
+			RelativeLayout tabLayout = (RelativeLayout) tab.getCustomView();
+			tabLayout.setBackgroundResource(R.drawable.tab_indicator_ab_actionbar);
+			tab.setCustomView(tabLayout);
+		}
+
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		Log.d("Fired Here","Fired");

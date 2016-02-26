@@ -93,4 +93,11 @@
         <item name="colorPrimaryDark">@color/TRACGrey</item>
         <item name="colorAccent">@color/TRACYellow</item>
     </style>
+
+    <style name="MainActivity" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/TRACBlue</item>
+        <item name="colorPrimaryDark">@color/TRACGrey</item>
+        <item name="colorAccent">@color/TRACYellow</item>
+    </style>
+
 </resources>
