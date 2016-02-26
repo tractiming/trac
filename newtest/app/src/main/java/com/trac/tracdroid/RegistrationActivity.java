@@ -295,9 +295,9 @@ public class RegistrationActivity extends Activity {
 	private static final String DEBUG_TAG = "Login Attempt";
 	  public static final MediaType JSON = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
 	
-	public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
+	public class UserLoginTask extends AsyncTask<String, Void, String> {
 		@Override
-		protected Boolean doInBackground(String... params) {
+		protected String doInBackground(String... params) {
 			// Attempt authentication against a network service.
 			Log.d("Email:", mEmail);
 			Log.d("Password:",mPassword);
@@ -305,40 +305,43 @@ public class RegistrationActivity extends Activity {
 			//inserts text into string
 			String pre_json = "username="+mUsername+"&password="+mPassword+"&email="+mEmail+"&user_type=coach"+"&organization="+mOrganization;
 			//Log.d(DEBUG_TAG, "Pre JSON Data: "+ pre_json);
-			
+
 			//String json = gson.toJson(pre_json);
 			//Log.d(DEBUG_TAG, "JSON "+ json);
 
 			RequestBody body = RequestBody.create(JSON, pre_json);
 			//Log.d(DEBUG_TAG, "Request Body "+ body);
-			
-			
-			
+
+
+
 			Request request = new Request.Builder()
 	        .url(params[0])
 	        .post(body)
 	        .build();
-			
+
 			Log.d(DEBUG_TAG, "Request Data: "+ request);
 			try {
-			    Response response = client.newCall(request).execute();
-			    Log.d(DEBUG_TAG, "Response Data: "+ response);
-			    
-			    int codevar = response.code();
-			    Log.d(DEBUG_TAG, "Response Code: "+ codevar);
-			    
-			    Log.d(DEBUG_TAG, "Request Data: "+ request);
-			    var = response.body().string();
-			    
-			    Log.d(DEBUG_TAG, "VAR: "+ var);
-			    
-			    if (codevar == 201) {
-			    return true;
-			    }
-			    else {
-			    return false;
-			    }
-			    
+				Response response = client.newCall(request).execute();
+				Log.d(DEBUG_TAG, "Response Data: "+ response);
+
+				int codevar = response.code();
+				Log.d(DEBUG_TAG, "Response Code: "+ codevar);
+
+				Log.d(DEBUG_TAG, "Request Data: "+ request);
+				var = response.body().string();
+
+				Log.d(DEBUG_TAG, "VAR: "+ var);
+
+				if (codevar > 200 || codevar < 300) {
+					return "Success";
+				}
+				else if(codevar == 500) {
+					return "Internal Server Error.";
+				}
+				else if(codevar == 400) {
+					return "Username, Password, or Email are invalid.";
+				}
+
 			} catch (IOException e) {
 				Log.d(DEBUG_TAG, "IoException" + e.getMessage());
 				return null;
@@ -361,27 +364,27 @@ public class RegistrationActivity extends Activity {
 			}
 */
 			// TODO: register the new account here.
-			//return true;
+			return null;
 		}
 
 		@Override
-		protected void onPostExecute(final Boolean success) {
+		protected void onPostExecute(final String success) {
 			mAuthTask = null;
 			showProgress(false);
 			if (success == null){
 				alertDialog.show();
 			}
-			else if (success) {
+			else if (success == "Success") {
 				//finish();
 				//store the token in Shared Preferences for other Acitivties to access
-				
+
 				alertDialog.show();
-     			 
-				 
-				 
+
+
+
 			} else {
 				mEmailView
-						.setError("Username or email is invalid.");
+						.setError(success);
 				mEmailView.requestFocus();
 			}
 		}

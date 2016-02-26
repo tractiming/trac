@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -137,7 +139,8 @@ public class MainActivity extends ActionBarActivity implements
 		// Set up the action bar.
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
+		getSupportActionBar().setStackedBackgroundDrawable(new ColorDrawable(Color.parseColor("#3577A8")));
+		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3577A8")));
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -270,6 +273,7 @@ public class MainActivity extends ActionBarActivity implements
 		{
 			Log.d("akjdlf", "kjladf");
 			mSectionsPagerAdapter.notifyDataSetChanged();
+
 
 		}
 		else if (tab.getPosition() == 1)

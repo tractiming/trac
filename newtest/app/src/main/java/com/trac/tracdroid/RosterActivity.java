@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -242,7 +243,11 @@ public class RosterActivity extends AppCompatActivity implements StringAsyncResp
 			 }
 		    //initialize content views
 		    setContentView(R.layout.activity_roster);
-		    mLoginStatusView = findViewById(R.id.login_status);
+		 	Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+		 	setSupportActionBar(myToolbar);
+
+		 	mLoginStatusView = findViewById(R.id.login_status);
 		    mLoginStatusView.setVisibility(View.VISIBLE);
 		    
 		    editStatus = true;

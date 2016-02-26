@@ -2,6 +2,8 @@ package com.trac.tracdroid;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -81,6 +84,11 @@ public class CalendarActivity extends AppCompatActivity implements OnScrollListe
 
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+		MenuItem searchItem = menu.findItem(R.id.action_search2);
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
+		getSupportActionBar().setIcon(R.drawable.trac_launcher);
+
 
 /*
 	    // Get the SearchView and set the searchable configuration
@@ -191,6 +199,7 @@ public class CalendarActivity extends AppCompatActivity implements OnScrollListe
 		 	//Force overflow button
 		 	//Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 		 	//myToolbar.inflateMenu(R.menu.main);
+
 			 try {
 				 ViewConfiguration config = ViewConfiguration.get(this);
 				 Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
@@ -205,6 +214,10 @@ public class CalendarActivity extends AppCompatActivity implements OnScrollListe
 			 }
 		    //initialize content views
 		    setContentView(R.layout.activity_calendar);
+		 	Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+		 //myToolbar.inflateMenu(R.menu.main);
+		 setSupportActionBar(myToolbar);
+
 		    mLoginStatusView = findViewById(R.id.login_status);
 		    mLoginStatusView.setVisibility(View.VISIBLE);
 

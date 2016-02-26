@@ -27,12 +27,12 @@
         <item name="android:backgroundSplit">@color/TRACBlue</item>
     </style>
 
-    
+
  	 <style name="ActionBarTabStyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_actionbar</item>
     </style>
- 	
- 	
+
+
     <style name="LoginFormContainer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -82,5 +82,15 @@
     <style name="TextAppearance.ShowcaseView.Title.Light">
         <item name="android:shadowRadius">0</item>
     </style>
+    <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
 
+    </style>
+
+    <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/TRACBlue</item>
+        <item name="colorPrimaryDark">@color/TRACGrey</item>
+        <item name="colorAccent">@color/TRACYellow</item>
+    </style>
 </resources>

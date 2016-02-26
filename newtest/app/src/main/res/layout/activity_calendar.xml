@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/MyMaterialTheme.Base">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/MyMaterialTheme.Base"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+</android.support.design.widget.AppBarLayout>
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+
     <android.support.v4.widget.SwipeRefreshLayout
     android:id="@+id/swipe_container"
     android:layout_width="match_parent"
@@ -22,7 +44,7 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="gone" 
+        android:visibility="gone"
         >
 
         <ProgressBar
@@ -40,7 +62,9 @@
             android:text="Loading..."
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
-    
+
 
 
 </FrameLayout>
+
+</LinearLayout>
