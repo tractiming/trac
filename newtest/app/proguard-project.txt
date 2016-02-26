@@ -25,9 +25,16 @@
 -keep interface com.squareup.okhttp.** { *; }
 -dontwarn okio.**
 -keepattributes Signature
-
-# For using GSON @Expose annotation
+-dontwarn android.support.v4.app.**
+-keep class android.support.v4.app.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-dontwarn android.support.v7.**
+-keep class android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
+-keep class android.support.v7.widget.SearchView { *; }
 -keepattributes *Annotation*
+# For using GSON @Expose annotation
+
 
 # Gson specific classes
 -keep class sun.misc.Unsafe { *; }
