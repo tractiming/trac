@@ -42,7 +42,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 
-public class CalendarActivity extends AppCompatActivity implements OnScrollListener{
+public class CalendarActivity extends AppCompatActivity implements OnScrollListener, BooleanAsyncResponse{
 	//protected Context context;
 	private String access_token;
 	private ArrayList<Results> positionArray;
@@ -76,6 +76,31 @@ public class CalendarActivity extends AppCompatActivity implements OnScrollListe
 	public void onPause(){
 		super.onPause();
 		   asyncCall.cancel(true);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.d("Token Check", "On Resume Called");
+		TokenValidate tokenCheck = new TokenValidate();
+		tokenCheck.delegate = this;
+		String url = "https://trac-us.appspot.com/api/verifyLogin/?token="+access_token;
+		tokenCheck.execute(url);
+
+	}
+
+	public void processFinish(Boolean success){
+		if (success == false){
+			SharedPreferences pref = getSharedPreferences("userdetails", MODE_PRIVATE);
+			Editor edit = pref.edit();
+			edit.putString("token", "");
+			edit.commit();
+			asyncCall.cancel(true);
+
+			Intent i = new Intent(CalendarActivity.this, LoginActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(i);
+		}
 	}
 	  
 	@Override
