@@ -29,7 +29,6 @@ import android.widget.RelativeLayout;
 
 import com.amplitude.api.Amplitude;
 import com.trac.showcaseview.ShowcaseView;
-import com.trac.showcaseview.ShowcaseViews;
 import com.trac.showcaseview.targets.PointTarget;
 
 import java.lang.reflect.Field;
@@ -108,21 +107,20 @@ public class MainActivity extends ActionBarActivity implements
 		   //userVariable = userDetails.getString("usertype", "");
 		   //Log.d("Access_token, MainActivity:", userVariable);
 		if (firstRun) {
-			Display display = getWindowManager().getDefaultDisplay();
+			WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+			Display display = wm.getDefaultDisplay();
 			Point size = new Point();
 			display.getSize(size);
 			int width = size.x;
-			int frag = (width / 8) * 7;
+			int frag = (width / 4)*3;
 			int height = size.y;
 
 			ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
 			co.showcaseId = ShowcaseView.ITEM_ACTION_ITEM;
 			co.shotType = ShowcaseView.TYPE_ONE_SHOT;
 			co.hideOnClickOutside = true;
-			ShowcaseViews mViews;
 			PointTarget target = new PointTarget(frag, 250);
-			final ShowcaseView sv = ShowcaseView.insertShowcaseView(target, this, R.string.step_two_title, R.string.step_two,co);
-			sv.show();
+			ShowcaseView.insertShowcaseView(target, this, R.string.step_two_title, R.string.step_two, co);
 		}
 
 		  // resultOfComparison=userVariable.equals("coach");

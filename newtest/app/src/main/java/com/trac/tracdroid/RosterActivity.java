@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,12 +32,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.amplitude.api.Amplitude;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.trac.showcaseview.ShowcaseView;
-import com.trac.showcaseview.targets.ActionItemTarget;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -246,7 +248,7 @@ public class RosterActivity extends AppCompatActivity implements StringAsyncResp
 			 }
 		    //initialize content views
 		    setContentView(R.layout.activity_roster);
-		 	Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+		 	final Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
 
 		 	setSupportActionBar(myToolbar);
 
@@ -262,15 +264,22 @@ public class RosterActivity extends AppCompatActivity implements StringAsyncResp
 		 	access_token = userDetails.getString("token","");
 		 	boolean firstRun = userDetails.getBoolean("firstRun",true);
 			 if(firstRun) {
-				 ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
-				 co.showcaseId = ShowcaseView.ITEM_ACTION_ITEM;
-				 co.hideOnClickOutside = true;
-				 ActionItemTarget target = new ActionItemTarget(this, R.id.action_edit);
-				 final ShowcaseView sv = ShowcaseView.insertShowcaseView(target, this, R.string.step_four_title, R.string.step_four,co);
-				 sv.show();
+				 Target homeTarget = new Target() {
+					 @Override
+					 public Point getPoint() {
+						 // Get approximate position of home icon's center
+						 return new ViewTarget(myToolbar.findViewById(R.id.action_searchroster)).getPoint();
+					 }
+				 };
+				 new ShowcaseView.Builder(this)
+						 .setContentTitle(R.string.step_four_title)
+						 .setContentText(R.string.step_four)
+						 .setTarget(homeTarget)
+						 .build();
 				 SharedPreferences.Editor editor = userDetails.edit();
 				 editor.putBoolean("firstRun", false);
 				 editor.commit();
+
 			 }
 
 		    Intent intent = getIntent();

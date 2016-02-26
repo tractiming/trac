@@ -8,11 +8,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,17 +28,17 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.support.v7.widget.SearchView;
 
 import com.amplitude.api.Amplitude;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.trac.showcaseview.ShowcaseView;
-import com.trac.showcaseview.targets.ActionItemTarget;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -242,7 +244,7 @@ public class CalendarActivity extends AppCompatActivity implements OnScrollListe
 			 }
 		    //initialize content views
 		    setContentView(R.layout.activity_calendar);
-		 	Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+		 	final Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
 		 //myToolbar.inflateMenu(R.menu.main);
 		 setSupportActionBar(myToolbar);
 
@@ -264,13 +266,26 @@ public class CalendarActivity extends AppCompatActivity implements OnScrollListe
 		 	boolean firstRun = userDetails.getBoolean("firstRun",true);
 
 			 if (firstRun) {
-				 ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
+				 /*ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
 				 co.shotType = ShowcaseView.TYPE_ONE_SHOT;
 				 co.showcaseId = ShowcaseView.ITEM_ACTION_ITEM;
 				 co.hideOnClickOutside = true;
 				 ActionItemTarget target = new ActionItemTarget(this, R.id.action_search2);
 				 final ShowcaseView sv = ShowcaseView.insertShowcaseView(target, this, R.string.intro, R.string.step_one,co);
-				 sv.show();
+				 sv.show();*/
+				 Target homeTarget = new Target() {
+					 @Override
+					 public Point getPoint() {
+						 // Get approximate position of home icon's center
+						 return new ViewTarget(myToolbar.findViewById(R.id.action_search2)).getPoint();
+
+					 }
+				 };
+				 new ShowcaseView.Builder(this)
+						 .setContentTitle(R.string.intro)
+						 .setContentText(R.string.step_one)
+						 .setTarget(homeTarget)
+						 .build();
 			 }
 			   
 		    //Initialize swipe to refresh layout, what happens when swiped: async task called again
