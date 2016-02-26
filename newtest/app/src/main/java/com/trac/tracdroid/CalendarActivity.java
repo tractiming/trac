@@ -26,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.support.v7.widget.SearchView;
 
 import com.amplitude.api.Amplitude;
 import com.google.gson.Gson;
@@ -63,6 +64,8 @@ public class CalendarActivity extends AppCompatActivity implements OnScrollListe
     int fakedTotalItemCount = 21;
     int maxTotalSessions;
 	ShowcaseView sv;
+	private SearchView mSearchView;
+	private MenuItem searchMenuItem;
 	
 
 	 public void onBackPressed() {
@@ -109,19 +112,19 @@ public class CalendarActivity extends AppCompatActivity implements OnScrollListe
 
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		MenuItem searchItem = menu.findItem(R.id.action_search2);
+		//MenuItem searchView = menu.findItem(R.id.action_search2);
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 		getSupportActionBar().setIcon(R.drawable.trac_launcher);
 
 
-/*
+
 	    // Get the SearchView and set the searchable configuration
-	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+	   // SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 	    SearchView searchView = (SearchView) menu.findItem(R.id.action_search2).getActionView();
 	    // Assumes current activity is the searchable activity
 	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-	    searchView.setIconifiedByDefault(false);
+	    //searchView.setIconifiedByDefault(false);
 
 	    // Do not iconify the widget; expand it by default
 
@@ -154,7 +157,7 @@ public class CalendarActivity extends AppCompatActivity implements OnScrollListe
             }
         };
         searchView.setOnQueryTextListener(textChangeListener);
-*/
+
 
 	    return true;
 

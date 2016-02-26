@@ -96,6 +96,20 @@ public class GroupFragment extends ListFragment {
 		Log.d("Caled on pause", "pause");
 		super.onPause();
 		timer.cancel();
+		//shutdown = true;
+		asyncServiceCall.cancel(true);
+		try {
+			saveShared();
+		}
+		catch(NullPointerException e){
+
+		}
+	}
+
+	public void onDestroy(){
+		super.onDestroy();
+		timer.cancel();
+		shutdown = true;
 		asyncServiceCall.cancel(true);
 		try {
 			saveShared();
@@ -386,7 +400,7 @@ public class GroupFragment extends ListFragment {
 	            mHandler.sendMessage(msg);
 	            customHandler.post(this);
 	            counter++;
-	            //Log.d("Run",Integer.toString(counter));
+	            Log.d("Run",Integer.toString(counter));
 	            if (counter>999999999){
 	            	shutdown = true;
 	            	counter = 0;
@@ -413,7 +427,7 @@ public class GroupFragment extends ListFragment {
                 int arg2, long arg3) {
 			counter = 0;
 			shutdown = false;
-		
+			timer.cancel();
          ArrayList<String> tempList = groupList.getTimes();
         
        	//final String timeVar = time.updateText(SystemClock.elapsedRealtime(),Long.parseLong(tempList.get(arg2)));
@@ -426,6 +440,8 @@ public class GroupFragment extends ListFragment {
 					.setAction("Hide", new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {
+							timer.cancel();
+							shutdown = true;
 						}
 					});
 

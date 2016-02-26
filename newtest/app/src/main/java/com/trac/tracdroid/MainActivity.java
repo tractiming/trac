@@ -171,7 +171,7 @@ public class MainActivity extends ActionBarActivity implements
 			// this tab is selected.
 			actionBar.addTab(actionBar.newTab()
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
-					//.setIcon(R.drawable.log)
+							//.setIcon(R.drawable.log)
 					.setTabListener(this));
 
 		}
@@ -191,6 +191,8 @@ public class MainActivity extends ActionBarActivity implements
 	    // Assumes current activity is the searchable activity
 	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 	    searchView.setIconifiedByDefault(false);
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
+		getSupportActionBar().setIcon(R.drawable.trac_launcher);
 
 	    // Do not iconify the widget; expand it by default
 
