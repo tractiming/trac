@@ -357,8 +357,10 @@
     [self.resetValueArray removeAllObjects];
     [self.athleteIDArray removeAllObjects];
     [self.utcTimeArray removeAllObjects];
-    
+    NSLog(@"Trying to save");
     for (NSMutableDictionary *tempDict in self.athleteDictionaryArray) {
+        NSLog(@"Something is null %@, %@, %@",[tempDict valueForKey:@"countStart"], [tempDict valueForKey:@"athleteID"], [tempDict valueForKey:@"dateTime"]);
+
         [self.resetValueArray addObject:[tempDict valueForKey:@"countStart"]];
         [self.athleteIDArray addObject: [tempDict valueForKey:@"athleteID"]];
         [self.utcTimeArray addObject:[tempDict valueForKey:@"dateTime"]];
@@ -1033,6 +1035,7 @@
                     [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
                     [athleteDictionary setObject:[NSNumber numberWithDouble:0] forKey:@"dateTime"];
                     [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
+                    [athleteDictionary setObject:[NSNumber numberWithDouble:0] forKey:@"countStart"];
                     [self.athleteDictionaryArray addObject:athleteDictionary];
                     [self.tableData beginUpdates];
                     [self.tableData insertRowsAtIndexPaths:rowsToAdd withRowAnimation:UITableViewRowAnimationBottom];
