@@ -24,6 +24,7 @@
 #define IPAD     UIUserInterfaceIdiomPad
 #define UITableViewCellEditingStyleMultiSelect (3)
 #import "SSSnackbar.h"
+#import "TokenVerification.h"
 
 @interface FirstViewController() <UIActionSheetDelegate>
 
@@ -374,6 +375,36 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     
+    BOOL redirect = [TokenVerification findToken];
+    if (!redirect) {
+        [self performSegueWithIdentifier:@"logout_exception" sender:self];
+    }
+    
+    
+    self.selectedRunners = [[NSMutableArray alloc] init];
+    self.selectedRunnersUTC = [[NSMutableArray alloc] init];
+    self.selectedRunnersToast = [[NSMutableArray alloc] init];
+    
+    
+    NSMutableArray *loadDocs = [TRACDatabase loadDocs:self.urlID];
+    for (TRACDoc* doc in loadDocs)
+    {
+        TRACDoc* datatoLoad = doc;
+        self.athleteIDArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedIDs];
+        self.utcTimeArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedToast];
+        self.resetValueArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedReset];
+        NSLog(@"Stored Array Values %@,%@,%@",datatoLoad.data.storedIDs,datatoLoad.data.storedToast,datatoLoad.data.storedReset);
+        
+    }
+    [TRACDatabase deletePath:self.urlID];
+    
+    if([loadDocs count]== 0 || loadDocs == nil){
+        NSLog(@"Init Arrays as doc is null");
+        self.resetValueArray = [[NSMutableArray alloc] init];
+        self.athleteIDArray = [[NSMutableArray alloc] init];
+        self.utcTimeArray = [[NSMutableArray alloc] init];
+    }
+    
     self.parentViewController.navigationItem.rightBarButtonItem = self.editButton;
     self.tableData.contentInset = UIEdgeInsetsMake(0,0,44,0);
 //NSLog(@"Reappear");
@@ -401,29 +432,7 @@
     
     CurrentTime = CACurrentMediaTime();
 
-    self.selectedRunners = [[NSMutableArray alloc] init];
-    self.selectedRunnersUTC = [[NSMutableArray alloc] init];
-    self.selectedRunnersToast = [[NSMutableArray alloc] init];
     
-    
-    NSMutableArray *loadDocs = [TRACDatabase loadDocs:self.urlID];
-    for (TRACDoc* doc in loadDocs)
-    {
-        TRACDoc* datatoLoad = doc;
-        self.athleteIDArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedIDs];
-        self.utcTimeArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedToast];
-        self.resetValueArray = [[NSMutableArray alloc] initWithArray:datatoLoad.data.storedReset];
-        NSLog(@"Stored Array Values %@,%@,%@",datatoLoad.data.storedIDs,datatoLoad.data.storedToast,datatoLoad.data.storedReset);
-
-    }
-    [TRACDatabase deletePath:self.urlID];
-    
-    if([loadDocs count]== 0 || loadDocs == nil){
-        NSLog(@"Init Arrays as doc is null");
-        self.resetValueArray = [[NSMutableArray alloc] init];
-        self.athleteIDArray = [[NSMutableArray alloc] init];
-        self.utcTimeArray = [[NSMutableArray alloc] init];
-    }
 
     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(handleLongPress:)];
@@ -1048,10 +1057,8 @@
         return self.runners;
   }
     @catch (NSException *exception) {
-        //NSLog(@"Exception.......... %s","Except!");
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [self performSegueWithIdentifier:@"logout_exception" sender:self];
+        NSLog(@"An exception occurred: %@", exception.name);
+        NSLog(@"Here are some details: %@", exception.reason);
         return self.runners;
     }
 

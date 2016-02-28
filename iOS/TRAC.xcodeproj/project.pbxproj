@@ -55,6 +55,7 @@
 		90EB99FE1C4751CE00B2254D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 90EB99FD1C4751CE00B2254D /* GoogleService-Info.plist */; };
 		90F031BD1C7D835500299E03 /* SSSnackbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F031BC1C7D835500299E03 /* SSSnackbar.m */; };
 		90FB8C9A19F5BAE7006F1210 /* WorkoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB8C9919F5BAE7006F1210 /* WorkoutViewController.m */; };
+		90FBFDAC1C8386670087A6AE /* TokenVerification.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FBFDAB1C8386670087A6AE /* TokenVerification.m */; };
 		AAAFFE1605B8A8DC3A6E42D7 /* libPods-TRAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FFE9A571CC4E92FD3F111CB /* libPods-TRAC.a */; };
 /* End PBXBuildFile section */
 
@@ -144,6 +145,8 @@
 		90F031BC1C7D835500299E03 /* SSSnackbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSSnackbar.m; path = "../../../Downloads/SSSnackbar-master/Pod/Classes/SSSnackbar.m"; sourceTree = "<group>"; };
 		90FB8C9819F5BAE7006F1210 /* WorkoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkoutViewController.h; sourceTree = "<group>"; };
 		90FB8C9919F5BAE7006F1210 /* WorkoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkoutViewController.m; sourceTree = "<group>"; };
+		90FBFDAB1C8386670087A6AE /* TokenVerification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TokenVerification.m; sourceTree = "<group>"; };
+		90FBFDAD1C8386780087A6AE /* TokenVerification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TokenVerification.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,6 +277,8 @@
 				903FBE3F1BF397050054C323 /* RegistrationViewController.m */,
 				90E687B51915C48B0060B20B /* FirstViewController.h */,
 				90E687B61915C48B0060B20B /* FirstViewController.m */,
+				90FBFDAD1C8386780087A6AE /* TokenVerification.h */,
+				90FBFDAB1C8386670087A6AE /* TokenVerification.m */,
 				90F031BB1C7D835500299E03 /* SSSnackbar.h */,
 				90F031BC1C7D835500299E03 /* SSSnackbar.m */,
 				90E687B81915C48B0060B20B /* SecondViewController.h */,
@@ -496,6 +501,7 @@
 				9048ABDA1BF19C170062903B /* UIView+Toast.m in Sources */,
 				90F031BD1C7D835500299E03 /* SSSnackbar.m in Sources */,
 				90E687AE1915C48B0060B20B /* AppDelegate.m in Sources */,
+				90FBFDAC1C8386670087A6AE /* TokenVerification.m in Sources */,
 				9073779C1A37917000F86C7C /* CustomCelliPad.m in Sources */,
 				90428CDE1B9897590011B346 /* RunnerDetail.m in Sources */,
 				90A0698D1A360D05008CAA75 /* CustomCell.m in Sources */,

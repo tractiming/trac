@@ -5,7 +5,8 @@
 //  Created by Griffin Kelly on 4/16/15.
 //  Copyright (c) 2015 Griffin Kelly. All rights reserved.
 //
-
+#import "TRACDatabase.h"
+#import "TRACDoc.h"
 #import "ThirdViewController.h"
 #import "FirstViewController.h"
 #import "RosterTableViewController.h"
@@ -144,7 +145,12 @@
     //NSLog(@"The %@ button was tapped.", [theAlert buttonTitleAtIndex:buttonIndex]);
     if (buttonIndex == 0)
     {
-        //NSLog(@"Discard");
+        //NSLog(@"Data in here? %@, %@, %@",self.resetValueArray, self.athleteIDArray, self.utcTimeArray);
+        NSLog(@"Deleting Stored Data?");
+        [TRACDatabase deletePath:self.urlID];
+        TRACDoc *newDoc = [[TRACDoc alloc] initWithTitle:nil toast:nil reset:nil];
+        [newDoc saveData:self.urlID];
+        NSLog(@"Delete stuff end");
         
         //if signin button clicked query server with credentials
         NSInteger success = 0;

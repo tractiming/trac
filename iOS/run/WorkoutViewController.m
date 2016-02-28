@@ -10,6 +10,7 @@
 #import "SecondViewController.h"
 #import "SiginViewController.h"
 #import "Workout.h"
+#import "TokenVerification.h"
 
 
 #define TRACQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
@@ -63,6 +64,13 @@
 @synthesize workoutSearchBar;
 @synthesize filteredWorkoutArray;
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    BOOL redirect = [TokenVerification findToken];
+    if (!redirect) {
+        [self performSegueWithIdentifier:@"logout" sender:self];
+    }
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
