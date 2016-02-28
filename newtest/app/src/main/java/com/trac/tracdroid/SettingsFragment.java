@@ -7,19 +7,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ListView;
 
 import com.amplitude.api.Amplitude;
-import com.trac.showcaseview.ShowcaseView;
-import com.trac.showcaseview.targets.PointTarget;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,10 +131,31 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 		    .setMessage("Are you sure you want to reset this workout?")
 		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 		        public void onClick(DialogInterface dialog, int which) {
-        	WorkoutReset raceReset = new WorkoutReset();
-        	String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/reset/?access_token=" + access_token;
+					WorkoutReset raceReset = new WorkoutReset();
+					String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/reset/?access_token=" + access_token;
 
-        	raceReset.execute(url);
+					raceReset.execute(url);
+
+					ArrayList<String> tempTimes = null;
+					ArrayList<String> tempResets = null;
+					ArrayList<String> tempIDs = null;
+					System.out.println("SAVING IN : timeArray:"+tempTimes+"Resets"+ tempResets+"IDs"+tempIDs);
+					String tempTimesString = "tempTimes-"+positionID;
+					String tempResetsString = "tempResets-"+positionID;
+					String tempIDsString = "tempIDs-"+positionID;
+					try {
+						InternalStorage.writeObject(getContext(), tempTimesString, tempTimes);
+						InternalStorage.writeObject(getContext(), tempResetsString, tempResets);
+						InternalStorage.writeObject(getContext(), tempIDsString, tempIDs);
+
+					}
+					catch(IOException e){
+
+					}
+
+
+
+
 		        }
 		    })
 		    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -149,6 +166,8 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 		     })
 		    .setIcon(R.drawable.trac_launcher)
 		     .show();
+
+
         }
         else if (position == 5){
         	//Logout Button
