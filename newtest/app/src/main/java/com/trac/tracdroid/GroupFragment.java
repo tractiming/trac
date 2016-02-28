@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -113,12 +114,6 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 		timer.cancel();
 		shutdown = true;
 		asyncServiceCall.cancel(true);
-		try {
-			saveShared();
-		}
-		catch(NullPointerException e){
-
-		}
 	}
 
 	@Override
@@ -442,8 +437,8 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
          customHandler.post(updateTimerThread);
        	
        	//final Toast toast = Toast.makeText(getActivity(), "", Toast.LENGTH_LONG);
-
-			final Snackbar snackbar = Snackbar.make(getView(),"Welcome", Snackbar.LENGTH_INDEFINITE)
+			CoordinatorLayout Clayout = (CoordinatorLayout) getActivity().findViewById(R.id.snackbarlocation);
+			final Snackbar snackbar = Snackbar.make(Clayout,"Welcome", Snackbar.LENGTH_INDEFINITE)
 					.setAction("Hide", new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {

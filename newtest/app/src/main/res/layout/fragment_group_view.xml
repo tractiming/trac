@@ -144,7 +144,13 @@
         android:layout_weight="1.50"
         android:headerDividersEnabled="true" >
     </ListView>
-
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/snackbarlocation">
+    </android.support.design.widget.CoordinatorLayout>
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="fill_parent"
@@ -177,5 +183,6 @@
             android:background="?android:attr/selectableItemBackground"
             android:layout_weight="1"/>
     </LinearLayout>
+
 
 </LinearLayout>

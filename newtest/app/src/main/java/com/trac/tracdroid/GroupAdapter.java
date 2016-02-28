@@ -285,36 +285,71 @@ public class GroupAdapter extends BaseAdapter{
 		
 	}
 	public void splitButtonPressed(ArrayList<String> splitArray){
-		if(splitArray.size() == 0)
-			splitArray = totalSizeArray;
-		for (int i = 0; i < splitArray.size(); i++){
-			//iterate through fed array and see if it matches id to any temp dict
-			Boolean tempBool = totalAthleteID.contains(splitArray.get(i));
-			//If its in there, replace the values, reset the timer array
+		String currentTime = Long.toString(SystemClock.elapsedRealtime());
+		System.out.println("Split Button pressed split" + splitArray.toString() + totalAthleteID.toString());
+		if(splitArray.size() == 0 || splitArray == null)
+		{
+			System.out.println("entered the null guy");
+			splitArray = getAllIDs();
+			for (int i = 0; i < splitArray.size(); i++) {
+				System.out.println("null guy");
+				//iterate through fed array and see if it matches id to any temp dict
+				Boolean tempBool = totalAthleteID.contains(splitArray.get(i));
+				//If its in there, replace the values, reset the timer array
+				System.out.println("Split Check Boolean Value" + Boolean.toString(tempBool));
+				if (tempBool) {
+					System.out.println("Do Vlaues even match?");
+					//If new json has more entries than old json, update
+					//Find the relevant index in java; find result.get(i).id
+					int tempIndex = totalAthleteID.indexOf(splitArray.get(i));
+					//If the current resetcount is within 1 of the total json count, reset the stopwatch time
+					Log.d(totalCountArray.get(tempIndex), totalSizeArray.get(tempIndex));
 
-			if (tempBool) {
-        		//If new json has more entries than old json, update
-        		//Find the relevant index in java; find result.get(i).id
-				int tempIndex = totalAthleteID.indexOf(splitArray.get(i));
-				//If the current resetcount is within 1 of the total json count, reset the stopwatch time
-				Log.d(totalCountArray.get(tempIndex),totalSizeArray.get(tempIndex));
-				
-				int tempCount = Integer.parseInt(totalCountArray.get(tempIndex)) -1;
-				System.out.println("Debug what's the value of "+ totalSizeArray.get(tempIndex).toString());
-				if (parsedJson.get(tempIndex).has_split.equalsIgnoreCase("false"))
-				{
-					Log.d("Entered", "The DNS FUnction");
-					int temporaryCount = Integer.parseInt(totalSizeArray.get(tempIndex));
-					totalCountArray.set(tempIndex, Integer.toString(temporaryCount));
-					timeArray.set(tempIndex, runningToastStore.get(i));
+					int tempCount = Integer.parseInt(totalCountArray.get(tempIndex)) - 1;
+					System.out.println("Debug what's the value of " + runningToastStore.toString());
+					if (parsedJson.get(tempIndex).has_split.equalsIgnoreCase("false")) {
+						Log.d("Entered", "The DNS FUnction");
+						int temporaryCount = Integer.parseInt(totalSizeArray.get(tempIndex));
+						totalCountArray.set(tempIndex, Integer.toString(temporaryCount));
+						timeArray.set(tempIndex,currentTime);
 
+					} else if (totalSizeArray.get(tempIndex) == Integer.toString(tempCount)) {
+						Log.d("Entered", "The Everything else FUnction");
+						timeArray.set(tempIndex, currentTime);
+					}
 				}
-				else if(totalSizeArray.get(tempIndex) == Integer.toString(tempCount)){
-					Log.d("Entered", "The Everything else FUnction");
-					timeArray.set(tempIndex, runningToastStore.get(i));
-				}
-        	}
 
+			}
+		}
+		else {
+			for (int i = 0; i < splitArray.size(); i++) {
+				//iterate through fed array and see if it matches id to any temp dict
+				Boolean tempBool = totalAthleteID.contains(splitArray.get(i));
+				//If its in there, replace the values, reset the timer array
+				System.out.println("Split Check Boolean Value" + Boolean.toString(tempBool));
+				if (tempBool) {
+					System.out.println("Do Vlaues even match?");
+					//If new json has more entries than old json, update
+					//Find the relevant index in java; find result.get(i).id
+					int tempIndex = totalAthleteID.indexOf(splitArray.get(i));
+					//If the current resetcount is within 1 of the total json count, reset the stopwatch time
+					Log.d(totalCountArray.get(tempIndex), totalSizeArray.get(tempIndex));
+
+					int tempCount = Integer.parseInt(totalCountArray.get(tempIndex)) - 1;
+					System.out.println("Debug what's the value of " + runningToastStore.toString());
+					if (parsedJson.get(tempIndex).has_split.equalsIgnoreCase("false")) {
+						Log.d("Entered", "The DNS FUnction");
+						int temporaryCount = Integer.parseInt(totalSizeArray.get(tempIndex));
+						totalCountArray.set(tempIndex, Integer.toString(temporaryCount));
+						timeArray.set(tempIndex, runningToastStore.get(i));
+
+					} else if (totalSizeArray.get(tempIndex) == Integer.toString(tempCount)) {
+						Log.d("Entered", "The Everything else FUnction");
+						timeArray.set(tempIndex, runningToastStore.get(i));
+					}
+				}
+
+			}
 		}
 		notifyDataSetChanged();
 		
