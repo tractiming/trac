@@ -25,6 +25,7 @@
 #define UITableViewCellEditingStyleMultiSelect (3)
 #import "SSSnackbar.h"
 #import "TokenVerification.h"
+#import "TrueTime.h"
 
 @interface FirstViewController() <UIActionSheetDelegate>
 
@@ -190,14 +191,14 @@
             if ([[tempDict valueForKey:@"lastSplit"] isEqualToString:@"DNS"]){
                 NSLog(@"Entered DNS?");
                 [tempDict removeObjectForKey:@"dateTime"];
-                [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
+                [tempDict setObject:[NSNumber numberWithDouble:[TrueTime uptime]] forKey:@"dateTime"];
             }
             else if ([[tempDict valueForKey:@"countStart"] doubleValue] == 0) {
                 //Do Nothing
             }
             else if ([[tempDict valueForKey:@"countStart"] doubleValue] == tempHolder){
                 [tempDict removeObjectForKey:@"dateTime"];
-                [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
+                [tempDict setObject:[NSNumber numberWithDouble:[TrueTime uptime]] forKey:@"dateTime"];
                 NSLog(@"Executed");
             }
         }        // Delete everything, delete the objects from our data model.
@@ -320,7 +321,7 @@
             [tempDict removeObjectForKey:@"totalTime"];
             [tempDict setObject:elapsedtime forKey:@"totalTime"];
             [tempDict removeObjectForKey:@"dateTime"];
-            [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
+            [tempDict setObject:[NSNumber numberWithDouble:[TrueTime uptime]] forKey:@"dateTime"];
             NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:selectionIndex.row inSection:0];
             NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
             [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
@@ -340,7 +341,7 @@
             [tempDict removeObjectForKey:@"totalTime"];
             [tempDict setObject:elapsedtime forKey:@"totalTime"];
             [tempDict removeObjectForKey:@"dateTime"];
-            [tempDict setObject:[NSNumber numberWithDouble:CACurrentMediaTime()] forKey:@"dateTime"];
+            [tempDict setObject:[NSNumber numberWithDouble:[TrueTime uptime]] forKey:@"dateTime"];
             NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:selectionIndex.row inSection:0];
             NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
             [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
@@ -432,7 +433,7 @@
 {
     [super viewDidLoad];
     
-    CurrentTime = CACurrentMediaTime();
+    CurrentTime = [TrueTime uptime];
 
     
 
@@ -511,10 +512,10 @@
         
         tempTime = [[[self.athleteDictionaryArray objectAtIndex:indexPath.row] valueForKey:@"dateTime"] doubleValue];
         if (tempTime != 0){
-            tempTimeMax = CACurrentMediaTime() - tempTime + 99999999;
+            tempTimeMax = [TrueTime uptime] - tempTime + 99999999;
             }
         else{
-            tempTimeMax = CACurrentMediaTime() - CurrentTime + 99999999;
+            tempTimeMax = [TrueTime uptime] - CurrentTime + 99999999;
         }
         
         customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 40)];
@@ -555,14 +556,14 @@
     // Timers are not guaranteed to tick at the nominal rate specified, so this isn't technically accurate.
     // However, this is just an example to demonstrate how to stop some ongoing activity, so we can live with that inaccuracy.
     _ticks = 0.1;
-    double time = CACurrentMediaTime() - CurrentTime;
+    double time = [TrueTime uptime] - CurrentTime;
     time += _ticks;
     
     if (tempTime != 0)
     {
-         time = CACurrentMediaTime() - tempTime;
+         time = [TrueTime uptime] - tempTime;
     }
-    NSLog(@"%f",time);
+
     //CFTimeInterval maxticks = _ticks + 3;
     NSLog(@"%f, %f",time,tempTimeMax);
     if (time < tempTimeMax){
@@ -1096,7 +1097,7 @@
     
     [self.selectedRunners addObject:[tempDict valueForKey:@"athleteID"]];
     [self.selectedRunnersUTC addObject:localDateString];
-    [self.selectedRunnersToast addObject:[NSNumber numberWithDouble:CACurrentMediaTime()]];
+    [self.selectedRunnersToast addObject:[NSNumber numberWithDouble:[TrueTime uptime]]];
     NSLog(@"UTC %@",self.selectedRunnersUTC);
     NSLog(@"Indecies %@",self.selectedRunners);
     // Update the delete button's title based on how many items are selected.

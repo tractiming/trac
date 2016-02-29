@@ -56,6 +56,7 @@
 		90F031BD1C7D835500299E03 /* SSSnackbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F031BC1C7D835500299E03 /* SSSnackbar.m */; };
 		90FB8C9A19F5BAE7006F1210 /* WorkoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB8C9919F5BAE7006F1210 /* WorkoutViewController.m */; };
 		90FBFDAC1C8386670087A6AE /* TokenVerification.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FBFDAB1C8386670087A6AE /* TokenVerification.m */; };
+		90FBFDAF1C84006E0087A6AE /* TrueTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FBFDAE1C84006E0087A6AE /* TrueTime.m */; };
 		AAAFFE1605B8A8DC3A6E42D7 /* libPods-TRAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FFE9A571CC4E92FD3F111CB /* libPods-TRAC.a */; };
 /* End PBXBuildFile section */
 
@@ -147,6 +148,8 @@
 		90FB8C9919F5BAE7006F1210 /* WorkoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkoutViewController.m; sourceTree = "<group>"; };
 		90FBFDAB1C8386670087A6AE /* TokenVerification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TokenVerification.m; sourceTree = "<group>"; };
 		90FBFDAD1C8386780087A6AE /* TokenVerification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TokenVerification.h; sourceTree = "<group>"; };
+		90FBFDAE1C84006E0087A6AE /* TrueTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrueTime.m; sourceTree = "<group>"; };
+		90FBFDB01C8400BC0087A6AE /* TrueTime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrueTime.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,6 +280,8 @@
 				903FBE3F1BF397050054C323 /* RegistrationViewController.m */,
 				90E687B51915C48B0060B20B /* FirstViewController.h */,
 				90E687B61915C48B0060B20B /* FirstViewController.m */,
+				90FBFDB01C8400BC0087A6AE /* TrueTime.h */,
+				90FBFDAE1C84006E0087A6AE /* TrueTime.m */,
 				90FBFDAD1C8386780087A6AE /* TokenVerification.h */,
 				90FBFDAB1C8386670087A6AE /* TokenVerification.m */,
 				90F031BB1C7D835500299E03 /* SSSnackbar.h */,
@@ -512,6 +517,7 @@
 				903FBE401BF397050054C323 /* RegistrationViewController.m in Sources */,
 				90E215331BE86E4500E617EC /* RosterTableViewController.m in Sources */,
 				90E687AA1915C48B0060B20B /* main.m in Sources */,
+				90FBFDAF1C84006E0087A6AE /* TrueTime.m in Sources */,
 				90862F7D1B6B205100DB9E4B /* Workout.m in Sources */,
 				90458C8A1C72402B00E3602C /* TRACDatabase.m in Sources */,
 				9038DA571C4C79ED00E83526 /* TutorialViewController.m in Sources */,
