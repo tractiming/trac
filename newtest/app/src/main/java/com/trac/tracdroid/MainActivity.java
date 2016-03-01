@@ -148,7 +148,7 @@ public class MainActivity extends ActionBarActivity implements
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		mViewPager.setOffscreenPageLimit(2);
+		mViewPager.setOffscreenPageLimit(0);
 
 
 		// When swiping between different sections, select the corresponding
