@@ -56,6 +56,7 @@
     double CurrentTime;
     double tempTime;
     double tempTimeMax;
+    NSIndexPath *runningClockIndexPath;
     
 }
 @synthesize tracDoc = _tracDoc;
@@ -155,6 +156,9 @@
             //For the toast to keep time
             NSLog(@"%@, %@", [tempDict valueForKey:@"countStart"], [tempDict valueForKey:@"numberSplits"]);
             double tempHolder =[[tempDict valueForKey:@"numberSplits"] doubleValue];
+            if (selectionIndex == runningClockIndexPath){
+                tempTime = [[self.selectedRunnersToast objectAtIndex:indexOfTheObject] doubleValue];
+            }
             
             if ([[tempDict valueForKey:@"lastSplit"] isEqualToString:@"DNS"]){
                 NSLog(@"Entered DNS?");
@@ -511,11 +515,13 @@
         
         
         tempTime = [[[self.athleteDictionaryArray objectAtIndex:indexPath.row] valueForKey:@"dateTime"] doubleValue];
+        //store the index path to later do update if updated...
+        runningClockIndexPath = indexPath;
         if (tempTime != 0){
             tempTimeMax = [TrueTime uptime] - tempTime + 99999999;
             }
         else{
-            tempTimeMax = [TrueTime uptime] - CurrentTime + 99999999;
+            tempTimeMax = 99999999;
         }
         
         customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 40)];
@@ -556,8 +562,8 @@
     // Timers are not guaranteed to tick at the nominal rate specified, so this isn't technically accurate.
     // However, this is just an example to demonstrate how to stop some ongoing activity, so we can live with that inaccuracy.
     _ticks = 0.1;
-    double time = [TrueTime uptime] - CurrentTime;
-    time += _ticks;
+    double time = 0;
+    //time += _ticks;
     
     if (tempTime != 0)
     {
