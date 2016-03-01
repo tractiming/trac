@@ -86,6 +86,7 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 	public List<Runners> storedRunners;
 	String FILENAME = "tracstorage";
 	public View rootView;
+	public int runningTimeIndex =-1;
 
 	
 	public static void backButtonWasPressed() {
@@ -186,7 +187,7 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 		    	ArrayList<String> checkArray = groupList.getCheckArrayID();
 				ArrayList<String> timeArray = groupList.getCheckTimeArray();
 				ArrayList<String> allIds = groupList.getAllIDs();
-
+				//storedTime = Long.parseLong(timeArray.get());
 		    	//Log.d("Array has data?2 ??",checkArray.toString());
 		    	
 	        	String url = "https://trac-us.appspot.com/api/splits/?access_token=" + access_token;
@@ -232,6 +233,12 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 	        		
 	        		
 	        	}
+
+				if (runningTimeIndex != -1) {
+					System.out.println("Index of :" +checkArray.toString() + runningTimeIndex);
+					ArrayList<String> tempList = groupList.getTimes();
+					storedTime = Long.parseLong(tempList.get(runningTimeIndex));
+				}
 				dynamicButtons();
 	        	//Log.d("Array has data? 3?",checkArray.toString());
 	        	//groupList.resetCheckArray();
@@ -369,8 +376,8 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 		public void run(){
 
 			if(!shutdown){
-	            timeInMilliseconds = SystemClock.elapsedRealtime() - startTime;
-	            updatedTime = timeSwapBuff + timeInMilliseconds;
+	            //timeInMilliseconds = SystemClock.elapsedRealtime() - startTime;
+	            updatedTime = 0;
 	            
 	            if (storedTime !=0)
 	            {
@@ -430,9 +437,12 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 			counter = 0;
 			shutdown = false;
 			timer.cancel();
+
          ArrayList<String> tempList = groupList.getTimes();
-        
+			ArrayList<String> tempIds = groupList.getAllIDs();
+			runningTimeIndex = arg2;
        	//final String timeVar = time.updateText(SystemClock.elapsedRealtime(),Long.parseLong(tempList.get(arg2)));
+
          storedTime = Long.parseLong(tempList.get(arg2));
          customHandler.post(updateTimerThread);
        	
