@@ -381,7 +381,9 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 	            
 	            if (storedTime !=0)
 	            {
-	            	updatedTime = SystemClock.elapsedRealtime() - storedTime;
+
+	            	updatedTime = System.currentTimeMillis() - storedTime;
+					System.out.println("Stored Time:" + storedTime+"Current Time"+ System.currentTimeMillis());
 	            }
 	            int hours = (int)(updatedTime / (3600 * 1000));
 	            int remaining = (int)(updatedTime % (3600 * 1000));
@@ -441,9 +443,11 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
          ArrayList<String> tempList = groupList.getTimes();
 			ArrayList<String> tempIds = groupList.getAllIDs();
 			runningTimeIndex = arg2;
+
        	//final String timeVar = time.updateText(SystemClock.elapsedRealtime(),Long.parseLong(tempList.get(arg2)));
 
          storedTime = Long.parseLong(tempList.get(arg2));
+			System.out.println("Value of stored tiem" + storedTime);
          customHandler.post(updateTimerThread);
        	
        	//final Toast toast = Toast.makeText(getActivity(), "", Toast.LENGTH_LONG);

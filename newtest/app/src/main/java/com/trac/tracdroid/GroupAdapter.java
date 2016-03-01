@@ -1,7 +1,6 @@
 package com.trac.tracdroid;
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,7 +55,25 @@ public class GroupAdapter extends BaseAdapter{
 	 positionArray = new ArrayList<Boolean>(parsedJson.size());
 	    for(int k=0; k < parsedJson.size(); k++){
 	        positionArray.add(false);
-	        timeArray.add(Integer.toString(0));
+
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+			sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+
+			Date date = null;
+			try {
+				date = sdf.parse(parsedJson.get(k).first_seen);
+				System.out.println(date.getTime());
+				timeArray.add(Long.toString(date.getTime()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+				timeArray.add(Integer.toString(0));
+			} catch (NullPointerException e)
+			{
+				timeArray.add(Integer.toString(0));
+				System.out.println("Null Value");
+			}
+
+			System.out.println("First Time" + parsedJson.get(k).first_seen);
 	    }
 	    
 	totalCountArray = new ArrayList<String>(parsedJson.size());
@@ -144,7 +162,7 @@ public class GroupAdapter extends BaseAdapter{
 					dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
 					final String utcTime = dateFormatGmt.format(new Date());
 					athleteTimeArray.add(utcTime);
-					runningToastStore.add(Long.toString(SystemClock.elapsedRealtime()));
+					runningToastStore.add(Long.toString(System.currentTimeMillis()));
 
 	            }
 	            else if(!isChecked){
@@ -285,7 +303,7 @@ public class GroupAdapter extends BaseAdapter{
 		
 	}
 	public void splitButtonPressed(ArrayList<String> splitArray){
-		String currentTime = Long.toString(SystemClock.elapsedRealtime());
+		String currentTime = Long.toString(System.currentTimeMillis());
 		System.out.println("Split Button pressed split" + splitArray.toString() + totalAthleteID.toString());
 		if(splitArray.size() == 0 || splitArray == null)
 		{
@@ -374,7 +392,7 @@ public class GroupAdapter extends BaseAdapter{
 				int tempIndex = totalAthleteID.indexOf(resetArray.get(i));
 				int tempCount = Integer.parseInt(totalSizeArray.get(tempIndex)) + 1;
 				totalCountArray.set(tempIndex, Integer.toString(tempCount));
-				timeArray.set(tempIndex, Long.toString(SystemClock.elapsedRealtime()));
+				timeArray.set(tempIndex, Long.toString(System.currentTimeMillis()));
 				
         	}
 
@@ -418,7 +436,7 @@ public class GroupAdapter extends BaseAdapter{
 				{
 					if((totalAthleteID.get(j)).equals(runnerIDs.get(i))){
 						System.out.println("Old Index:"+j+"new index"+i);
-						timeArray.set(j,time.get(i));
+						timeArray.set(j, time.get(i));
 						totalCountArray.set(j,resetSplits.get(i));
 					}
 				}

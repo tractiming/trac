@@ -1,9 +1,9 @@
 package com.trac.tracdroid;
 
 
-import java.util.List;
-
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class Runners {
 	//For JSON
@@ -17,4 +17,6 @@ public class Runners {
 	public String total;
 	@SerializedName ("has_split")
 	public String has_split;
+	@SerializedName ("first_seen")
+	public String first_seen;
 }
