@@ -15,6 +15,7 @@
     TRACDoc *_tracDoc;
 }
 
+@property (strong, nonatomic) NSMutableArray *first_seen;
 @property (strong, nonatomic) NSMutableArray *has_split;
 @property (strong, nonatomic) NSMutableArray *runners;
 @property (strong, nonatomic) NSMutableArray *runnerID;
