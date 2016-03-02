@@ -838,7 +838,18 @@
                 else{
                     NSLog(@"Varying Time");
                     [athleteDictionary setObject:[self.resetValueArray objectAtIndex:indexOfAthlete] forKey:@"countStart"];
-                    [athleteDictionary setObject:[self.utcTimeArray objectAtIndex:indexOfAthlete] forKey:@"dateTime"];
+  
+                    //input the more recent value, either the firstseentime or a locally stored utc time
+                    //prevent loading a zero out of storage
+                    NSLog(@"%@, %@", [self.utcTimeArray objectAtIndex:indexOfAthlete], [firstSeenTimeArray objectAtIndex:index]);
+                    if ([[self.utcTimeArray objectAtIndex:indexOfAthlete] integerValue] <= [[firstSeenTimeArray objectAtIndex:index] integerValue]) {
+                        NSLog(@"read to firstseen");
+                        [athleteDictionary setObject:[firstSeenTimeArray objectAtIndex:index] forKey:@"dateTime"];
+                    }
+                    else{
+                        NSLog(@"read to internal storage");
+                         [athleteDictionary setObject:[self.utcTimeArray objectAtIndex:indexOfAthlete] forKey:@"dateTime"];
+                    }
                 }
                 
                 
