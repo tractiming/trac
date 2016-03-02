@@ -79,10 +79,12 @@
       <file leaf-file-name="GroupFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6289308">
-              <caret line="397" column="16" selection-start-line="397" selection-start-column="16" selection-end-line="397" selection-end-column="16" />
+            <state vertical-scroll-proportion="0.836478">
+              <caret line="368" column="54" selection-start-line="368" selection-start-column="50" selection-end-line="368" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#15419#15632#0" expanded="true" />
+                <element signature="e#15631#15632#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2255,7 +2257,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="12" y="23" width="1764" height="922" extended-state="1" />
+    <frame x="12" y="23" width="1764" height="922" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2661,10 +2663,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/trac/tracdroid/GroupFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6289308">
-          <caret line="397" column="16" selection-start-line="397" selection-start-column="16" selection-end-line="397" selection-end-column="16" />
+        <state vertical-scroll-proportion="0.836478">
+          <caret line="368" column="54" selection-start-line="368" selection-start-column="50" selection-end-line="368" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#15419#15632#0" expanded="true" />
+            <element signature="e#15631#15632#0" expanded="true" />
           </folding>
         </state>
       </provider>

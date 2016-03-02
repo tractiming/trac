@@ -45,6 +45,7 @@
     NSTimer *timer;
     UIToolbar *actionToolbar;
     NSString* elapsedtime;
+    NSString *newStartRunningTime;
     BOOL Executed;
     NSUInteger universalIndex;
     NSArray *superlasttime;
@@ -863,6 +864,7 @@
                             NSLog(@"Deleted Checkbox again");
                             elapsedtime = [NSString stringWithFormat:@"NT"];
                             superlasttime = [NSString stringWithFormat:@"NT"];
+                            
                             universalIndex = 0;
                             
                             NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:closestIndex inSection:0];
@@ -870,12 +872,40 @@
                             NSArray *tempArray= [self.interval objectAtIndex:index];
                             //update the dictionary here for that index
                             NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:closestIndex];
+                            [tempDict removeObjectForKey:@"dateTime"];
+                            
+                            
+                            //Add in running clock time for when started
+                            if ([self.first_seen objectAtIndex:index] == [NSNull null]){
+                                
+                                [tempDict setObject:[NSNumber numberWithDouble:0] forKey:@"dateTime"];
+                            }
+                            else{
+                                newStartRunningTime =[self.first_seen objectAtIndex:index];
+                                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                                [dateFormatter setDateFormat:@"yyyy/MM/dd HH:mm:ss.SSS"];
+                                NSDate *dateFromString = [[NSDate alloc] init];
+                                NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+                                [dateFormatter setTimeZone:timeZone];
+                                dateFromString = [dateFormatter dateFromString:newStartRunningTime];
+                                NSTimeInterval timeInMiliseconds = [dateFromString timeIntervalSince1970]*1000;
+                                NSInteger time = timeInMiliseconds;
+                                
+                                NSString *strTimeStamp = [NSString stringWithFormat:@"%ld",(long)time];
+                                [tempDict setObject:strTimeStamp forKey:@"dateTime"];
+                            }
+
+                            
                             [tempDict removeObjectForKey:@"lastSplit"];
                             [tempDict removeObjectForKey:@"numberSplits"];
                             [tempDict removeObjectForKey:@"totalTime"];
                             [tempDict setObject:superlasttime forKey:@"lastSplit"];
                             [tempDict setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
                             [tempDict setObject:elapsedtime forKey:@"totalTime"];
+                            
+                            if (runningClockIndexPath.row == index){
+                                tempTime = [[tempDict valueForKey:@"dateTime"] doubleValue];
+                            }
                             
                             [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
                         }
@@ -981,6 +1011,7 @@
                     NSIndexPath* rowToAdd = [NSIndexPath indexPathForRow:[tempArray count] inSection:0];
                     NSArray* rowsToAdd = [NSArray arrayWithObjects:rowToAdd, nil];
                     NSArray *tempArray= [self.interval objectAtIndex:index];
+                    NSMutableDictionary *athleteDictionary = [NSMutableDictionary new];
                     //NSLog(@" Has Split: %@",[self.has_split objectAtIndex:index]);
                     if(![[self.has_split objectAtIndex:index] boolValue]){
                         elapsedtime = [NSString stringWithFormat:@"DNS"];
@@ -992,6 +1023,7 @@
                         elapsedtime = [NSString stringWithFormat:@"NT"];
                         superlasttime = [NSString stringWithFormat:@"NT"];
                         universalIndex = 0;
+                        
                     }
                     else{
                         //adds all intervals together to give cumulative time
@@ -1060,9 +1092,28 @@
                             
                         }
                     }
+                    
+                    if ([self.first_seen objectAtIndex:index] == [NSNull null]){
+
+                        [athleteDictionary setObject:[NSNumber numberWithDouble:0] forKey:@"dateTime"];
+                    }
+                    else{
+                        newStartRunningTime =[self.first_seen objectAtIndex:index];
+                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                        [dateFormatter setDateFormat:@"yyyy/MM/dd HH:mm:ss.SSS"];
+                        NSDate *dateFromString = [[NSDate alloc] init];
+                        NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+                        [dateFormatter setTimeZone:timeZone];
+                        dateFromString = [dateFormatter dateFromString:newStartRunningTime];
+                        NSTimeInterval timeInMiliseconds = [dateFromString timeIntervalSince1970]*1000;
+                        NSInteger time = timeInMiliseconds;
+                        
+                        NSString *strTimeStamp = [NSString stringWithFormat:@"%ld",(long)time];
+                        [athleteDictionary setObject:strTimeStamp forKey:@"dateTime"];
+                    }
 
                     
-                    NSMutableDictionary *athleteDictionary = [NSMutableDictionary new];
+                   
                     [athleteDictionary setObject:[self.runners objectAtIndex:index] forKey:@"name"];
                     [athleteDictionary setObject:[self.runnerID objectAtIndex:index] forKey:@"athleteID"];
                     [athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
