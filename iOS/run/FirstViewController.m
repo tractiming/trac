@@ -53,7 +53,7 @@
     NSMutableString *countedTime;
     UILabel *toastText;
     UIView *customView;
-    double CurrentTime;
+    //double CurrentTime;
     double tempTime;
     double tempTimeMax;
     NSIndexPath *runningClockIndexPath;
@@ -157,9 +157,7 @@
             //For the toast to keep time
             NSLog(@"%@, %@", [tempDict valueForKey:@"countStart"], [tempDict valueForKey:@"numberSplits"]);
             double tempHolder =[[tempDict valueForKey:@"numberSplits"] doubleValue];
-            if (selectionIndex == runningClockIndexPath){
-                tempTime = [[self.selectedRunnersToast objectAtIndex:indexOfTheObject] doubleValue];
-            }
+            
             
             if ([[tempDict valueForKey:@"lastSplit"] isEqualToString:@"DNS"]){
                 NSLog(@"Entered DNS?");
@@ -174,8 +172,14 @@
                 [tempDict setObject:[self.selectedRunnersToast objectAtIndex:indexOfTheObject] forKey:@"dateTime"];
                 NSLog(@"Executed");
             }
+            
+            if (selectionIndex == runningClockIndexPath){
+                tempTime = [[tempDict valueForKey:@"dateTime"] doubleValue];
+            }
+            
+            
         }
-
+        
     }
     else
     {
@@ -196,20 +200,22 @@
             if ([[tempDict valueForKey:@"lastSplit"] isEqualToString:@"DNS"]){
                 NSLog(@"Entered DNS?");
                 [tempDict removeObjectForKey:@"dateTime"];
-                [tempDict setObject:[NSNumber numberWithDouble:[TrueTime uptime]] forKey:@"dateTime"];
+                [tempDict setObject:[NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970 ]*1000] forKey:@"dateTime"];
             }
             else if ([[tempDict valueForKey:@"countStart"] doubleValue] == 0) {
                 //Do Nothing
             }
             else if ([[tempDict valueForKey:@"countStart"] doubleValue] == tempHolder){
                 [tempDict removeObjectForKey:@"dateTime"];
-                [tempDict setObject:[NSNumber numberWithDouble:[TrueTime uptime]] forKey:@"dateTime"];
+                [tempDict setObject:[NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970 ]*1000] forKey:@"dateTime"];
                 NSLog(@"Executed");
             }
         }        // Delete everything, delete the objects from our data model.
         //Take every row and put into json. Then Send it
     }
-    
+    //Put the reload here to premptively reload, becaues if its filtered, it will crash
+    [self.tableData reloadRowsAtIndexPaths:selectedRows withRowAnimation:UITableViewRowAnimationNone];
+    [self updateButtonsToMatchTableState];
     
     //Clear the selection arrays
     [self.selectedRunnersUTC removeAllObjects];
@@ -263,19 +269,9 @@
                                       options:NSJSONReadingMutableContainers
                                       error:&error];
             
-            success = [jsonData[@"success"] integerValue];
-            NSLog(@"Success: %ld",(long)success);
+            //success = [jsonData[@"success"] integerValue];
+            //NSLog(@"Success: %ld",(long)success);
             
-            if(success == 0)
-            {
-                NSLog(@"SUCCESS");
-                
-                
-            } else {
-                
-                NSLog(@"Failed");
-                
-            }
             
         } else {
             //if (error) NSLog(@"Error: %@", error);
@@ -326,7 +322,7 @@
             [tempDict removeObjectForKey:@"totalTime"];
             [tempDict setObject:elapsedtime forKey:@"totalTime"];
             [tempDict removeObjectForKey:@"dateTime"];
-            [tempDict setObject:[NSNumber numberWithDouble:[TrueTime uptime]] forKey:@"dateTime"];
+            [tempDict setObject:[NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970 ]*1000] forKey:@"dateTime"];
             NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:selectionIndex.row inSection:0];
             NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
             [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
@@ -346,7 +342,7 @@
             [tempDict removeObjectForKey:@"totalTime"];
             [tempDict setObject:elapsedtime forKey:@"totalTime"];
             [tempDict removeObjectForKey:@"dateTime"];
-            [tempDict setObject:[NSNumber numberWithDouble:[TrueTime uptime]] forKey:@"dateTime"];
+            [tempDict setObject:[NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970 ]*1000] forKey:@"dateTime"];
             NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:selectionIndex.row inSection:0];
             NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
             [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
@@ -438,7 +434,7 @@
 {
     [super viewDidLoad];
     
-    CurrentTime = [TrueTime uptime];
+    //CurrentTime = [TrueTime uptime];
 
     
 
@@ -627,7 +623,7 @@
 
 - (void) sendRequest
 {
-    //NSLog(@"This is Null??");
+    NSLog(@"Send Request Called");
     //Async Task Called
     dispatch_async(kBgQueue, ^{
         
@@ -646,7 +642,7 @@
 }
 
 - (NSArray *)fetchedData:(NSData *)responseData {
-    //NSLog(@"Delete? %@",self.storeDelete);
+    NSLog(@"Fetched Data called? ");
     if (self.storeDelete)
     {
         NSLog(@"Enters the if");
@@ -673,7 +669,35 @@
         self.interval = [results valueForKey:@"splits"];
         self.has_split = [results valueForKey:@"has_split"];
         self.first_seen = [results valueForKey:@"first_seen"];
-
+       
+       if(Executed == TRUE){
+           //Download the times for first seen.
+           firstSeenTimeArray = [[NSMutableArray alloc] init];
+           for (int jj=0; jj<[self.first_seen count]; jj++){
+               
+               if ([self.first_seen objectAtIndex:jj] == [NSNull null]){
+                   
+                   [firstSeenTimeArray addObject:[NSNumber numberWithDouble:0]];
+               }
+               else{
+                   NSString *split = [self.first_seen objectAtIndex:jj];
+                   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                   [dateFormatter setDateFormat:@"yyyy/MM/dd HH:mm:ss.SSS"];
+                   NSDate *dateFromString = [[NSDate alloc] init];
+                   NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+                   [dateFormatter setTimeZone:timeZone];
+                   dateFromString = [dateFormatter dateFromString:split];
+                   NSTimeInterval timeInMiliseconds = [dateFromString timeIntervalSince1970]*1000;
+                   NSInteger time = timeInMiliseconds;
+                   
+                   NSString *strTimeStamp = [NSString stringWithFormat:@"%ld",(long)time];
+                   NSLog(@"The Date is = %@",split);
+                   NSLog(@"The Timestamp is = %@",strTimeStamp);
+                   [firstSeenTimeArray addObject:strTimeStamp];
+               }
+               
+           }
+       }
 
        self.summationTimeArray = [[NSMutableArray alloc] init];
        self.lasttimearray = [[NSMutableArray alloc] init];
@@ -684,33 +708,6 @@
         for (NSArray *personalinterval in self.interval) {
            
             if(Executed == TRUE){
-                //Download the times for first seen. 
-                firstSeenTimeArray = [[NSMutableArray alloc] init];
-                for (int jj=0; jj<[self.first_seen count]; jj++){
-                    
-                    if ([self.first_seen objectAtIndex:jj] == [NSNull null]){
-                        
-                        [firstSeenTimeArray addObject:[NSNumber numberWithDouble:0]];
-                    }
-                    else{
-                        NSString *split = [self.first_seen objectAtIndex:jj];
-                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                        [dateFormatter setDateFormat:@"yyyy/MM/dd HH:mm:ss.SSS"];
-                        NSDate *dateFromString = [[NSDate alloc] init];
-                        NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
-                        [dateFormatter setTimeZone:timeZone];
-                        dateFromString = [dateFormatter dateFromString:split];
-                        NSTimeInterval timeInMiliseconds = [dateFromString timeIntervalSince1970]*1000;
-                        NSInteger time = timeInMiliseconds;
-
-                        NSString *strTimeStamp = [NSString stringWithFormat:@"%ld",(long)time];
-                        NSLog(@"The Date is = %@",split);
-                        NSLog(@"The Timestamp is = %@",strTimeStamp);
-                        [firstSeenTimeArray addObject:strTimeStamp];
-                    }
-                    
-                }
-                
                 
                 if(![[self.has_split objectAtIndex:index] boolValue]){
                     elapsedtime = [NSString stringWithFormat:@"DNS"];
@@ -1113,12 +1110,13 @@
 {
      NSMutableDictionary *tempDict = [self.athleteDictionaryArray objectAtIndex:indexPath.row];
     // Update the delete button's title based on how many items are selected.
+    NSLog(@"Dictionary %@",[tempDict valueForKey:@"athleteID"]);
+    NSLog(@"Indecies %@", self.selectedRunners);
     NSUInteger indexOfTheObject = [self.selectedRunners indexOfObject:[tempDict valueForKey:@"athleteID"]];
     [self.selectedRunners removeObjectAtIndex:indexOfTheObject];
     [self.selectedRunnersUTC removeObjectAtIndex:indexOfTheObject];
     [self.selectedRunnersToast removeObjectAtIndex:indexOfTheObject];
-    NSLog(@"UTC %@",self.selectedRunnersUTC);
-    NSLog(@"Indecies %@",self.selectedRunners);
+    
     [self updateSplitButtonTitle];
 }
 
@@ -1135,7 +1133,7 @@
     
     [self.selectedRunners addObject:[tempDict valueForKey:@"athleteID"]];
     [self.selectedRunnersUTC addObject:localDateString];
-    [self.selectedRunnersToast addObject:[NSNumber numberWithDouble:[TrueTime uptime]]];
+    [self.selectedRunnersToast addObject:[NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970 ]*1000]];
     NSLog(@"UTC %@",self.selectedRunnersUTC);
     NSLog(@"Indecies %@",self.selectedRunners);
     // Update the delete button's title based on how many items are selected.
