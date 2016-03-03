@@ -556,7 +556,7 @@
 
 -(void)refreshTimeLabel:(id)sender
 {
-    NSLog(@"Hit the time label");
+    //NSLog(@"Hit the time label");
     // Timers are not guaranteed to tick at the nominal rate specified, so this isn't technically accurate.
     // However, this is just an example to demonstrate how to stop some ongoing activity, so we can live with that inaccuracy.
     _ticks = 0.1;
@@ -569,7 +569,7 @@
          time = [[NSDate date] timeIntervalSince1970 ]*1000 - tempTime;
     }
 
-        NSLog(@"Time Current:  %f",time);
+       // NSLog(@"Time Current:  %f",time);
         double hours = trunc(time / 3600000.0);
         double remainder = fmod(time, 3600000.0);
         double minutes = trunc(remainder / 60000.0);
@@ -624,7 +624,7 @@
 
 - (void) sendRequest
 {
-    NSLog(@"Send Request Called");
+   // NSLog(@"Send Request Called");
     //Async Task Called
     dispatch_async(kBgQueue, ^{
         
@@ -643,10 +643,10 @@
 }
 
 - (NSArray *)fetchedData:(NSData *)responseData {
-    NSLog(@"Fetched Data called? ");
+    //NSLog(@"Fetched Data called? ");
     if (self.storeDelete)
     {
-        NSLog(@"Enters the if");
+       // NSLog(@"Enters the if");
         Executed = TRUE;
         [self.athleteDictionaryArray removeAllObjects];
         [self.tableData reloadData];
@@ -732,11 +732,11 @@
                     
                     if (self.utcTimeArray == nil || [self.utcTimeArray count] == 0)
                     {
-                        NSLog(@"Setting Zero");
+                        //NSLog(@"Setting Zero");
                         rangeVar = [[NSNumber numberWithInt:0] integerValue];
                     }
                     else{
-                        NSLog(@"Varying Time");
+                        //NSLog(@"Varying Time");
                         rangeVar = [[self.resetValueArray objectAtIndex:indexOfAthlete] integerValue];
                     }
                     
@@ -842,13 +842,14 @@
                     //input the more recent value, either the firstseentime or a locally stored utc time
                     //prevent loading a zero out of storage
                     NSLog(@"%@, %@", [self.utcTimeArray objectAtIndex:indexOfAthlete], [firstSeenTimeArray objectAtIndex:index]);
-                    if ([[self.utcTimeArray objectAtIndex:indexOfAthlete] integerValue] <= [[firstSeenTimeArray objectAtIndex:index] integerValue] && [[firstSeenTimeArray objectAtIndex:index] integerValue] != 0) {
-                        NSLog(@"read to firstseen");
-                        [athleteDictionary setObject:[firstSeenTimeArray objectAtIndex:index] forKey:@"dateTime"];
+                    if ([[self.utcTimeArray objectAtIndex:indexOfAthlete] integerValue] >= [[firstSeenTimeArray objectAtIndex:index] integerValue] && [[firstSeenTimeArray objectAtIndex:index] integerValue] != 0) {
+                        NSLog(@"read to internal storage");
+                        [athleteDictionary setObject:[self.utcTimeArray objectAtIndex:indexOfAthlete] forKey:@"dateTime"];
+                        
                     }
                     else{
-                        NSLog(@"read to internal storage");
-                         [athleteDictionary setObject:[self.utcTimeArray objectAtIndex:indexOfAthlete] forKey:@"dateTime"];
+                        NSLog(@"read to firstseen");
+                        [athleteDictionary setObject:[firstSeenTimeArray objectAtIndex:index] forKey:@"dateTime"];
                     }
                 }
                 
@@ -867,12 +868,12 @@
                 //NSLog(@"Index %lu", (unsigned long)closestIndex);
                 //If the new index is in the dictionary, and if it hasnt loaded all the splits update them and reload.
                 if (found){
-                    
+                    NSLog(@"Index Found:  %lu",(unsigned long)index);
                     if ([[self.has_split objectAtIndex:index] boolValue]) {
-                        NSLog(@"Last Split String: %@", [[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"lastSplit"]);
+                       // NSLog(@"Last Split String: %@", [[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"lastSplit"]);
                         if ( [[[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"lastSplit"] isEqualToString:@"DNS"])
                         {
-                            NSLog(@"Deleted Checkbox again");
+                            NSLog(@"Moved Into NT Area Index : %lu", (unsigned long)index);
                             elapsedtime = [NSString stringWithFormat:@"NT"];
                             superlasttime = [NSString stringWithFormat:@"NT"];
                             
@@ -914,8 +915,10 @@
                             [tempDict setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
                             [tempDict setObject:elapsedtime forKey:@"totalTime"];
                             
-                            if (runningClockIndexPath.row == index){
+                            NSLog(@"Running Clock %ld %lu",(long)runningClockIndexPath.row,(unsigned long)index);
+                            if (runningClockIndexPath.row == closestIndex){
                                 tempTime = [[tempDict valueForKey:@"dateTime"] doubleValue];
+                                NSLog(@"Time %f", tempTime);
                             }
                             
                             [self.tableData reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
