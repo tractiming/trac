@@ -842,7 +842,7 @@
                     //input the more recent value, either the firstseentime or a locally stored utc time
                     //prevent loading a zero out of storage
                     NSLog(@"%@, %@", [self.utcTimeArray objectAtIndex:indexOfAthlete], [firstSeenTimeArray objectAtIndex:index]);
-                    if ([[self.utcTimeArray objectAtIndex:indexOfAthlete] integerValue] <= [[firstSeenTimeArray objectAtIndex:index] integerValue]) {
+                    if ([[self.utcTimeArray objectAtIndex:indexOfAthlete] integerValue] <= [[firstSeenTimeArray objectAtIndex:index] integerValue] && [[firstSeenTimeArray objectAtIndex:index] integerValue] != 0) {
                         NSLog(@"read to firstseen");
                         [athleteDictionary setObject:[firstSeenTimeArray objectAtIndex:index] forKey:@"dateTime"];
                     }
