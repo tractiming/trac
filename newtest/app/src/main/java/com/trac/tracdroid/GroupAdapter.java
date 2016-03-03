@@ -38,9 +38,11 @@ public class GroupAdapter extends BaseAdapter{
 	ArrayList<String> runningToastStore;
 	ArrayList<String> timeArray;
 	public boolean addingRow;
-	
-	
+	public IntCallbackResponse delegate = null;
+
+
 	public GroupAdapter(List<Runners> workout, Context context, HashMap<String, List<String>> resultData) {
+
 	 runnersList = new ArrayList<Runners>();
 	 this.parsedJson = workout;
 	 this.context = context;
@@ -266,7 +268,25 @@ public class GroupAdapter extends BaseAdapter{
 		else if (parsedJson.get(position).has_split.equalsIgnoreCase("true") && intervals != null){
 			textView2.setText("NT");
 			textView4.setText("NT");
-			Log.d("has split","NT");
+			if(parsedJson.get(position).first_seen != null) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+				sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+
+				Date date = null;
+				try {
+					date = sdf.parse(parsedJson.get(position).first_seen);
+					System.out.println(date.getTime());
+					timeArray.set(position, Long.toString(date.getTime()));
+				} catch (ParseException e) {
+					e.printStackTrace();
+					timeArray.set(position, Integer.toString(0));
+				} catch (NullPointerException e) {
+					timeArray.set(position, Integer.toString(0));
+					System.out.println("Null Value");
+				}
+				delegate.processComplete(position);
+			}
+
 		}
 		else {
 			textView2.setText("DNS");
@@ -435,9 +455,13 @@ public class GroupAdapter extends BaseAdapter{
 				for (int j = 0; j < totalAthleteID.size();j++)
 				{
 					if((totalAthleteID.get(j)).equals(runnerIDs.get(i))){
-						System.out.println("Old Index:"+j+"new index"+i);
-						timeArray.set(j, time.get(i));
-						totalCountArray.set(j,resetSplits.get(i));
+						System.out.println("Old Index:" + j + "new index" + i);
+						totalCountArray.set(j, resetSplits.get(i));
+						System.out.println("New Time:" + time.get(i) + "Old Time" +timeArray.get(j));
+						if (Long.parseLong(time.get(i)) >= Long.parseLong(timeArray.get(j)) && Long.parseLong(timeArray.get(j)) != 0) {
+							timeArray.set(j, time.get(i));
+						}
+
 					}
 				}
 			}
@@ -460,8 +484,24 @@ public class GroupAdapter extends BaseAdapter{
         	//if its not in the array add it
         	if (!tempBool){
 
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+				sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+
+				Date date = null;
+				try {
+					date = sdf.parse(result.get(i).first_seen);
+					System.out.println(date.getTime());
+					timeArray.add(Long.toString(date.getTime()));
+				} catch (ParseException e) {
+					e.printStackTrace();
+					timeArray.add(Integer.toString(0));
+				} catch (NullPointerException e)
+				{
+					timeArray.add(Integer.toString(0));
+					System.out.println("Null Value");
+				}
+
         		totalCountArray.add(Integer.toString(0));
-        		timeArray.add(Integer.toString(0));
         		totalSizeArray.add(Integer.toString(0));
         		totalAthleteID.add(result.get(i).id);
         		parsedJson.add(result.get(i));

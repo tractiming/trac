@@ -280,6 +280,7 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 		}
 
 	}
+
 	private void saveShared(){
 		ArrayList<String> tempTimes = groupList.getTimes();
 		ArrayList<String> tempResets = groupList.getSplitReset();
@@ -438,7 +439,6 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
                 int arg2, long arg3) {
 			counter = 0;
 			shutdown = false;
-			timer.cancel();
 
          ArrayList<String> tempList = groupList.getTimes();
 			ArrayList<String> tempIds = groupList.getAllIDs();
@@ -456,7 +456,6 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 					.setAction("Hide", new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {
-							timer.cancel();
 							shutdown = true;
 						}
 					});
@@ -509,7 +508,7 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 	Gson gson = new Gson();
 	public static final String DEBUG_TAG = "Debug";
 
-	  public class AsyncServiceCallGroupFrag extends AsyncTask<String, Void, List<Runners>> {
+	  public class AsyncServiceCallGroupFrag extends AsyncTask<String, Void, List<Runners>> implements IntCallbackResponse {
 		  protected void onPreExecute(){
 			  //Log.d("Async", "PreExcute");
 		  }
@@ -619,6 +618,7 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 						//Log.d(DEBUG_TAG,athleteDictionary.toString());
 						groupList = new GroupAdapter(result, getActivity(),athleteDictionary);
 					    setListAdapter(groupList);
+						groupList.delegate = this;
 
 					    //Set Headers
 					    mTextView.setText("Workout Name: " + title);
@@ -656,7 +656,18 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 				}
 			}
 
+		  @Override
+		  public void processComplete(int index) {
+
+			  Log.d("Index Recieved", Integer.toString(index));
+			  Log.d("Group List",groupList.getTimes().toString());
+
+			  if (runningTimeIndex == index) {
+				 ArrayList<String> tempList = groupList.getTimes();
+				 storedTime = Long.parseLong(tempList.get(runningTimeIndex));
+			  }
 		  }
+	  }
 
 
 
