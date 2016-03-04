@@ -173,8 +173,9 @@
                 [tempDict setObject:[self.selectedRunnersToast objectAtIndex:indexOfTheObject] forKey:@"dateTime"];
                 NSLog(@"Executed");
             }
-            
-            if (selectionIndex == runningClockIndexPath){
+            NSLog(@"Selection Index %ld, %ld", (long)selectionIndex.row, (long)runningClockIndexPath.row);
+            if (selectionIndex.row == runningClockIndexPath.row){
+                NSLog(@"It entered?");
                 tempTime = [[tempDict valueForKey:@"dateTime"] doubleValue];
             }
             
@@ -569,7 +570,7 @@
          time = [[NSDate date] timeIntervalSince1970 ]*1000 - tempTime;
     }
 
-       // NSLog(@"Time Current:  %f",time);
+        //NSLog(@"Time Current:  %f",time);
         double hours = trunc(time / 3600000.0);
         double remainder = fmod(time, 3600000.0);
         double minutes = trunc(remainder / 60000.0);
@@ -688,10 +689,10 @@
                    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
                    [dateFormatter setTimeZone:timeZone];
                    dateFromString = [dateFormatter dateFromString:split];
+                   NSLog(@"The Date From String is = %@",dateFromString);
                    NSTimeInterval timeInMiliseconds = [dateFromString timeIntervalSince1970]*1000;
-                   NSInteger time = timeInMiliseconds;
                    
-                   NSString *strTimeStamp = [NSString stringWithFormat:@"%ld",(long)time];
+                   NSString *strTimeStamp = [NSString stringWithFormat:@"%f",timeInMiliseconds];
                    NSLog(@"The Date is = %@",split);
                    NSLog(@"The Timestamp is = %@",strTimeStamp);
                    [firstSeenTimeArray addObject:strTimeStamp];
@@ -868,7 +869,7 @@
                 //NSLog(@"Index %lu", (unsigned long)closestIndex);
                 //If the new index is in the dictionary, and if it hasnt loaded all the splits update them and reload.
                 if (found){
-                    NSLog(@"Index Found:  %lu",(unsigned long)index);
+                    //NSLog(@"Index Found:  %lu",(unsigned long)index);
                     if ([[self.has_split objectAtIndex:index] boolValue]) {
                        // NSLog(@"Last Split String: %@", [[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"lastSplit"]);
                         if ( [[[self.athleteDictionaryArray objectAtIndex:closestIndex] valueForKey:@"lastSplit"] isEqualToString:@"DNS"])
@@ -901,9 +902,8 @@
                                 [dateFormatter setTimeZone:timeZone];
                                 dateFromString = [dateFormatter dateFromString:newStartRunningTime];
                                 NSTimeInterval timeInMiliseconds = [dateFromString timeIntervalSince1970]*1000;
-                                NSInteger time = timeInMiliseconds;
                                 
-                                NSString *strTimeStamp = [NSString stringWithFormat:@"%ld",(long)time];
+                                NSString *strTimeStamp = [NSString stringWithFormat:@"%f",timeInMiliseconds];
                                 [tempDict setObject:strTimeStamp forKey:@"dateTime"];
                             }
 
@@ -1120,9 +1120,8 @@
                         [dateFormatter setTimeZone:timeZone];
                         dateFromString = [dateFormatter dateFromString:newStartRunningTime];
                         NSTimeInterval timeInMiliseconds = [dateFromString timeIntervalSince1970]*1000;
-                        NSInteger time = timeInMiliseconds;
                         
-                        NSString *strTimeStamp = [NSString stringWithFormat:@"%ld",(long)time];
+                        NSString *strTimeStamp = [NSString stringWithFormat:@"%f",timeInMiliseconds];
                         [athleteDictionary setObject:strTimeStamp forKey:@"dateTime"];
                     }
 
