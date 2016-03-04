@@ -529,7 +529,7 @@
                 tempvar = appendedDate[i];
                 tempvar = [tempvar substringToIndex:10];
                 idurl = appendedUrl[i];
-                NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/individual_results/?all_athletes=true&limit=125&access_token=%@",idurl, savedToken];
+                NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/individual_results/?all_athletes=true&limit=175&access_token=%@",idurl, savedToken];
                 
                 //to initialize array, for the first entry create variable, then add object for subsequent entries
                 if(i==0){
@@ -648,7 +648,7 @@
             idurl = url[i];
             tempTitle = title[i];
             
-            NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/individual_results/?all_athletes=true&limit=125&access_token=%@",idurl, savedToken];
+            NSString *idurl2 = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/individual_results/?all_athletes=true&limit=175&access_token=%@",idurl, savedToken];
             
             //to initialize array, for the first entry create variable, then add object for subsequent entries
             if(i==0){

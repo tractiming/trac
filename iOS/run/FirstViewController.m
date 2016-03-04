@@ -823,6 +823,7 @@
                     
                     
                 }
+                NSLog(@"Find Match");
                 NSUInteger indexOfAthlete = [self.athleteIDArray indexOfObject:[self.runnerID objectAtIndex:index]];
 
                 
@@ -838,20 +839,35 @@
                 }
                 else{
                     NSLog(@"Varying Time");
-                    [athleteDictionary setObject:[self.resetValueArray objectAtIndex:indexOfAthlete] forKey:@"countStart"];
-  
-                    //input the more recent value, either the firstseentime or a locally stored utc time
-                    //prevent loading a zero out of storage
-                    NSLog(@"%@, %@", [self.utcTimeArray objectAtIndex:indexOfAthlete], [firstSeenTimeArray objectAtIndex:index]);
-                    if ([[self.utcTimeArray objectAtIndex:indexOfAthlete] integerValue] >= [[firstSeenTimeArray objectAtIndex:index] integerValue] && [[firstSeenTimeArray objectAtIndex:index] integerValue] != 0) {
-                        NSLog(@"read to internal storage");
-                        [athleteDictionary setObject:[self.utcTimeArray objectAtIndex:indexOfAthlete] forKey:@"dateTime"];
-                        
-                    }
-                    else{
-                        NSLog(@"read to firstseen");
+                    if ([self.resetValueArray count] < indexOfAthlete) {
+                        NSLog(@"Write Zero");
+                        [athleteDictionary setObject:[NSNumber numberWithInt:0] forKey:@"countStart"];
                         [athleteDictionary setObject:[firstSeenTimeArray objectAtIndex:index] forKey:@"dateTime"];
                     }
+                    else{
+                        NSLog(@"Try to write value?");
+                        
+                        
+                        //input the more recent value, either the firstseentime or a locally stored utc time
+                        //prevent loading a zero out of storage
+                        NSLog(@"%@, %@", [self.utcTimeArray objectAtIndex:indexOfAthlete], [firstSeenTimeArray objectAtIndex:index]);
+                        if ([[self.utcTimeArray objectAtIndex:indexOfAthlete] integerValue] > [[firstSeenTimeArray objectAtIndex:index] integerValue] && [[firstSeenTimeArray objectAtIndex:index] integerValue] != 0) {
+                            
+                            [athleteDictionary setObject:[self.utcTimeArray objectAtIndex:indexOfAthlete] forKey:@"dateTime"];
+                            [athleteDictionary setObject:[self.resetValueArray objectAtIndex:indexOfAthlete] forKey:@"countStart"];
+                        }
+                        else if ([[firstSeenTimeArray objectAtIndex:index] integerValue] == 0){
+                            [athleteDictionary setObject:[NSNumber numberWithInt:0] forKey:@"countStart"];
+                            [athleteDictionary setObject:[firstSeenTimeArray objectAtIndex:index] forKey:@"dateTime"];
+                        }
+                        else{
+                            NSLog(@"read to firstseen");
+                            [athleteDictionary setObject:[firstSeenTimeArray objectAtIndex:index] forKey:@"dateTime"];
+                            [athleteDictionary setObject:[self.resetValueArray objectAtIndex:indexOfAthlete] forKey:@"countStart"];
+                        }
+                        
+                    }
+                   
                 }
                 
                 
