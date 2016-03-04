@@ -646,6 +646,7 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 					    executed = true;
 					}
 					else{
+
 						groupList.updateResults(result);
 
 					}
@@ -659,8 +660,8 @@ public class GroupFragment extends ListFragment implements BooleanAsyncResponse{
 		  @Override
 		  public void processComplete(int index) {
 
-			  Log.d("Index Recieved", Integer.toString(index));
-			  Log.d("Group List",groupList.getTimes().toString());
+			  //Log.d("Index Recieved", Integer.toString(index));
+			  //Log.d("Group List",groupList.getTimes().toString());
 
 			  if (runningTimeIndex == index) {
 				 ArrayList<String> tempList = groupList.getTimes();

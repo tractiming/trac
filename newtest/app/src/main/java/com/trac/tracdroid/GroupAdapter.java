@@ -208,6 +208,7 @@ public class GroupAdapter extends BaseAdapter{
 		//This determines the what is the most recent split, and display it
 		TextView textView2 = (TextView) convertView.findViewById(R.id.list_text2);
 		List<String[]> intervals = parsedJson.get(position).interval;
+		//System.out.println("Intervals"+intervals+" position"+position+"Has Splits "+parsedJson.get(position).has_split);
 
 		if (parsedJson.get(position).has_split.equalsIgnoreCase("true") && !intervals.isEmpty()){
 			int ii = parsedJson.get(position).interval.get(intervals.size() - 1).length - 1;
@@ -479,8 +480,10 @@ public class GroupAdapter extends BaseAdapter{
         for (int i = 0; i < result.size(); i++){
         	//Does athelte id exist? check recently polled json from stored dictionary
         	//If doesnt exist add to end
+			System.out.println("Beginning of Loop Change Raw Dta? "+ i+ result.get(i).first_seen);
 
         	Boolean tempBool = tempDict.contains(result.get(i).id);
+			System.out.println("ID Number "+ i +" Is it found "+ tempDict.contains(result.get(i).id));
         	//if its not in the array add it
         	if (!tempBool){
 
@@ -488,6 +491,7 @@ public class GroupAdapter extends BaseAdapter{
 				sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
 
 				Date date = null;
+				System.out.println("Time Array before :"+timeArray);
 				try {
 					date = sdf.parse(result.get(i).first_seen);
 					System.out.println(date.getTime());
@@ -501,6 +505,8 @@ public class GroupAdapter extends BaseAdapter{
 					System.out.println("Null Value");
 				}
 
+				System.out.println("Time Array after :" + result.get(i).interval);
+
         		totalCountArray.add(Integer.toString(0));
         		totalSizeArray.add(Integer.toString(0));
         		totalAthleteID.add(result.get(i).id);
@@ -511,18 +517,20 @@ public class GroupAdapter extends BaseAdapter{
         		notifyDataSetChanged();
         		List<String> tempArray = new ArrayList<String>();
         		tempArray.add(result.get(i).name);
+				tempArray.add(Integer.toString(-1));
 				tempArray.add(Integer.toString(result.get(i).interval.size()));
-				tempArray.add(Integer.toString(0));
         		resultData.put(result.get(i).id, tempArray);
         		addingRow = true;
         		
         		
         	}
         	else if(tempBool) {
+				System.out.println("Entered into Else if Statement" +result.get(i).interval + "Result Data Stored"+resultData.get(result.get(i).id).get(1));
         		if(result.get(i).interval == null){
         			continue;
         		}
         		else if (result.get(i).interval != null & result.get(i).interval.size() > Integer.parseInt(resultData.get(result.get(i).id).get(1))){
+					System.out.println("Position "+ i +" first seen "+result.get(i).first_seen+" has split"+result.get(i).has_split);
 	        		//If new json has more entries than old json, update
 	        		//Find the relevant index in java; find result.get(i).id
 	        		List<String> tempArray = new ArrayList<String>();
@@ -530,8 +538,8 @@ public class GroupAdapter extends BaseAdapter{
 		        		for(int jj = 0; jj < parsedJson.size();jj++){
 		        			tempArray.add(parsedJson.get(jj).id);
 		        		}
-		        		//Log.d("Does this worK?",Integer.toString(parsedJson..indexOf(result.get(i).id)));
-		        		parsedJson.set(tempArray.indexOf(result.get(i).id),result.get(i));
+						System.out.println("Index Of :"+ tempArray.indexOf(result.get(i).id));
+						parsedJson.set(tempArray.indexOf(result.get(i).id),result.get(i));
 		        		notifyDataSetChanged();
 	        		}
         		}
