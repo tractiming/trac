@@ -39,14 +39,15 @@ public class GroupAdapter extends BaseAdapter{
 	ArrayList<String> timeArray;
 	public boolean addingRow;
 	public IntCallbackResponse delegate = null;
+	public Boolean preventUpdate;
 
 
 	public GroupAdapter(List<Runners> workout, Context context, HashMap<String, List<String>> resultData) {
-
 	 runnersList = new ArrayList<Runners>();
 	 this.parsedJson = workout;
 	 this.context = context;
 	 this.resultData = resultData;
+		preventUpdate = false;
 	 runnersList.addAll(parsedJson);
 	 checkStatus = false;
 		runningToastStore = new ArrayList<String>();
@@ -473,6 +474,9 @@ public class GroupAdapter extends BaseAdapter{
 	
 	public void updateResults(List<Runners> result) {
         //Log.d("Log",resultData.toString());
+		if (preventUpdate){
+			return;
+		}
         List<String> tempDict = new ArrayList<String>(resultData.keySet());
         //Log.d("Dict Values Extracted",tempDict.toString());
         
@@ -491,7 +495,7 @@ public class GroupAdapter extends BaseAdapter{
 				sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
 
 				Date date = null;
-				System.out.println("Time Array before :"+timeArray);
+				System.out.println("Time Array before :" + timeArray);
 				try {
 					date = sdf.parse(result.get(i).first_seen);
 					System.out.println(date.getTime());
@@ -538,7 +542,7 @@ public class GroupAdapter extends BaseAdapter{
 		        		for(int jj = 0; jj < parsedJson.size();jj++){
 		        			tempArray.add(parsedJson.get(jj).id);
 		        		}
-						System.out.println("Index Of :"+ tempArray.indexOf(result.get(i).id));
+
 						parsedJson.set(tempArray.indexOf(result.get(i).id),result.get(i));
 		        		notifyDataSetChanged();
 	        		}
@@ -554,10 +558,12 @@ public class GroupAdapter extends BaseAdapter{
 		charText = charText.toLowerCase(Locale.getDefault());
 		parsedJson.clear();
 				if (charText.length() == 0) {
+					preventUpdate = false;
 					parsedJson.addAll(runnersList);
 		} 
 		else 
 		{
+			preventUpdate = true;
 			for (Runners wp : runnersList) 
 			{
 				if (wp.name.toLowerCase(Locale.getDefault()).contains(charText)) 

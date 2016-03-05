@@ -931,7 +931,7 @@
                             [tempDict setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
                             [tempDict setObject:elapsedtime forKey:@"totalTime"];
                             
-                            NSLog(@"Running Clock %ld %lu",(long)runningClockIndexPath.row,(unsigned long)index);
+                            NSLog(@"Running Clock %ld %lu",(long)runningClockIndexPath.row,(unsigned long)closestIndex);
                             if (runningClockIndexPath.row == closestIndex){
                                 tempTime = [[tempDict valueForKey:@"dateTime"] doubleValue];
                                 NSLog(@"Time %f", tempTime);
