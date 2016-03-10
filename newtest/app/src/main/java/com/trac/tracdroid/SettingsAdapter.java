@@ -77,7 +77,7 @@ public class SettingsAdapter extends ArrayAdapter<ListViewItem> {
             viewHolder.switchToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked) {
-                        viewHolder.tvTitle.setText("Sensor is Off");  //To change the text near to switch
+                        viewHolder.tvTitle.setText("Sensor is On");  //To change the text near to switch
                         Amplitude.getInstance().logEvent("SettingsFragment_Calibrate");
                         //Calibrate start, start:now, finish:today+1day
                         raceAuth = new RaceCalibration();
@@ -87,7 +87,7 @@ public class SettingsAdapter extends ArrayAdapter<ListViewItem> {
 
                     }
                     else {
-                        viewHolder.tvTitle.setText("Sensor is On");  //To change the text near to switch
+                        viewHolder.tvTitle.setText("Sensor is Off");  //To change the text near to switch
                         Amplitude.getInstance().logEvent("SettingsFragment_End");
                         raceStop = new RaceStop();
                         String url = "https://trac-us.appspot.com/api/sessions/"+sessionPrimaryKey+"/close/?access_token=" + storedToken;

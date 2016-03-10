@@ -215,7 +215,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 		else{
 			//enable switch, and turn off.
 			System.out.println("Off");
-			mItems.add(new ListViewItem(null, "Sensor is Off", "For this Workout", Boolean.FALSE, Boolean.TRUE));
+			mItems.add(new ListViewItem(null, "Sensor is On", "For this Workout", Boolean.FALSE, Boolean.TRUE));
 		}
 
 
