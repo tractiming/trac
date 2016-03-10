@@ -12,6 +12,7 @@ import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Switch;
 
 import com.amplitude.api.Amplitude;
 
@@ -30,11 +31,11 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
     RaceStop raceStop;
     RaceStart raceGo;
     private Boolean successVariable;
+	private Switch mySwitch;
 
-    
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	Log.d("Created","Settings Fragment");
+    	Log.d("Created", "Settings Fragment");
         super.onCreate(savedInstanceState);
         //GroupFragment.backButtonWasPressed();
 		//WorkoutFragment.backButtonWasPressed();
@@ -55,12 +56,14 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         Resources resources = getResources();
 
 
-        mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_search_dark), getString(R.string.view_roster), getString(R.string.view_roster_description)));
-		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_over_video_dark), getString(R.string.record), getString(R.string.start_description)));
-		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_discard_dark), getString(R.string.action_reset), getString(R.string.reset_description)));
-        mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_dark), getString(R.string.play), getString(R.string.calibrate_description)));
-        mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_stop_dark), getString(R.string.action_stop), getString(R.string.stop_description)));
-        mItems.add(new ListViewItem(resources.getDrawable(R.drawable.trac_launcher_small), getString(R.string.action_signout), getString(R.string.logout_description)));
+        mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_search_dark), getString(R.string.view_roster), getString(R.string.view_roster_description), null, Boolean.FALSE));
+		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_over_video_dark), getString(R.string.record), getString(R.string.start_description), null, Boolean.FALSE));
+		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_discard_dark), getString(R.string.action_reset), getString(R.string.reset_description), null, Boolean.FALSE));
+		mItems.add(new ListViewItem(null, "Sensor is Off", "For this Workout", null, Boolean.TRUE));
+        //mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_dark), getString(R.string.play), getString(R.string.calibrate_description), null, Boolean.FALSE));
+        //mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_stop_dark), getString(R.string.action_stop), getString(R.string.stop_description), null, Boolean.FALSE));
+        mItems.add(new ListViewItem(resources.getDrawable(R.drawable.trac_launcher_small), getString(R.string.action_signout), getString(R.string.logout_description), null, Boolean.FALSE));
+
 
 
         // initialize and set the list adapter

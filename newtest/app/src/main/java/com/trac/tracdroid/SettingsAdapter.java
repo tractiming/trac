@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 public class SettingsAdapter extends ArrayAdapter<ListViewItem> {
@@ -35,6 +36,15 @@ public class SettingsAdapter extends ArrayAdapter<ListViewItem> {
             viewHolder.ivIcon = (ImageView) convertView.findViewById(R.id.ivIcon);
             viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
             viewHolder.tvDescription = (TextView) convertView.findViewById(R.id.tvDescription);
+           if(position == 3) {
+               viewHolder.switchToggle = (Switch) convertView.findViewById(R.id.switchToggle);
+           }
+            else
+           {
+               viewHolder.switchToggle = (Switch) convertView.findViewById(R.id.switchToggle);
+               viewHolder.switchToggle.setVisibility(View.GONE);
+           }
+
             convertView.setTag(viewHolder);
         } else {
             // recycle the already inflated view 
@@ -46,6 +56,7 @@ public class SettingsAdapter extends ArrayAdapter<ListViewItem> {
         viewHolder.ivIcon.setImageDrawable(item.icon);
         viewHolder.tvTitle.setText(item.title);
         viewHolder.tvDescription.setText(item.description);
+        //viewHolder.switchToggle.;
         
         return convertView;
     }
@@ -60,5 +71,6 @@ public class SettingsAdapter extends ArrayAdapter<ListViewItem> {
         ImageView ivIcon;
         TextView tvTitle;
         TextView tvDescription;
+        Switch switchToggle;
     }
 }
