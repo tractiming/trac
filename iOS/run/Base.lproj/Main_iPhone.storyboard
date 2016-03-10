@@ -212,7 +212,7 @@
                                 </connections>
                             </switch>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="Xf7-gR-seQ">
-                                <rect key="frame" x="20" y="227" width="140" height="30"/>
+                                <rect key="frame" x="20" y="227" width="239" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>

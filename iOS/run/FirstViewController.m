@@ -380,12 +380,7 @@
 
 }
 - (void)viewWillAppear:(BOOL)animated{
-    
-    BOOL redirect = [TokenVerification findToken];
-    if (!redirect) {
-        [self performSegueWithIdentifier:@"logout_exception" sender:self];
-    }
-    
+
     
     self.selectedRunners = [[NSMutableArray alloc] init];
     self.selectedRunnersUTC = [[NSMutableArray alloc] init];
@@ -438,6 +433,11 @@
     
     //CurrentTime = [TrueTime uptime];
 
+    BOOL redirect = [TokenVerification findToken];
+    if (!redirect) {
+        [self performSegueWithIdentifier:@"logout_exception" sender:self];
+    }
+    
     
 
     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]

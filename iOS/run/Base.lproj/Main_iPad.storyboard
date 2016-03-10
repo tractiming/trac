@@ -238,13 +238,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="21" id="YUZ-CM-5Mg">
-                                <rect key="frame" x="20" y="295" width="192" height="30"/>
+                                <rect key="frame" x="20" y="295" width="341" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="hlJ-Q9-pAI">
-                                <rect key="frame" x="298" y="295" width="51" height="31"/>
+                                <rect key="frame" x="417" y="295" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="switchPressed:" destination="V67-s6-JGl" eventType="valueChanged" id="xJZ-Co-0kK"/>

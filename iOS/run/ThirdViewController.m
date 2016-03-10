@@ -56,13 +56,13 @@
 {
     if(sensorSwitch.on)
     {
-         self.sensorTextField.text = @"The Sensor is On";
+         self.sensorTextField.text = @"The Sensor is On for this Session";
          [self calibrateWorkout];
     }
     else
         
     {
-        self.sensorTextField.text = @"The Sensor is Off";
+        self.sensorTextField.text = @"The Sensor is Off for this Session";
         [self endWorkout];
     }
     
@@ -441,11 +441,11 @@
         else if (currentTime > starttimeInMiliseconds && endtimeInMiliseconds > currentTime){
             NSLog(@"Propery Bounded");
             [sensorSwitch setOn:YES];
-            self.sensorTextField.text = @"The Sensor is On";
+            self.sensorTextField.text = @"The Sensor is On for this Session";
         }
         else{
             [sensorSwitch setOn:NO];
-            self.sensorTextField.text = @"The Sensor is Off";
+            self.sensorTextField.text = @"The Sensor is Off for this Session";
         }
         // NSLog(@"Names fetcheddata: %@", self.runners);
         return self.jsonData;

@@ -11,9 +11,7 @@
 @implementation TokenVerification
 
 + (BOOL)findToken{
-
-        
-        // NSLog(@"entered funt");
+    NSLog(@"Token Check again");        // NSLog(@"entered funt");
         NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
         
         //NSString *savedToken =@"dfda";
