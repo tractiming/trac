@@ -33,6 +33,7 @@
 {
     [super viewDidLoad];
         //NSLog(@"URL ID: %@", self.urlID);
+    [self.sensorTextField setEnabled:NO];
      NSString *savedToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
      NSString *url = [NSString stringWithFormat: @"https://trac-us.appspot.com/api/sessions/%@/?access_token=%@", self.urlID,savedToken];
     dispatch_async(TRACQueue, ^{
