@@ -17,10 +17,14 @@ import android.widget.Switch;
 import com.amplitude.api.Amplitude;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
-public class SettingsFragment extends ListFragment implements BooleanAsyncResponse,BooleanWorkoutEndResponse,BooleanStartRace{
+public class SettingsFragment extends ListFragment implements BooleanAsyncResponse,BooleanWorkoutEndResponse,BooleanStartRace,StartDateInterface{
     private List<ListViewItem> mItems;        // ListView items list
     private String access_token;
     private String positionID;
@@ -32,6 +36,8 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
     RaceStart raceGo;
     private Boolean successVariable;
 	private Switch mySwitch;
+	SettingsAdapter settingsAdapter;
+	VerifySensorActive sensorActive;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         //GroupFragment.backButtonWasPressed();
 		//WorkoutFragment.backButtonWasPressed();
         	// 1. get passed intent from MainActivity
+
 
      		Intent intent = getActivity().getIntent();
 
@@ -51,24 +58,10 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
              message = intent.getStringExtra("message");
 
 
-        // initialize the items list
-        mItems = new ArrayList<ListViewItem>();
-        Resources resources = getResources();
-
-
-        mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_search_dark), getString(R.string.view_roster), getString(R.string.view_roster_description), null, Boolean.FALSE));
-		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_over_video_dark), getString(R.string.record), getString(R.string.start_description), null, Boolean.FALSE));
-		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_discard_dark), getString(R.string.action_reset), getString(R.string.reset_description), null, Boolean.FALSE));
-		mItems.add(new ListViewItem(null, "Sensor is Off", "For this Workout", null, Boolean.TRUE));
-        //mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_dark), getString(R.string.play), getString(R.string.calibrate_description), null, Boolean.FALSE));
-        //mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_stop_dark), getString(R.string.action_stop), getString(R.string.stop_description), null, Boolean.FALSE));
-        mItems.add(new ListViewItem(resources.getDrawable(R.drawable.trac_launcher_small), getString(R.string.action_signout), getString(R.string.logout_description), null, Boolean.FALSE));
-
-
-
-        // initialize and set the list adapter
-        setListAdapter(new SettingsAdapter(getActivity(), mItems));
-
+		VerifySensorActive sensorActive = new VerifySensorActive();
+		sensorActive.delegate = this;
+		String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/?access_token=" + access_token;
+		sensorActive.execute(url);
 
 
 	}
@@ -97,33 +90,12 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 
 
         }
-        else if (position == 3){
-        	Amplitude.getInstance().logEvent("SettingsFragment_Calibrate");
-        	//Calibrate start, start:now, finish:today+1day
-        	raceAuth = new RaceCalibration();
-        	raceAuth.delegate = this;
-			String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/open/?access_token=" + access_token;
-
-			 raceAuth.execute(url);
-
-
-        }
         else if (position == 1){
         	Amplitude.getInstance().logEvent("SettingsFragment_Start");
         	raceGo = new RaceStart();
         	raceGo.delegate = this;
         	String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/start_timer/?access_token=" + access_token;
         	raceGo.execute(url);
-
-        }
-        else if (position == 4){
-        	//End Workout, finish:now
-        	Amplitude.getInstance().logEvent("SettingsFragment_End");
-			raceStop = new RaceStop();
-			raceStop.delegate = this;
-			String url = "https://trac-us.appspot.com/api/sessions/"+positionID+"/close/?access_token=" + access_token;
-			raceStop.execute(url);
-
 
         }
         else if (position == 2){
@@ -172,7 +144,7 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 
 
         }
-        else if (position == 5){
+        else if (position == 4){
         	//Logout Button
         	Amplitude.getInstance().logEvent("SettingsFragment_to_Logout");
         	SharedPreferences pref = this.getActivity().getSharedPreferences("userdetails", Context.MODE_PRIVATE);
@@ -193,6 +165,74 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
        // Toast.makeText(getActivity(), item.title, Toast.LENGTH_SHORT).show();
     }
 
+	@Override
+	public void processFinish(Results result){
+		// initialize the items list
+		mItems = new ArrayList<ListViewItem>();
+		Resources resources = getResources();
+
+
+		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_search_dark), getString(R.string.view_roster), getString(R.string.view_roster_description), null, Boolean.FALSE));
+		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_over_video_dark), getString(R.string.record), getString(R.string.start_description), null, Boolean.FALSE));
+		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_discard_dark), getString(R.string.action_reset), getString(R.string.reset_description), null, Boolean.FALSE));
+
+
+		String start = result.startTime;
+		String end = result.stopTime;
+		List readers = result.readers;
+		System.out.println("Start Time " + result.startTime);
+		System.out.println("Stop Time  " + result.stopTime);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+		Date startdate = null;
+		Date enddate = null;
+		long startmilli = 0L;
+		long endmilli = 0L;
+		try {
+			startdate = sdf.parse(start);
+			enddate = sdf.parse(end);
+			startmilli = startdate.getTime();
+			endmilli = enddate.getTime();
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e)
+		{
+			System.out.println("Null Value");
+		}
+		long currentTime = System.currentTimeMillis();
+
+		if(readers.size() == 0 || readers == null){
+			//disable switch
+			System.out.println("Disable");
+			mItems.add(new ListViewItem(null, "Sensor is Off", "For this Workout", null, Boolean.TRUE));
+		}
+		else if (currentTime > startmilli && endmilli > currentTime){
+			//enable switch to on
+			System.out.println("ON");
+			mItems.add(new ListViewItem(null, "Sensor is Off", "For this Workout", Boolean.TRUE, Boolean.TRUE));
+		}
+		else{
+			//enable switch, and turn off.
+			System.out.println("Off");
+			mItems.add(new ListViewItem(null, "Sensor is Off", "For this Workout", Boolean.FALSE, Boolean.TRUE));
+		}
+
+
+
+
+		//mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_dark), getString(R.string.play), getString(R.string.calibrate_description), null, Boolean.FALSE));
+		//mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_stop_dark), getString(R.string.action_stop), getString(R.string.stop_description), null, Boolean.FALSE));
+		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.trac_launcher_small), getString(R.string.action_signout), getString(R.string.logout_description), null, Boolean.FALSE));
+
+
+
+		// initialize and set the list adapter
+		settingsAdapter = new SettingsAdapter(getActivity(), mItems);
+		setListAdapter(settingsAdapter);
+		settingsAdapter.passToken(access_token,positionID);
+
+	}
 
 	@Override
 	public void processFinish(Boolean success) {

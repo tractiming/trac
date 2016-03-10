@@ -11,7 +11,6 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 
 public class RaceStop extends AsyncTask<String, Void, Boolean> {
-	public BooleanWorkoutEndResponse delegate = null;
 	@Override
 	protected Boolean doInBackground(String... params) {
 		// Attempt authentication against a network service.
@@ -55,8 +54,7 @@ public class RaceStop extends AsyncTask<String, Void, Boolean> {
 
 	@Override
 	protected void onPostExecute(final Boolean success) {
-		
-		delegate.workoutEnded(success);
+
 		if (success == null){
 			Log.d("NULL","WORK");
 		}

@@ -2,6 +2,8 @@ package com.trac.tracdroid;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Results {
 	//For JSON 
 	
@@ -27,6 +29,8 @@ public class Results {
 	public String manager;
 	@SerializedName ("results")
 	public String results;
+	@SerializedName ("readers")
+	public List readers;
 
 	
 }
