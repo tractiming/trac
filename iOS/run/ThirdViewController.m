@@ -17,7 +17,7 @@
 @end
 
 @implementation ThirdViewController
-
+@synthesize sensorSwitch;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -51,6 +51,23 @@
 
 }
 
+- (IBAction)switchPressed:(id)sender
+{
+    if(sensorSwitch.on)
+    {
+         self.sensorTextField.text = @"The Sensor is On";
+         [self calibrateWorkout];
+    }
+    else
+        
+    {
+        self.sensorTextField.text = @"The Sensor is Off";
+        [self endWorkout];
+    }
+    
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -66,7 +83,7 @@
     [self performSegueWithIdentifier:@"logout" sender:self];
 
 }
-- (IBAction)endWorkout:(id)sender{
+- (void)endWorkout{
    
     NSInteger success = 0;
     
@@ -303,7 +320,7 @@
 }
 
 
-- (IBAction)calibrateWorkout:(id)sender {
+- (void)calibrateWorkout {
     
     NSInteger success = 0;
     
@@ -391,18 +408,44 @@
        
          NSDictionary* id_num = [self.jsonData valueForKey:@"id"];
         NSDictionary* name = [self.jsonData valueForKey:@"name"];
-//        NSDictionary* start_time = [json valueForKey:@"start_time"];
-//        NSDictionary* stop_time = [json valueForKey:@"stop_time"];
+        self.start_time = [self.jsonData valueForKey:@"start_time"];
+        self.end_time = [self.jsonData valueForKey:@"stop_time"];
+        NSArray *readers = [self.jsonData valueForKey:@"readers"];
 //        NSDictionary* rest_time = [json valueForKey:@"rest_time"];
 //        NSDictionary* track_size = [json valueForKey:@"track_size"];
 //        NSDictionary* interval_distance = [json valueForKey:@"interval_distance"];
 //        NSDictionary* interval_number = [json valueForKey:@"interval_number"];
         NSDictionary* filter_choice = [self.jsonData valueForKey:@"filter_choice"];
-        //NSLog(@"URL ID: %@", name);
-        //NSLog(@"URL ID: %@", filter_choice);
-        //self.jsonData = [NSString stringWithFormat:@"Date: %@", id_num];
-
         
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
+        NSDate *startString = [[NSDate alloc] init];
+        NSDate *endString = [[NSDate alloc] init];
+        NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        [dateFormatter setTimeZone:timeZone];
+        startString = [dateFormatter dateFromString:self.start_time];
+        endString = [dateFormatter dateFromString:self.end_time];
+        
+        NSTimeInterval starttimeInMiliseconds = [startString timeIntervalSince1970]*1000;
+        NSTimeInterval endtimeInMiliseconds = [endString timeIntervalSince1970]*1000;
+        NSTimeInterval currentTime = [[NSDate date] timeIntervalSince1970 ]*1000;
+        
+        NSLog(@"The Date From String is = %@, %@",startString,self.start_time, starttimeInMiliseconds);
+        NSLog(@"The Date From String is = %@, %@",endString,self.end_time, endtimeInMiliseconds);
+        
+        if(!readers || !readers.count){
+            [sensorSwitch setEnabled:NO];
+            self.sensorTextField.text = @"No Sensor Enabled";
+        }
+        else if (currentTime > starttimeInMiliseconds && endtimeInMiliseconds > currentTime){
+            NSLog(@"Propery Bounded");
+            [sensorSwitch setOn:YES];
+            self.sensorTextField.text = @"The Sensor is On";
+        }
+        else{
+            [sensorSwitch setOn:NO];
+            self.sensorTextField.text = @"The Sensor is Off";
+        }
         // NSLog(@"Names fetcheddata: %@", self.runners);
         return self.jsonData;
         

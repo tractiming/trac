@@ -12,13 +12,17 @@
 
 - (IBAction)logoutClicked:(id)sender;
 - (IBAction)resetWorkout:(id)sender;
-- (IBAction)calibrateWorkout:(id)sender;
-- (IBAction)endWorkout:(id)sender;
+//- (IBAction)calibrateWorkout:(id)sender;
+//- (IBAction)endWorkout:(id)sender;
 - (IBAction)goButton:(id)sender;
 @property (nonatomic, strong) NSString *urlID;
 @property (nonatomic, strong) NSDictionary *jsonData;
+@property (weak, nonatomic) IBOutlet UISwitch *sensorSwitch;
+@property (weak, nonatomic) IBOutlet UITextField *sensorTextField;
+- (IBAction)switchPressed:(id)sender;
 
-
+@property (nonatomic, strong) NSString *start_time;
+@property (nonatomic, strong) NSString *end_time;
 
 
 @end
