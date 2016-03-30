@@ -115,6 +115,11 @@ public class SettingsAdapter extends ArrayAdapter<ListViewItem> {
         sessionPrimaryKey = primaryKey;
 
     }
+
+    public void updateSettings(List<ListViewItem> updatedList){
+
+
+    }
     
     /**
      * The view holder design pattern prevents using findViewById()

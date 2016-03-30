@@ -46,9 +46,22 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
         //GroupFragment.backButtonWasPressed();
 		//WorkoutFragment.backButtonWasPressed();
         	// 1. get passed intent from MainActivity
+		mItems = new ArrayList<ListViewItem>();
+		Resources resources = getResources();
 
 
-     		Intent intent = getActivity().getIntent();
+		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_search_dark), getString(R.string.view_roster), getString(R.string.view_roster_description), null, Boolean.FALSE));
+		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_over_video_dark), getString(R.string.record), getString(R.string.start_description), null, Boolean.FALSE));
+		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_discard_dark), getString(R.string.action_reset), getString(R.string.reset_description), null, Boolean.FALSE));
+		mItems.add(new ListViewItem(null, "Sensor is Off", "Still loading status...", null, Boolean.TRUE));
+		mItems.add(new ListViewItem(null, getString(R.string.action_signout), getString(R.string.logout_description), null, Boolean.FALSE));
+
+
+		// initialize and set the list adapter
+		settingsAdapter = new SettingsAdapter(getActivity(), mItems);
+		setListAdapter(settingsAdapter);
+
+		Intent intent = getActivity().getIntent();
 
              // 2. get message value from intent
              positionID = intent.getStringExtra("positionID");
@@ -168,69 +181,60 @@ public class SettingsFragment extends ListFragment implements BooleanAsyncRespon
 	@Override
 	public void processFinish(Results result){
 		// initialize the items list
-		mItems = new ArrayList<ListViewItem>();
-		Resources resources = getResources();
+		if(isAdded()) {
+
+			String start = result.startTime;
+			String end = result.stopTime;
+			List readers = result.readers;
+			System.out.println("Start Time " + result.startTime);
+			System.out.println("Stop Time  " + result.stopTime);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+			sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+			Date startdate = null;
+			Date enddate = null;
+			long startmilli = 0L;
+			long endmilli = 0L;
+			mItems.remove(4);
+			mItems.remove(3);
+
+			try {
+				startdate = sdf.parse(start);
+				enddate = sdf.parse(end);
+				startmilli = startdate.getTime();
+				endmilli = enddate.getTime();
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+			} catch (NullPointerException e) {
+				System.out.println("Null Value");
+			}
+			long currentTime = System.currentTimeMillis();
+
+			if (readers.size() == 0 || readers == null) {
+				//disable switch
+				System.out.println("Disable");
+				mItems.add(new ListViewItem(null, "Sensor is Off", "For this Workout", null, Boolean.TRUE));
+				mItems.add(new ListViewItem(null, getString(R.string.action_signout), getString(R.string.logout_description), null, Boolean.FALSE));
+			} else if (currentTime > startmilli && endmilli > currentTime) {
+				//enable switch to on
+				System.out.println("ON");
+				mItems.add(new ListViewItem(null, "Sensor is Off", "For this Workout", Boolean.TRUE, Boolean.TRUE));
+				mItems.add(new ListViewItem(null, getString(R.string.action_signout), getString(R.string.logout_description), null, Boolean.FALSE));
+
+			} else {
+				//enable switch, and turn off.
+				System.out.println("Off");
+				mItems.add(new ListViewItem(null, "Sensor is On", "For this Workout", Boolean.FALSE, Boolean.TRUE));
+				mItems.add(new ListViewItem(null, getString(R.string.action_signout), getString(R.string.logout_description), null, Boolean.FALSE));
+			}
 
 
-		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_search_dark), getString(R.string.view_roster), getString(R.string.view_roster_description), null, Boolean.FALSE));
-		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_over_video_dark), getString(R.string.record), getString(R.string.start_description), null, Boolean.FALSE));
-		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_discard_dark), getString(R.string.action_reset), getString(R.string.reset_description), null, Boolean.FALSE));
-
-
-		String start = result.startTime;
-		String end = result.stopTime;
-		List readers = result.readers;
-		System.out.println("Start Time " + result.startTime);
-		System.out.println("Stop Time  " + result.stopTime);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-		sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
-		Date startdate = null;
-		Date enddate = null;
-		long startmilli = 0L;
-		long endmilli = 0L;
-		try {
-			startdate = sdf.parse(start);
-			enddate = sdf.parse(end);
-			startmilli = startdate.getTime();
-			endmilli = enddate.getTime();
-
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e)
-		{
-			System.out.println("Null Value");
+			//mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_dark), getString(R.string.play), getString(R.string.calibrate_description), null, Boolean.FALSE));
+			//mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_stop_dark), getString(R.string.action_stop), getString(R.string.stop_description), null, Boolean.FALSE));
+			settingsAdapter = new SettingsAdapter(getActivity(), mItems);
+			setListAdapter(settingsAdapter);
+			settingsAdapter.passToken(access_token, positionID);
 		}
-		long currentTime = System.currentTimeMillis();
-
-		if(readers.size() == 0 || readers == null){
-			//disable switch
-			System.out.println("Disable");
-			mItems.add(new ListViewItem(null, "Sensor is Off", "For this Workout", null, Boolean.TRUE));
-		}
-		else if (currentTime > startmilli && endmilli > currentTime){
-			//enable switch to on
-			System.out.println("ON");
-			mItems.add(new ListViewItem(null, "Sensor is Off", "For this Workout", Boolean.TRUE, Boolean.TRUE));
-		}
-		else{
-			//enable switch, and turn off.
-			System.out.println("Off");
-			mItems.add(new ListViewItem(null, "Sensor is On", "For this Workout", Boolean.FALSE, Boolean.TRUE));
-		}
-
-
-
-
-		//mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_play_dark), getString(R.string.play), getString(R.string.calibrate_description), null, Boolean.FALSE));
-		//mItems.add(new ListViewItem(resources.getDrawable(R.drawable.ic_action_stop_dark), getString(R.string.action_stop), getString(R.string.stop_description), null, Boolean.FALSE));
-		mItems.add(new ListViewItem(resources.getDrawable(R.drawable.trac_launcher_small), getString(R.string.action_signout), getString(R.string.logout_description), null, Boolean.FALSE));
-
-
-
-		// initialize and set the list adapter
-		settingsAdapter = new SettingsAdapter(getActivity(), mItems);
-		setListAdapter(settingsAdapter);
-		settingsAdapter.passToken(access_token,positionID);
 
 	}
 
