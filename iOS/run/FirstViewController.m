@@ -380,7 +380,7 @@
 
 }
 - (void)viewWillAppear:(BOOL)animated{
-
+    //Initialize arrays, out load data and load into rows. Delete saved data
     
     self.selectedRunners = [[NSMutableArray alloc] init];
     self.selectedRunnersUTC = [[NSMutableArray alloc] init];
@@ -710,7 +710,7 @@
         for (NSArray *personalinterval in self.interval) {
            
             if(Executed == TRUE){
-                
+                 NSLog(@"Looping again ");
                 if(![[self.has_split objectAtIndex:index] boolValue]){
                     elapsedtime = [NSString stringWithFormat:@"DNS"];
                     superlasttime = [NSString stringWithFormat:@"DNS"];
@@ -722,14 +722,14 @@
                     universalIndex = 0;
                 }
                 else{
+                   
                     //adds all intervals together to give cumulative time
                     NSArray *tempArray = [self.interval objectAtIndex:index];
                     
                     //adds all intervals together to give cumulative time
                     NSMutableArray *finaltimeArray=[[NSMutableArray alloc] init];
                     NSInteger rangeVar;
-                    
-                    NSUInteger indexOfAthlete = [self.athleteIDArray indexOfObject:[self.runnerID objectAtIndex:index]];
+                    NSUInteger indexOfAthlete;
                     
                     if (self.utcTimeArray == nil || [self.utcTimeArray count] == 0)
                     {
@@ -737,8 +737,17 @@
                         rangeVar = [[NSNumber numberWithInt:0] integerValue];
                     }
                     else{
-                        //NSLog(@"Varying Time");
-                        rangeVar = [[self.resetValueArray objectAtIndex:indexOfAthlete] integerValue];
+                        
+                        //if runner index is in the array, find it
+                        if ([self.athleteIDArray containsObject:[self.runnerID objectAtIndex:index]])
+                        {
+                            indexOfAthlete = [self.athleteIDArray indexOfObject:[self.runnerID objectAtIndex:index]];
+                            rangeVar = [[self.resetValueArray objectAtIndex:indexOfAthlete] integerValue];
+                        }
+                        else
+                            rangeVar = 0;
+                        
+                       
                     }
                     
                    
@@ -861,23 +870,27 @@
                             [athleteDictionary setObject:[firstSeenTimeArray objectAtIndex:index] forKey:@"dateTime"];
                         }
                         else{
-                            NSLog(@"read to firstseen");
+                            NSLog(@"read to firstseen, idex %lu, index of athlete %lu", index, indexOfAthlete);
                             [athleteDictionary setObject:[firstSeenTimeArray objectAtIndex:index] forKey:@"dateTime"];
                             [athleteDictionary setObject:[self.resetValueArray objectAtIndex:indexOfAthlete] forKey:@"countStart"];
+                            NSLog(@"Gets here??");
                         }
                         
                     }
                    
                 }
-                
+                NSLog(@"Helo?");
                 
                 [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
+                NSLog(@"Helo? one more");
                 [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
+                NSLog(@"Helo? third ");
                 [self.athleteDictionaryArray addObject:athleteDictionary];
-                
+                NSLog(@"Helo? fourth ");
             }
             
             else{
+                NSLog(@"Helo2 ?");
                 //Does the row exist from a previous polling. Check Athlete IDs versus stored dictionary.
                 NSMutableArray *tempArray = [self.athleteDictionaryArray valueForKey:@"athleteID"];
                 BOOL found = CFArrayContainsValue ( (__bridge CFArrayRef)tempArray, CFRangeMake(0, tempArray.count), (CFNumberRef) [self.runnerID objectAtIndex:index]);
@@ -1053,6 +1066,7 @@
                         elapsedtime = [NSString stringWithFormat:@"NT"];
                         superlasttime = [NSString stringWithFormat:@"NT"];
                         universalIndex = 0;
+                        //append to first seen
                         
                     }
                     else{
@@ -1122,12 +1136,13 @@
                             
                         }
                     }
-                    
+                    //insert first seen time into running time
                     if ([self.first_seen objectAtIndex:index] == [NSNull null]){
-
+                        NSLog(@"First seen here");
                         [athleteDictionary setObject:[NSNumber numberWithDouble:0] forKey:@"dateTime"];
                     }
                     else{
+                        NSLog(@"Second seen here");
                         newStartRunningTime =[self.first_seen objectAtIndex:index];
                         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                         [dateFormatter setDateFormat:@"yyyy/MM/dd HH:mm:ss.SSS"];
@@ -1138,6 +1153,7 @@
                         NSTimeInterval timeInMiliseconds = [dateFromString timeIntervalSince1970]*1000;
                         
                         NSString *strTimeStamp = [NSString stringWithFormat:@"%f",timeInMiliseconds];
+                        NSLog(@"%@",strTimeStamp);
                         [athleteDictionary setObject:strTimeStamp forKey:@"dateTime"];
                     }
 
@@ -1147,7 +1163,6 @@
                     [athleteDictionary setObject:[self.runnerID objectAtIndex:index] forKey:@"athleteID"];
                     [athleteDictionary setObject:superlasttime forKey:@"lastSplit"];
                     [athleteDictionary setObject:[NSNumber numberWithInt:universalIndex] forKey:@"numberSplits"];
-                    [athleteDictionary setObject:[NSNumber numberWithDouble:0] forKey:@"dateTime"];
                     [athleteDictionary setObject:elapsedtime forKey:@"totalTime"];
                     
                     //Introduce first_seen here
