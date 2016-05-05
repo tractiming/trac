@@ -27,6 +27,7 @@
 #import "TokenVerification.h"
 #import "TrueTime.h"
 
+
 @interface FirstViewController() <UIActionSheetDelegate>
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *editButton;
@@ -293,7 +294,7 @@
     //[self.tableData setEditing:NO animated:YES];
     //[self updateButtonsToMatchTableState];
     //NSLog(@"Hits Again?");
-    [self sendRequest];
+    //[self sendRequest];
 
     
 }
@@ -409,27 +410,39 @@
     self.parentViewController.navigationItem.rightBarButtonItem = self.editButton;
     self.tableData.contentInset = UIEdgeInsetsMake(0,0,44,0);
 //NSLog(@"Reappear");
-    dispatch_async(kBgQueue, ^{
-        
-        NSData* data = [NSData dataWithContentsOfURL:
-                        [NSURL URLWithString:self.urlName]];
-        
-        dispatch_async(dispatch_get_main_queue() ,^{
-            
-            [self fetchedData:data];
-            [self.tableData reloadData];
-            [spinner removeFromSuperview];
-        });});
+//    dispatch_async(kBgQueue, ^{
+//        
+//        NSData* data = [NSData dataWithContentsOfURL:
+//                        [NSURL URLWithString:self.urlName]];
+//        
+//        dispatch_async(dispatch_get_main_queue() ,^{
+//            
+//            //[self fetchedData:data];
+//            [self.tableData reloadData];
+//            [spinner removeFromSuperview];
+//        });});
 
     
     // call timer on launch and call sendRequest every 5 seconds
-    timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(sendRequest) userInfo:nil repeats:YES];
+    //timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(sendRequest) userInfo:nil repeats:YES];
 }
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    // Create a reference to a Firebase database URL
+    Firebase *myRootRef = [[Firebase alloc] initWithUrl:@"https://dazzling-torch-965.firebaseio.com/sessions/102"];
+    // Write data to Firebase
+    // Attach a block to read the data at our posts reference
+    [myRootRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"%@", snapshot.value);
+        [self fetchedData:snapshot.value];
+        [self.tableData reloadData];
+        [spinner removeFromSuperview];
+    } withCancelBlock:^(NSError *error) {
+        NSLog(@"%@", error.description);
+    }];
     
     //CurrentTime = [TrueTime uptime];
 
@@ -634,7 +647,7 @@
         
         dispatch_async(dispatch_get_main_queue() ,^{
             
-            [self fetchedData:data];
+            //[self fetchedData:data];
             
             [spinner removeFromSuperview];
         });});
@@ -643,7 +656,7 @@
     svc.urlName_VC2 = self.urlName;
 }
 
-- (NSArray *)fetchedData:(NSData *)responseData {
+- (NSArray *)fetchedData:(NSDictionary *)responseData {
     //NSLog(@"Fetched Data called? ");
     if (self.storeDelete)
     {
@@ -655,14 +668,10 @@
     }
     //parse out the json data
     
-    //NSLog(@"Enters Fetched Data Again");
+    NSLog(@"Enters Fetched Data Again");
    @try {
         NSError* error;
-        NSDictionary* json= [NSJSONSerialization
-                             JSONObjectWithData:responseData //1
-                             
-                             options:kNilOptions
-                             error:&error];
+       NSDictionary* json= responseData;
 
         NSString* results = [json valueForKey:@"results"];
 

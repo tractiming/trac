@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Firebase/Firebase.h>
 
 @interface SecondViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 

@@ -8,6 +8,7 @@
 
 
 #import <UIKit/UIKit.h>
+#import <Firebase/Firebase.h>
 @class TRACDoc;
 
 @interface FirstViewController :UIViewController <UITableViewDelegate,UITableViewDataSource>
