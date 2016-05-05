@@ -678,6 +678,9 @@
         self.runners= [results valueForKey:@"name"];
         self.runnerID = [results valueForKey:@"id"];
         self.interval = [results valueForKey:@"splits"];
+       NSLog(@"%lu", (unsigned long)self.interval.count);
+       if (self.interval[0] == [NSNull null])
+           self.interval = [];
         self.has_split = [results valueForKey:@"has_split"];
         self.first_seen = [results valueForKey:@"first_seen"];
        
