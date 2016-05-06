@@ -677,10 +677,22 @@
 
         self.runners= [results valueForKey:@"name"];
         self.runnerID = [results valueForKey:@"id"];
-        self.interval = [results valueForKey:@"splits"];
+       self.interval = [[NSMutableArray alloc] init];
        NSLog(@"%lu", (unsigned long)self.interval.count);
-       if (self.interval[0] == [NSNull null])
-           self.interval = [];
+       NSString *blankArray= @[];
+       
+       if (!self.runners) {
+           NSLog(@"Error parsing JSON");
+       } else {
+           for(NSDictionary *item in results) {
+               if([item objectForKey:@"splits"] != nil)
+                   [self.interval addObject:[item objectForKey:@"splits"]];
+               else
+                   [self.interval addObject:blankArray];
+           }
+       }
+       NSLog(@"INteval %@", self.interval);
+       
         self.has_split = [results valueForKey:@"has_split"];
         self.first_seen = [results valueForKey:@"first_seen"];
        
