@@ -432,7 +432,8 @@
 {
     [super viewDidLoad];
     // Create a reference to a Firebase database URL
-    Firebase *myRootRef = [[Firebase alloc] initWithUrl:@"https://dazzling-torch-965.firebaseio.com/sessions/102"];
+    NSString *url_string = [NSString stringWithFormat:@"https://dazzling-torch-965.firebaseio.com/sessions/%@", self.urlID];
+    Firebase *myRootRef = [[Firebase alloc] initWithUrl:url_string];
     // Write data to Firebase
     // Attach a block to read the data at our posts reference
     [myRootRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
